@@ -1,0 +1,67 @@
+.ant-layout-sider {
+  background: #fff !important;
+  min-height: 100vh !important;
+}
+
+.anticon-sketch.anticon svg {
+  width: 40px;
+  height: 40px;
+  margin: 9px;
+  color: red;
+}
+
+// .ant-layout-sider {
+//   flex: 0 0 70px !important;
+//   width: 70px !important;
+//   max-width: 70px !important;
+//   min-width: 70px !important;
+//   border-right: 1px solid #f0f0f0;
+// }
+
+.ant-menu-root.ant-menu-vertical,
+.ant-menu-root.ant-menu-vertical-left,
+.ant-menu-root.ant-menu-vertical-right,
+.ant-menu-root.ant-menu-inline {
+  padding: 0 4px;
+  width: auto;
+}
+
+.sidebar-top-collapse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 54px;
+
+  border-bottom: 1px solid #f0f0f0;
+}
+
+// aside.ant-layout-sider.ant-layout-sider-light.ant-layout-sider-collapsed.first-child-sider {
+//   flex: 0 0 55px !important;
+//   width: 55px !important;
+//   max-width: 55px !important;
+//   min-width: 55px !important;
+// }
+
+.ant-layout-sider-children {
+  height: 100vh;
+  position: relative;
+}
+
+#sidebar {
+  display: flex;
+}
+
+#sidebar .userLogin {
+  position: absolute;
+  display: flex;
+  right: 40%;
+  flex-direction: column;
+  justify-content: center;
+  bottom: 20px;
+  width: 70px;
+}
+
+#sidebar .userTitle {
+  margin-top: 3px;
+  line-height: 15px;
+}

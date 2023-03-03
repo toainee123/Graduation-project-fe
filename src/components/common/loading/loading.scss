@@ -1,0 +1,13 @@
+#loading {
+  background: rgba(49, 54, 87, 0.4);
+
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: var(--z-loading);
+}

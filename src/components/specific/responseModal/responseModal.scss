@@ -1,0 +1,20 @@
+#responseModal {
+  min-width: 300px;
+  max-width: 500px;
+  position: absolute;
+  background-color: white;
+  color: black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px 20px;
+  border-radius: 12px;
+}
+
+#responseModal .response_btn {
+  font-size: var(--fontSizeSmall);
+  font-weight: 600;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
