@@ -33,7 +33,11 @@ function App() {
             <Route path='*' element={<Navigate to={''} replace />} />
           </Route>
 
-          <Route path='admin' element={<ProtectedRoute roles={'ADMIN'} Component={AdminLayout} />}>
+          <Route path='admin' element={
+            // <ProtectedRoute roles={'ADMIN'} Component={
+            <AdminLayout />
+            // } />
+          }>
             <Route index element={<Navigate to={urlRouter.DASHBOARD} />} />
             {adminRoutes.map((route, index) => {
               const Page = route.component;

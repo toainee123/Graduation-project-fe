@@ -8,6 +8,14 @@
   --z-overlay: 999;
   --z-modal: 1000;
   --z-loading: 10000;
+
+  // color
+  --cl-blue: #337ab7;
+  --cl-green: #26b99a;
+  --cl-yellow: #f0ad4e;
+  --cl-red: #d43f3a;
+  --cl-red-price: rgb(243, 11, 11);
+  --cl-gray: #4b5f71;
 }
 
 // Start Base
@@ -31,14 +39,36 @@ a {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  font-size: 2em;
+  font-weight: bolder;
+}
+h2 {
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+h3 {
+  font-size: 1.17em;
+  font-weight: bolder;
+}
+h4 {
+  font-size: 1em;
+  font-weight: bolder;
+}
+h5 {
+  font-size: 0.83em;
+  font-weight: bolder;
+}
+h6 {
+  font-size: 0.67em;
+  font-weight: bolder;
+}
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
