@@ -1,5 +1,4 @@
 .ant-layout-sider {
-  background: #fff !important;
   min-height: 100vh !important;
 }
 
@@ -10,14 +9,6 @@
   color: red;
 }
 
-// .ant-layout-sider {
-//   flex: 0 0 70px !important;
-//   width: 70px !important;
-//   max-width: 70px !important;
-//   min-width: 70px !important;
-//   border-right: 1px solid #f0f0f0;
-// }
-
 .ant-menu-root.ant-menu-vertical,
 .ant-menu-root.ant-menu-vertical-left,
 .ant-menu-root.ant-menu-vertical-right,
@@ -25,23 +16,16 @@
   padding: 0 4px;
   width: auto;
 }
-
 .sidebar-top-collapse {
-  display: flex;
+  // display: flex;
   justify-content: center;
   align-items: center;
   height: 54px;
-
   border-bottom: 1px solid #f0f0f0;
 }
-
-// aside.ant-layout-sider.ant-layout-sider-light.ant-layout-sider-collapsed.first-child-sider {
-//   flex: 0 0 55px !important;
-//   width: 55px !important;
-//   max-width: 55px !important;
-//   min-width: 55px !important;
-// }
-
+.ant-layout-sider {
+  min-width: 240px !important;
+}
 .ant-layout-sider-children {
   height: 100vh;
   position: relative;
@@ -64,4 +48,12 @@
 #sidebar .userTitle {
   margin-top: 3px;
   line-height: 15px;
+}
+.ant-menu-item {
+  margin: 15px 0 !important ;
+  overflow: unset !important;
+  white-space: unset !important;
+}
+.ant-menu-title-content {
+  font-size: 18px !important;
 }

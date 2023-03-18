@@ -1,3 +1,10 @@
+import DataPower from 'src/pages/admin/dataPower/dataPower';
+import DataWater from 'src/pages/admin/dataWater/dataWater';
+import OtherFree from 'src/pages/admin/otherFree/otherFree';
+import Payment from 'src/pages/admin/payMent/payMent';
+import Report from 'src/pages/admin/rePort/report';
+import Room from 'src/pages/admin/room/room';
+import Service from 'src/pages/admin/service/service';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
@@ -11,6 +18,36 @@ export const adminRoutes = [
     path: urlRouter.DASHBOARD,
     component: Dashboard,
   },
+  {
+    path: urlRouter.ROOM,
+    component: Room,
+  },
+    {
+    path: urlRouter.SERVICE,
+    component: Service,
+  },
+   {
+    path: urlRouter.DATA_POWER,
+    component: DataPower,
+  },
+   {
+    path: urlRouter.DATA_WATER,
+    component: DataWater,
+  },
+ 
+   {
+    path: urlRouter.OTHER_FREE,
+    component: OtherFree,
+  },
+   {
+    path: urlRouter.PAYMENT,
+    component: Payment,
+  },
+   {
+    path: urlRouter.REPORT,
+    component: Report,
+  },
+
   {
     path: 'pg',
     component: Pg,
