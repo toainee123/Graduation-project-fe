@@ -4,7 +4,7 @@ import OtherFree from 'src/pages/admin/otherFree/otherFree';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
 import Room from 'src/pages/admin/room/room';
-import Service from 'src/pages/admin/service/service';
+import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
@@ -22,28 +22,31 @@ export const adminRoutes = [
     path: urlRouter.ROOM,
     component: Room,
   },
-    {
-    path: urlRouter.SERVICE,
+  {
+    // path: urlRouter.SERVICE,
     component: Service,
+    children: [
+      { path: urlRouter.SERVICE, component: Service, index: true },
+    ],
   },
-   {
+  {
     path: urlRouter.DATA_POWER,
     component: DataPower,
   },
-   {
+  {
     path: urlRouter.DATA_WATER,
     component: DataWater,
   },
- 
-   {
+
+  {
     path: urlRouter.OTHER_FREE,
     component: OtherFree,
   },
-   {
+  {
     path: urlRouter.PAYMENT,
     component: Payment,
   },
-   {
+  {
     path: urlRouter.REPORT,
     component: Report,
   },
