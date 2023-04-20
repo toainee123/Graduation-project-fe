@@ -1,0 +1,18 @@
+.titleWater {
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+}
+
+// .inputWater {
+//   display: inline-block !important;
+//   width: 40% !important;
+// }
+
+.form_input {
+  display: flex !important;
+  justify-content: space-around !important;
+  .inputWater {
+    width: 40% !important;
+  }
+}

@@ -13,16 +13,16 @@ const initialState: DataWaterType = {
 
 export const getDataWater = createAsyncThunk('water/getDataWater', async () => {
   const { data }: any = await axios.get('https://6440c167fadc69b8e071d4b4.mockapi.io/api/houses');
-  console.log(data);
+  return data;
 });
 
 export const waterSlice = createSlice({
   name: 'water',
   initialState,
   reducers: {},
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     builder.addCase(getDataWater.fulfilled, (state, action) => {
-      return (state.value = action.payload);
+      return void (state.value = action.payload);
     });
   },
 });

@@ -1,15 +1,66 @@
-import { Button, DatePicker, Select, Space, Table } from 'antd';
+import { Button, DatePicker, Form, Input, Select, Space, Table } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getDataWater } from 'src/features/water/dataWaterSlice';
-import { useAppDispatch } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import type { ColumnsType } from 'antd/es/table';
+import './dataWater.scss';
+import { log } from 'console';
 
 const DataWater = () => {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(getDataWater());
   }, []);
+
+  const listDataWater = useAppSelector((state) => state.water.value);
+
+  const dataSource: any = listDataWater.map((item: any, index: number) => {
+    return {
+      key: item.id,
+      id: item.id,
+      idHouse: item.idHouse,
+      idRoom: item.idRoom,
+      name: item.name,
+      month: item.month,
+      year: item.year,
+      price: item.price,
+      unit: item.unit,
+      inputValue: item.inputValue,
+      outputValue: item.outputValue,
+    };
+  });
+
+  const columns: ColumnsType<any> = [
+    { title: 'Nhà', dataIndex: 'idHouse', key: 'idHouse' },
+    { title: 'Phòng', dataIndex: 'idRoom', key: 'idRoom' },
+    { title: 'Người thuê', dataIndex: 'name', key: 'name' },
+    {
+      title: (
+        <Space className='titleWater'>
+          <div>Chỉ số nước cũ</div>
+          <div>Chỉ số nước mới</div>
+        </Space>
+      ),
+      render: (text, record) => {
+        console.log(record);
+        return (
+          <Form className='form_input'>
+            <Form.Item className='inputWater'>
+              <Input defaultValue={record.outputValue}></Input>
+            </Form.Item>
+
+            <Form.Item className='inputWater'>
+              <Input defaultValue={record.outputValue}></Input>
+            </Form.Item>
+          </Form>
+        );
+      },
+    },
+  ];
+
   return (
     <section>
       <div className=' flex justify-between items-center'>
@@ -91,7 +142,9 @@ const DataWater = () => {
             các tháng tiếp theo phần mềm sẽ tự động lấy chỉ số mới tháng trước làm chỉ số cũ tháng sau.
           </p>
         </div>
-        <div className='mt-8'>{/* <Table className='m-w-full' dataSource={dataSource} columns={columns} /> */}</div>
+        <div className='mt-8'>
+          <Table className='m-w-full' dataSource={dataSource} columns={columns} />
+        </div>
       </section>
     </section>
   );
