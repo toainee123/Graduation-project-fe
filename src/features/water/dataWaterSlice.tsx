@@ -11,8 +11,10 @@ const initialState: DataWaterType = {
   value: [],
 };
 
-export const getDataWater = createAsyncThunk('water/getDataWater', async () => {
-  const { data }: any = await axios.get('https://6440c167fadc69b8e071d4b4.mockapi.io/api/houses');
+export const getDataWater = createAsyncThunk('water/getDataWater', async (arg: any) => {
+  const { data }: any = await axios.get(
+    `https://6440c167fadc69b8e071d4b4.mockapi.io/api/houses?month=${arg.month}&year=${arg.year}`
+  );
   return data;
 });
 
