@@ -9,10 +9,14 @@
 //   width: 40% !important;
 // }
 
-.form_input {
+.divInput {
   display: flex !important;
   justify-content: space-around !important;
   .inputWater {
     width: 40% !important;
   }
+}
+
+.red {
+  color: red;
 }

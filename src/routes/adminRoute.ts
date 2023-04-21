@@ -1,5 +1,5 @@
 import DataPower from 'src/pages/admin/dataPower/dataPower';
-import DataWater from 'src/pages/admin/dataWater/dataWater';
+
 import OtherFree from 'src/pages/admin/otherFree/otherFree';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
@@ -11,6 +11,7 @@ import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
+import DataWater from 'src/pages/admin/dataWater/DataWater';
 
 export const adminRoutes = [
   {
@@ -22,28 +23,28 @@ export const adminRoutes = [
     path: urlRouter.ROOM,
     component: Room,
   },
-    {
+  {
     path: urlRouter.SERVICE,
     component: Service,
   },
-   {
+  {
     path: urlRouter.DATA_POWER,
     component: DataPower,
   },
-   {
+  {
     path: urlRouter.DATA_WATER,
     component: DataWater,
   },
- 
-   {
+
+  {
     path: urlRouter.OTHER_FREE,
     component: OtherFree,
   },
-   {
+  {
     path: urlRouter.PAYMENT,
     component: Payment,
   },
-   {
+  {
     path: urlRouter.REPORT,
     component: Report,
   },

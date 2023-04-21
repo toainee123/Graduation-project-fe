@@ -5,34 +5,32 @@ import FooterComponent from '../footer/Footer';
 import HeaderComponent from '../header/Header';
 import Sidebar from '../sidebar/Sidebar';
 
-import "./AdminLayout.scss"
+import './AdminLayout.scss';
 
 type Props = {};
 
-const { Content } = Layout
+const { Content } = Layout;
 
 const AdminLayout = (props: Props) => {
   return (
     <div>
-      <Layout >
+      <Layout>
         <Sidebar />
         <Layout>
-
           <HeaderComponent />
 
           <Content>
             <div className='layout-admin'>
-              <div className="outlet">
+              <div className='outlet'>
                 <Outlet />
               </div>
             </div>
           </Content>
 
           <FooterComponent />
-
         </Layout>
       </Layout>
-    </div >
+    </div>
   );
 };
 

@@ -1,71 +1,165 @@
-import { Button, DatePicker, Form, Input, Select, Space, Table } from 'antd';
-import Title from 'antd/lib/typography/Title';
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { getDataWater } from 'src/features/water/dataWaterSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import type { ColumnsType } from 'antd/es/table';
-import './dataWater.scss';
-import { log } from 'console';
-
+import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import Table, { ColumnsType } from 'antd/lib/table';
+import { Button, DatePicker, Input, Select } from 'antd';
+import { Link } from 'react-router-dom';
 const DataWater = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getDataWater());
   }, []);
+  const {
+    register,
+    handleSubmit,
+    getFieldState,
+    control,
+    getValues,
+    formState: { errors, isDirty, isValid },
+  } = useForm<any>();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    control,
+    name: 'water',
+    rules: {
+      required: true,
+    },
+  });
+  const onSubmit: SubmitHandler<any> = (data) => console.log(data);
 
-  const listDataWater = useAppSelector((state) => state.water.value);
-
-  const dataSource: any = listDataWater.map((item: any, index: number) => {
+  const dataSource = useAppSelector((state) => state.water.value).map((item: any, index: number) => {
     return {
       key: item.id,
       id: item.id,
+      name: item.name,
       idHouse: item.idHouse,
       idRoom: item.idRoom,
-      name: item.name,
-      month: item.month,
-      year: item.year,
-      price: item.price,
       unit: item.unit,
+      price: item.price,
       inputValue: item.inputValue,
       outputValue: item.outputValue,
     };
   });
+  console.log(errors);
 
   const columns: ColumnsType<any> = [
-    { title: 'Nhà', dataIndex: 'idHouse', key: 'idHouse' },
-    { title: 'Phòng', dataIndex: 'idRoom', key: 'idRoom' },
-    { title: 'Người thuê', dataIndex: 'name', key: 'name' },
+    { title: 'Số nhà', dataIndex: 'idHouse', key: 'idHouse' },
+    { title: 'Số phòng', dataIndex: 'idRoom', key: 'idRoom' },
+    { title: 'Khách thuê', dataIndex: 'name', key: 'name' },
     {
-      title: (
-        <Space className='titleWater'>
-          <div>Chỉ số nước cũ</div>
-          <div>Chỉ số nước mới</div>
-        </Space>
-      ),
-      render: (text, record) => {
-        console.log(record);
+      title: 'CS Nước cũ',
+      key: 'inputValue',
+      render: (text, record, index) => {
         return (
-          <Form className='form_input'>
-            <Form.Item className='inputWater'>
-              <Input defaultValue={record.outputValue}></Input>
-            </Form.Item>
+          <div key={record.id}>
+            <input
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              type='number'
+              defaultValue={record.inputValue}
+              {...register(`water.${index}.inputValue`, {
+                required: true,
+              })}
+            />
+            <p className='text-red-500'>
+              {getFieldState(`water.${index}.inputValue`).isDirty &&
+                getValues(`water.${index}.inputValue`) == '' &&
+                'Không để trống'}
+            </p>
+            <p className='text-red-500'>
+              {getFieldState(`water.${index}.inputValue`).isDirty &&
+                getValues(`water.${index}.inputValue`) <= 0 &&
+                'Chỉ số điện phải lớn hơn 0'}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'CS Nước mới',
+      key: 'outputValue',
+      render: (text, record, index) => {
+        return (
+          <div key={record.id}>
+            <input
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              type='number'
+              max='50000000000000'
+              defaultValue={record.outputValue}
+              {...register(`water.${index}.outputValue`, {
+                required: true,
+              })}
+              // add required -> can getFieldState
+            />
+            <p className='text-red-500'>
+              {getFieldState(`water.${index}.outputValue`).isDirty &&
+                getValues(`water.${index}.outputValue`) == '' &&
+                'Không để trống'}
+            </p>
+            <p className='text-red-500'>
+              {getFieldState(`water.${index}.outputValue`).isDirty &&
+                getValues(`water.${index}.outputValue`) <= 0 &&
+                'Chỉ số điện phải lớn hơn 0'}
+            </p>
 
-            <Form.Item className='inputWater'>
-              <Input defaultValue={record.outputValue}></Input>
-            </Form.Item>
-          </Form>
+            <p className='text-red-500'>
+              {getFieldState(`water.${index}.outputValue`).isDirty &&
+                +getValues(`water.${index}.outputValue`) < +getValues(`water.${index}.inputValue`) &&
+                `CS mới phải lớn cs cũ`}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Sử dụng',
+      key: 'useWater',
+      render: (text, record, index) => {
+        const numbera =
+          parseInt(getValues(`water.${index}.outputValue`)) - parseInt(getValues(`water.${index}.inputValue`));
+
+        return <span>{numbera}</span>;
+        // return <span>ccc</span>;
+      },
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record, index) => {
+        return (
+          <Button
+            onClick={() => {
+              const value = getValues(`water.${index}.outputValue`);
+              // dispatch action to update water
+            }}
+          >
+            Edit
+          </Button>
         );
       },
     },
   ];
 
+  const onChange = () => {
+    // console.log(date, dateString);
+  };
+  const onChangee = (e: any) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
+  const handleCalculatorPower = () => {
+    // console.log('setOldElectric', oldElectric, newElectric);
+    // console.log("lectric", newElectric);
+  };
+
   return (
     <section>
       <div className=' flex justify-between items-center'>
         <div className='title_page'>
-          <h1>Chỉ Số Nước</h1>
+          <h1>Chỉ Số Điện</h1>
         </div>
         <div className='btn_action '>
           <Link to='#'>
@@ -90,14 +184,14 @@ const DataWater = () => {
         <div className='flex justify-between w-9/12 mt-5'>
           <div>
             <label className='text-base font-semibold mr-2'>Tháng/năm</label>
-            <DatePicker />
+            <DatePicker onChange={onChange} />
           </div>
           <div>
             <label className='text-base font-semibold mr-2'>Kỳ</label>
             <Select
               defaultValue='Tất cả'
               style={{ width: 200 }}
-              //   onChange={handleChange}
+              onChange={handleChange}
               options={[
                 { value: 'jack', label: 'Jack' },
                 { value: 'Tất cả', label: 'Tất cả' },
@@ -110,7 +204,7 @@ const DataWater = () => {
             <Select
               defaultValue='Tất cả'
               style={{ width: 200 }}
-              //   onChange={handleChange}
+              onChange={handleChange}
               options={[
                 { value: 'jack', label: 'Jack' },
                 { value: 'Tất cả', label: 'Tất cả' },
@@ -123,7 +217,7 @@ const DataWater = () => {
             <Select
               defaultValue='Tất cả'
               style={{ width: 200 }}
-              //   onChange={handleChange}
+              onChange={handleChange}
               options={[
                 { value: 'jack', label: 'Jack' },
                 { value: 'Tất cả', label: 'Tất cả' },
@@ -141,9 +235,11 @@ const DataWater = () => {
             <br />- Đối với lần đầu tiên sử dụng phần mềm bạn sẽ phải nhập chỉ số cũ và mới cho tháng sử dụng đầu tiên,
             các tháng tiếp theo phần mềm sẽ tự động lấy chỉ số mới tháng trước làm chỉ số cũ tháng sau.
           </p>
-        </div>
-        <div className='mt-8'>
-          <Table className='m-w-full' dataSource={dataSource} columns={columns} />
+        </div>{' '}
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
+          </form>
         </div>
       </section>
     </section>

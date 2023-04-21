@@ -28,5 +28,5 @@ export const waterSlice = createSlice({
 });
 
 // Other code such as selectors can use the imported `RootState` type
-
+export const dataWaterAction = waterSlice.actions;
 export default waterSlice.reducer;
