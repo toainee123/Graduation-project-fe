@@ -30,7 +30,8 @@
     "sass": "^1.54.3",
     "styled-components": "^5.3.9",
     "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "env-cmd -f ./.env.dev react-scripts start",
