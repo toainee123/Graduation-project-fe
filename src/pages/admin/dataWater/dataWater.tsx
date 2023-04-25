@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { getDataWater } from 'src/features/water/dataWaterSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import { useForm, SubmitHandler, useFieldArray, Controller } from 'react-hook-form';
 import Table, { ColumnsType } from 'antd/lib/table';
-import { Button, DatePicker, Input, Select } from 'antd';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
+import type { DatePickerProps } from 'antd';
+import moment from 'moment';
+
 const DataWater = () => {
   const dispatch = useAppDispatch();
+  const today = new Date();
+  const [outC, setOutC] = useState<number>(0);
+  const [intC, setIntC] = useState<any>(0);
+  const [month, setMonth] = useState<any>(today.getMonth() + 1);
+  const [year, setYear] = useState<any>(today.getFullYear());
 
   useEffect(() => {
-    dispatch(getDataWater());
+    console.log(month, year);
+    dispatch(getDataWater({ month: month, year: year }));
   }, []);
   const {
     register,
@@ -18,7 +27,9 @@ const DataWater = () => {
     control,
     getValues,
     formState: { errors, isDirty, isValid },
-  } = useForm<any>();
+  } = useForm<any>({
+    defaultValues: { dateMonth: moment(today, 'YYYY-MM'), ky: 'Tất cả', house: 'Tất cả', statusRoom: 'Tất cả' },
+  });
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
     control,
     name: 'water',
@@ -41,7 +52,6 @@ const DataWater = () => {
       outputValue: item.outputValue,
     };
   });
-  console.log(errors);
 
   const columns: ColumnsType<any> = [
     { title: 'Số nhà', dataIndex: 'idHouse', key: 'idHouse' },
@@ -59,6 +69,9 @@ const DataWater = () => {
               defaultValue={record.inputValue}
               {...register(`water.${index}.inputValue`, {
                 required: true,
+                onChange(event) {
+                  setIntC(+event.target.value);
+                },
               })}
             />
             <p className='text-red-500'>
@@ -88,6 +101,9 @@ const DataWater = () => {
               defaultValue={record.outputValue}
               {...register(`water.${index}.outputValue`, {
                 required: true,
+                onChange(event) {
+                  setOutC(+event.target.value);
+                },
               })}
               // add required -> can getFieldState
             />
@@ -103,8 +119,7 @@ const DataWater = () => {
             </p>
 
             <p className='text-red-500'>
-              {getFieldState(`water.${index}.outputValue`).isDirty &&
-                +getValues(`water.${index}.outputValue`) < +getValues(`water.${index}.inputValue`) &&
+              {+getValues(`water.${index}.outputValue`) < +getValues(`water.${index}.inputValue`) &&
                 `CS mới phải lớn cs cũ`}
             </p>
           </div>
@@ -115,11 +130,7 @@ const DataWater = () => {
       title: 'Sử dụng',
       key: 'useWater',
       render: (text, record, index) => {
-        const numbera =
-          parseInt(getValues(`water.${index}.outputValue`)) - parseInt(getValues(`water.${index}.inputValue`));
-
-        return <span>{numbera}</span>;
-        // return <span>ccc</span>;
+        return <span>{+getValues(`water.${index}.outputValue`) - +getValues(`water.${index}.inputValue`)}</span>;
       },
     },
     {
@@ -140,109 +151,133 @@ const DataWater = () => {
     },
   ];
 
-  const onChange = () => {
-    // console.log(date, dateString);
-  };
-  const onChangee = (e: any) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const handleCalculatorPower = () => {
-    // console.log('setOldElectric', oldElectric, newElectric);
-    // console.log("lectric", newElectric);
-  };
-
   return (
-    <section>
-      <div className=' flex justify-between items-center'>
-        <div className='title_page'>
-          <h1>Chỉ Số Điện</h1>
-        </div>
-        <div className='btn_action '>
-          <Link to='#'>
-            <button className='focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900'>
-              <i className='fa-solid fa-magnifying-glass'></i> Xem
-            </button>
-          </Link>
-          <Link to='#'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
-              <i className='fa-solid fa-check'></i> Lưu
-            </button>
-          </Link>
-          <Link to='#'>
-            <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>
-              <i className='fa-regular fa-file'></i> Xuất file
-            </button>
-          </Link>
-        </div>
-      </div>
-      <hr />
+    <form onSubmit={handleSubmit(onSubmit)}>
       <section>
-        <div className='flex justify-between w-9/12 mt-5'>
-          <div>
-            <label className='text-base font-semibold mr-2'>Tháng/năm</label>
-            <DatePicker onChange={onChange} />
+        <div className=' flex justify-between items-center'>
+          <div className='title_page'>
+            <h1>Chỉ Số Nước</h1>
           </div>
-          <div>
-            <label className='text-base font-semibold mr-2'>Kỳ</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              onChange={handleChange}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className='text-base font-semibold mr-2'>Nhà</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              onChange={handleChange}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className='text-base font-semibold mr-2'>Trạng thái phòng</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              onChange={handleChange}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
+          <div className='btn_action '>
+            <Link to='#'>
+              <button
+                className='focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900'
+                onClick={() => {
+                  const values = getValues();
+                  const month = moment(values.dateMonth).format('YYYY-MM');
+                  console.log(values);
+                }}
+              >
+                <i className='fa-solid fa-magnifying-glass'></i> Xem
+              </button>
+            </Link>
+            <Link to='#'>
+              <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
+                <i className='fa-solid fa-check'></i> Lưu
+              </button>
+            </Link>
+            <Link to='#'>
+              <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>
+                <i className='fa-regular fa-file'></i> Xuất file
+              </button>
+            </Link>
           </div>
         </div>
-        <div className='note mt-5'>
-          <p>
-            <strong>Lưu ý:</strong>
-            <br />
-            - Bạn phải gán dịch vụ thuộc loại điện cho khách thuê trước thì phần chỉ số này mới được tính cho phòng đó
-            khi tính tiền.
-            <br />- Đối với lần đầu tiên sử dụng phần mềm bạn sẽ phải nhập chỉ số cũ và mới cho tháng sử dụng đầu tiên,
-            các tháng tiếp theo phần mềm sẽ tự động lấy chỉ số mới tháng trước làm chỉ số cũ tháng sau.
-          </p>
-        </div>{' '}
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
-          </form>
-        </div>
+        <hr />
+        <section>
+          <div>
+            <div className='flex justify-between w-9/12 mt-5'>
+              <div>
+                <label className='text-base font-semibold mr-2'>Tháng/năm</label>
+                <Controller
+                  control={control}
+                  name='dateMonth'
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <DatePicker
+                      onChange={onChange} // send value to hook form
+                      picker='month'
+                      defaultValue={value}
+                    />
+                  )}
+                />
+              </div>
+              <div>
+                <label className='text-base font-semibold mr-2'>Kỳ</label>
+                <Controller
+                  control={control}
+                  name='ky'
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <Select
+                      defaultValue={value}
+                      style={{ width: 200 }}
+                      onChange={onChange}
+                      options={[
+                        { value: 'jack', label: 'Jack' },
+                        { value: 'Tất cả', label: 'Tất cả' },
+                        { value: 'Yiminghe', label: 'yiminghe' },
+                      ]}
+                    />
+                  )}
+                />
+              </div>
+              <div>
+                <label className='text-base font-semibold mr-2'>Nhà</label>
+                <Controller
+                  control={control}
+                  name='house'
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <Select
+                      defaultValue={value}
+                      style={{ width: 200 }}
+                      onChange={onChange}
+                      options={[
+                        { value: 'jack', label: 'Jack' },
+                        { value: 'Tất cả', label: 'Tất cả' },
+                        { value: 'Yiminghe', label: 'yiminghe' },
+                      ]}
+                    />
+                  )}
+                />
+              </div>
+              <div>
+                <label className='text-base font-semibold mr-2'>Trạng thái phòng</label>
+                <Controller
+                  control={control}
+                  name='statusRoom'
+                  render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <Select
+                      defaultValue={value}
+                      style={{ width: 200 }}
+                      onChange={onChange}
+                      options={[
+                        { value: 'jack', label: 'Jack' },
+                        { value: 'Tất cả', label: 'Tất cả' },
+                        { value: 'Yiminghe', label: 'yiminghe' },
+                      ]}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+          <div className='note mt-5'>
+            <p>
+              <strong>Lưu ý:</strong>
+              <br />
+              - Bạn phải gán dịch vụ thuộc loại điện cho khách thuê trước thì phần chỉ số này mới được tính cho phòng đó
+              khi tính tiền.
+              <br />- Đối với lần đầu tiên sử dụng phần mềm bạn sẽ phải nhập chỉ số cũ và mới cho tháng sử dụng đầu
+              tiên, các tháng tiếp theo phần mềm sẽ tự động lấy chỉ số mới tháng trước làm chỉ số cũ tháng sau.
+            </p>
+          </div>
+          <div className='mt-8'>
+            <div>
+              <Table dataSource={dataSource} columns={columns} />
+            </div>
+          </div>
+        </section>
       </section>
-    </section>
+    </form>
   );
 };
 
