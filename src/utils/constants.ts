@@ -7,6 +7,13 @@ export const urlRouter = {
     // Admin
     ADMIN: 'admin',
     DASHBOARD: 'dashboard',
+    ROOM: 'room',
+    SERVICE: 'service', //dịch vụ
+    DATA_POWER:'DataPower', //tiền điện
+    DATA_WATER:'DataWater', //tiền nước
+    OTHER_FREE:'OtherFree', //phát sinh
+    PAYMENT: 'Payment', // phiếu chi
+    REPORT: 'Report',
     PG: 'pg',
     LIST_PG: 'list',
     
