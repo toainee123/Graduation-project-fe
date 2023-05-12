@@ -7,6 +7,7 @@ export const urlRouter = {
   ADMIN: 'admin',
   DASHBOARD: 'dashboard',
   ROOM: 'room',
+  CREATE_ROOM: 'creat',
   SERVICE: 'service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
   DATA_WATER: 'DataWater', //tiền nước
