@@ -3,7 +3,7 @@ import DataWater from 'src/pages/admin/dataWater/dataWater';
 import OtherFree from 'src/pages/admin/otherFree/otherFree';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
-import Room from 'src/pages/admin/room/room';
+import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
@@ -11,6 +11,7 @@ import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
+import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
 
 export const adminRoutes = [
   {
@@ -23,11 +24,13 @@ export const adminRoutes = [
     component: Room,
   },
   {
+    path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
+    component: CreateRoom,
+  },
+  {
     // path: urlRouter.SERVICE,
     component: Service,
-    children: [
-      { path: urlRouter.SERVICE, component: Service, index: true },
-    ],
+    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
   },
   {
     path: urlRouter.DATA_POWER,
