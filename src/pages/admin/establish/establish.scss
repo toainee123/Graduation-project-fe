@@ -1,0 +1,88 @@
+.es-container {
+  padding: 10px 17px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e6e9ed;
+  padding: 1px 5px 6px;
+  margin-bottom: 10px;
+
+  .title--name h2 strong {
+    color: #73879c;
+    font-size: 30px;
+  }
+  .icon-btn {
+    margin-right: 4px;
+  }
+  .title-button-retype {
+    display: inline-flex;
+    align-items: center;
+  }
+  .title-button-save {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+}
+
+.content {
+  margin-top: 30px;
+}
+
+.ant-tabs-content-holder {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.rich-text {
+  margin-bottom: 20px;
+}
+
+.note {
+  color: #73879c;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  span {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+.customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  color: #73879c;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.customers td,
+.customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.customers tr:hover {
+  background-color: #ddd;
+}
+
+.customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: b;
+}
+
+.ql-editor {
+  height: 150px !important;
+  overflow-y: scroll !important;
+}

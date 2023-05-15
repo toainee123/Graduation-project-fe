@@ -18,7 +18,6 @@ const AdminLayout = (props: Props) => {
         <Sidebar />
         <Layout>
           <HeaderComponent />
-
           <Content>
             <div className='layout-admin'>
               <div className='outlet'>
@@ -26,7 +25,6 @@ const AdminLayout = (props: Props) => {
               </div>
             </div>
           </Content>
-
           <FooterComponent />
         </Layout>
       </Layout>
