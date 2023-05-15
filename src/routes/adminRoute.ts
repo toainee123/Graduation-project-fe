@@ -11,7 +11,8 @@ import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
-import DataWater from 'src/pages/admin/dataWater/DataWater';
+import DataWater from '../pages/admin/dataWater/dataWater';
+import establish from 'src/pages/admin/establish/establish';
 
 export const adminRoutes = [
   {
@@ -57,6 +58,11 @@ export const adminRoutes = [
       // { path: 'create', component: Login },
       // { path: 'update', component: Login },
     ],
+  },
+
+  {
+    path: urlRouter.ESTABLISH,
+    component: establish,
   },
 ];
 
