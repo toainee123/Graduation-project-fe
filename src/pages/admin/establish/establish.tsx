@@ -8,6 +8,7 @@ import Samplecontract from './Samplecontract';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { updateAstablishContract } from 'src/features/astablish/astablishSlice';
 import { toast } from 'react-toastify';
+import Printform from './Printform';
 type Props = {};
 
 const Establish = (props: Props) => {
@@ -56,7 +57,7 @@ const Establish = (props: Props) => {
     {
       label: 'Mẫu in',
       key: '4',
-      children: 'Mẫu tin nhắn SMS',
+      children: <Printform />,
     },
 
     {
