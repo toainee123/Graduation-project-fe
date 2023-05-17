@@ -5,6 +5,7 @@ import authReducer from '../features/auth/authSlice';
 import dashboardReducer from '../features/dashboard/DashboardSlice';
 import dialogReducer from '../features/dialog/dialogSlice';
 import waterReducer from '../features/water/dataWaterSlice';
+import astablishReducer from 'src/features/astablish/astablishSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     dialog: dialogReducer,
     dashboard: dashboardReducer,
     water: waterReducer,
+    astablish: astablishReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

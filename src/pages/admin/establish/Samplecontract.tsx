@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 import './establish.scss';
+import axios from 'axios';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { changeContentContract, getAstablishContract } from 'src/features/astablish/astablishSlice';
 type Props = {};
 
 const Samplecontract = (props: Props) => {
-  const [value, setValue] = useState('');
   const modules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -27,9 +29,28 @@ const Samplecontract = (props: Props) => {
       ['clean'],
     ],
   };
+
+  const [value, setValue] = useState('');
+
+  // props.handleSave();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAstablishContract());
+  }, []);
+  const dt = useAppSelector((state) => state.astablish.value);
+
   return (
     <div>
-      <ReactQuill theme='snow' value={value} onChange={setValue} modules={modules} className='rich-text' />
+      <ReactQuill
+        theme='snow'
+        value={dt.sample_contract}
+        onChange={(e) => {
+          const obbj = { id: dt.id, sample_contract: e };
+          dispatch(changeContentContract(obbj));
+        }}
+        modules={modules}
+        className='rich-text'
+      />
       <div className='note'>
         <div className='note--title'>
           <p>Lưu ý: Các tham số có kí hiệu @ ở trước vui lòng không đổi</p>
@@ -94,24 +115,104 @@ const Samplecontract = (props: Props) => {
               <td>Điện thoại chủ nhà trọ</td>
             </tr>
             <tr>
-              <td>@DateIssueCustomerConfig</td>
-              <td> Ngày cấp CMND/CCCD chủ nhà trọ</td>
+              <td>@CustomerNameRoomRent</td>
+              <td>Họ tên người thuê</td>
             </tr>
             <tr>
-              <td>@DateIssueCustomerConfig</td>
-              <td> Ngày cấp CMND/CCCD chủ nhà trọ</td>
+              <td>@BirthdayRoomRent</td>
+              <td> Ngày sinh người thuê</td>
             </tr>
             <tr>
-              <td>@DateIssueCustomerConfig</td>
-              <td> Ngày cấp CMND/CCCD chủ nhà trọ</td>
+              <td>@IDCARDNORoomRent</td>
+              <td>Số CMND/ CCCD người thuê</td>
             </tr>
             <tr>
-              <td>@DateIssueCustomerConfig</td>
-              <td> Ngày cấp CMND/CCCD chủ nhà trọ</td>
+              <td>@DateIssueRoomRent</td>
+              <td>Ngày cấp CMND/ CCCD người thuê</td>
             </tr>
             <tr>
-              <td>@DateIssueCustomerConfig</td>
-              <td> Ngày cấp CMND/CCCD chủ nhà trọ</td>
+              <td>@PlaceIssueRoomRent</td>
+              <td> Nơi cấp CMND/ CCCD người thuê</td>
+            </tr>
+
+            <tr>
+              <td>@AddressRoomRent</td>
+              <td> Địa chỉ thường trú người thuê</td>
+            </tr>
+
+            <tr>
+              <td>@TelephoneRoomRent</td>
+              <td> Số điện thoại người thuê</td>
+            </tr>
+
+            <tr>
+              <td>@RoomName</td>
+              <td> Thuê phòng số</td>
+            </tr>
+
+            <tr>
+              <td>@AdressArea</td>
+              <td> Địa chỉ nhà trọ thuê</td>
+            </tr>
+
+            <tr>
+              <td>@BeginRent</td>
+              <td> Ngày bắt đầu thuê</td>
+            </tr>
+
+            <tr>
+              <td>@ContractMonths</td>
+              <td>Số tháng thuê</td>
+            </tr>
+
+            <tr>
+              <td>@RoomAmount</td>
+              <td> Số tiền phòng</td>
+            </tr>
+            <tr>
+              <td>@RoomAmountText</td>
+              <td>Số tiền phòng bằng chữ</td>
+            </tr>
+            <tr>
+              <td>@PayType</td>
+              <td> Kỳ thanh toán</td>
+            </tr>
+            <tr>
+              <td>@PayXMonths</td>
+              <td>Thanh toán mỗi lần x tháng</td>
+            </tr>
+
+            <tr>
+              <td>@DepositAmount</td>
+              <td>Số tiền đặt cọc</td>
+            </tr>
+
+            <tr>
+              <td>@DepositAmountText</td>
+              <td>Số tiền đặt cọc bằng chữ</td>
+            </tr>
+
+            <tr>
+              <td>@ProvinceName</td>
+              <td>Tỉnh/ thành phố địa chỉ nhà trọ</td>
+            </tr>
+            <tr>
+              <td>@FULLNAMECUSTOMERNAME</td>
+              <td> Họ tên người cho thuê viết hoa</td>
+            </tr>
+            <tr>
+              <td>@CUSTOMERNAMEROOMRENT</td>
+              <td> Họ tên người thuê viết hoa</td>
+            </tr>
+
+            <tr>
+              <td>@RemarksRoomRent</td>
+              <td> Ghi chú khác</td>
+            </tr>
+
+            <tr>
+              <td>@PersonIntroduce</td>
+              <td> Người giới thiệu</td>
             </tr>
           </table>
         </div>

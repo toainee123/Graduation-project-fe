@@ -1,16 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './establish.scss';
 import { RedoOutlined, SaveOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
 import '../../../../node_modules/antd/dist/antd.css';
 import Inforuser from './Inforuser';
 import Samplecontract from './Samplecontract';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { updateAstablishContract } from 'src/features/astablish/astablishSlice';
 type Props = {};
 
-const establish = (props: Props) => {
+const Establish = (props: Props) => {
   const onChange = (key: string) => {
-    console.log(key);
+    setTab(key);
   };
+
+  const dispatch = useAppDispatch();
+
+  const [tab, setTab] = useState<string>('1');
+  const sample_contract = useAppSelector((state) => state.astablish.value);
+  const saveContract = () => {
+    dispatch(updateAstablishContract(sample_contract));
+  };
+
+  const handleSave = () => {
+    switch (tab) {
+      case '5':
+        saveContract();
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
@@ -60,7 +82,10 @@ const establish = (props: Props) => {
           <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '>
             <RedoOutlined className='icon-btn' /> Nhập lại
           </button>
-          <button className='title-button-save bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>
+          <button
+            onClick={handleSave}
+            className='title-button-save bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+          >
             <SaveOutlined className='icon-btn' /> Lưu
           </button>
         </div>
@@ -72,4 +97,4 @@ const establish = (props: Props) => {
   );
 };
 
-export default establish;
+export default Establish;
