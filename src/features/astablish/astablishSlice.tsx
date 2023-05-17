@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { RootState } from 'src/store/store';
 
 interface AstablishType {
@@ -39,6 +40,7 @@ export const astablishSlice = createSlice({
     });
 
     builder.addCase(updateAstablishContract.fulfilled, (state, action) => {
+      toast.success('ahihihi');
       return void (state.value = action.payload);
     });
   },

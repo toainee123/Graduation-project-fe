@@ -13,6 +13,8 @@ import Dialog from './components/specific/dialogConfirm/Dialog';
 import { urlRouter } from './utils/constants';
 import ProtectedAuth from './components/specific/ProtectedAuth/ProtectedAuth';
 import Loading from './components/common/loading/Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -71,6 +73,7 @@ function App() {
 
       <Dialog />
       <Loading />
+      <ToastContainer />
     </div>
   );
 }

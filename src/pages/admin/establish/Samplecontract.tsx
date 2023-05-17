@@ -46,6 +46,8 @@ const Samplecontract = (props: Props) => {
         value={dt.sample_contract}
         onChange={(e) => {
           const obbj = { id: dt.id, sample_contract: e };
+          console.log(obbj);
+
           dispatch(changeContentContract(obbj));
         }}
         modules={modules}
