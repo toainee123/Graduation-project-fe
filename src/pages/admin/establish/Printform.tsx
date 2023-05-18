@@ -6,28 +6,35 @@ import parse from 'html-react-parser';
 type Props = {};
 
 const Printform = (props: Props) => {
-  const [value, setValue] = useState(1);
-
   const onChange = (e: RadioChangeEvent) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const showModal1 = () => {
+    setIsModalOpen1(true);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
+  const showModal2 = () => {
+    setIsModalOpen2(true);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
+
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
   };
 
-  const hs = `<div style="height:27px" ><span name="textKyTen"><strong>Nhà @AreaName</strong></span><span style="float:right">@InvoiceNo</span></div>
+  const handleCancel2 = () => {
+    setIsModalOpen2(false);
+  };
+
+  let hs = `<div style="height:27px" ><span name="textKyTen"><strong>Nhà @AreaName</strong></span><span style="float:right">@InvoiceNo</span></div>
   <div style="height:27px"><span name="textKyTen"><strong>Địa chỉ: @Address</strong></span><span style="float:right">@InvoiceDate</span></div>
   <div>
      <h3 style="text-align:center"><strong>HÓA ĐƠN TIỀN NHÀ</strong></h3>
@@ -58,6 +65,41 @@ const Printform = (props: Props) => {
   </div>
   <br>
   `;
+  const [value, setValue] = useState(1);
+  const [value80mm, setValue80mm] = useState(hs);
+  const [valueA5, setValueA5] = useState(hs);
+
+  const exampleInfo: any = {
+    '@AreaName': 'Nhà Quang Trung - Q.12',
+    '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+    '@InvoiceNo': '0009',
+    '@InvoiceDate': '18/05/2023',
+    '@MonthYear': '5/2023',
+    '@PayType': '30',
+    '@FromDate': '18/4/2023',
+    '@ToDate': '18/5/2023',
+    '@CustomerName': 'Trần Thị Lan',
+    '@RoomName': '1.01',
+    '@BeginRent': '18/4/2023',
+    '@ContentHtmlInvoiceService':
+      '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+    '@SumAmount': '2,650,000',
+  };
+
+  const exampleData80mm = value80mm.replaceAll(
+    /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
+    (matched: any) => {
+      return exampleInfo[matched];
+    }
+  );
+
+  const exampleDataA5 = valueA5.replaceAll(
+    /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
+    (matched: any) => {
+      return exampleInfo[matched];
+    }
+  );
+
   return (
     <div>
       <div className='select_option_print'>
@@ -74,7 +116,7 @@ const Printform = (props: Props) => {
           <div className='function'>
             <button
               className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-preview'
-              onClick={showModal}
+              onClick={showModal1}
             >
               Xem trước
             </button>
@@ -89,20 +131,30 @@ const Printform = (props: Props) => {
 
         <div className='content'>
           <div className='x_ct'>Nội dung</div>
-          <textarea name='' id='' rows={10} className='text_content'>
-            {hs}
-          </textarea>
-          <Modal title='Basic Modal' open={isModalOpen} onCancel={handleCancel} footer={null}>
-            {parse(hs)}
+          <textarea
+            name=''
+            id=''
+            rows={10}
+            className='text_content'
+            defaultValue={value80mm}
+            onChange={(e: any) => {
+              setValue80mm(e.target.value);
+            }}
+          ></textarea>
+          <Modal title='Bill (Khổ 80mm)' open={isModalOpen1} onCancel={handleCancel1} footer={null}>
+            {parse(exampleData80mm)}
           </Modal>
         </div>
       </div>
 
       <div className='print_bill_80 print_bill_A5'>
         <div className='title'>
-          <h3 className='name'>In Bill (Khổ 80mm)</h3>
+          <h3 className='name'>In Bill khổ A5</h3>
           <div className='function'>
-            <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-preview'>
+            <button
+              className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn-preview'
+              onClick={showModal2}
+            >
               Xem trước
             </button>
             <button className='hide_content'>
@@ -116,13 +168,37 @@ const Printform = (props: Props) => {
 
         <div className='content'>
           <div className='x_ct'>Nội dung</div>
-          <textarea name='' id='' rows={10} className='text_content'>
-            {hs}
-          </textarea>
-          <Modal title='Basic Modal' open={isModalOpen} onCancel={handleCancel} footer={null}>
-            {parse(hs)}
+          <textarea
+            name=''
+            id=''
+            rows={10}
+            className='text_content'
+            defaultValue={valueA5}
+            onChange={(e: any) => {
+              setValueA5(e.target.value);
+            }}
+          ></textarea>
+          <Modal title='In khổ A5' open={isModalOpen2} onCancel={handleCancel2} footer={null}>
+            {parse(exampleDataA5)}
           </Modal>
         </div>
+      </div>
+
+      <div className='note_paramaters'>
+        <span>Lưu ý: Các tham số không được thay đổi:</span>
+        <span>@AreaName : Tên khu vực/ nhà</span>
+        <span>@InvoiceNo: Số hóa đơn</span>
+        <span>@Address: Địa chỉ nhà</span>
+        <span>@InvoiceDate: Ngày hóa đơn</span>
+        <span>@MonthYear: Tháng/ năm hóa đơn</span>
+        <span>@PayType: Kỳ thanh toán</span>
+        <span>@FromDate: Từ ngày</span>
+        <span>@ToDate: Đến ngày</span>
+        <span>@BeginRent: Ngày bắt đầu thuê</span>
+        <span>@CustomerName: Tên khách thuê</span>
+        <span>@RoomName: Tên phòng</span>
+        <span>@ContentHtmlInvoiceService: Chi tiết dịch vụ</span>
+        <span>@SumAmount: Tổng tiền</span>
       </div>
     </div>
   );

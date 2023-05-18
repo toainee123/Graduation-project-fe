@@ -138,6 +138,7 @@
 
   .content {
     display: flex;
+    justify-content: space-between;
     .x_ct {
       color: #73879c;
       margin-right: 20px;
@@ -145,7 +146,7 @@
     }
 
     .text_content {
-      width: 94%;
+      width: 80%;
       border: 1px solid #73879c;
     }
   }
@@ -153,4 +154,12 @@
 
 .print_bill_A5 {
   margin-top: 40px;
+}
+
+.note_paramaters {
+  margin-top: 10px;
+  span {
+    display: block;
+    color: #73879c;
+  }
 }
