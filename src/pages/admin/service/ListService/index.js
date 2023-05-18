@@ -57,6 +57,7 @@ const Service = () => {
             return (
                 <li className="w-200px" style={{ float: "left" }}>
                     <div className="form-group">
+                        <>List Service</>
                         {/* <div className="form-control-wrap">
                             <Select
                                 // options={handleGetOptions(itemFilter.field) || []}
