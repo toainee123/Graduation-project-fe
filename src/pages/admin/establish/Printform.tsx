@@ -68,6 +68,8 @@ const Printform = (props: Props) => {
   const [value, setValue] = useState(1);
   const [value80mm, setValue80mm] = useState(hs);
   const [valueA5, setValueA5] = useState(hs);
+  const [show1, setShow1] = useState(true);
+  const [show2, setShow2] = useState(true);
 
   const exampleInfo: any = {
     '@AreaName': 'Nhà Quang Trung - Q.12',
@@ -120,10 +122,21 @@ const Printform = (props: Props) => {
             >
               Xem trước
             </button>
-            <button className='hide_content'>
+            <button
+              className='hide_content'
+              onClick={() => {
+                setShow1(!show1);
+              }}
+            >
               <UpOutlined />
             </button>
-            <button className='close'>
+            <button
+              className='close'
+              onClick={() => {
+                setValue80mm('');
+                console.log(value80mm);
+              }}
+            >
               <CloseOutlined />
             </button>
           </div>
@@ -136,10 +149,11 @@ const Printform = (props: Props) => {
             id=''
             rows={10}
             className='text_content'
-            defaultValue={value80mm}
+            value={value80mm}
             onChange={(e: any) => {
               setValue80mm(e.target.value);
             }}
+            style={{ display: show1 ? 'block' : 'none' }}
           ></textarea>
           <Modal title='Bill (Khổ 80mm)' open={isModalOpen1} onCancel={handleCancel1} footer={null}>
             {parse(exampleData80mm)}
@@ -157,10 +171,20 @@ const Printform = (props: Props) => {
             >
               Xem trước
             </button>
-            <button className='hide_content'>
+            <button
+              className='hide_content'
+              onClick={() => {
+                setShow2(!show2);
+              }}
+            >
               <UpOutlined />
             </button>
-            <button className='close'>
+            <button
+              className='close'
+              onClick={() => {
+                setValueA5('');
+              }}
+            >
               <CloseOutlined />
             </button>
           </div>
@@ -177,6 +201,7 @@ const Printform = (props: Props) => {
             onChange={(e: any) => {
               setValueA5(e.target.value);
             }}
+            style={{ display: show2 ? 'block' : 'none' }}
           ></textarea>
           <Modal title='In khổ A5' open={isModalOpen2} onCancel={handleCancel2} footer={null}>
             {parse(exampleDataA5)}
