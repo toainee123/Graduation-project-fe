@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { updateAstablishContract } from 'src/features/astablish/astablishSlice';
 import { toast } from 'react-toastify';
 import Printform from './Printform';
+import Templatesms from './Templatesms';
 type Props = {};
 
 const Establish = (props: Props) => {
@@ -55,7 +56,7 @@ const Establish = (props: Props) => {
     {
       label: 'Mẫu tin nhắn SMS',
       key: '3',
-      children: 'Mẫu tin nhắn SMS',
+      children: <Templatesms />,
     },
 
     {
