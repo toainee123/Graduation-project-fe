@@ -3,7 +3,9 @@ import { Button, Modal, Radio } from 'antd';
 import type { RadioChangeEvent } from 'antd';
 import React, { useState } from 'react';
 import parse from 'html-react-parser';
-type Props = {};
+type Props = {
+  getSelectOption: (a: any) => void;
+};
 
 const Printform = (props: Props) => {
   const onChange = (e: RadioChangeEvent) => {
@@ -106,7 +108,13 @@ const Printform = (props: Props) => {
     <div>
       <div className='select_option_print'>
         <span className='default_option'>Khổ in mặc định:</span>
-        <Radio.Group onChange={onChange} value={value}>
+        <Radio.Group
+          onChange={(e) => {
+            setValue(e.target.value);
+            props.getSelectOption(e.target.value);
+          }}
+          value={value}
+        >
           <Radio value={1}>In Bill khổ 80mm</Radio>
           <Radio value={2}>In khổ A5</Radio>
         </Radio.Group>

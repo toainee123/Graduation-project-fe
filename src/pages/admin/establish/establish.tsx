@@ -35,6 +35,10 @@ const Establish = (props: Props) => {
     }
   };
 
+  const handleGetSelect = (e: any) => {
+    console.log(e);
+  };
+
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
@@ -57,7 +61,7 @@ const Establish = (props: Props) => {
     {
       label: 'Mẫu in',
       key: '4',
-      children: <Printform />,
+      children: <Printform getSelectOption={handleGetSelect} />,
     },
 
     {
