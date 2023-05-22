@@ -12,6 +12,7 @@ import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import Establish from 'src/pages/admin/establish/establish';
 
 export const adminRoutes = [
   {
@@ -62,6 +63,11 @@ export const adminRoutes = [
       // { path: 'create', component: Login },
       // { path: 'update', component: Login },
     ],
+  },
+
+  {
+    path: urlRouter.ESTABLISH,
+    component: Establish,
   },
 ];
 

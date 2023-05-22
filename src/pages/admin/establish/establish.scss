@@ -1,0 +1,179 @@
+.es-container {
+  padding: 10px 17px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e6e9ed;
+  padding: 1px 5px 6px;
+  margin-bottom: 10px;
+
+  .title--name h2 strong {
+    color: #73879c;
+    font-size: 30px;
+  }
+  .icon-btn {
+    margin-right: 4px;
+  }
+  .title-button-retype {
+    display: inline-flex;
+    align-items: center;
+  }
+  .title-button-save {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+}
+
+.content {
+  margin-top: 30px;
+}
+
+.ant-tabs-content-holder {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+// sample contract
+
+.rich-text {
+  margin-bottom: 20px;
+}
+
+.note {
+  color: #73879c;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  span {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+.customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  color: #73879c;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.customers td,
+.customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.customers thead {
+  background-color: #f2f2f2;
+}
+.customers tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.customers tr:hover {
+  background-color: #ddd;
+}
+
+.customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: b;
+}
+
+.ql-editor {
+  overflow-y: scroll !important;
+  resize: vertical !important;
+  height: 350px !important;
+  padding: 30px !important;
+}
+
+// printform
+.select_option_print {
+  font-size: 13px;
+  font-weight: bold;
+  color: #73879c;
+  margin-bottom: 15px;
+
+  .default_option {
+    display: inline-block;
+    margin-right: 15px;
+  }
+}
+
+.ant-radio-wrapper {
+  color: #73879c !important;
+}
+
+.print_bill_80 {
+  border: 1px solid #ccc;
+  padding: 0 20px 20px 20px;
+
+  .title {
+    padding: 14px 0;
+
+    .name {
+      font-size: 24px;
+      color: #73879c;
+      margin-bottom: 0;
+    }
+
+    .btn-preview {
+      margin-right: 10px;
+    }
+
+    .hide_content,
+    .close {
+      margin: 0 10px;
+      font-size: 20px;
+      color: #b3bac1;
+      font-weight: bold;
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    .x_ct {
+      color: #73879c;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    .text_content {
+      width: 80%;
+      border: 1px solid #73879c;
+    }
+  }
+}
+
+.print_bill_A5 {
+  margin-top: 40px;
+}
+
+.note_paramaters {
+  margin-top: 10px;
+  span {
+    display: block;
+    color: #73879c;
+  }
+}
+
+// template sms
+.content_template_sms {
+  padding: 20px;
+  textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  span {
+    color: #73879c;
+  }
+}

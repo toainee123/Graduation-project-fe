@@ -16,6 +16,7 @@ export const urlRouter = {
   REPORT: 'Report',
   PG: 'pg',
   LIST_PG: 'list',
+  ESTABLISH: 'establish',
 
   // auth
   AUTH: 'auth',

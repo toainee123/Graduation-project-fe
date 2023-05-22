@@ -4,13 +4,15 @@ import authReducer from '../features/auth/authSlice';
 import dashboardReducer from '../features/dashboard/DashboardSlice';
 import dialogReducer from '../features/dialog/dialogSlice';
 import listServiceReducer from '../pages/admin/service/ListService/reducer';
+import establishSlice from 'src/features/establish/establishSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     dialog: dialogReducer,
     dashboard: dashboardReducer,
-    listService: listServiceReducer
+    listService: listServiceReducer,
+    establish: establishSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
