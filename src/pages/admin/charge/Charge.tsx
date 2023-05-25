@@ -20,6 +20,8 @@ import { get } from 'http';
 import parse from 'html-react-parser';
 import { getCharge } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 type Props = {};
 
 const Charge = (props: Props) => {
@@ -87,6 +89,18 @@ const Charge = (props: Props) => {
     setPrintData(exampleData80mm);
   };
 
+  const handleExportPDF = () => {
+    const htmlInput: any = document.querySelector('#pdf');
+    html2canvas(htmlInput).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const componentWidth = pdf.internal.pageSize.getWidth();
+      const componentHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+      pdf.save('download.pdf');
+    });
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: '',
@@ -112,7 +126,13 @@ const Charge = (props: Props) => {
                 <Button key='1' type='primary' className='btn-scc'>
                   Tải file ảnh
                 </Button>,
-                <Button key='2' type='primary'>
+                <Button
+                  key='2'
+                  type='primary'
+                  onClick={() => {
+                    handleExportPDF();
+                  }}
+                >
                   Tải file PDF
                 </Button>,
                 <Button key='3' type='primary' danger onClick={handleCancel}>
@@ -120,7 +140,9 @@ const Charge = (props: Props) => {
                 </Button>,
               ]}
             >
-              {parse(printData ? printData : '')}
+              <div id='pdf' className='p-3'>
+                {parse(printData ? printData : '')}
+              </div>
             </Modal>
             <button className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'>
               <DollarOutlined />
