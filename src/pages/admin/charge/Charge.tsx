@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './charge.scss';
 import type { ColumnsType } from 'antd/es/table';
 import {
@@ -22,6 +22,8 @@ import { getCharge } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useReactToPrint } from 'react-to-print';
+
 type Props = {};
 
 const Charge = (props: Props) => {
@@ -60,6 +62,7 @@ const Charge = (props: Props) => {
   };
   const dt = useAppSelector((state) => state.establish.value);
   const printForm = dt.sample_bill_80mm;
+  const [colspan, setColspan] = useState(true);
   const [printData, setPrintData] = useState('');
   const handleClickView = (record: any) => {
     const data: any = {
@@ -226,7 +229,13 @@ const Charge = (props: Props) => {
       },
     },
   ];
-
+  const componentPrintRef = useRef<any>();
+  const handlePrint = useReactToPrint({
+    content: () => componentPrintRef.current,
+  });
+  const printCharge = () => {
+    handlePrint();
+  };
   return (
     <div className='es-container'>
       <div className='title'>
@@ -248,7 +257,12 @@ const Charge = (props: Props) => {
             <FileExcelOutlined className='icon-btn' /> Xuất file excel
           </button>
 
-          <button className='btn-x bg-orange-400 hover:bg-orange-400 text-white font-bold py-2  px-4 rounded'>
+          <button
+            className='btn-x bg-orange-400 hover:bg-orange-400 text-white font-bold py-2  px-4 rounded'
+            onClick={() => {
+              printCharge();
+            }}
+          >
             <PrinterOutlined className='icon-btn' /> In danh sách
           </button>
 
@@ -315,6 +329,50 @@ const Charge = (props: Props) => {
           </p>
         </div>
       </div>
+      <div ref={componentPrintRef} className='hide'>
+        <div className='header-print'>
+          <h1 className='uppercase text-center text-bold '>Danh sách tiền phòng</h1>
+        </div>
+        <Table
+          columns={columns}
+          rowSelection={{
+            type: 'checkbox',
+            onChange(selectedRowKeys, selectedRows, info) {
+              setSelectedRow(selectedRows);
+            },
+          }}
+          dataSource={dataSource}
+          className='table-data mt-4'
+          pagination={false}
+          summary={(pageData) => {
+            let tongtien = 0;
+            let ttiendatra = 0;
+            let ttienconlai = 0;
+            pageData.forEach((item) => {
+              tongtien += +item.tien;
+              ttiendatra += +item.tiendatra;
+              ttienconlai += item.tienconlai;
+            });
+            return (
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0} colSpan={3}>
+                  Total
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
+                <Table.Summary.Cell index={1}>
+                  <Text type='danger'>{tongtien.toLocaleString('VND')}</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={2}>
+                  <Text>{ttiendatra.toLocaleString('VND')}</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={3}>
+                  <Text>{ttienconlai.toLocaleString('VND')}</Text>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            );
+          }}
+        />
+      </div>
 
       <Table
         columns={columns}
@@ -337,9 +395,10 @@ const Charge = (props: Props) => {
           });
           return (
             <Table.Summary.Row>
-              <Table.Summary.Cell index={0} colSpan={5}>
+              <Table.Summary.Cell index={0} colSpan={3}>
                 Total
               </Table.Summary.Cell>
+              <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
               <Table.Summary.Cell index={1}>
                 <Text type='danger'>{tongtien.toLocaleString('VND')}</Text>
               </Table.Summary.Cell>
