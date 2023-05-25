@@ -101,6 +101,23 @@ const Charge = (props: Props) => {
     });
   };
 
+  const handleExportImage = async (imageFileName: any) => {
+    const htmlInput: any = document.querySelector('#pdf');
+    const canvas = await html2canvas(htmlInput);
+    const image = canvas.toDataURL('image/png', 1.0);
+    downloadImage(image, imageFileName);
+  };
+
+  const downloadImage = (blob: any, fileName: any) => {
+    const fakeLink = window.document.createElement('a');
+    fakeLink.style.display = 'none';
+    fakeLink.href = blob;
+    fakeLink.download = fileName;
+    window.document.body.appendChild(fakeLink);
+    fakeLink.click();
+    window.document.body.removeChild(fakeLink);
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: '',
@@ -123,7 +140,14 @@ const Charge = (props: Props) => {
               onCancel={handleCancel}
               className='id_bill'
               footer={[
-                <Button key='1' type='primary' className='btn-scc'>
+                <Button
+                  key='1'
+                  type='primary'
+                  className='btn-scc'
+                  onClick={() => {
+                    handleExportImage(record.user);
+                  }}
+                >
                   Tải file ảnh
                 </Button>,
                 <Button
