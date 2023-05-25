@@ -14,10 +14,12 @@ import {
   SaveOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { DatePicker, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Modal, Select, Table, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
+import parse from 'html-react-parser';
 import { getCharge } from 'src/features/charge/chargeSlice';
+import { getAstablishContract } from 'src/features/establish/establishSlice';
 type Props = {};
 
 const Charge = (props: Props) => {
@@ -26,6 +28,7 @@ const Charge = (props: Props) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
+    dispatch(getAstablishContract());
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
   console.log(selectedRow);
@@ -47,16 +50,78 @@ const Charge = (props: Props) => {
     };
   });
 
+  // modal
+  const [show, setShow] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const dt = useAppSelector((state) => state.establish.value);
+  const printForm = dt.sample_bill_80mm;
+  const [printData, setPrintData] = useState('');
+  const handleClickView = (record: any) => {
+    const data: any = {
+      '@AreaName': record.house,
+      '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+      '@InvoiceNo': '0009',
+      '@InvoiceDate': '22/05/2023',
+      '@MonthYear': `${record.month}/${record.year}`,
+      '@PayType': record.ky,
+      '@FromDate': '18/4/2023',
+      '@ToDate': '18/5/2023',
+      '@CustomerName': record.user,
+      '@RoomName': record.room,
+      '@BeginRent': '18/4/2023',
+      '@ContentHtmlInvoiceService':
+        '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+      '@SumAmount': record.tien,
+    };
+    console.log(printForm);
+    const exampleData80mm = printForm?.replaceAll(
+      /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
+      (matched: any) => {
+        return data[matched];
+      }
+    );
+
+    setPrintData(exampleData80mm);
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: '',
       key: 'Action',
-      render: () => {
+      render: (record) => {
         return (
           <div className='flex flex justify-center items-center'>
-            <button className=' flex justify-center items-center bg-blue-500 text-white p-1 rounded mx-1'>
+            <button
+              className=' flex justify-center items-center bg-blue-500 text-white p-1 rounded mx-1'
+              onClick={() => {
+                setIsModalOpen(true);
+                handleClickView(record);
+              }}
+            >
               <EyeOutlined />
             </button>
+            <Modal
+              title='Hoá đơn'
+              open={isModalOpen}
+              onCancel={handleCancel}
+              className='id_bill'
+              footer={[
+                <Button key='1' type='primary' className='btn-scc'>
+                  Tải file ảnh
+                </Button>,
+                <Button key='2' type='primary'>
+                  Tải file PDF
+                </Button>,
+                <Button key='3' type='primary' danger onClick={handleCancel}>
+                  Đóng
+                </Button>,
+              ]}
+            >
+              {parse(printData ? printData : '')}
+            </Modal>
             <button className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'>
               <DollarOutlined />
             </button>
