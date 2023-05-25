@@ -61,13 +61,13 @@ const showDeleteConfirm = () => {
 const CardRoom = () => {
     return (
         <div>
-            <div className='flex justify-between items-center mb-5'>
+            <div className='xl:flex justify-between items-center mb-5'>
                 <div className='inline-block'>
                     <span className='font-semibold text-base px-2'>Còn trống 0</span>
                     <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê 1</span>
                     <span className='font-semibold text-base px-2'>Chưa thu phí</span>
                 </div>
-                <div>
+                <div className='md:my-2 flex-col'>
                     <Link to={urlRouter.CREATE_ROOM}>
                         <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'><i className="fa-solid fa-bed"></i> Thêm phòng</button>
                     </Link>
@@ -101,7 +101,7 @@ const CardRoom = () => {
                                 </div>
                                 <div>
                                     <i className="fa-solid fa-user text-gray-500"></i> <span className='text-green-600 font-bold'>{item.member}</span><br />
-                                    <i className="fa-solid fa-money-bill text-gray-500"></i> <span className='text-red-500 font-semibold'>{item.priceRoom}</span>
+                                    <i className="fa-solid fa-money-bill text-gray-500"></i> <span className='text-red-500 font-semibold'>{`${item.priceRoom.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`}</span>
                                 </div>
 
                                 <div className="action text-center">
@@ -125,8 +125,8 @@ const CardRoom = () => {
                                 </div>
                                 <div className="action text-center">
                                     <button >
-                                        <Link to="#" className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center mr-2 '>
-                                            thêm thành viên
+                                        <Link to={urlRouter.CREATE_MEMBER} className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center mr-2 '>
+                                            Thêm khách
                                         </Link>
                                     </button>
                                 </div>

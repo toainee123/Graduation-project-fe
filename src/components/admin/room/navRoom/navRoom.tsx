@@ -136,13 +136,13 @@ const NavRoom = () => {
                     <button className='btn_search'><SearchOutlined /> Tìm kiếm</button>
                 </form>
             </div>
-            <div className="flex justify-between items-center mt-4">
+            <div className="xl:flex justify-between items-center mt-4">
                 <div className='inline-block'>
                     <span className='font-semibold text-base px-2'>Còn trống 3</span>
                     <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê 1</span>
                     <span className='font-semibold text-base px-2'>Chưa thu phí</span>
                 </div>
-                <div className=''>
+                <div className='md:my-2'>
                     <Link to="#">
                         <button onClick={showModal} className="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900"><i className="fa-sharp fa-solid fa-upload"></i> Nhập phòng từ .CSV</button>
                     </Link>

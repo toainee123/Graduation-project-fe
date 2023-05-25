@@ -10,6 +10,7 @@ const ListRoom = () => {
         <div className='mt-9'>
             <Tabs
                 defaultActiveKey="1"
+                type='card'
                 items={room.map((Icon, i) => {
                     const id = String(i + 1);
 

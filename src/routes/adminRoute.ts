@@ -12,6 +12,7 @@ import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import CreateMember from 'src/pages/admin/room/createMember/createMember';
 
 export const adminRoutes = [
   {
@@ -26,6 +27,10 @@ export const adminRoutes = [
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
+  },
+  {
+    path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
+    component: CreateMember,
   },
   {
     // path: urlRouter.SERVICE,

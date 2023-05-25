@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import './dashboard.scss';
 
-interface Props {};
+interface Props { };
 
 const Dashboard = (props: Props) => {
   const dispatch = useAppDispatch()
@@ -14,16 +14,18 @@ const Dashboard = (props: Props) => {
 
   useEffect(() => {
     dispatch(fetchDataChart())
-    .unwrap()
-    .then((resp) => {
-      setData(resp)
-    })
-    .catch()
+      .unwrap()
+      .then((resp) => {
+        setData(resp)
+      })
+      .catch()
   }, []);
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      <div className='title_page'>
+        <h1>Dashboard</h1>
+      </div>
       <div className='chartWrap'>
         <div className='chartDashboard'>
           <Chart data={data} xField={'year'} yField={'value'} seriesField={'category'} />

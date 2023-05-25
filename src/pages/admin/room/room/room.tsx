@@ -10,9 +10,9 @@ const Room = () => {
         <div className='room'>
             <div className="room_filter">
                 <div className="row">
-                    <h1>
-                        Danh sách phòng
-                    </h1>
+                    <div className='title_page'>
+                        <h1>Danh Sách Phòng</h1>
+                    </div>
                 </div>
                 <NavRoom />
                 <ListRoom />
