@@ -23,7 +23,7 @@ import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useReactToPrint } from 'react-to-print';
-
+import * as XLSX from 'xlsx-js-style';
 type Props = {};
 
 const Charge = (props: Props) => {
@@ -229,12 +229,116 @@ const Charge = (props: Props) => {
       },
     },
   ];
+  // print
   const componentPrintRef = useRef<any>();
   const handlePrint = useReactToPrint({
     content: () => componentPrintRef.current,
   });
   const printCharge = () => {
     handlePrint();
+  };
+
+  const data = [
+    {
+      ItemPrice: 69.99,
+      name: 'Kellogs Cornflakes',
+      brand: 'Kellogs',
+      Quantity_Purchased: 2,
+      QaunititySaleValue: 139.98,
+    },
+    {
+      ItemPrice: 19.99,
+      name: 'Castle Lite',
+      brand: 'Castle',
+      Quantity_Purchased: 2,
+      QaunititySaleValue: 39.98,
+    },
+  ];
+  // export excel
+  const exportExcel = () => {
+    let tienl = 0;
+    let tiendattral = 0;
+    let tienconlail = 0;
+    let length = 0;
+    const dataExport = chargeData.map((item: any) => {
+      length++;
+      tienl += +item.tien;
+      tiendattral += +item.tiendatra;
+      return {
+        house: item.house,
+        room: item.room,
+        user: item.user,
+        tien: +item.tien,
+        tiendatra: +item.tiendatra,
+        tienconlai: item.tien - item.tiendatra,
+      };
+    });
+    dataExport.push({
+      house: `Tổng`,
+      room: ' ',
+      user: ' ',
+      tien: tienl,
+      tiendatra: tiendattral,
+      tienconlai: tienl - tiendattral,
+    }); //fake rows
+
+    let Heading = [['Nhà', 'Phòng', 'Chủ phòng', 'Tiền thu(VND)', 'Tiền đã thu(VND)', 'Tiền còn lại(VND)']];
+
+    const wb = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    // title1
+    ws['!merges'] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } },
+      { s: { r: 4 + length, c: 0 }, e: { r: 4 + length, c: 2 } },
+    ];
+    ws['A1'] = { t: 's', v: 'Danh sách tiền phòng ' };
+    ws['A1'].s = {
+      font: { sz: 18, bold: true },
+      alignment: { horizontal: 'center' },
+    };
+
+    ws['A2'] = { t: 's', v: 'Tháng 5/2023 ' };
+    ws['A2'].s = {
+      font: { sz: 14, bold: true },
+      alignment: { horizontal: 'center' },
+    };
+    ws['A3'] = { t: 's', v: 'Nhà: Tất cả, Kỳ: Tất cả ' };
+    ws['A3'].s = {
+      font: { sz: 14, bold: true },
+      alignment: { horizontal: 'center' },
+    };
+
+    ws[`A${4 + length + 1}`] = { t: 's', v: ' ' };
+    ws[`A${4 + length + 1}`].s = {
+      font: { sz: 12, bold: true },
+      alignment: { horizontal: 'center' },
+    };
+
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A4' });
+    var wscols = [
+      {
+        wch: 15,
+      },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+    ];
+    ws['!cols'] = wscols;
+    wb.Sheets['Sheet1'] = {
+      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
+    };
+
+    ws['!rows'] = [{ hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }];
+
+    XLSX.utils.sheet_add_json(ws, dataExport, { origin: 'A5', skipHeader: true });
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, 'thu-tien-5/2023.xlsx');
   };
   return (
     <div className='es-container'>
@@ -253,7 +357,12 @@ const Charge = (props: Props) => {
             <PrinterOutlined className='icon-btn' /> In
           </button>
 
-          <button className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'>
+          <button
+            className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
+            onClick={() => {
+              exportExcel();
+            }}
+          >
             <FileExcelOutlined className='icon-btn' /> Xuất file excel
           </button>
 
@@ -329,9 +438,9 @@ const Charge = (props: Props) => {
           </p>
         </div>
       </div>
-      <div ref={componentPrintRef} className='hide'>
+      <div ref={componentPrintRef} className='hide table-export'>
         <div className='header-print'>
-          <h1 className='uppercase text-center text-bold '>Danh sách tiền phòng</h1>
+          <h1 className='uppercase text-center text-bold '>Danh sách tiền phòngs</h1>
         </div>
         <Table
           columns={columns}
@@ -355,7 +464,7 @@ const Charge = (props: Props) => {
             });
             return (
               <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={3}>
+                <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
                   Total
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
@@ -395,7 +504,7 @@ const Charge = (props: Props) => {
           });
           return (
             <Table.Summary.Row>
-              <Table.Summary.Cell index={0} colSpan={3}>
+              <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
                 Total
               </Table.Summary.Cell>
               <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>

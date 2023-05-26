@@ -48,6 +48,10 @@
     display: block;
   }
 
+  .text-right {
+    text-align: right !important;
+  }
+
   .ant-table-cell:nth-child(3) {
     width: 120px !important;
   }
