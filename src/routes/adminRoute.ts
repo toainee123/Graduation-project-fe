@@ -12,6 +12,9 @@ import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import UpdateSevice from 'src/pages/admin/service/UpdateService';
+import ListArise from 'src/pages/admin/arise/ListArise';
+import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 
 export const adminRoutes = [
   {
@@ -43,10 +46,13 @@ export const adminRoutes = [
     path: urlRouter.DATA_WATER,
     component: DataWater,
   },
-
   {
-    path: urlRouter.OTHER_FREE,
-    component: OtherFree,
+    path: urlRouter.ARISE,
+    component: ListArise,
+  },
+  {
+    path: `${urlRouter.ARISE}/${urlRouter.ADD_ARISE}`,
+    component: UpdateArise,
   },
   {
     path: urlRouter.PAYMENT,
