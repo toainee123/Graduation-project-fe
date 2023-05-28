@@ -42,7 +42,7 @@ const UpdateSevice = () => {
                         <div className='w-full'>
                             <Select
                                 defaultValue='lucy'
-                                style={{ width: 222 }}
+                                className='w-full'
                                 //   onChange={handleChange}
                                 options={[
                                     {
@@ -70,7 +70,7 @@ const UpdateSevice = () => {
                         <div className='w-full'>
                             <Select
                                 defaultValue='lucy'
-                                style={{ width: 222 }}
+                                className='w-full'
                                 //   onChange={handleChange}
                                 options={[
                                     {
@@ -99,7 +99,7 @@ const UpdateSevice = () => {
                         </label>
                         <div className='w-full'>
                             <DatePicker
-                                style={{ width: 222 }}
+                                className='w-full'
                             // onChange={onChange}
                             />
                         </div>
