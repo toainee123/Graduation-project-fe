@@ -62,7 +62,7 @@ const Charge = (props: Props) => {
   };
   const dt = useAppSelector((state) => state.establish.value);
   const printForm = dt.sample_bill_80mm;
-  const [colspan, setColspan] = useState(true);
+  const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
   const handleClickView = (record: any) => {
     const data: any = {
@@ -81,7 +81,6 @@ const Charge = (props: Props) => {
         '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
       '@SumAmount': record.tien,
     };
-    console.log(printForm);
     const exampleData80mm = printForm?.replaceAll(
       /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
       (matched: any) => {
@@ -90,6 +89,7 @@ const Charge = (props: Props) => {
     );
 
     setPrintData(exampleData80mm);
+    setUsernam(record.user);
   };
 
   const handleExportPDF = () => {
@@ -131,46 +131,13 @@ const Charge = (props: Props) => {
             <button
               className=' flex justify-center items-center bg-blue-500 text-white p-1 rounded mx-1'
               onClick={() => {
-                setIsModalOpen(true);
                 handleClickView(record);
+                setIsModalOpen(true);
               }}
             >
               <EyeOutlined />
             </button>
-            <Modal
-              title='Hoá đơn'
-              open={isModalOpen}
-              onCancel={handleCancel}
-              className='id_bill'
-              footer={[
-                <Button
-                  key='1'
-                  type='primary'
-                  className='btn-scc'
-                  onClick={() => {
-                    handleExportImage(record.user);
-                  }}
-                >
-                  Tải file ảnh
-                </Button>,
-                <Button
-                  key='2'
-                  type='primary'
-                  onClick={() => {
-                    handleExportPDF();
-                  }}
-                >
-                  Tải file PDF
-                </Button>,
-                <Button key='3' type='primary' danger onClick={handleCancel}>
-                  Đóng
-                </Button>,
-              ]}
-            >
-              <div id='pdf' className='p-3'>
-                {parse(printData ? printData : '')}
-              </div>
-            </Modal>
+
             <button className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'>
               <DollarOutlined />
             </button>
@@ -238,22 +205,6 @@ const Charge = (props: Props) => {
     handlePrint();
   };
 
-  const data = [
-    {
-      ItemPrice: 69.99,
-      name: 'Kellogs Cornflakes',
-      brand: 'Kellogs',
-      Quantity_Purchased: 2,
-      QaunititySaleValue: 139.98,
-    },
-    {
-      ItemPrice: 19.99,
-      name: 'Castle Lite',
-      brand: 'Castle',
-      Quantity_Purchased: 2,
-      QaunititySaleValue: 39.98,
-    },
-  ];
   // export excel
   const exportExcel = () => {
     let tienl = 0;
@@ -328,9 +279,6 @@ const Charge = (props: Props) => {
       { wch: 15 },
     ];
     ws['!cols'] = wscols;
-    wb.Sheets['Sheet1'] = {
-      border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } },
-    };
 
     ws['!rows'] = [{ hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }];
 
@@ -504,7 +452,7 @@ const Charge = (props: Props) => {
           });
           return (
             <Table.Summary.Row>
-              <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
+              <Table.Summary.Cell index={0} colSpan={3}>
                 Total
               </Table.Summary.Cell>
               <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
@@ -521,6 +469,42 @@ const Charge = (props: Props) => {
           );
         }}
       />
+
+      <Modal
+        title='Hoá đơn'
+        open={isModalOpen}
+        onCancel={handleCancel}
+        className='id_bill'
+        mask={false}
+        footer={[
+          <Button
+            key='1'
+            type='primary'
+            className='btn-scc'
+            onClick={() => {
+              handleExportImage(username);
+            }}
+          >
+            Tải file ảnh
+          </Button>,
+          <Button
+            key='2'
+            type='primary'
+            onClick={() => {
+              handleExportPDF();
+            }}
+          >
+            Tải file PDF
+          </Button>,
+          <Button key='3' type='primary' danger onClick={handleCancel}>
+            Đóng
+          </Button>,
+        ]}
+      >
+        <div id='pdf' className='p-3'>
+          {parse(printData ? printData : '')}
+        </div>
+      </Modal>
     </div>
   );
 };
