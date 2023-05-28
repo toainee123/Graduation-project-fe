@@ -28,9 +28,12 @@ export const adminRoutes = [
     component: CreateRoom,
   },
   {
-    // path: urlRouter.SERVICE,
+    path: urlRouter.SERVICE,
     component: Service,
-    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
+  },
+  {
+    path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
+    component: UpdateSevice,
   },
   {
     path: urlRouter.DATA_POWER,
