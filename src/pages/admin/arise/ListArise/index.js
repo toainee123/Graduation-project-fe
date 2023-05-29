@@ -9,33 +9,43 @@ import {
     SmileOutlined,
 } from '@ant-design/icons';
 import { Button, DatePicker, Input, Modal, Select, Space, Table } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { getApiArise } from './api';
 import { dataSource, columns } from './constant';
 import './style.scss';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
+import { deleteApiArise, getApiArise } from './api';
 
 const Arise = () => {
-    // const count = useSelector((state) => state.counter.value)
+    const listAriseStore = useSelector((state) => state.listArise);
+    const {
+        listArise, // danh sách phát sinh
+        deleteArise, // xóa phát sinh
+    } = listAriseStore;
     const dispatch = useDispatch();
     const [dataFilter, setDataFilter] = useState({
         nameArise: '',
     });
     // active modal
-    const [isActiveModal, setIsActiveModal] = useState(false);
+    const [isActiveModal, setIsActiveModal] = useState({
+        active: false,
+        idDelete: null
+    });
     // cột bảng
     const columns = [
         {
             title: 'Action',
             key: 'action',
-            render: () => (
-                <Space size='middle'>
-                    <EditFilled className='color-green action-table' onClick={showModal} />
-                    <CloseCircleFilled className='color-red action-table' onClick={showModal} />
-                </Space>
-            ),
+            render: (item) => {
+                return (
+                    <Space size='middle'>
+                        <EditFilled className='color-green action-table' />
+                        <CloseCircleFilled className='color-red action-table' onClick={() => showModal(item)} />
+                    </Space>
+                );
+            },
         },
         {
             title: 'Nhà',
@@ -58,52 +68,44 @@ const Arise = () => {
             key: 'cost',
         },
     ];
+    useEffect(() => {
+        if (deleteArise) {
+            alert("Thành công")
+        }
+        dispatch(getApiArise());
+    }, [deleteArise])
 
-    const showModal = () => {
-        setIsActiveModal(true);
+    useEffect(() => {
+        dispatch(getApiArise());
+    }, []);
+
+    const showModal = (item) => {
+        setIsActiveModal({
+            ...isActiveModal,
+            active: true,
+            idDelete: item.id
+        });
     };
 
-    const handleOk = () => {
+    const handleOk = (id) => {
         setIsActiveModal(false);
+        handleDelete(id)
     };
 
     const handleCancel = () => {
         setIsActiveModal(false);
     };
-    const handleUpdateField = (e, field, type) => {
-        if (type === 'drop-down') {
-            return setDataFilter({
-                ...dataFilter,
-                [field]: e ? e.value : null,
-            });
-        }
-        if (type === 'date') {
-            return setDataFilter({
-                ...dataFilter,
-                [field]: e ? `${e.format('YYYY-MM-DD')}` : null,
-            });
-        }
-        return setDataFilter({
-            ...dataFilter,
-            [field]: e.target.value,
-        });
-    };
-    const handleSearch = () => {
-        console.log('Search');
-    };
-    const resetFilter = () => { };
     const parseData = (item) => {
         if (true) {
             return <CloseCircleFilled />;
         }
     };
-    const renderAcion = () => {
-        return (
-            <Space size='middle'>
-                <EditFilled className='color-green action-table' />
-                <CloseCircleFilled className='color-red action-table' />
-            </Space>
-        );
+    const handleSearch = () => {
+        dispatch(getApiArise());
+    };
+    const handleDelete = () => {
+        console.log(isActiveModal.idDelete);
+        dispatch(deleteApiArise(isActiveModal.idDelete))
     };
     return (
         <>
@@ -164,17 +166,29 @@ const Arise = () => {
                     />
                 </div>
                 <div className='action-filter'>
-                    <Button type='primary ml-3'> <PlusOutlined style={{ fontSize: 15 }} /> Xem</Button>
+                    <Button type='primary ml-3' onClick={() => handleSearch()}>
+                        {' '}
+                        <PlusOutlined style={{ fontSize: 15 }} /> Xem
+                    </Button>
                     <Link to={urlRouter.ADD_ARISE}>
-                        <Button type='primary ml-3'> <PlusOutlined style={{ fontSize: 15 }} /> Thêm</Button>
+                        <Button type='primary ml-3'>
+                            {' '}
+                            <PlusOutlined style={{ fontSize: 15 }} /> Thêm
+                        </Button>
                     </Link>
-                    <Button type='primary ml-3'> <CloseSquareOutlined style={{ fontSize: 15 }} /> Xóa</Button>
-                    <Button type='primary ml-3'> <CloudDownloadOutlined style={{ fontSize: 15 }} /> Xuất Excel</Button>
+                    <Button type='primary ml-3'>
+                        {' '}
+                        <CloseSquareOutlined style={{ fontSize: 15 }} /> Xóa
+                    </Button>
+                    <Button type='primary ml-3'>
+                        {' '}
+                        <CloudDownloadOutlined style={{ fontSize: 15 }} /> Xuất Excel
+                    </Button>
                 </div>
             </div>
             <div>
                 <Table
-                    dataSource={dataSource}
+                    dataSource={(listArise.length && listArise.length > 0 && listArise) || []}
                     columns={columns}
                     rowSelection={
                         {
@@ -185,8 +199,8 @@ const Arise = () => {
                 />
             </div>
             <div>
-                <Modal title='Xác nhận hành động' open={isActiveModal} onOk={handleOk} onCancel={handleCancel}>
-                    <p>Bạn có chắc chắn không</p>
+                <Modal title='Xác nhận hành động' open={isActiveModal.active} onOk={handleOk} onCancel={handleCancel}>
+                    <p>Bạn có chắc chắn xóa không</p>
                 </Modal>
             </div>
         </>

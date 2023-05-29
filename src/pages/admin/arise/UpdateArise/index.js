@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.scss';
 import { Checkbox, DatePicker, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
+import moment from "moment";
+import { useDispatch, useSelector } from 'react-redux';
+import { postApiArise } from './api';
 
 
-const UpdateSevice = () => {
+const UpdateArise = () => {
+    const
+        updateAriseStore
+            = useSelector((state) => state.updateArise)
+    const {
+        addArise
+    } = updateAriseStore
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [dataRequest, setDataRequest] = useState({
-        ariseName: null,
-        type: null,
+        house: null,
+        room: null,
+        date: null,
         price: null,
-        using: null,
-        description: null,
+        explain: null,
     })
+    useEffect(() => {
+        if (addArise && addArise.id) {
+            navigate(`/admin/${urlRouter.ARISE}`)
+        }
+    }, [addArise])
+
 
     const handleUpdateField = (e, field, type) => {
         if (type === "checkbox") {
@@ -22,109 +39,128 @@ const UpdateSevice = () => {
                 [field]: e.target.checked
             })
         }
+        if (type === "select") {
+            return setDataRequest({
+                ...dataRequest,
+                [field]: e
+            })
+        }
+        if (type === "date") {
+            return setDataRequest({
+                ...dataRequest,
+                [field]: moment(e).format("YYYY/MM/DD")
+            })
+        }
         return setDataRequest({
             ...dataRequest,
             [field]: e.target.value
         })
     }
-    console.log(dataRequest)
+    const handleAdd = () => {
+        const newDataRequestAddArise = {
+            ...dataRequest,
+        }
+        dispatch(postApiArise(newDataRequestAddArise))
+    }
     return (
         <>
             <div>
                 <h1>Thêm phát sinh</h1>
             </div>
             <div className='mt-8'>
-                <form action=''>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Nhà <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <Select
-                                defaultValue='lucy'
-                                className='w-full'
-                                //   onChange={handleChange}
-                                options={[
-                                    {
-                                        value: 'jack',
-                                        label: 'Jack',
-                                    },
-                                    {
-                                        value: 'lucy',
-                                        label: 'Lucy',
-                                    },
-                                    {
-                                        value: 'disabled',
-                                        label: 'Disabled',
-                                    },
-                                    {
-                                        value: 'Yiminghe',
-                                        label: 'yiminghe',
-                                    },
-                                ]}
-                            />
-                        </div>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Phòng <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <Select
-                                defaultValue='lucy'
-                                className='w-full'
-                                //   onChange={handleChange}
-                                options={[
-                                    {
-                                        value: 'jack',
-                                        label: 'Jack',
-                                    },
-                                    {
-                                        value: 'lucy',
-                                        label: 'Lucy',
-                                    },
-                                    {
-                                        value: 'disabled',
-                                        label: 'Disabled',
-                                    },
-                                    {
-                                        value: 'Yiminghe',
-                                        label: 'yiminghe',
-                                    },
-                                ]}
-                            />
-                        </div>
+                {/* <form action=''> */}
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Nhà <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full h-58px'>
+                        <Select
+                            defaultValue='house'
+                            size='large'
+                            className='w-full'
+                            onChange={e => handleUpdateField(e, "house", "select")}
+                            options={[
+                                {
+                                    value: 'jack',
+                                    label: 'Jack',
+                                },
+                                {
+                                    value: 'lucy',
+                                    label: 'Lucy',
+                                },
+                                {
+                                    value: 'disabled',
+                                    label: 'Disabled',
+                                },
+                                {
+                                    value: 'Yiminghe',
+                                    label: 'yiminghe',
+                                },
+                            ]}
+                        />
                     </div>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Tháng/năm <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <DatePicker
-                                className='w-full'
-                            // onChange={onChange}
-                            />
-                        </div>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Số tiền
-                        </label>
-                        <div className='w-full'>
-                            <input className='border-2 p-4 outline-0 w-full' type='number' onChange={e => handleUpdateField(e, "price", "text")} placeholder='Đơn giá' />
-                        </div>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Phòng <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full h-58px'>
+                        <Select
+                            defaultValue='lucy'
+                            size='large'
+                            className='w-full'
+                            onChange={e => handleUpdateField(e, "room", "select")}
+                            options={[
+                                {
+                                    value: 'jack',
+                                    label: 'Jack',
+                                },
+                                {
+                                    value: 'lucy',
+                                    label: 'Lucy',
+                                },
+                                {
+                                    value: 'disabled',
+                                    label: 'Disabled',
+                                },
+                                {
+                                    value: 'Yiminghe',
+                                    label: 'yiminghe',
+                                },
+                            ]}
+                        />
                     </div>
-                    <div className='flex justify-between items-center gap-12 py-3'></div>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-28 text-base font-semibold'>
-                            Nội dung
-                        </label>
-                        <div className='w-full'>
-                            <textarea
-                                className='w-full border-2 p-4'
-                                rows={5}
-                                onChange={e => handleUpdateField(e, "description", "text")}
-                                placeholder='Thông tin ghi chú ...'
-                            />
-                        </div>
+                </div>
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Tháng/năm <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full h-58px'>
+                        <DatePicker
+                            className='w-full h-58px'
+                            onChange={e => handleUpdateField(e, "date", "date")}
+                        />
                     </div>
-                    {/* <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Số tiền
+                    </label>
+                    <div className='w-full h-58px'>
+                        <input className='border-2 p-4 outline-0 w-full h-58px' type='number' onChange={e => handleUpdateField(e, "price", "text")} placeholder='Số tiền' />
+                    </div>
+                </div>
+                <div className='flex justify-between items-center gap-12 py-3'></div>
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-28 text-base font-semibold'>
+                        Nội dung
+                    </label>
+                    <div className='w-full'>
+                        <textarea
+                            className='w-full border-2 p-4'
+                            rows={5}
+                            onChange={e => handleUpdateField(e, "explain", "text")}
+                            placeholder='Thông tin ghi chú ...'
+                        />
+                    </div>
+                </div>
+                {/* <div className='flex justify-between items-center gap-12 py-3'>
                         <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                         <div className='w-full'>
                             <div className="flex items-center justify-center w-full">
@@ -139,27 +175,30 @@ const UpdateSevice = () => {
                             </div>
                         </div>
                     </div> */}
-                    <div className='warning-title'>
-                        <h3> (*) Thông tin bắt buộc</h3>
-                    </div>
-                    <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
-                        <div>
-                            <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  '>
-                                <i className='fa-solid fa-check'></i> Gửi
+                <div className='warning-title'>
+                    <h3> (*) Thông tin bắt buộc</h3>
+                </div>
+                <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
+                    <div>
+                        <button
+                            className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                            onClick={() => handleAdd()}
+                        >
+                            <i className='fa-solid fa-check'></i> Gửi
+                        </button>
+                        <Link
+                            to={`/admin/${urlRouter.ARISE}`}
+                        >
+                            <button className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
+                                Hủy
                             </button>
-                            <Link
-                                to={`/admin/${urlRouter.SERVICE}`}
-                            >
-                                <button className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
-                                    Hủy
-                                </button>
-                            </Link>
-                        </div>
+                        </Link>
                     </div>
-                </form>
+                </div>
+                {/* </form> */}
             </div>
         </>
     );
 };
 
-export default UpdateSevice;
+export default UpdateArise;
