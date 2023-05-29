@@ -78,7 +78,7 @@ const Arise = () => {
     useEffect(() => {
         dispatch(getApiArise());
     }, []);
-
+    // show modal
     const showModal = (item) => {
         setIsActiveModal({
             ...isActiveModal,
