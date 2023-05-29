@@ -121,6 +121,11 @@ const Charge = (props: Props) => {
     window.document.body.removeChild(fakeLink);
   };
 
+  const cpPrintBillRef = useRef<any>();
+  const handlePrintBill = useReactToPrint({
+    content: () => cpPrintBillRef.current,
+  });
+
   const columns: ColumnsType<any> = [
     {
       title: '',
@@ -146,7 +151,14 @@ const Charge = (props: Props) => {
               <DeleteOutlined />
             </button>
 
-            <button className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'>
+            <button
+              className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
+              onClick={async () => {
+                await handleClickView(record);
+
+                await handlePrintBill();
+              }}
+            >
               <PrinterOutlined />
             </button>
           </div>
@@ -501,10 +513,14 @@ const Charge = (props: Props) => {
           </Button>,
         ]}
       >
-        <div id='pdf' className='p-3'>
+        <div id='pdf' className='p-3' ref={cpPrintBillRef}>
           {parse(printData ? printData : '')}
         </div>
       </Modal>
+
+      <div className='p-3 hide' ref={cpPrintBillRef}>
+        {parse(printData ? printData : '')}
+      </div>
     </div>
   );
 };
