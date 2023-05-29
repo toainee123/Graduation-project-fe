@@ -35,7 +35,6 @@ const Charge = (props: Props) => {
     dispatch(getAstablishContract());
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
-  console.log(selectedRow);
 
   const chargeData = useAppSelector((state) => state.charge.value);
 
@@ -55,7 +54,7 @@ const Charge = (props: Props) => {
   });
 
   // modal
-  const [show, setShow] = useState(true);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -64,6 +63,48 @@ const Charge = (props: Props) => {
   const printForm = dt.sample_bill_80mm;
   const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
+  const [printListBillData, setPrintListBillData] = useState('');
+
+  const handleListData = () => {
+    let stringList = '';
+    let arrData: any;
+    if (selectedRow.length !== 0) {
+      arrData = selectedRow;
+    } else {
+      arrData = dataSource;
+    }
+    arrData.map((item: any) => {
+      const data: any = {
+        '@AreaName': item.house,
+        '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+        '@InvoiceNo': '0009',
+        '@InvoiceDate': '22/05/2023',
+        '@MonthYear': `${item.month}/${item.year}`,
+        '@PayType': item.ky,
+        '@FromDate': '18/4/2023',
+        '@ToDate': '18/5/2023',
+        '@CustomerName': item.user,
+        '@RoomName': item.room,
+        '@BeginRent': '18/4/2023',
+        '@ContentHtmlInvoiceService':
+          '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+        '@SumAmount': item.tien,
+      };
+
+      const dataaddDom = printForm?.replaceAll(
+        /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
+        (matched: any) => {
+          return data[matched];
+        }
+      );
+
+      const mg = `<div className='mbprint'>${dataaddDom}</div>`;
+      stringList += mg;
+      console.log(stringList);
+
+      setPrintListBillData(stringList);
+    });
+  };
   const handleClickView = (record: any) => {
     const data: any = {
       '@AreaName': record.house,
@@ -124,6 +165,11 @@ const Charge = (props: Props) => {
   const cpPrintBillRef = useRef<any>();
   const handlePrintBill = useReactToPrint({
     content: () => cpPrintBillRef.current,
+  });
+
+  const cpPrintListBillRef = useRef<any>();
+  const handlePrintListBill = useReactToPrint({
+    content: () => cpPrintListBillRef.current,
   });
 
   const columns: ColumnsType<any> = [
@@ -313,7 +359,13 @@ const Charge = (props: Props) => {
           <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded '>
             <CalculatorOutlined className='icon-btn' /> Tính
           </button>
-          <button className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'>
+          <button
+            className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+            onClick={async () => {
+              await handleListData();
+              await handlePrintListBill();
+            }}
+          >
             <PrinterOutlined className='icon-btn' /> In
           </button>
 
@@ -520,6 +572,10 @@ const Charge = (props: Props) => {
 
       <div className='p-3 hide' ref={cpPrintBillRef}>
         {parse(printData ? printData : '')}
+      </div>
+
+      <div className='p-3 hide' ref={cpPrintListBillRef}>
+        {parse(printListBillData ? printListBillData : '')}
       </div>
     </div>
   );
