@@ -12,6 +12,7 @@ import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import Establish from 'src/pages/admin/establish/establish';
 import UpdateSevice from 'src/pages/admin/service/UpdateService';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
@@ -71,6 +72,11 @@ export const adminRoutes = [
       // { path: 'create', component: Login },
       // { path: 'update', component: Login },
     ],
+  },
+
+  {
+    path: urlRouter.ESTABLISH,
+    component: Establish,
   },
 ];
 

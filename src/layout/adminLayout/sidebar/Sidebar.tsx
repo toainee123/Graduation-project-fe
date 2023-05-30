@@ -1,4 +1,5 @@
 import {
+  FileOutlined,
   FileTextOutlined,
   FormOutlined,
   HomeOutlined,
@@ -71,6 +72,11 @@ const Sidebar = (props: Props) => {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
       key: '8',
       icon: <FileTextOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
+      key: '9',
+      icon: <FileOutlined />,
     },
   ];
 
