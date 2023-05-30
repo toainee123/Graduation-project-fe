@@ -1,18 +1,17 @@
-import './components/specific/globalStyles/globalStyles';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import './components/specific/globalStyles/globalStyles';
 
 import { adminRoutes, authRoute } from './routes/adminRoute';
 // component
+import Dialog from './components/specific/dialogConfirm/Dialog';
 import AdminLayout from './layout/adminLayout/layout/AdminLayout';
-import ProtectedRoute from './components/specific/protectedRoute/ProtectedRoute';
 import AuthLayout from './layout/authLayout/AuthLayout';
 import LandingLayout from './layout/landing/LandingLayout';
-import Dialog from './components/specific/dialogConfirm/Dialog';
 
 //path router
-import { urlRouter } from './utils/constants';
-import ProtectedAuth from './components/specific/ProtectedAuth/ProtectedAuth';
 import Loading from './components/common/loading/Loading';
+import ProtectedAuth from './components/specific/ProtectedAuth/ProtectedAuth';
+import { urlRouter } from './utils/constants';
 
 function App() {
   return (
@@ -33,11 +32,14 @@ function App() {
             <Route path='*' element={<Navigate to={''} replace />} />
           </Route>
 
-          <Route path='admin' element={
-            // <ProtectedRoute roles={'ADMIN'} Component={
-            <AdminLayout />
-            // } />
-          }>
+          <Route
+            path='admin'
+            element={
+              // <ProtectedRoute roles={'ADMIN'} Component={
+              <AdminLayout />
+              // } />
+            }
+          >
             <Route index element={<Navigate to={urlRouter.DASHBOARD} />} />
             {adminRoutes.map((route, index) => {
               const Page = route.component;

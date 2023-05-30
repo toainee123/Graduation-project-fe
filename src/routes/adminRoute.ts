@@ -11,6 +11,7 @@ import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
+import Assets from 'src/pages/admin/Assets/Assest';
 
 export const adminRoutes = [
   {
@@ -25,9 +26,7 @@ export const adminRoutes = [
   {
     // path: urlRouter.SERVICE,
     component: Service,
-    children: [
-      { path: urlRouter.SERVICE, component: Service, index: true },
-    ],
+    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
   },
   {
     path: urlRouter.DATA_POWER,
@@ -50,7 +49,10 @@ export const adminRoutes = [
     path: urlRouter.REPORT,
     component: Report,
   },
-
+  {
+    path: urlRouter.ASSETS,
+    component: Assets,
+  },
   {
     path: 'pg',
     component: Pg,
