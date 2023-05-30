@@ -59,7 +59,7 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.OTHER_FREE}>Phát sinh</Link>,
+      label: <Link to={urlRouter.ARISE}>Phát sinh</Link>,
       key: '6',
       icon: <FormOutlined />,
     },
