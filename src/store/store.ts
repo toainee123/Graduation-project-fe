@@ -5,6 +5,8 @@ import dialogReducer from '../features/dialog/dialogSlice';
 import listServiceReducer from '../pages/admin/service/ListService/reducer';
 import establishSlice from 'src/features/establish/establishSlice';
 import chargeSlice from 'src/features/charge/chargeSlice';
+import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
+import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
     listService: listServiceReducer,
     establish: establishSlice,
     charge: chargeSlice,
+    listArise: listAriseReducer,
+    updateArise: updateAriseReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

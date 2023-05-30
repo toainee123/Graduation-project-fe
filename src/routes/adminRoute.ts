@@ -14,6 +14,9 @@ import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
 import Establish from 'src/pages/admin/establish/establish';
 import Charge from 'src/pages/admin/charge/Charge';
+import UpdateSevice from 'src/pages/admin/service/UpdateService';
+import ListArise from 'src/pages/admin/arise/ListArise';
+import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 
 export const adminRoutes = [
   {
@@ -30,9 +33,12 @@ export const adminRoutes = [
     component: CreateRoom,
   },
   {
-    // path: urlRouter.SERVICE,
+    path: urlRouter.SERVICE,
     component: Service,
-    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
+  },
+  {
+    path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
+    component: UpdateSevice,
   },
   {
     path: urlRouter.DATA_POWER,
@@ -42,10 +48,13 @@ export const adminRoutes = [
     path: urlRouter.DATA_WATER,
     component: DataWater,
   },
-
   {
-    path: urlRouter.OTHER_FREE,
-    component: OtherFree,
+    path: urlRouter.ARISE,
+    component: ListArise,
+  },
+  {
+    path: `${urlRouter.ARISE}/${urlRouter.ADD_ARISE}`,
+    component: UpdateArise,
   },
   {
     path: urlRouter.PAYMENT,
