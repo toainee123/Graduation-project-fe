@@ -13,6 +13,7 @@ import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
 import Establish from 'src/pages/admin/establish/establish';
+import Charge from 'src/pages/admin/charge/Charge';
 import UpdateSevice from 'src/pages/admin/service/UpdateService';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
@@ -62,6 +63,11 @@ export const adminRoutes = [
   {
     path: urlRouter.REPORT,
     component: Report,
+  },
+
+  {
+    path: urlRouter.CHARGE,
+    component: Charge,
   },
 
   {

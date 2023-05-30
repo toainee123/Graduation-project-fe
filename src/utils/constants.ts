@@ -19,6 +19,7 @@ export const urlRouter = {
   PG: 'pg',
   LIST_PG: 'list',
   ESTABLISH: 'establish',
+  CHARGE: 'charge',
 
   // auth
   AUTH: 'auth',

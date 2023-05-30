@@ -20,7 +20,7 @@ export const getAstablishContract = createAsyncThunk('astablish/contract/getAsta
 export const updateAstablishContract = createAsyncThunk(
   'astablish/contract/updateAstablishContract',
   async (value: any) => {
-    const { data }: any = await axios.put(`http://localhost:3001/astablish/${value.id}`, value);
+    const { data }: any = await axios.patch(`http://localhost:3001/astablish/${value.id}`, value);
     console.log(`thanhf cong`);
     return data;
   }
@@ -32,6 +32,14 @@ export const astablishSlice = createSlice({
   reducers: {
     changeContentContract: (state, action) => {
       state.value = action.payload;
+    },
+
+    changeContentPrintForm80mm: (state, action) => {
+      state.value = { ...state.value, sample_bill_80mm: action.payload };
+    },
+
+    changeContentPrintFormA5: (state, action) => {
+      state.value = { ...state.value, sample_bill_A5: action.payload };
     },
   },
   extraReducers: (builder) => {
@@ -45,5 +53,5 @@ export const astablishSlice = createSlice({
     });
   },
 });
-export const { changeContentContract } = astablishSlice.actions;
+export const { changeContentContract, changeContentPrintForm80mm, changeContentPrintFormA5 } = astablishSlice.actions;
 export default astablishSlice.reducer;

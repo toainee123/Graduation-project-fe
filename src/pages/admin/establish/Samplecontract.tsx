@@ -45,7 +45,7 @@ const Samplecontract = (props: Props) => {
       <ReactQuill
         theme='snow'
         value={dt.sample_contract}
-        onChange={(e) => {
+        onChange={(e: any) => {
           const obbj = { id: dt.id, sample_contract: e };
           console.log(obbj);
 

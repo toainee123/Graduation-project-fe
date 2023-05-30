@@ -1,8 +1,16 @@
 import { CaretUpOutlined, CloseOutlined, UpOutlined } from '@ant-design/icons';
 import { Button, Modal, Radio } from 'antd';
 import type { RadioChangeEvent } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import {
+  changeContentPrintForm80mm,
+  changeContentPrintFormA5,
+  getAstablishContract,
+} from 'src/features/establish/establishSlice';
 type Props = {
   getSelectOption: (a: any) => void;
 };
@@ -36,40 +44,17 @@ const Printform = (props: Props) => {
     setIsModalOpen2(false);
   };
 
-  let hs = `<div style="height:27px" ><span name="textKyTen"><strong>Nhà @AreaName</strong></span><span style="float:right">@InvoiceNo</span></div>
-  <div style="height:27px"><span name="textKyTen"><strong>Địa chỉ: @Address</strong></span><span style="float:right">@InvoiceDate</span></div>
-  <div>
-     <h3 style="text-align:center"><strong>HÓA ĐƠN TIỀN NHÀ</strong></h3>
-  </div>
-  <div>
-     <p style="text-align:center"><strong>Tháng @MonthYear - Kỳ @PayType</strong></p>
-  </div>
-  <div>
-     <p style="text-align:center">(Từ ngày @FromDate đến @ToDate)</p>
-  </div>
-  <div>
-     <p>Họ tên: <strong>@CustomerName</strong></p>
-  </div>
-  <div>
-     <p><strong>Phòng: @RoomName</strong></p>
-     <p><strong>Ngày vào: @BeginRent</strong></p>
-  </div>
-  <div style="border-bottom: 2px solid black; border-top: 2px solid black">
-     <table cellspacing="0" cellpadding="0" width="100%">@ContentHtmlInvoiceService</table>
-  </div>
-  <div style="border-bottom: 2px solid black">
-     <h3><strong>TỔNG CỘNG</strong><strong style="float:right">@SumAmount</strong></h3>
-  </div>
-  <div>
-      <span style="float:left" name="textKyTen">
-          <strong>Người thanh toán</strong></span><span style="float:right" name="textKyTen"><strong>Người nhận TT</strong>
-      </span>
-  </div>
-  <br>
-  `;
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAstablishContract());
+  }, []);
+
+  const data = useAppSelector((state) => state.establish.value);
+  const sample80mm: any = data.sample_bill_80mm;
+  const sampleA5: any = data.sample_bill_A5;
+
   const [value, setValue] = useState(1);
-  const [value80mm, setValue80mm] = useState(hs);
-  const [valueA5, setValueA5] = useState(hs);
+
   const [show1, setShow1] = useState(true);
   const [show2, setShow2] = useState(true);
 
@@ -90,14 +75,14 @@ const Printform = (props: Props) => {
     '@SumAmount': '2,650,000',
   };
 
-  const exampleData80mm = value80mm.replaceAll(
+  const exampleData80mm = sample80mm?.replaceAll(
     /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
     (matched: any) => {
       return exampleInfo[matched];
     }
   );
 
-  const exampleDataA5 = valueA5.replaceAll(
+  const exampleDataA5 = sampleA5?.replaceAll(
     /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
     (matched: any) => {
       return exampleInfo[matched];
@@ -141,8 +126,7 @@ const Printform = (props: Props) => {
             <button
               className='close'
               onClick={() => {
-                setValue80mm('');
-                console.log(value80mm);
+                dispatch(changeContentPrintForm80mm(''));
               }}
             >
               <CloseOutlined />
@@ -157,14 +141,16 @@ const Printform = (props: Props) => {
             id=''
             rows={10}
             className='text_content'
-            value={value80mm}
+            value={sample80mm}
             onChange={(e: any) => {
-              setValue80mm(e.target.value);
+              console.log(e);
+              dispatch(changeContentPrintForm80mm(e.target.value));
             }}
             style={{ display: show1 ? 'block' : 'none' }}
           ></textarea>
+
           <Modal title='Bill (Khổ 80mm)' open={isModalOpen1} onCancel={handleCancel1} footer={null}>
-            {parse(exampleData80mm)}
+            {parse(exampleData80mm ? exampleData80mm : '')}
           </Modal>
         </div>
       </div>
@@ -190,7 +176,7 @@ const Printform = (props: Props) => {
             <button
               className='close'
               onClick={() => {
-                setValueA5('');
+                changeContentPrintFormA5('');
               }}
             >
               <CloseOutlined />
@@ -205,14 +191,14 @@ const Printform = (props: Props) => {
             id=''
             rows={10}
             className='text_content'
-            defaultValue={valueA5}
+            defaultValue={sampleA5}
             onChange={(e: any) => {
-              setValueA5(e.target.value);
+              changeContentPrintFormA5(e.target.value);
             }}
             style={{ display: show2 ? 'block' : 'none' }}
           ></textarea>
           <Modal title='In khổ A5' open={isModalOpen2} onCancel={handleCancel2} footer={null}>
-            {parse(exampleDataA5)}
+            {parse(exampleDataA5 ? exampleDataA5 : '')}
           </Modal>
         </div>
       </div>
