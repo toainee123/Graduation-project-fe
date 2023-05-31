@@ -10,13 +10,17 @@ export const urlRouter = {
   CREATE_ROOM: 'createRoom',
   CREATE_MEMBER: 'createMember',
   SERVICE: 'service', //dịch vụ
+  ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
   DATA_WATER: 'DataWater', //tiền nước
-  OTHER_FREE: 'OtherFree', //phát sinh
+  ARISE: 'arise', //dịch vụ
+  ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
   PG: 'pg',
   LIST_PG: 'list',
+  ESTABLISH: 'establish',
+  CHARGE: 'charge',
 
   // auth
   AUTH: 'auth',

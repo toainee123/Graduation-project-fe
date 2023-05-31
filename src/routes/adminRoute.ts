@@ -12,6 +12,11 @@ import Pg from '../pages/admin/pg/Pg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import Establish from 'src/pages/admin/establish/establish';
+import Charge from 'src/pages/admin/charge/Charge';
+import UpdateSevice from 'src/pages/admin/service/UpdateService';
+import ListArise from 'src/pages/admin/arise/ListArise';
+import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 import CreateMember from 'src/pages/admin/room/createMember/createMember';
 
 export const adminRoutes = [
@@ -33,9 +38,12 @@ export const adminRoutes = [
     component: CreateMember,
   },
   {
-    // path: urlRouter.SERVICE,
+    path: urlRouter.SERVICE,
     component: Service,
-    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
+  },
+  {
+    path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
+    component: UpdateSevice,
   },
   {
     path: urlRouter.DATA_POWER,
@@ -45,10 +53,13 @@ export const adminRoutes = [
     path: urlRouter.DATA_WATER,
     component: DataWater,
   },
-
   {
-    path: urlRouter.OTHER_FREE,
-    component: OtherFree,
+    path: urlRouter.ARISE,
+    component: ListArise,
+  },
+  {
+    path: `${urlRouter.ARISE}/${urlRouter.ADD_ARISE}`,
+    component: UpdateArise,
   },
   {
     path: urlRouter.PAYMENT,
@@ -60,6 +71,11 @@ export const adminRoutes = [
   },
 
   {
+    path: urlRouter.CHARGE,
+    component: Charge,
+  },
+
+  {
     path: 'pg',
     component: Pg,
     children: [
@@ -67,6 +83,11 @@ export const adminRoutes = [
       // { path: 'create', component: Login },
       // { path: 'update', component: Login },
     ],
+  },
+
+  {
+    path: urlRouter.ESTABLISH,
+    component: Establish,
   },
 ];
 
