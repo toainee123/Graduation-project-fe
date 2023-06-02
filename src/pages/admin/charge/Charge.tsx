@@ -36,7 +36,7 @@ const Charge = (props: Props) => {
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
-  const chargeData = useAppSelector((state) => state.charge.value);
+  const chargeData = useAppSelector((state: any) => state.charge.value);
 
   const dataSource = chargeData.map((item: any, index: number) => {
     return {
@@ -59,7 +59,7 @@ const Charge = (props: Props) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const dt = useAppSelector((state) => state.establish.value);
+  const dt = useAppSelector((state: any) => state.establish.value);
   const printForm = dt.sample_bill_80mm;
   const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
