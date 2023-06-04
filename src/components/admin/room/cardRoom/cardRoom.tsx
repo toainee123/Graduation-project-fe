@@ -4,6 +4,7 @@ import { type } from 'os';
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ROOM_TYPE } from 'src/types/room';
+import { urlRouter } from 'src/utils/constants';
 
 
 const infoRoom = [
@@ -40,7 +41,6 @@ const infoRoom = [
 
 ]
 
-
 const { confirm } = Modal;
 const showDeleteConfirm = () => {
     confirm({
@@ -61,10 +61,21 @@ const showDeleteConfirm = () => {
 const CardRoom = () => {
     return (
         <div>
-            <div className='inline-block'>
-                <span className='font-semibold text-base px-2'>Còn trống 0</span>
-                <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê 1</span>
-                <span className='font-semibold text-base px-2'>Chưa thu phí</span>
+            <div className='flex justify-between items-center mb-5'>
+                <div className='inline-block'>
+                    <span className='font-semibold text-base px-2'>Còn trống 0</span>
+                    <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê 1</span>
+                    <span className='font-semibold text-base px-2'>Chưa thu phí</span>
+                </div>
+                <div>
+                    <Link to={urlRouter.CREATE_ROOM}>
+                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'><i className="fa-solid fa-bed"></i> Thêm phòng</button>
+                    </Link>
+                    <Link to="#">
+                        <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'><i className="fa-solid fa-pen"></i> Sửa nhà</button>
+                    </Link>
+                    <Link to="#" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"><i className="fa-solid fa-trash"></i> Xóa</Link>
+                </div>
             </div>
             <div className=" px-4 sm:py-2 sm:px-1 lg:max-w-full lg:px-2">
                 <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">

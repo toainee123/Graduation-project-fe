@@ -1,4 +1,6 @@
 import {
+  CalculatorOutlined,
+  FileOutlined,
   FileTextOutlined,
   FormOutlined,
   HomeOutlined,
@@ -7,11 +9,14 @@ import {
   ReconciliationOutlined,
   SketchOutlined,
   ThunderboltOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, MenuProps, MenuTheme } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Avatar, Layout, Menu, MenuProps, MenuTheme } from 'antd';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { AuthSliceAction } from '../../../features/auth/authSlice';
+import { useAppDispatch } from '../../../store/hooks';
 import { urlRouter } from '../../../utils/constants';
 
 import './sidebar.scss';
@@ -20,6 +25,8 @@ type Props = {};
 const { Sider } = Layout;
 
 const Sidebar = (props: Props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState<'vertical' | 'inline'>('inline');
   const [theme, setTheme] = useState<MenuTheme>('dark');
@@ -53,7 +60,7 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.OTHER_FREE}>Phát sinh</Link>,
+      label: <Link to={urlRouter.ARISE}>Phát sinh</Link>,
       key: '6',
       icon: <FormOutlined />,
     },
@@ -72,7 +79,22 @@ const Sidebar = (props: Props) => {
       key: '9',
       icon: <FileTextOutlined />,
     },
+    {
+      label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
+      key: '9',
+      icon: <CalculatorOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
+      key: '10',
+      icon: <FileOutlined />,
+    },
   ];
+
+  const logout = () => {
+    dispatch(AuthSliceAction.logout());
+    navigate(`/${urlRouter.AUTH}`);
+  };
 
   return (
     <div id='sidebar'>
@@ -91,6 +113,13 @@ const Sidebar = (props: Props) => {
           items={menuListItem}
           // selectedKeys={[current]}
         />
+
+        <div className='userLogin'>
+          <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
+          <span className='userTitle' style={{ cursor: 'pointer' }} onClick={logout}>
+            Đăng xuất
+          </span>
+        </div>
       </Sider>
 
       {/* {showMenu && <Sider collapsed={collapsedSide} className='first-child-sider'>
