@@ -76,7 +76,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: <Link to={urlRouter.ASSETS}>Tài sản</Link>,
-      key: '9',
+      key: '11',
       icon: <FileTextOutlined />,
     },
     {
