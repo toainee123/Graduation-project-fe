@@ -75,6 +75,11 @@ const Sidebar = (props: Props) => {
       icon: <FileTextOutlined />,
     },
     {
+      label: <Link to={urlRouter.ASSETS}>Tài sản</Link>,
+      key: '11',
+      icon: <FileTextOutlined />,
+    },
+    {
       label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
       key: '9',
       icon: <CalculatorOutlined />,

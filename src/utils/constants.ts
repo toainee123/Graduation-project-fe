@@ -18,6 +18,7 @@ export const urlRouter = {
   REPORT: 'Report',
   PG: 'pg',
   LIST_PG: 'list',
+  ASSETS: 'assets',
   ESTABLISH: 'establish',
   CHARGE: 'charge',
 
