@@ -95,7 +95,7 @@ const ReportCustomerRent = () => {
           </div>
           <div className='ms-6'>
             <div className='flex  w-full  items-center '>
-              <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4 pt-4 rounded flex items-center justify-between'>
+              <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4  rounded flex items-center justify-between'>
                 <SearchOutlined className='icon-btn' /> Xem
               </button>
             </div>
