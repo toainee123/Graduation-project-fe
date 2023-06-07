@@ -1,3 +1,4 @@
+import { Navigate } from 'react-router-dom';
 import DataPower from 'src/pages/admin/dataPower/dataPower';
 import DataWater from 'src/pages/admin/dataWater/dataWater';
 import OtherFree from 'src/pages/admin/otherFree/otherFree';
@@ -17,6 +18,9 @@ import Charge from 'src/pages/admin/charge/Charge';
 import UpdateSevice from 'src/pages/admin/service/UpdateService';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
+import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
+import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
+import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 
 export const adminRoutes = [
   {
@@ -63,12 +67,31 @@ export const adminRoutes = [
   {
     path: urlRouter.REPORT,
     component: Report,
+    children: [
+      {
+        path: urlRouter.ReportCustomerRent,
+        component: ReportCustomerRent,
+        index: true
+      },
+      {
+        path: urlRouter.ReportCustomerContractExpired,
+        component: ReportCustomerContractExpired,
+        index: true
+      },
+      {
+        path: urlRouter.ReportInvoiceDetail,
+        component: ReportInvoiceDetail,
+        index: true
+      }
+
+    ]
   },
 
   {
     path: urlRouter.CHARGE,
     component: Charge,
   },
+
 
   {
     path: 'pg',

@@ -73,6 +73,27 @@ const Sidebar = (props: Props) => {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
       key: '8',
       icon: <FileTextOutlined />,
+      children: [
+        {
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
+          key: '8.1',
+          icon: <FileTextOutlined />,
+        },
+        {
+          label: (
+            <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>
+              Danh sách khách hàng sắp hết hạn hợp đồng
+            </Link>
+          ),
+          key: '8.2',
+          icon: <FileTextOutlined />,
+        },
+        {
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
+          key: '8.2',
+          icon: <FileTextOutlined />,
+        },
+      ],
     },
     {
       label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,

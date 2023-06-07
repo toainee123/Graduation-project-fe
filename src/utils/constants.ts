@@ -11,11 +11,17 @@ export const urlRouter = {
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
-  DATA_WATER: 'DataWater', //tiền nước
+  DATA_WATER: 'Da ', //tiền nước
   ARISE: 'arise', //dịch vụ
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
+  ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
+  ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
+  ReportInvoiceDetail: 'ReportInvoiceDetail',
+
+
+
   PG: 'pg',
   LIST_PG: 'list',
   ESTABLISH: 'establish',
