@@ -94,13 +94,15 @@ const Establish = (props: Props) => {
     console.log(e);
   };
   const handleSaveInfor = async () => {
+    console.log(fields);
+
     const dataSave = {
-      nanme: fields[0].value,
+      name: fields[0].value,
       address: fields[1].value,
       email: fields[2].value,
       ci_number: fields[3].value,
-      ci_placecreate: fields[4].value,
-      ci_datecreate: fields[5].value,
+      ci_placecreate: fields[5].value,
+      ci_datecreate: fields[4].value,
       phone_number: fields[6].value,
       birthday: fields[7].value,
     };

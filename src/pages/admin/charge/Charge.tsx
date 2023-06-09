@@ -18,7 +18,7 @@ import { Button, DatePicker, Modal, Select, Table, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
-import { getCharge } from 'src/features/charge/chargeSlice';
+import { getCharge, removeCharge } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -40,7 +40,8 @@ const Charge = (props: Props) => {
 
   const dataSource = chargeData.map((item: any, index: number) => {
     return {
-      key: index,
+      id: item.id,
+      key: item.id,
       month: item.month,
       year: item.year,
       ky: item.ky,
@@ -172,6 +173,22 @@ const Charge = (props: Props) => {
     content: () => cpPrintListBillRef.current,
   });
 
+  const handleDelete = (id: any) => {
+    const confirm = window.confirm('Bạn chắc chắn muốn xoá?');
+    if (confirm) {
+      dispatch(removeCharge(id));
+    }
+  };
+
+  const selectRowDelete = () => {
+    const confirm = window.confirm('Bạn chắc chắn muốn xoá?');
+    if (confirm) {
+      for (let i = 0; i < selectedRow.length; i++) {
+        dispatch(removeCharge(selectedRow[i].id));
+      }
+    }
+  };
+
   const columns: ColumnsType<any> = [
     {
       title: '',
@@ -193,7 +210,12 @@ const Charge = (props: Props) => {
               <DollarOutlined />
             </button>
 
-            <button className=' flex justify-center items-center bg-red-500 text-white p-1 rounded mx-1'>
+            <button
+              className=' flex justify-center items-center bg-red-500 text-white p-1 rounded mx-1'
+              onClick={() => {
+                handleDelete(record.id);
+              }}
+            >
               <DeleteOutlined />
             </button>
 
@@ -395,7 +417,12 @@ const Charge = (props: Props) => {
             <MailOutlined className='icon-btn' /> Email
           </button>
 
-          <button className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'>
+          <button
+            className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
+            onClick={() => {
+              selectRowDelete();
+            }}
+          >
             <DeleteOutlined className='icon-btn' /> Xoá
           </button>
         </div>
