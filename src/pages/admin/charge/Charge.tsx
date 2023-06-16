@@ -14,16 +14,17 @@ import {
   SaveOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, DatePicker, Modal, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Form, Modal, Select, Table, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
-import { getCharge, removeCharge } from 'src/features/charge/chargeSlice';
+import { getCharge, getChargeFilter, removeCharge } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx-js-style';
+import moment from 'moment';
 type Props = {};
 
 const Charge = (props: Props) => {
@@ -368,6 +369,22 @@ const Charge = (props: Props) => {
 
     XLSX.writeFile(wb, 'thu-tien-5/2023.xlsx');
   };
+
+  const initValueFormFilter = {
+    dateTime: moment(),
+    ky: 'Tất cả',
+    house: 'Tất cả',
+  };
+
+  const onFinishFter = async (values: any) => {
+    const year = moment(values.dateTime).year();
+    const month = moment(values.dateTime).month() + 1;
+    const ky = values.ky;
+    const house = values.house;
+
+    const filter = { month: month, house: house, ky: ky, year: year };
+    dispatch(getChargeFilter(filter));
+  };
   return (
     <div className='es-container'>
       <div className='title'>
@@ -430,42 +447,45 @@ const Charge = (props: Props) => {
 
       {/* filter */}
       <div className='filter'>
-        {' '}
-        <div className='flex  w-9/12 mt-5 items-center'>
-          <div className='flex-item'>
-            <label className='text-base font-semibold mr-2 '>Tháng/năm</label>
-            <DatePicker />
+        <Form layout='horizontal' initialValues={initValueFormFilter} onFinish={onFinishFter}>
+          {' '}
+          <div className='flex  w-9/12 mt-5 items-center'>
+            <div className='flex-item'>
+              <Form.Item label='Tháng/năm' name='dateTime'>
+                <DatePicker picker='month' />
+              </Form.Item>
+            </div>
+            <div className='flex-item'>
+              <Form.Item label='Kỳ' name='ky'>
+                <Select
+                  style={{ width: 200 }}
+                  options={[
+                    { value: 'Tất cả', label: 'Tất cả' },
+                    { value: '30', label: '30' },
+                    { value: '15', label: '15' },
+                  ]}
+                />
+              </Form.Item>
+            </div>
+            <div className='flex-item'>
+              <Form.Item label='Nhà' name='house'>
+                <Select
+                  style={{ width: 200 }}
+                  options={[
+                    { value: 'Tất cả', label: 'Tất cả' },
+                    { value: 'my dinh 1', label: 'my dinh 1' },
+                    { value: 'my dinh 2', label: 'my dinh 2' },
+                  ]}
+                />
+              </Form.Item>
+            </div>
+            <Form.Item>
+              <Button type='primary' htmlType='submit'>
+                Filter
+              </Button>
+            </Form.Item>
           </div>
-          <div className='flex-item'>
-            <label className='text-base font-semibold mr-2 '>Kỳ</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className='text-base font-semibold mr-2 '>Nhà</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div className='btn-view'>
-            <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4 rounded flex items-center justify-between'>
-              <SearchOutlined className='icon-btn' /> Xem
-            </button>
-          </div>
-        </div>
+        </Form>
         <div className='note mt-5'>
           <p>
             <strong>Lưu ý:</strong>
