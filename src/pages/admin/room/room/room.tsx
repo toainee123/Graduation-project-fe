@@ -8,15 +8,17 @@ import './room.scss';
 const Room = () => {
   return (
     <div className='room'>
-      <div className='room_filter'>
-        <div className='row'>
-          <h1>Danh sách phòng</h1>
+      <div className="room_filter">
+        <div className="row">
+          <div className='title_page'>
+            <h1>Danh Sách Phòng</h1>
+          </div>
         </div>
         <NavRoom />
         <ListRoom />
       </div>
-    </div>
-  );
-};
+    </div >
+  )
+}
 
 export default Room;
