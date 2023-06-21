@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Loading from '../../../components/common/loading/Loading';
+import { useEffect, useState } from 'react';
 import Chart from '../../../components/specific/chart/Chart';
-import { fetchDataChart, selectDashboardLoading } from '../../../features/dashboard/DashboardSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { fetchDataChart } from '../../../features/dashboard/DashboardSlice';
+import { useAppDispatch } from '../../../store/hooks';
 
 import './dashboard.scss';
 
 interface Props { };
 
 const Dashboard = (props: Props) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<object>>([]);
 
   useEffect(() => {
