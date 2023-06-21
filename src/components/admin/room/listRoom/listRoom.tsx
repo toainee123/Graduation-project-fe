@@ -5,7 +5,7 @@ const room = [
     "Tầng 1", "Tầng 2"
 ]
 
-const ListRoom = () => {
+const ListRooms = () => {
     return (
         <div className='mt-9'>
             <Tabs
@@ -30,4 +30,4 @@ const ListRoom = () => {
     )
 }
 
-export default ListRoom
+export default ListRooms

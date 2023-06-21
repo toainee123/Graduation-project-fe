@@ -4,7 +4,8 @@ import type { TabsProps } from 'antd';
 
 import "./createMember.scss";
 import FormCreateMember from 'src/components/admin/room/form/createMember/formCreateMember';
-import CreateRoom from '../createRoom/createRoom';
+import Relative from 'src/components/admin/room/form/relative/relative';
+import Contract from 'src/components/admin/room/contract/contract';
 
 const items: TabsProps['items'] = [
     {
@@ -13,23 +14,17 @@ const items: TabsProps['items'] = [
         children: <FormCreateMember />
     },
     {
-        label: 'Dịch vụ',
-        key: '2',
-        children: <CreateRoom />
-    },
-    {
         label: 'Thành viên',
         key: '3',
-        children: <CreateRoom />
+        children: <Relative />
     },
     {
         label: 'Hợp đồng',
         key: '4',
-        children: <CreateRoom />
+        children: <Contract />
     },
 ]
 
-const { TabPane } = Tabs
 const CreateMember = () => {
     return (
         <div>

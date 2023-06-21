@@ -30,7 +30,7 @@ const infoRoom = [
     , {
         "numberHouse": 5,
         "member": 0,
-        "priceRoom": 3000000
+        "priceRoom": 2000000
     },
     {
         "numberHouse": 6,
@@ -78,7 +78,7 @@ const CardRoom = () => {
                 </div>
             </div>
             <div className=" px-4 sm:py-2 sm:px-1 lg:max-w-full lg:px-2">
-                <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
+                <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-8">
                     {infoRoom.map((item, i) => (
 
                         item.member ? (
