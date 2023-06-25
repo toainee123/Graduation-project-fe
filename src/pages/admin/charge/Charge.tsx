@@ -14,26 +14,34 @@ import {
   SaveOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, DatePicker, Form, Modal, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
-import { getCharge, getChargeFilter, removeCharge } from 'src/features/charge/chargeSlice';
+import { addCharge, getCharge, getChargeFilter, removeCharge } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
+import axios from 'axios';
+
 type Props = {};
 
-const Charge = (props: Props) => {
+const Charge = () => {
   const { Text } = Typography;
-
+  const [houses, setHouses] = useState([]);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
     dispatch(getAstablishContract());
+    const getHouse = async () => {
+      const { data } = await axios.get('http://localhost:3001/houses');
+
+      setHouses(data);
+    };
+    getHouse();
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
@@ -46,12 +54,12 @@ const Charge = (props: Props) => {
       month: item.month,
       year: item.year,
       ky: item.ky,
-      house: item.house,
-      room: item.room,
-      user: item.user,
-      tien: item.tien,
-      tiendatra: item.tiendatra,
-      tienconlai: item.tien - item.tiendatra,
+      house: item.house.name,
+      room: item.room.name,
+      user: item.customer.name,
+      tien: item.total_bill,
+      tiendatra: item.rest,
+      tienconlai: item.total_bill - item.rest,
     };
   });
 
@@ -294,15 +302,15 @@ const Charge = (props: Props) => {
     let length = 0;
     const dataExport = chargeData.map((item: any) => {
       length++;
-      tienl += +item.tien;
-      tiendattral += +item.tiendatra;
+      tienl += +item.total_bill;
+      tiendattral += +item.rest;
       return {
-        house: item.house,
-        room: item.room,
-        user: item.user,
-        tien: +item.tien,
-        tiendatra: +item.tiendatra,
-        tienconlai: item.tien - item.tiendatra,
+        house: item.house.name,
+        room: item.room.name,
+        user: item.customer.name,
+        tien: +item.total_bill,
+        tiendatra: +item.rest,
+        tienconlai: +item.total_bill - +item.rest,
       };
     });
     dataExport.push({
@@ -336,7 +344,7 @@ const Charge = (props: Props) => {
       font: { sz: 14, bold: true },
       alignment: { horizontal: 'center' },
     };
-    ws['A3'] = { t: 's', v: 'Nhà: Tất cả, Kỳ: Tất cả ' };
+    ws['A3'] = { t: 's', v: 'Nhà: Tất cả, Kỳ: Tất cả ' }; // note need fix ondata
     ws['A3'].s = {
       font: { sz: 14, bold: true },
       alignment: { horizontal: 'center' },
@@ -376,131 +384,395 @@ const Charge = (props: Props) => {
     house: 'Tất cả',
   };
 
+  const initValueCacula = {
+    date: moment(),
+  };
+
   const onFinishFter = async (values: any) => {
     const year = moment(values.dateTime).year();
     const month = moment(values.dateTime).month() + 1;
     const ky = values.ky;
     const house = values.house;
-
-    const filter = { month: month, house: house, ky: ky, year: year };
-    dispatch(getChargeFilter(filter));
+    // const filter = { month: month, house: house, ky: ky, year: year };
+    // dispatch(getChargeFilter(filter));
   };
+
+  const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
+  const showModal = () => {
+    setIsModalOpenCalculator(true);
+  };
+
+  const handleOk = () => {
+    form.submit();
+  };
+
+  const handleExit = () => {
+    setIsModalOpenCalculator(false);
+  };
+
+  const [form] = Form.useForm();
+
+  const selectRowThutien = () => {
+    for (let i = 0; i < selectedRow.length; i++) {
+      dispatch(removeCharge(selectedRow[i].id));
+    }
+  };
+
+  // tinh tien
+  const [room, setRoom] = useState([]);
+  const handleSelectHouse = async (value: any) => {
+    const { data } = await axios.get(`http://localhost:3001/rooms?houseId=${value}`);
+    setRoom(data);
+  };
+  const handleSubmituserform = async (values: any) => {
+    const year = moment(values.date).year();
+    const month = moment(values.date).month() + 1;
+    console.log(month);
+
+    const res = await axios.get(
+      `http://localhost:3001/bills?houseId=${values.house}&roomId=${values.room}&month=${month}&year=${year}`
+    );
+
+    const dataBilll = res.data;
+
+    if (dataBilll.length !== 0) {
+      const idd = dataBilll[0].id;
+      const res1 = await axios.get(`http://localhost:3001/waters`, {
+        params: { houseId: values.house, roomId: values.room, month: month, year: year },
+      });
+
+      const datRes1 = res1.data;
+      for (const key in datRes1) {
+        await axios.delete(`http://localhost:3001/waters/${datRes1[key].id}`);
+      }
+
+      const res2 = await axios.get(`http://localhost:3001/elecs`, {
+        params: { houseId: values.house, roomId: values.room, month: month, year: year },
+      });
+
+      const datRes2 = res2.data;
+      for (const key in datRes1) {
+        await axios.delete(`http://localhost:3001/elecs/${datRes2[key].id}`);
+      }
+      await axios.delete(`http://localhost:3001/bills/${idd}`);
+      dispatch(getCharge());
+    }
+
+    // luu c/s nuoc
+    let dataWaterAfterSave;
+    const { data } = await axios.get(
+      `http://localhost:3001/waters?houseId=${values.house}&roomId=${values.room}&month=${month - 1}&year=${year}`
+    );
+    const dataMonthWaterPrev = data[0];
+    if (dataMonthWaterPrev === undefined) {
+      const dataWater = {
+        roomId: values.room,
+        houseId: values.house,
+        price: 20000,
+        indexOld: 0,
+        indexNew: +values.water,
+        used: +values.water - 0,
+        month: month,
+        year: year,
+      };
+
+      const response = await axios.post(`http://localhost:3001/waters`, dataWater);
+      dataWaterAfterSave = response.data;
+    } else {
+      const dataWater = {
+        roomId: values.room,
+        houseId: values.house,
+        price: 20000,
+        indexOld: dataMonthWaterPrev.indexNew,
+        indexNew: +values.water,
+        used: +values.water - dataMonthWaterPrev.indexNew,
+        month: month,
+        year: year,
+      };
+      const response = await axios.post(`http://localhost:3001/waters`, dataWater);
+      dataWaterAfterSave = response.data;
+    }
+
+    // luu c/s dien
+    let dataElecAfterSave;
+    const responseElec = await axios.get(
+      `http://localhost:3001/elecs?houseId=${values.house}&roomId=${values.room}&month=${month - 1}&year=${year}`
+    );
+    const dataElec = responseElec.data;
+
+    const dataMonthElecPrev = dataElec[0];
+    if (dataMonthElecPrev === undefined) {
+      const dataElec = {
+        roomId: values.room,
+        houseId: values.house,
+        price: 3000,
+        indexOld: 0,
+        indexNew: +values.elec,
+        used: +values.elec - 0,
+        month: month,
+        year: year,
+      };
+
+      const response = await axios.post(`http://localhost:3001/elecs`, dataElec);
+      dataElecAfterSave = response.data;
+    } else {
+      const dataElec = {
+        roomId: values.room,
+        houseId: values.house,
+        price: 3000,
+        indexOld: dataMonthElecPrev.indexNew,
+        indexNew: +values.elec,
+        used: +values.elec - dataMonthElecPrev.indexNew,
+        month: month,
+        year: year,
+      };
+      const response = await axios.post(`http://localhost:3001/elecs`, dataElec);
+      dataElecAfterSave = response.data;
+    }
+
+    // Tinh tien
+    const responseRoom = await axios.get(
+      `http://localhost:3001/rooms?houseId=${values.house}&id=${values.room}&_expand=house`
+    );
+    const dataRoom = responseRoom.data;
+
+    const responseCustomer = await axios.get(`http://localhost:3001/customers?roomId=${values.room}`);
+    const dataUserCustomer = responseCustomer.data;
+    console.log(dataUserCustomer, values.room);
+
+    if (dataUserCustomer.length == 0) {
+      alert('chua co nguoi thue phong nay');
+    } else {
+      const dataBill: any = {
+        roomId: values.room,
+        houseId: values.house,
+        customerId: dataUserCustomer[0].id,
+        total_bill:
+          +dataWaterAfterSave.used * +dataWaterAfterSave.price +
+          +dataElecAfterSave.used * +dataElecAfterSave.price +
+          +dataRoom[0].price +
+          100000,
+        // 100000 la tien dich vu fix  cung vi chua lam mockup bang dich vu
+        paid: 0,
+        rest:
+          +dataWaterAfterSave.used * +dataWaterAfterSave.price +
+          +dataElecAfterSave.used * +dataElecAfterSave.price +
+          +dataRoom[0].price +
+          100000,
+        month: month,
+        year: year,
+        index_water: +dataWaterAfterSave.indexNew,
+        index_electricity: +dataWaterAfterSave.indexNew,
+      };
+      dispatch(addCharge(dataBill));
+    }
+  };
+
   return (
-    <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Tính tiền</strong>
-          </h2>
-        </div>
-
-        <div className='title--button flex items-center'>
-          <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded '>
-            <CalculatorOutlined className='icon-btn' /> Tính
-          </button>
-          <button
-            className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-            onClick={async () => {
-              await handleListData();
-              await handlePrintListBill();
-            }}
-          >
-            <PrinterOutlined className='icon-btn' /> In
-          </button>
-
-          <button
-            className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
-            onClick={() => {
-              exportExcel();
-            }}
-          >
-            <FileExcelOutlined className='icon-btn' /> Xuất file excel
-          </button>
-
-          <button
-            className='btn-x bg-orange-400 hover:bg-orange-400 text-white font-bold py-2  px-4 rounded'
-            onClick={() => {
-              printCharge();
-            }}
-          >
-            <PrinterOutlined className='icon-btn' /> In danh sách
-          </button>
-
-          <button className='btn-x  bg-teal-500 hover:bg-teal-500 text-white font-bold py-2  px-4 rounded'>
-            <MoneyCollectOutlined className='icon-btn' /> Thu tiền
-          </button>
-
-          <button className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'>
-            <MailOutlined className='icon-btn' /> Email
-          </button>
-
-          <button
-            className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
-            onClick={() => {
-              selectRowDelete();
-            }}
-          >
-            <DeleteOutlined className='icon-btn' /> Xoá
-          </button>
-        </div>
-      </div>
-
-      {/* filter */}
-      <div className='filter'>
-        <Form layout='horizontal' initialValues={initValueFormFilter} onFinish={onFinishFter}>
-          {' '}
-          <div className='flex  w-9/12 mt-5 items-center'>
-            <div className='flex-item'>
-              <Form.Item label='Tháng/năm' name='dateTime'>
-                <DatePicker picker='month' />
-              </Form.Item>
-            </div>
-            <div className='flex-item'>
-              <Form.Item label='Kỳ' name='ky'>
-                <Select
-                  style={{ width: 200 }}
-                  options={[
-                    { value: 'Tất cả', label: 'Tất cả' },
-                    { value: '30', label: '30' },
-                    { value: '15', label: '15' },
-                  ]}
-                />
-              </Form.Item>
-            </div>
-            <div className='flex-item'>
-              <Form.Item label='Nhà' name='house'>
-                <Select
-                  style={{ width: 200 }}
-                  options={[
-                    { value: 'Tất cả', label: 'Tất cả' },
-                    { value: 'my dinh 1', label: 'my dinh 1' },
-                    { value: 'my dinh 2', label: 'my dinh 2' },
-                  ]}
-                />
-              </Form.Item>
-            </div>
-            <Form.Item>
-              <Button type='primary' htmlType='submit'>
-                Filter
-              </Button>
-            </Form.Item>
+    <Form.Provider>
+      <div className='es-container'>
+        <div className='title'>
+          <div className='title--name'>
+            <h2>
+              <strong>Tính tiền</strong>
+            </h2>
           </div>
-        </Form>
-        <div className='note mt-5'>
-          <p>
-            <strong>Lưu ý:</strong>
-            <br />
-            - Bạn phải thực hiện việc "Thêm khách" ở chức năng "Phòng" và gán các dịch vụ cho khách thuê trước khi tính
-            tiền.
-            <br />- Nếu có bất kỳ thay đổi liên quan đến tiền nhà tháng đang tính (ví dụ: thay đổi cs điện, nước, đơn
-            giá phòng, ngày vào, giá dịch vụ, ...) thì bạn phải tính tiền lại cho tháng đó.
-          </p>
+
+          <div className='title--button flex items-center'>
+            <button
+              className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded '
+              onClick={showModal}
+            >
+              <CalculatorOutlined className='icon-btn' /> Tính
+            </button>
+            <Modal title='Basic Modal' open={isModalOpenCalculator} onOk={handleOk} onCancel={handleExit}>
+              <Form
+                form={form}
+                layout='vertical'
+                name='calculaForm'
+                onFinish={handleSubmituserform}
+                initialValues={initValueCacula}
+              >
+                <Form.Item label='Tháng/năm' name='date'>
+                  <DatePicker picker='month' style={{ width: '100%' }} />
+                </Form.Item>
+                <Form.Item name='house' label='Nhà'>
+                  <Select
+                    style={{ width: '100%' }}
+                    options={houses?.map((item: any, index: number) => {
+                      return { value: item.id, label: item.name, key: index };
+                    })}
+                    defaultValue={{ value: 0, label: 'Chọn nhà' }}
+                    onChange={handleSelectHouse}
+                  />
+                </Form.Item>
+                <Form.Item name='room' label='Phòng'>
+                  <Select
+                    style={{ width: '100%' }}
+                    options={room?.map((item: any, index: number) => {
+                      return { value: item.id, label: item.name, key: index };
+                    })}
+                    defaultValue={{ value: 0, label: 'Chọn nhà' }}
+                  />
+                </Form.Item>
+
+                <Form.Item name='elec' label='Tiền điện'>
+                  <Input />
+                </Form.Item>
+
+                <Form.Item name='water' label='Tiền nước'>
+                  <Input />
+                </Form.Item>
+              </Form>
+            </Modal>
+            <button
+              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+              onClick={async () => {
+                await handleListData();
+                await handlePrintListBill();
+              }}
+            >
+              <PrinterOutlined className='icon-btn' /> In
+            </button>
+
+            <button
+              className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                exportExcel();
+              }}
+            >
+              <FileExcelOutlined className='icon-btn' /> Xuất file excel
+            </button>
+
+            <button
+              className='btn-x bg-orange-400 hover:bg-orange-400 text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                printCharge();
+              }}
+            >
+              <PrinterOutlined className='icon-btn' /> In danh sách
+            </button>
+
+            <button
+              className='btn-x  bg-teal-500 hover:bg-teal-500 text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                selectRowThutien();
+              }}
+            >
+              <MoneyCollectOutlined className='icon-btn' /> Thu tiền
+            </button>
+
+            <button className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'>
+              <MailOutlined className='icon-btn' /> Email
+            </button>
+
+            <button
+              className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                selectRowDelete();
+              }}
+            >
+              <DeleteOutlined className='icon-btn' /> Xoá
+            </button>
+          </div>
         </div>
-      </div>
-      <div ref={componentPrintRef} className='hide table-export'>
-        <div className='header-print'>
-          <h1 className='uppercase text-center text-bold '>Danh sách tiền phòngs</h1>
+
+        {/* filter */}
+        <div className='filter'>
+          <Form layout='horizontal' initialValues={initValueFormFilter} onFinish={onFinishFter} name='formFilter'>
+            <div className='flex  w-9/12 mt-5 items-center'>
+              <div className='flex-item'>
+                <Form.Item label='Tháng/năm' name='dateTime'>
+                  <DatePicker picker='month' />
+                </Form.Item>
+              </div>
+              <div className='flex-item'>
+                <Form.Item label='Kỳ' name='ky'>
+                  <Select
+                    style={{ width: 200 }}
+                    options={[
+                      { value: 'Tất cả', label: 'Tất cả' },
+                      { value: '30', label: '30' },
+                      { value: '15', label: '15' },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+              <div className='flex-item'>
+                <Form.Item label='Nhà' name='house'>
+                  <Select
+                    style={{ width: 200 }}
+                    options={[
+                      { value: 'Tất cả', label: 'Tất cả' },
+                      { value: 'my dinh 1', label: 'my dinh 1' },
+                      { value: 'my dinh 2', label: 'my dinh 2' },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+              <Form.Item>
+                <Button type='primary' htmlType='submit'>
+                  Filter
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
+          <div className='note mt-5'>
+            <p>
+              <strong>Lưu ý:</strong>
+              <br />
+              - Bạn phải thực hiện việc "Thêm khách" ở chức năng "Phòng" và gán các dịch vụ cho khách thuê trước khi
+              tính tiền.
+              <br />- Nếu có bất kỳ thay đổi liên quan đến tiền nhà tháng đang tính (ví dụ: thay đổi cs điện, nước, đơn
+              giá phòng, ngày vào, giá dịch vụ, ...) thì bạn phải tính tiền lại cho tháng đó.
+            </p>
+          </div>
         </div>
+        <div ref={componentPrintRef} className='hide table-export'>
+          <div className='header-print'>
+            <h1 className='uppercase text-center text-bold '>Danh sách tiền phòngs</h1>
+          </div>
+          <Table
+            columns={columns}
+            rowSelection={{
+              type: 'checkbox',
+              onChange(selectedRowKeys, selectedRows, info) {
+                setSelectedRow(selectedRows);
+              },
+            }}
+            dataSource={dataSource}
+            className='table-data mt-4'
+            pagination={false}
+            summary={(pageData) => {
+              let tongtien = 0;
+              let ttiendatra = 0;
+              let ttienconlai = 0;
+              pageData.forEach((item) => {
+                tongtien += +item.tien;
+                ttiendatra += +item.tiendatra;
+                ttienconlai += item.tienconlai;
+              });
+              return (
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
+                    Total
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={1}>
+                    <Text type='danger'>{tongtien.toLocaleString('VND')}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={2}>
+                    <Text>{ttiendatra.toLocaleString('VND')}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3}>
+                    <Text>{ttienconlai.toLocaleString('VND')}</Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              );
+            }}
+          />
+        </div>
+
         <Table
           columns={columns}
           rowSelection={{
@@ -511,7 +783,6 @@ const Charge = (props: Props) => {
           }}
           dataSource={dataSource}
           className='table-data mt-4'
-          pagination={false}
           summary={(pageData) => {
             let tongtien = 0;
             let ttiendatra = 0;
@@ -523,7 +794,7 @@ const Charge = (props: Props) => {
             });
             return (
               <Table.Summary.Row>
-                <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
+                <Table.Summary.Cell index={0} colSpan={3}>
                   Total
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
@@ -540,91 +811,52 @@ const Charge = (props: Props) => {
             );
           }}
         />
-      </div>
 
-      <Table
-        columns={columns}
-        rowSelection={{
-          type: 'checkbox',
-          onChange(selectedRowKeys, selectedRows, info) {
-            setSelectedRow(selectedRows);
-          },
-        }}
-        dataSource={dataSource}
-        className='table-data mt-4'
-        summary={(pageData) => {
-          let tongtien = 0;
-          let ttiendatra = 0;
-          let ttienconlai = 0;
-          pageData.forEach((item) => {
-            tongtien += +item.tien;
-            ttiendatra += +item.tiendatra;
-            ttienconlai += item.tienconlai;
-          });
-          return (
-            <Table.Summary.Row>
-              <Table.Summary.Cell index={0} colSpan={3}>
-                Total
-              </Table.Summary.Cell>
-              <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
-              <Table.Summary.Cell index={1}>
-                <Text type='danger'>{tongtien.toLocaleString('VND')}</Text>
-              </Table.Summary.Cell>
-              <Table.Summary.Cell index={2}>
-                <Text>{ttiendatra.toLocaleString('VND')}</Text>
-              </Table.Summary.Cell>
-              <Table.Summary.Cell index={3}>
-                <Text>{ttienconlai.toLocaleString('VND')}</Text>
-              </Table.Summary.Cell>
-            </Table.Summary.Row>
-          );
-        }}
-      />
+        <Modal
+          title='Hoá đơn'
+          open={isModalOpen}
+          onCancel={handleCancel}
+          className='id_bill'
+          mask={false}
+          footer={[
+            <Button
+              key='1'
+              type='primary'
+              className='btn-scc'
+              onClick={() => {
+                handleExportImage(username);
+              }}
+            >
+              Tải file ảnh
+            </Button>,
+            <Button
+              key='2'
+              type='primary'
+              onClick={() => {
+                handleExportPDF();
+              }}
+            >
+              Tải file PDF
+            </Button>,
+            <Button key='3' type='primary' danger onClick={handleCancel}>
+              Đóng
+            </Button>,
+          ]}
+        >
+          <div id='pdf' className='p-3' ref={cpPrintBillRef}>
+            {parse(printData ? printData : '')}
+          </div>
+        </Modal>
 
-      <Modal
-        title='Hoá đơn'
-        open={isModalOpen}
-        onCancel={handleCancel}
-        className='id_bill'
-        mask={false}
-        footer={[
-          <Button
-            key='1'
-            type='primary'
-            className='btn-scc'
-            onClick={() => {
-              handleExportImage(username);
-            }}
-          >
-            Tải file ảnh
-          </Button>,
-          <Button
-            key='2'
-            type='primary'
-            onClick={() => {
-              handleExportPDF();
-            }}
-          >
-            Tải file PDF
-          </Button>,
-          <Button key='3' type='primary' danger onClick={handleCancel}>
-            Đóng
-          </Button>,
-        ]}
-      >
-        <div id='pdf' className='p-3' ref={cpPrintBillRef}>
+        <div className='p-3 hide' ref={cpPrintBillRef}>
           {parse(printData ? printData : '')}
         </div>
-      </Modal>
 
-      <div className='p-3 hide' ref={cpPrintBillRef}>
-        {parse(printData ? printData : '')}
+        <div className='p-3 hide' ref={cpPrintListBillRef}>
+          {parse(printListBillData ? printListBillData : '')}
+        </div>
       </div>
-
-      <div className='p-3 hide' ref={cpPrintListBillRef}>
-        {parse(printListBillData ? printListBillData : '')}
-      </div>
-    </div>
+    </Form.Provider>
   );
 };
 
