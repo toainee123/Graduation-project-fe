@@ -47,6 +47,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.title_page h1 {
+  font-weight: bold;
+  color: var(--cl-text-gray);
+  border-bottom: 2px solid var(--cl-border-bottom-gray);
+  text-transform: capitalize;
+}
+
 h1 {
   font-size: 2em;
   font-weight: bolder;

@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../../store/hooks';
 
 import './dashboard.scss';
 
-interface Props {}
+interface Props { };
 
 const Dashboard = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -15,15 +15,16 @@ const Dashboard = (props: Props) => {
     dispatch(fetchDataChart())
       .unwrap()
       .then((resp) => {
-        setData(resp);
+        setData(resp)
       })
-      .catch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      .catch()
   }, []);
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      <div className='title_page'>
+        <h1>Dashboard</h1>
+      </div>
       <div className='chartWrap'>
         <div className='chartDashboard'>
           <Chart data={data} xField={'year'} yField={'value'} seriesField={'category'} />

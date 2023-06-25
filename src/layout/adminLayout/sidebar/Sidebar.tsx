@@ -29,63 +29,64 @@ const Sidebar = (props: Props) => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState<'vertical' | 'inline'>('inline');
-  const [theme, setTheme] = useState<MenuTheme>('dark');
+  const [theme, setTheme] = useState<MenuTheme>('light');
 
   type MenuItem = Required<MenuProps>['items'][number];
 
   const menuListItem: MenuItem[] = [
     {
-      label: <Link to={urlRouter.DASHBOARD}>Dashboard</Link>,
+      label: <Link className='label-router' to={urlRouter.DASHBOARD}>Dashboard</Link>,
       key: '1',
       icon: <LineChartOutlined />,
     },
     {
-      label: <Link to={urlRouter.ROOM}>Phòng</Link>,
+      label: <Link className='label-router' to={urlRouter.ROOM}>Phòng</Link>,
       key: '2',
-      icon: <HomeOutlined />,
+      icon: <HomeOutlined />
     },
     {
-      label: <Link to={urlRouter.SERVICE}>Dịch vụ</Link>,
+      label: <Link className='label-router' to={urlRouter.SERVICE}>Dịch vụ</Link>,
       key: '3',
       icon: <ReconciliationOutlined />,
     },
     {
-      label: <Link to={urlRouter.DATA_POWER}>Tiền điện</Link>,
+      label: <Link className='label-router' to={urlRouter.DATA_POWER}>Tiền điện</Link>,
       key: '4',
       icon: <ThunderboltOutlined />,
     },
     {
-      label: <Link to={urlRouter.DATA_WATER}>Tiền nước</Link>,
+      label: <Link className='label-router' to={urlRouter.DATA_WATER}>Tiền nước</Link>,
       key: '5',
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.ARISE}>Phát sinh</Link>,
+      label: <Link className='label-router' to={urlRouter.ARISE}>Phát sinh</Link>,
       key: '6',
       icon: <FormOutlined />,
     },
     {
-      label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
+      label: <Link className='label-router' to={urlRouter.PAYMENT}>Phiếu chi</Link>,
       key: '7',
       icon: <FileTextOutlined />,
     },
     {
-      label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
+      label: <Link className='label-router' to={urlRouter.REPORT}>Báo cáo</Link>,
       key: '8',
       icon: <FileTextOutlined />,
     },
     {
-      label: <Link to={urlRouter.ASSETS}>Tài sản</Link>,
+
+      label: <Link className='label-router' to={urlRouter.ASSETS}>Tài sản</Link>,
       key: '11',
       icon: <FileTextOutlined />,
     },
     {
-      label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
+      label: <Link className='label-router' to={urlRouter.CHARGE}>Tính tiền</Link>,
       key: '9',
       icon: <CalculatorOutlined />,
     },
     {
-      label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
+      label: <Link className='label-router' to={urlRouter.ESTABLISH}>Thiết lập</Link>,
       key: '10',
       icon: <FileOutlined />,
     },
@@ -111,7 +112,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
 
         <div className='userLogin'>
