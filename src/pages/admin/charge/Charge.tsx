@@ -18,7 +18,7 @@ import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Typ
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
-import { addCharge, getCharge, getChargeFilter, removeCharge } from 'src/features/charge/chargeSlice';
+import { addCharge, getCharge, getChargeFilter, removeCharge, updatePaidBill } from 'src/features/charge/chargeSlice';
 import { getAstablishContract } from 'src/features/establish/establishSlice';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -58,8 +58,8 @@ const Charge = () => {
       room: item.room.name,
       user: item.customer.name,
       tien: item.total_bill,
-      tiendatra: item.rest,
-      tienconlai: item.total_bill - item.rest,
+      tiendatra: item.paid,
+      tienconlai: item.total_bill - item.paid,
     };
   });
 
@@ -404,6 +404,7 @@ const Charge = () => {
 
   const handleOk = () => {
     form.submit();
+    setIsModalOpenCalculator(false);
   };
 
   const handleExit = () => {
@@ -414,7 +415,11 @@ const Charge = () => {
 
   const selectRowThutien = () => {
     for (let i = 0; i < selectedRow.length; i++) {
-      dispatch(removeCharge(selectedRow[i].id));
+      console.log(selectedRow[i].tienconlai);
+
+      if (selectedRow[i].tienconlai !== 0) {
+        dispatch(updatePaidBill({ id: selectedRow[i].id, paid: selectedRow[i].tienconlai, rest: 0 }));
+      }
     }
   };
 

@@ -4,12 +4,10 @@ import axios from 'axios';
 interface chargeType {
   value: any;
 }
-
+const date = new Date();
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
 export const getCharge = createAsyncThunk('charge/getData', async () => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-
   const { data }: any = await axios.get(
     `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
   );
@@ -43,13 +41,11 @@ export const getChargeFilter = createAsyncThunk('charge/getChargeFilter', async 
 
 export const removeCharge = createAsyncThunk('charge/removeCharge', async (id: any) => {
   await axios.delete(`http://localhost:3001/bills/${id}`);
+
   return id;
 });
 
 export const addCharge = createAsyncThunk('charge/addCharge', async (dataBill: any) => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
   await axios.post(`http://localhost:3001/bills`, dataBill);
 
   const res: any = await axios.get(
@@ -59,9 +55,14 @@ export const addCharge = createAsyncThunk('charge/addCharge', async (dataBill: a
   return res.data;
 });
 
-export const updateRestBill = createAsyncThunk('charge/updateRestBill', async (value: any) => {
+export const updatePaidBill = createAsyncThunk('charge/updatePaidBill', async (value: any) => {
   const { data }: any = await axios.patch(`http://localhost:3001/bills/${value.id}`, value);
-  return data;
+
+  const res: any = await axios.get(
+    `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
+  );
+
+  return res.data;
 });
 
 // Define the initial state using that type
@@ -87,6 +88,10 @@ export const chargeSlice = createSlice({
     });
 
     builder.addCase(addCharge.fulfilled, (state, action) => {
+      return void (state.value = action.payload);
+    });
+
+    builder.addCase(updatePaidBill.fulfilled, (state, action) => {
       return void (state.value = action.payload);
     });
 
