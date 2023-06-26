@@ -1,3 +1,4 @@
+import { Form } from 'antd';
 import { Navigate } from 'react-router-dom';
 import DataPower from 'src/pages/admin/dataPower/dataPower';
 import DataWater from 'src/pages/admin/dataWater/dataWater';
@@ -21,8 +22,14 @@ import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
+import HomePage from '../pages/admin/homePage/index';
 
 export const adminRoutes = [
+  {
+    index: true,
+    path: urlRouter.HOMEPAGE,
+    component: HomePage,
+  },
   {
     index: true,
     path: urlRouter.DASHBOARD,

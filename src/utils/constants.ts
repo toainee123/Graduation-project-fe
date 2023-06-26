@@ -5,6 +5,7 @@ export const urlRouter = {
 
   // Admin
   ADMIN: 'admin',
+  HOMEPAGE: 'homepage',
   DASHBOARD: 'dashboard',
   ROOM: 'room',
   CREATE_ROOM: 'creat',

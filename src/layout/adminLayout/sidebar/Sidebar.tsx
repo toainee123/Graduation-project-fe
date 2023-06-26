@@ -5,6 +5,7 @@ import {
   FormOutlined,
   HomeOutlined,
   LineChartOutlined,
+  DashboardOutlined,
   MailOutlined,
   ReconciliationOutlined,
   SketchOutlined,
@@ -35,48 +36,53 @@ const Sidebar = (props: Props) => {
 
   const menuListItem: MenuItem[] = [
     {
-      label: <Link to={urlRouter.DASHBOARD}>Dashboard</Link>,
+      label: <Link to={urlRouter.HOMEPAGE}>HomePage</Link>,
       key: '1',
+      icon: <DashboardOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.DASHBOARD}>Dashboard</Link>,
+      key: '2',
       icon: <LineChartOutlined />,
     },
     {
       label: <Link to={urlRouter.ROOM}>Phòng</Link>,
-      key: '2',
+      key: '3',
       icon: <HomeOutlined />,
     },
     {
       label: <Link to={urlRouter.SERVICE}>Dịch vụ</Link>,
-      key: '3',
+      key: '4',
       icon: <ReconciliationOutlined />,
     },
     {
       label: <Link to={urlRouter.DATA_POWER}>Tiền điện</Link>,
-      key: '4',
+      key: '5',
       icon: <ThunderboltOutlined />,
     },
     {
       label: <Link to={urlRouter.DATA_WATER}>Tiền nước</Link>,
-      key: '5',
+      key: '6',
       icon: <MailOutlined />,
     },
     {
       label: <Link to={urlRouter.ARISE}>Phát sinh</Link>,
-      key: '6',
+      key: '7',
       icon: <FormOutlined />,
     },
     {
       label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
-      key: '7',
+      key: '8',
       icon: <FileTextOutlined />,
     },
     {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
-      key: '8',
+      key: '9',
       icon: <FileTextOutlined />,
       children: [
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
-          key: '8.1',
+          key: '9.1',
           icon: <FileTextOutlined />,
         },
         {
@@ -85,24 +91,24 @@ const Sidebar = (props: Props) => {
               Danh sách khách hàng sắp hết hạn hợp đồng
             </Link>
           ),
-          key: '8.2',
+          key: '9.2',
           icon: <FileTextOutlined />,
         },
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
-          key: '8.2',
+          key: '9.2',
           icon: <FileTextOutlined />,
         },
       ],
     },
     {
       label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
-      key: '9',
+      key: '10',
       icon: <CalculatorOutlined />,
     },
     {
       label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
-      key: '10',
+      key: '11',
       icon: <FileOutlined />,
     },
   ];
