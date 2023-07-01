@@ -16,27 +16,17 @@ export const getCharge = createAsyncThunk('charge/getData', async () => {
 });
 
 export const getChargeFilter = createAsyncThunk('charge/getChargeFilter', async (filter: any) => {
-  console.log(filter);
-
-  const { data }: any = await axios.get(`http://localhost:3001/charge`);
-  const filterData = data.filter((el: any) => {
-    if (filter.ky == 'Tất cả' && filter.house == 'Tất cả') {
-      console.log('hhh');
-
-      return el.year == filter.year && el.month == filter.month;
-    }
-    if (filter.ky == 'Tất cả' && filter.house != 'Tất cả') {
-      console.log('kkk');
-      return el.year == filter.year && el.month == filter.month && el.house == filter.house;
-    }
-    if (filter.house == 'Tất cả' && filter.ky != 'Tất cả') {
-      console.log('ksskk');
-      return el.year == filter.year && el.month == filter.month && el.ky == filter.ky;
-    }
-    return el.year == filter.year && el.month == filter.month && el.ky == filter.ky && el.house == filter.house;
-  });
-
-  return filterData;
+  if (filter.house == 'Tất cả') {
+    const { data }: any = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
+    );
+    return data;
+  } else {
+    const { data }: any = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${filter.house}`
+    );
+    return data;
+  }
 });
 
 export const removeCharge = createAsyncThunk('charge/removeCharge', async (id: any) => {
@@ -45,24 +35,51 @@ export const removeCharge = createAsyncThunk('charge/removeCharge', async (id: a
   return id;
 });
 
-export const addCharge = createAsyncThunk('charge/addCharge', async (dataBill: any) => {
-  await axios.post(`http://localhost:3001/bills`, dataBill);
+export const addCharge = createAsyncThunk('charge/addCharge', async (values: any) => {
+  const fter = values.valueFilter;
+  await axios.post(`http://localhost:3001/bills`, values.dataBill);
+  let res;
+  if (fter === undefined || fter.house === 'Tất cả') {
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
+    );
+  } else if (+fter.house === +values.dataBill.houseId) {
+    console.log('ahihi');
 
-  const res: any = await axios.get(
-    `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-  );
-
-  return res.data;
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
+    );
+  } else if (+fter.house !== +values.dataBill.houseId) {
+    console.log('ahuhu');
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
+    );
+  }
+  return res?.data;
 });
 
 export const updatePaidBill = createAsyncThunk('charge/updatePaidBill', async (value: any) => {
+  const fter = value.valueFilter;
   const { data }: any = await axios.patch(`http://localhost:3001/bills/${value.id}`, value);
 
-  const res: any = await axios.get(
-    `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-  );
+  let res;
+  if (fter === undefined || fter.house === 'Tất cả') {
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
+    );
+  } else if (+fter.house === +value.house) {
+    console.log('ahihi');
 
-  return res.data;
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
+    );
+  } else if (+fter.house !== +value.house) {
+    console.log('ahuhu');
+    res = await axios.get(
+      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
+    );
+  }
+  return res?.data;
 });
 
 // Define the initial state using that type

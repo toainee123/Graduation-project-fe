@@ -26,12 +26,14 @@ import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
+import Templatesms from '../establish/Templatesms';
 
 type Props = {};
 
 const Charge = () => {
   const { Text } = Typography;
   const [houses, setHouses] = useState([]);
+  const [valueFilter, setValueFilter] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -46,6 +48,7 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   const chargeData = useAppSelector((state: any) => state.charge.value);
+  console.log(chargeData);
 
   const dataSource = chargeData.map((item: any, index: number) => {
     return {
@@ -197,6 +200,11 @@ const Charge = () => {
       }
     }
   };
+
+  const houseDataFilter = houses?.map((item: any, index: number) => {
+    return { value: item.id, label: item.name, key: item.id };
+  });
+  const optionFilterHouse = [...houseDataFilter, { value: 'Tất cả', label: 'Tất cả' }];
 
   const columns: ColumnsType<any> = [
     {
@@ -391,10 +399,14 @@ const Charge = () => {
   const onFinishFter = async (values: any) => {
     const year = moment(values.dateTime).year();
     const month = moment(values.dateTime).month() + 1;
-    const ky = values.ky;
     const house = values.house;
-    // const filter = { month: month, house: house, ky: ky, year: year };
-    // dispatch(getChargeFilter(filter));
+    const filter = { month: month, house: house, year: year };
+    setValueFilter({
+      month: month,
+      year: year,
+      house: house,
+    });
+    dispatch(getChargeFilter(filter));
   };
 
   const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
@@ -418,7 +430,15 @@ const Charge = () => {
       console.log(selectedRow[i].tienconlai);
 
       if (selectedRow[i].tienconlai !== 0) {
-        dispatch(updatePaidBill({ id: selectedRow[i].id, paid: selectedRow[i].tienconlai, rest: 0 }));
+        dispatch(
+          updatePaidBill({
+            id: selectedRow[i].id,
+            paid: selectedRow[i].tienconlai,
+            house: selectedRow[i].house,
+            rest: 0,
+            valueFilter,
+          })
+        );
       }
     }
   };
@@ -430,8 +450,9 @@ const Charge = () => {
     setRoom(data);
   };
   const handleSubmituserform = async (values: any) => {
-    const year = moment(values.date).year();
-    const month = moment(values.date).month() + 1;
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
     console.log(month);
 
     const res = await axios.get(
@@ -546,7 +567,7 @@ const Charge = () => {
     console.log(dataUserCustomer, values.room);
 
     if (dataUserCustomer.length == 0) {
-      alert('chua co nguoi thue phong nay');
+      alert('khong thanh cong');
     } else {
       const dataBill: any = {
         roomId: values.room,
@@ -569,7 +590,7 @@ const Charge = () => {
         index_water: +dataWaterAfterSave.indexNew,
         index_electricity: +dataWaterAfterSave.indexNew,
       };
-      dispatch(addCharge(dataBill));
+      dispatch(addCharge({ dataBill, valueFilter }));
     }
   };
 
@@ -598,9 +619,6 @@ const Charge = () => {
                 onFinish={handleSubmituserform}
                 initialValues={initValueCacula}
               >
-                <Form.Item label='Tháng/năm' name='date'>
-                  <DatePicker picker='month' style={{ width: '100%' }} />
-                </Form.Item>
                 <Form.Item name='house' label='Nhà'>
                   <Select
                     style={{ width: '100%' }}
@@ -691,28 +709,10 @@ const Charge = () => {
                   <DatePicker picker='month' />
                 </Form.Item>
               </div>
-              <div className='flex-item'>
-                <Form.Item label='Kỳ' name='ky'>
-                  <Select
-                    style={{ width: 200 }}
-                    options={[
-                      { value: 'Tất cả', label: 'Tất cả' },
-                      { value: '30', label: '30' },
-                      { value: '15', label: '15' },
-                    ]}
-                  />
-                </Form.Item>
-              </div>
+
               <div className='flex-item'>
                 <Form.Item label='Nhà' name='house'>
-                  <Select
-                    style={{ width: 200 }}
-                    options={[
-                      { value: 'Tất cả', label: 'Tất cả' },
-                      { value: 'my dinh 1', label: 'my dinh 1' },
-                      { value: 'my dinh 2', label: 'my dinh 2' },
-                    ]}
-                  />
+                  <Select style={{ width: 200 }} options={optionFilterHouse} />
                 </Form.Item>
               </div>
               <Form.Item>
