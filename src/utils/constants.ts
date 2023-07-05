@@ -21,7 +21,8 @@ export const urlRouter = {
   ASSETS: 'assets',
   ESTABLISH: 'establish',
   CHARGE: 'charge',
-
+  KEEP_ROOM: 'keep-room',
+  CREATE_KEEP_ROOM: 'create-keep-room',
   // auth
   AUTH: 'auth',
   LOGIN: 'login',

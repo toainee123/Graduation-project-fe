@@ -23,7 +23,8 @@ const Dashboard = (props: Props) => {
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      {' '}
+      x<h2>Dashboard</h2>
       <div className='chartWrap'>
         <div className='chartDashboard'>
           <Chart data={data} xField={'year'} yField={'value'} seriesField={'category'} />
