@@ -7,15 +7,22 @@ export const urlRouter = {
   ADMIN: 'admin',
   DASHBOARD: 'dashboard',
   ROOM: 'room',
+  CREATE_ROOM: 'creat',
   SERVICE: 'service', //dịch vụ
+  ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
   DATA_WATER: 'DataWater', //tiền nước
-  OTHER_FREE: 'OtherFree', //phát sinh
+  ARISE: 'arise', //dịch vụ
+  ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
   PG: 'pg',
   LIST_PG: 'list',
-
+  ASSETS: 'assets',
+  ESTABLISH: 'establish',
+  CHARGE: 'charge',
+  KEEP_ROOM: 'keep-room',
+  CREATE_KEEP_ROOM: 'create-keep-room',
   // auth
   AUTH: 'auth',
   LOGIN: 'login',

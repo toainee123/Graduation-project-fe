@@ -1,0 +1,10 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.title_page h1 {
+  font-weight: bold;
+  color: var(--cl-text-gray);
+  border-bottom: 2px solid var(--cl-border-bottom-gray);
+}

@@ -1,0 +1,93 @@
+.es-container {
+  padding: 10px 17px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e6e9ed;
+  padding: 1px 5px 6px;
+  margin-bottom: 10px;
+
+  .title--name h2 strong {
+    color: #73879c;
+    font-size: 30px;
+  }
+  .title-button-retype {
+    display: inline-flex;
+    align-items: center;
+  }
+  .btn-x {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+}
+
+.icon-btn {
+  margin-right: 4px;
+}
+
+.flex-item {
+  margin-right: 50px;
+}
+
+.btn-view {
+  margin-left: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+// .ant-modal:first-child {
+//   display: none !important;
+// }
+
+// .ant-modal:last-child {
+//   display: none !important;
+// }
+
+@media print {
+  body {
+    padding: 10px;
+  }
+  .hide {
+    display: block;
+  }
+
+  .text-right {
+    text-align: right !important;
+  }
+
+  .ant-table-cell:nth-child(3) {
+    width: 120px !important;
+  }
+
+  .ant-table-selection-column {
+    display: none !important;
+  }
+
+  .ant-table-cell:nth-child(2) {
+    display: none !important;
+  }
+
+  .ant-table-selection-column {
+    display: none !important;
+  }
+
+  .ant-table-cell:nth-child(2) {
+    display: none !important;
+  }
+
+  .mbprint {
+    margin-bottom: 10px;
+  }
+
+  @page {
+    size: auto; /* auto is the initial value */
+
+    /* this affects the margin in the printer settings */
+    margin: 15mm 15mm 15mm 15mm;
+  }
+}
