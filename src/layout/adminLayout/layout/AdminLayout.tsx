@@ -17,13 +17,13 @@ const AdminLayout = (props: Props) => {
         <Sidebar />
         <Layout>
           <Content>
-            <div className='layout-admin'>
-              <div className="outlet">
+            <div className='layout-admin '>
+              <div className="outlet shadow-md">
                 <Outlet />
               </div>
             </div>
           </Content>
-          <FooterComponent />
+          {/* <FooterComponent /> */}
         </Layout>
       </Layout>
     </div >

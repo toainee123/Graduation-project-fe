@@ -18,13 +18,13 @@ const Dashboard = (props: Props) => {
         setData(resp);
       })
       .catch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div>
-      {' '}
-      x<h2>Dashboard</h2>
+      <div className='title_page'>
+        <h1>Dashboard</h1>
+      </div>
       <div className='chartWrap'>
         <div className='chartDashboard'>
           <Chart data={data} xField={'year'} yField={'value'} seriesField={'category'} />

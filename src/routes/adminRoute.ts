@@ -1,6 +1,9 @@
 import Assets from 'src/pages/admin/Assets/Assest';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
+import CreateMember from 'src/pages/admin/room/createMember/createMember';
+import ListMember from 'src/pages/admin/room/listMember/listMember';
+import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Charge from 'src/pages/admin/charge/Charge';
 import DataPower from 'src/pages/admin/dataPower/dataPower';
 import DataWater from 'src/pages/admin/dataWater/dataWater';
@@ -31,8 +34,20 @@ export const adminRoutes = [
     component: Room,
   },
   {
+    path: `${urlRouter.ROOM}/${urlRouter.LIST_MEMBER}`,
+    component: ListMember,
+  },
+  {
+    path: `${urlRouter.ROOM}/${urlRouter.LIST_ROOM}`,
+    component: ListRooms,
+  },
+  {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
+  },
+  {
+    path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
+    component: CreateMember,
   },
   {
     path: urlRouter.SERVICE,
