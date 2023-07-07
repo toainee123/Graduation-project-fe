@@ -5,6 +5,7 @@
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^4.7.0",
+    "@antv/g2plot": "^2.4.31",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -15,7 +16,6 @@
     "@types/react-dom": "^18.0.6",
     "antd": "^4.22.3",
     "axios": "^0.27.2",
-    "chart.js": "^4.3.0",
     "env-cmd": "^10.1.0",
     "html-react-parser": "^3.0.16",
     "html2canvas": "^1.4.1",
@@ -25,7 +25,6 @@
     "jspdf": "^2.5.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.7",
     "react-i18next": "^11.18.3",
