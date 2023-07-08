@@ -28,6 +28,7 @@ export const urlRouter = {
   // auth
   AUTH: 'auth',
   LOGIN: 'login',
+  REGISTER: 'register',
   FORGOT_PASSWORD: 'auth/forgot-password',
 };
 

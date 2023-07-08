@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { fetchLogin, selectFetchUserLoading, selectUserRole } from '../../features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useNavigate } from 'react-router-dom';
-import { urlRouter } from '../../utils/constants';
-import { dialogActions } from '../../features/dialog/dialogSlice';
+import { fetchLogin, selectFetchUserLoading, selectUserRole } from '../../../features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useNavigate, Link } from 'react-router-dom';
+import { urlRouter } from '../../../utils/constants';
+import { dialogActions } from '../../../features/dialog/dialogSlice';
 
 type Props = {};
 
@@ -38,9 +38,14 @@ const Login = (props: Props) => {
 
   return (
     <div>
+      <div className='text-center'>
+        <label htmlFor='login' style={{ fontSize: '20px', color: 'red' }} >
+          Login
+        </label>
+      </div>
       <Form
         name='basic'
-        style={{ maxWidth: 500, textAlign: 'center' }}
+        style={{ maxWidth: 600 }}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
@@ -75,6 +80,7 @@ const Login = (props: Props) => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Link to={`/${urlRouter.AUTH}/${urlRouter.REGISTER}`} >bạn chưa có tài khoản</Link ><br />
           <Button type='primary' htmlType='submit'>
             Submit
           </Button>

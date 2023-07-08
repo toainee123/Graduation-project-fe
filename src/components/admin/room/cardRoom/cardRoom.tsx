@@ -1,5 +1,5 @@
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Modal } from 'antd';
+import { Modal, Tooltip } from 'antd';
 import { type } from 'os';
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,53 @@ const infoRoom = [
         "priceRoom": 3000000
     },
     {
+        "numberHouse": 2,
+        "member": 0,
+        "priceRoom": 3000000
+    }, {
+        "numberHouse": 3,
+        "member": 0,
+        "priceRoom": 3000000
+    },
+    {
+        "numberHouse": 4,
+        "member": 0,
+        "priceRoom": 3000000
+    }
+    , {
+        "numberHouse": 5,
+        "member": 0,
+        "priceRoom": 2000000
+    },
+    {
+        "numberHouse": 6,
+        "member": 0,
+        "priceRoom": 3000000
+    },
+    {
+        "numberHouse": 2,
+        "member": 0,
+        "priceRoom": 3000000
+    }, {
+        "numberHouse": 3,
+        "member": 0,
+        "priceRoom": 3000000
+    },
+    {
+        "numberHouse": 4,
+        "member": 0,
+        "priceRoom": 3000000
+    }
+    , {
+        "numberHouse": 5,
+        "member": 0,
+        "priceRoom": 2000000
+    },
+    {
+        "numberHouse": 6,
+        "member": 0,
+        "priceRoom": 3000000
+    }, {
         "numberHouse": 2,
         "member": 0,
         "priceRoom": 3000000
@@ -88,16 +135,16 @@ const CardRoom = () => {
                                 </div>
 
                                 <div className="action text-center">
-                                    <Link to="#" className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
-                                        <button >
+                                    <Tooltip title="xem">
+                                        <Link to="#" className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
                                             <i className="fa-solid fa-eye"></i>
-                                        </button>
-                                    </Link>
-                                    <Link to="#" className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
-                                        <button >
+                                        </Link>
+                                    </Tooltip>
+                                    <Tooltip title="chỉnh sửa">
+                                        <Link to="#" className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
                                             <i className="fa-solid fa-gear"></i>
-                                        </button>
-                                    </Link>
+                                        </Link>
+                                    </Tooltip>
                                 </div>
                                 <div>
                                     <i className="fa-solid fa-user text-gray-500"></i> <span className='text-green-600 font-bold'>{item.member}</span><br />
