@@ -21,7 +21,7 @@ const Establish = (props: Props) => {
   const dispatch = useAppDispatch();
 
   const [tab, setTab] = useState<string>('1');
-  const sample_contract = useAppSelector((state) => state.establish.value);
+  const sample_contract = useAppSelector((state: any) => state.establish.value);
   const saveContract = () => {
     dispatch(updateAstablishContract(sample_contract));
   };

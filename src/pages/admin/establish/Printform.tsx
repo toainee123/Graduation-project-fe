@@ -49,7 +49,7 @@ const Printform = (props: Props) => {
     dispatch(getAstablishContract());
   }, []);
 
-  const data = useAppSelector((state) => state.establish.value);
+  const data = useAppSelector((state: any) => state.establish.value);
   const sample80mm: any = data.sample_bill_80mm;
   const sampleA5: any = data.sample_bill_A5;
 

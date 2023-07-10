@@ -30,59 +30,78 @@ const Sidebar = (props: Props) => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState<'vertical' | 'inline'>('inline');
-  const [theme, setTheme] = useState<MenuTheme>('dark');
+  const [theme, setTheme] = useState<MenuTheme>('light');
 
   type MenuItem = Required<MenuProps>['items'][number];
 
   const menuListItem: MenuItem[] = [
     {
-      label: <Link to={urlRouter.HOMEPAGE}>HomePage</Link>,
+      label: (
+        <Link className='label-router' to={urlRouter.DASHBOARD}>
+          Dashboard
+        </Link>
+      ),
       key: '1',
-      icon: <DashboardOutlined />,
-    },
-    {
-      label: <Link to={urlRouter.DASHBOARD}>Dashboard</Link>,
-      key: '2',
       icon: <LineChartOutlined />,
     },
     {
-      label: <Link to={urlRouter.ROOM}>Phòng</Link>,
-      key: '3',
+      label: (
+        <Link className='label-router' to={urlRouter.ROOM}>
+          Phòng
+        </Link>
+      ),
+      key: '2',
       icon: <HomeOutlined />,
     },
     {
-      label: <Link to={urlRouter.SERVICE}>Dịch vụ</Link>,
-      key: '4',
+      label: (
+        <Link className='label-router' to={urlRouter.SERVICE}>
+          Dịch vụ
+        </Link>
+      ),
+      key: '3',
       icon: <ReconciliationOutlined />,
     },
     {
-      label: <Link to={urlRouter.DATA_POWER}>Tiền điện</Link>,
-      key: '5',
+      label: (
+        <Link className='label-router' to={urlRouter.DATA_POWER}>
+          Tiền điện
+        </Link>
+      ),
+      key: '4',
       icon: <ThunderboltOutlined />,
     },
     {
-      label: <Link to={urlRouter.DATA_WATER}>Tiền nước</Link>,
-      key: '6',
+      label: (
+        <Link className='label-router' to={urlRouter.DATA_WATER}>
+          Tiền nước
+        </Link>
+      ),
+      key: '5',
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.ARISE}>Phát sinh</Link>,
-      key: '7',
+      label: (
+        <Link className='label-router' to={urlRouter.ARISE}>
+          Phát sinh
+        </Link>
+      ),
+      key: '6',
       icon: <FormOutlined />,
     },
     {
       label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
-      key: '8',
+      key: '7',
       icon: <FileTextOutlined />,
     },
     {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
-      key: '9',
+      key: '8',
       icon: <FileTextOutlined />,
       children: [
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
-          key: '9.1',
+          key: '8.1',
           icon: <FileTextOutlined />,
         },
         {
@@ -91,24 +110,81 @@ const Sidebar = (props: Props) => {
               Danh sách khách hàng sắp hết hạn hợp đồng
             </Link>
           ),
-          key: '9.2',
+          key: '8.2',
           icon: <FileTextOutlined />,
         },
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
-          key: '9.2',
+          key: '8.3',
           icon: <FileTextOutlined />,
         },
       ],
     },
     {
-      label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
+      label: (
+        <Link className='label-router' to={urlRouter.ASSETS}>
+          Tài sản
+        </Link>
+      ),
+      key: '9',
+      icon: <FileTextOutlined />,
+    },
+    {
+      label: (
+        <Link className='label-router' to={urlRouter.CHARGE}>
+          Tính tiền
+        </Link>
+      ),
       key: '10',
+      icon: <FileTextOutlined />,
+      children: [
+        {
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
+          key: '10.1',
+          icon: <FileTextOutlined />,
+        },
+        {
+          label: (
+            <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>
+              Danh sách khách hàng sắp hết hạn hợp đồng
+            </Link>
+          ),
+          key: '10.2',
+          icon: <FileTextOutlined />,
+        },
+        {
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
+          key: '10.3',
+          icon: <FileTextOutlined />,
+        },
+      ],
+    },
+    {
+      label: (
+        <Link className='label-router' to={urlRouter.ASSETS}>
+          Tài sản
+        </Link>
+      ),
+      key: '11',
+      icon: <FileTextOutlined />,
+    },
+    {
+      label: (
+        <Link className='label-router' to={urlRouter.CHARGE}>
+          Tính tiền
+        </Link>
+      ),
+      key: '12',
       icon: <CalculatorOutlined />,
     },
     {
-      label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
-      key: '11',
+      label: (
+        <Link className='label-router' to={urlRouter.ESTABLISH}>
+          Thiết lập
+        </Link>
+      ),
+      key: '13',
+
       icon: <FileOutlined />,
     },
   ];

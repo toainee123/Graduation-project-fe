@@ -38,7 +38,7 @@ const Samplecontract = (props: Props) => {
   useEffect(() => {
     dispatch(getAstablishContract());
   }, []);
-  const dt = useAppSelector((state) => state.establish.value);
+  const dt = useAppSelector((state: any) => state.establish.value);
 
   return (
     <div>

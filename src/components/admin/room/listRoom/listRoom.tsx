@@ -5,11 +5,12 @@ const room = [
     "Tầng 1", "Tầng 2"
 ]
 
-const ListRoom = () => {
+const ListRooms = () => {
     return (
         <div className='mt-9'>
             <Tabs
                 defaultActiveKey="1"
+                type='card'
                 items={room.map((Icon, i) => {
                     const id = String(i + 1);
 
@@ -29,4 +30,4 @@ const ListRoom = () => {
     )
 }
 
-export default ListRoom
+export default ListRooms
