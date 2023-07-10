@@ -20,12 +20,15 @@ import AuthLayout from '../layout/authLayout/AuthLayout';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
-import Login from '../pages/login/Login';
+import Login from '../pages/auth/login/Login';
 import { urlRouter } from '../utils/constants';
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import HomePage from '../pages/admin/homePage/index';
+import Register from 'src/pages/auth/register/register';
+import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
+import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 
 export const adminRoutes = [
   {
@@ -117,7 +120,14 @@ export const adminRoutes = [
     path: urlRouter.CHARGE,
     component: Charge,
   },
-
+  {
+    path: urlRouter.KEEP_ROOM,
+    component: KeepRoom,
+  },
+  {
+    path: urlRouter.CREATE_KEEP_ROOM,
+    component: CreateKeepRoom,
+  },
 
   {
     path: 'pg',
@@ -137,9 +147,13 @@ export const adminRoutes = [
 
 export const authRoute = [
   {
-    index: true,
+    // index: true,
     path: 'login',
     component: Login,
+  },
+  {
+    path: urlRouter.REGISTER,
+    component: Register,
   },
   {
     path: 'forgot-password',
