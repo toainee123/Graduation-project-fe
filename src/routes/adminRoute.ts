@@ -20,6 +20,8 @@ import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Login from '../pages/login/Login';
 import { urlRouter } from '../utils/constants';
+import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
+import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 
 export const adminRoutes = [
   {
@@ -88,7 +90,14 @@ export const adminRoutes = [
     path: urlRouter.CHARGE,
     component: Charge,
   },
-
+  {
+    path: urlRouter.KEEP_ROOM,
+    component: KeepRoom,
+  },
+  {
+    path: urlRouter.CREATE_KEEP_ROOM,
+    component: CreateKeepRoom,
+  },
   {
     path: 'pg',
     component: Pg,

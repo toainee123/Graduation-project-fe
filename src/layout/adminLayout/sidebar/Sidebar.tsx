@@ -90,6 +90,11 @@ const Sidebar = (props: Props) => {
       key: '10',
       icon: <FileOutlined />,
     },
+    {
+      label: <Link to={urlRouter.KEEP_ROOM}>Cọc phòng</Link>,
+      key: '12',
+      icon: <FileOutlined />,
+    },
   ];
 
   const logout = () => {
