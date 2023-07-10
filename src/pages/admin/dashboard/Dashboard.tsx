@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../../store/hooks';
 
 import './dashboard.scss';
 
-interface Props { };
+interface Props {}
 
 const Dashboard = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -15,9 +15,9 @@ const Dashboard = (props: Props) => {
     dispatch(fetchDataChart())
       .unwrap()
       .then((resp) => {
-        setData(resp)
+        setData(resp);
       })
-      .catch()
+      .catch();
   }, []);
 
   return (
