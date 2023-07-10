@@ -7,7 +7,6 @@ import establishSlice from 'src/features/establish/establishSlice';
 import chargeSlice from 'src/features/charge/chargeSlice';
 import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
 import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
-import keepRoomReducer from 'src/pages/admin/keep-room/api-keep-room/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +17,6 @@ export const store = configureStore({
     establish: establishSlice,
     charge: chargeSlice,
     listArise: listAriseReducer,
-    keepRoom: keepRoomReducer,
     updateArise: updateAriseReducer,
   },
   middleware: (getDefaultMiddleware) =>

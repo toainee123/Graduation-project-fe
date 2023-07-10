@@ -1,6 +1,4 @@
 import axiosClient from './axiosClient';
-
-
 export const getRoom = async (id: any, query?: any) => {
     const url = `/room/${id}`;
     return axiosClient.get(url, query);

@@ -1,13 +1,12 @@
 import { DatePicker, DatePickerProps, Select, Space } from 'antd';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getListDeposit } from 'src/api/keep-room';
+import { convertDate } from 'src/utils/helps';
 
 const KeepRoom = () => {
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
-
+  const [data, setData] = useState([]);
   const showModal = () => {
     setOpen(true);
   };
@@ -18,6 +17,15 @@ const KeepRoom = () => {
   const lastChange: DatePickerProps['onChange'] = (date, dateString) => {
     console.log(date);
   };
+  useEffect(() => {
+    const getDeposit = async () => {
+      const { data } = await getListDeposit();
+      setData(data.responses);
+    };
+    getDeposit();
+  }, []);
+  console.log('data', data);
+
   return (
     <div>
       <div className='room'>
@@ -53,26 +61,27 @@ const KeepRoom = () => {
                     <i className='fa-solid fa-users'></i>Tìm kiếm
                   </button>
                 </Link>
-
-                <Link to='http://localhost:3000/admin/create-keep-room'>
-                  <button
-                    onClick={showModal}
-                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                    style={{ marginRight: 15 }}
-                  >
-                    {' '}
-                    <i className='fa-solid fa-users'></i> Thêm
-                  </button>
-                </Link>
-                <Link to='#'>
-                  <button
-                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                    style={{ marginRight: 15 }}
-                  >
-                    {' '}
-                    <i className='fa-solid fa-users'></i> Xuất file Excel
-                  </button>
-                </Link>
+                <div className=''>
+                  <Link to='http://localhost:3000/admin/create-keep-room'>
+                    <button
+                      onClick={showModal}
+                      className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                      style={{ marginRight: 15 }}
+                    >
+                      {' '}
+                      <i className='fa-solid fa-users'></i> Thêm
+                    </button>
+                  </Link>
+                  <Link to='#'>
+                    <button
+                      className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                      style={{ marginRight: 15 }}
+                    >
+                      {' '}
+                      <i className='fa-solid fa-users'></i> Xuất file Excel
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
             <div style={{ display: 'flex', marginBottom: 20 }}>
@@ -125,10 +134,19 @@ const KeepRoom = () => {
                       STT
                     </th>
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Từ ngày
+                      Họ và tên
                     </th>
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Tới ngày
+                      Số điện thoại
+                    </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Tiền cọc
+                    </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Ngày đặt
+                    </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Ngày dự kiến đến
                     </th>
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                       Số nhà
@@ -139,13 +157,27 @@ const KeepRoom = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
-                    <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>1</td>
-                    <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>16</td>
-                    <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>24</td>
-                    <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>321</td>
-                    <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>321</td>
-                  </tr>
+                  {data?.map((item: any) => (
+                    <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.id}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.phone}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                        {new Intl.NumberFormat('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND',
+                        }).format(+item?.money)}
+                      </td>
+                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                        {convertDate(item?.bookingdate)}
+                      </td>
+                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                        {convertDate(item.checkindate)}
+                      </td>
+                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>{item.houseId}</td>
+                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>{item.roomId}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

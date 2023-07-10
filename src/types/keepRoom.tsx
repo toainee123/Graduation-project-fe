@@ -1,4 +1,4 @@
-export type Keep_Room_Type = {
+export type Deposit = {
   _id?: number;
   houseId: string;
   roomId: string;
