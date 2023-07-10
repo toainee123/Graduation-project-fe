@@ -2,6 +2,7 @@
   "name": "code-base-ts",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:9999",
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^4.7.0",
@@ -17,6 +18,7 @@
     "@types/xlsx": "^0.0.36",
     "antd": "^4.22.3",
     "axios": "^0.27.2",
+    "depcheck": "^1.4.3",
     "env-cmd": "^10.1.0",
     "html-react-parser": "^3.0.16",
     "html2canvas": "^1.4.1",
@@ -65,6 +67,8 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-module-resolver": "^4.1.0"
+    "babel-cli": "^7.0.0-alpha.19",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-optional-chaining": "^7.0.0-alpha.13.1"
   }
 }

@@ -1,12 +1,13 @@
 import { CloseCircleFilled, EditFilled, PlusOutlined, RedoOutlined, ReloadOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Space, Table } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 // import { getApiService } from './api';
 import { dataSource, columns } from './constant';
 import './style.scss'
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
+import { getApiService } from './api';
 
 const Service = () => {
     // const count = useSelector((state) => state.counter.value)
@@ -14,6 +15,12 @@ const Service = () => {
     const [dataFilter, setDataFilter] = useState({
         nameService: ""
     })
+
+    useEffect(() => {
+        dispatch(getApiService());
+
+    }, [])
+
     // get value select
     // const handleGetValue = (field, type,) => {
     //     if (type === "TYPE_SEARCH") {
@@ -56,46 +63,6 @@ const Service = () => {
             })
         )
     }
-    // const getFilter = () => arrayFilterSearch.map(item => {
-    //     if (item.type === "text") {
-    //         return (
-    //             <li className="filter-li" style={{ float: "left" }}>
-    //                 <Input
-    //                     value={dataFilter[item.field]}
-    //                     placeholder={item.placeHolder}
-    //                     onChange={e => handleUpdateField(e, item.field, item.type)}
-    //                 />
-    //                 {/* <input
-    //                     type="text"
-    //                 /> */}
-    //             </li>
-    //         )
-    //     }
-    //     if (item.type === 'drop-down') {
-    //         return (
-    //             <li className="filter-li w-200px" style={{ float: "left" }}>
-    //                 <div className="form-group">
-    //                     {/* <div className="form-control-wrap">
-    //                         <Select
-    //                             // options={handleGetOptions(itemFilter.field) || []}
-    //                             // getOptionLabel={option => getOptionLabel(option, itemFilter.field)}
-    //                             // getOptionValue={option => getOptionValue(option, itemFilter.field)}
-    //                             // onFocus={() => handleFocus(itemFilter.field)}
-    //                             // onChange={e => handleUpdateField(e, itemFilter.field, itemFilter.type, itemFilter.fieldDisabled)}
-    //                             // placeholder={itemFilter.placeHolder}
-    //                             // value={handleGetValue(itemFilter.field)}
-    //                             isClearable
-    //                         // isDisabled={dataFilter.disabled[itemFilter.field] && dataFilter.disabled[itemFilter.field]}
-    //                         />
-    //                     </div> */}
-    //                 </div>
-    //             </li>
-    //         )
-    //     }
-    // })
-    const handleSearch = () => {
-        console.log("Search")
-    }
     const resetFilter = () => {
 
     }
@@ -112,6 +79,9 @@ const Service = () => {
             </Space>
         )
     }
+    const handleSearch = () => {
+        // dispatch(getServiceList());
+    };
     return (
         <>
             <div className='header'>
@@ -119,9 +89,13 @@ const Service = () => {
                     <h1>List Service</h1>
                 </div>
                 <div className='action'>
-                    <Link to={urlRouter.ADD_SERVICE} >
-                        <Button type="primary"> <PlusOutlined style={{ fontSize: 15 }} />Thêm dịch vụ</Button>
-                    </Link>
+                    <div className='btn-view'>
+                        <Link to={urlRouter.ADD_SERVICE} >
+                            <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4 rounded flex items-center justify-between'>
+                                <PlusOutlined className='icon-btn' /> Thêm dịch vụ
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <hr />

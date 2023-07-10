@@ -1,30 +1,32 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getApiService, postApiService } from './api';
 
 const initialState = {
     value: 0,
+    listService: null
 }
 
 export const listServiceSlice = createSlice({
-    name: 'counter',
+    name: 'listServiceStores',
     initialState,
-    reducers: {
-        increment: (state) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
+    extraReducers: {
+        [getApiService.fulfilled]: (state, action) => {
+            debugger
+            let response = (action.payload);
+            state.listService = response;
+            state.status = "Thành công";
         },
-        decrement: (state) => {
-            state.value -= 1
+        [postApiService.fulfilled]: (state, action) => {
+            let response = (action.payload);
+            state.listService = response;
+            state.status = "Thành công";
         },
-        incrementByAmount: (state, action) => {
-            state.value += action.payload
-        },
+        // [deleteApiService.fulfilled]: (state, action) => {
+        //     let response = (action.payload);
+        //     state.deleteService = response;
+        //     state.status = "Thành công";
+        // },
     },
 })
-
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = listServiceSlice.actions
 
 export default listServiceSlice.reducer

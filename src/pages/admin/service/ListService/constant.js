@@ -1,8 +1,8 @@
 import { CloseCircleFilled, EditFilled } from "@ant-design/icons";
 import { Space } from "antd";
 
-export const baseApi = "https://64277ab946fd35eb7c406e8f.mockapi.io/"
-export const baseApiArise = "https://64277ab946fd35eb7c406e8f.mockapi.io/arise"
+export const baseApi = "localhost:9999"
+export const baseApiServices = "localhost:9999/services"
 
 export const dataSource = [
     {

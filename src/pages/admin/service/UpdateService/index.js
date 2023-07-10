@@ -6,7 +6,6 @@ import { urlRouter } from 'src/utils/constants';
 
 
 const UpdateSevice = () => {
-
     const [dataRequest, setDataRequest] = useState({
         serviceName: null,
         type: null,
@@ -27,63 +26,67 @@ const UpdateSevice = () => {
             [field]: e.target.value
         })
     }
-    console.log(dataRequest)
+
+    const onHandleAddService = () => {
+        console.log(dataRequest)
+    }
     return (
         <>
             <div>
                 <h1>Sửa dịch vụ</h1>
             </div>
             <div className='mt-8'>
-                <form action=''>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Tên dịch vụ <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, "serviceName", "text")} placeholder='Tên dịch vụ' />
-                        </div>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Loại <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <select className='border-2 p-4 outline-0 w-full' onChange={e => handleUpdateField(e, "type", "select")} name='' id=''>
-                                <option value='1'>Loại 1</option>
-                                <option value='2'>Loại 2</option>
-                                <option value='3'>Loại 3</option>
-                            </select>
-                        </div>
+                {/* <form action=''>     */}
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Tên dịch vụ <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full'>
+                        <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, "serviceName", "text")} placeholder='Tên dịch vụ' />
                     </div>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Đơn giá <b className='color-red'>*</b>
-                        </label>
-                        <div className='w-full'>
-                            <input className='border-2 p-4 outline-0 w-full' type='number' onChange={e => handleUpdateField(e, "price", "text")} placeholder='Đơn giá' />
-                        </div>
-                        <label htmlFor='' className='w-64 text-base font-semibold'>
-                            Đang dùng
-                        </label>
-                        <div className='w-full'>
-                            <Checkbox
-                                onChange={e => handleUpdateField(e, "using", "checkbox")}
-                            />
-                        </div>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Loại <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full'>
+                        <select className='border-2 p-4 outline-0 w-full' onChange={e => handleUpdateField(e, "type", "select")} name='' id=''>
+                            <option defaultChecked  >Chọn loại dịch vụ</option>
+                            <option value='1'>Loại 1</option>
+                            <option value='2'>Loại 2</option>
+                            <option value='3'>Loại 3</option>
+                        </select>
                     </div>
-                    <div className='flex justify-between items-center gap-12 py-3'></div>
-                    <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor='' className='w-28 text-base font-semibold'>
-                            Ghi chú
-                        </label>
-                        <div className='w-full'>
-                            <textarea
-                                className='w-full border-2 p-4'
-                                rows={5}
-                                onChange={e => handleUpdateField(e, "description", "text")}
-                                placeholder='Thông tin ghi chú ...'
-                            />
-                        </div>
+                </div>
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Đơn giá <b className='color-red'>*</b>
+                    </label>
+                    <div className='w-full'>
+                        <input className='border-2 p-4 outline-0 w-full' type='number' onChange={e => handleUpdateField(e, "price", "text")} placeholder='Đơn giá' />
                     </div>
-                    {/* <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-64 text-base font-semibold'>
+                        Đang dùng
+                    </label>
+                    <div className='w-full'>
+                        <Checkbox
+                            onChange={e => handleUpdateField(e, "using", "checkbox")}
+                        />
+                    </div>
+                </div>
+                <div className='flex justify-between items-center gap-12 py-3'></div>
+                <div className='flex justify-between items-center gap-12 py-3'>
+                    <label htmlFor='' className='w-28 text-base font-semibold'>
+                        Ghi chú
+                    </label>
+                    <div className='w-full'>
+                        <textarea
+                            className='w-full border-2 p-4'
+                            rows={5}
+                            onChange={e => handleUpdateField(e, "description", "text")}
+                            placeholder='Thông tin ghi chú ...'
+                        />
+                    </div>
+                </div>
+                {/* <div className='flex justify-between items-center gap-12 py-3'>
                         <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                         <div className='w-full'>
                             <div className="flex items-center justify-center w-full">
@@ -98,24 +101,27 @@ const UpdateSevice = () => {
                             </div>
                         </div>
                     </div> */}
-                    <div className='warning-title'>
-                        <h3> (*) Thông tin bắt buộc</h3>
-                    </div>
-                    <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
-                        <div>
-                            <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  '>
-                                <i className='fa-solid fa-check'></i> Gửi
+                <div className='warning-title'>
+                    <h3> (*) Thông tin bắt buộc</h3>
+                </div>
+                <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
+                    <div>
+                        <button
+                            onClick={onHandleAddService}
+                            className='text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                        >
+                            Thêm dịch vụ
+                        </button>
+                        <Link
+                            to={`/admin/${urlRouter.SERVICE}`}
+                        >
+                            <button className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
+                                Hủy
                             </button>
-                            <Link
-                                to={`/admin/${urlRouter.SERVICE}`}
-                            >
-                                <button className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
-                                    Hủy
-                                </button>
-                            </Link>
-                        </div>
+                        </Link>
                     </div>
-                </form>
+                </div>
+                {/* </form> */}
             </div>
         </>
     );
