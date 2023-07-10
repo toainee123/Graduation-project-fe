@@ -5,7 +5,7 @@ import {
   FormOutlined,
   HomeOutlined,
   LineChartOutlined,
-  DashboardOutlined,
+  // DashboardOutlined,
   MailOutlined,
   ReconciliationOutlined,
   SketchOutlined,
@@ -37,8 +37,8 @@ const Sidebar = (props: Props) => {
   const menuListItem: MenuItem[] = [
     {
       label: (
-        <Link className='label-router' to={urlRouter.DASHBOARD}>
-          Dashboard
+        <Link className='label-router' to={urlRouter.HOMEPAGE}>
+          HomePage
         </Link>
       ),
       key: '1',

@@ -17,7 +17,7 @@ import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import UpdateSevice from 'src/pages/admin/service/UpdateService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
-import Dashboard from '../pages/admin/dashboard/Dashboard';
+// import Dashboard from '../pages/admin/dashboard/Dashboard';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
 import Login from '../pages/auth/login/Login';
@@ -35,11 +35,6 @@ export const adminRoutes = [
     index: true,
     path: urlRouter.HOMEPAGE,
     component: HomePage,
-  },
-  {
-    index: true,
-    path: urlRouter.DASHBOARD,
-    component: Dashboard,
   },
   {
     path: urlRouter.ROOM,

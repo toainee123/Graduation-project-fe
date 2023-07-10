@@ -40,7 +40,7 @@ function App() {
               // } />
             }
           >
-            <Route index element={<Navigate to={urlRouter.DASHBOARD} />} />
+            <Route index element={<Navigate to={urlRouter.HOMEPAGE} />} />
             {adminRoutes.map((route, index) => {
               const Page = route.component;
 
