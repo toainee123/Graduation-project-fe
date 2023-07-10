@@ -1,19 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './formCreateMember.scss'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+
+interface FormInput {
+    name: string
+}
 
 const FormCreateMember = () => {
     const navigate = useNavigate()
-
+    const [disable, SetDisable] = useState(true);
+    const { register, formState: { errors }, handleSubmit } = useForm<FormInput>()
+    const onSubmit = (data: FormInput) => console.log(data)
     const start = new Date(Date.now());
     const getDate = new Intl.DateTimeFormat("vn-VI").format(start);
 
     return (
+
         <form action="">
+            <button onClick={() => SetDisable(false)}> sửa xóa</button>
             <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8'>
                 <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Họ và tên</label>
                 <div className='lg:w-1/2 sm:w-full'>
-                    <input className='w-full border-2 p-2 outline-0 md: my-2' type="text" />
+                    <input className='w-full border-2 p-2 outline-0 md: my-2' disabled={disable} type="text" />
                 </div>
                 <label htmlFor="" className="w-48 text-base font-medium text-slate-500">CMND/CCCD</label>
                 <div className='lg:w-1/2 sm:w-full'>

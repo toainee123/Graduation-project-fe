@@ -18,8 +18,9 @@ import AuthLayout from '../layout/authLayout/AuthLayout';
 import Dashboard from '../pages/admin/dashboard/Dashboard';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
-import Login from '../pages/login/Login';
+import Login from '../pages/auth/login/Login';
 import { urlRouter } from '../utils/constants';
+import Register from 'src/pages/auth/register/register';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 
@@ -116,9 +117,13 @@ export const adminRoutes = [
 
 export const authRoute = [
   {
-    index: true,
+    // index: true,
     path: 'login',
     component: Login,
+  },
+  {
+    path: urlRouter.REGISTER,
+    component: Register,
   },
   {
     path: 'forgot-password',

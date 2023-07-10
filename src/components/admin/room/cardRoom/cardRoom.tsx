@@ -1,5 +1,5 @@
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Modal } from 'antd';
+import { Modal, Tooltip } from 'antd';
 import { type } from 'os';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -126,6 +126,7 @@ const CardRoom = () => {
                     </button>
                   </div>
                 </div>
+
               ) : (
                 <div
                   className='m-w-72 h-52 rounded-lg bg-gray-100 hover:bg-gray-200 p-4 flex flex-col justify-between'
@@ -178,7 +179,7 @@ const CardRoom = () => {
             )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
