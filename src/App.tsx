@@ -40,26 +40,27 @@ function App() {
               // } />
             }
           >
-            <Route index element={<Navigate to={urlRouter.DASHBOARD} />} />
+            <Route index element={<Navigate to={urlRouter.HOMEPAGE} />} />
             {adminRoutes.map((route, index) => {
               const Page = route.component;
 
               return (
-                <Route key={index} path={route.path} element={<Page />}>
+                <>
+                  <Route key={index} path={route.path} element={<Page />} />
                   {route.children &&
                     route.children.length > 0 &&
                     route.children.map((children, index) => {
                       const ComponentChildren = children.component;
                       return children.index ? (
-                        <Route key={index}>
-                          <Route key={index} index element={<Navigate to={children.path} />} />
+                        <Route key={index} path={route.path}>
+                          <Route key={index} element={<Navigate to={children.path} />} />
                           <Route key={index} path={children.path} element={<ComponentChildren />} />
                         </Route>
                       ) : (
                         <Route key={index} path={children.path} element={<ComponentChildren />} />
                       );
                     })}
-                </Route>
+                </>
               );
             })}
           </Route>
