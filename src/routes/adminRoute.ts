@@ -129,8 +129,7 @@ export const adminRoutes = [
     component: Pg,
     children: [
       { path: urlRouter.LIST_PG, component: ListPg, index: true },
-      // { path: 'create', component: Login },
-      // { path: 'update', component: Login },
+
     ],
   },
 
@@ -142,13 +141,8 @@ export const adminRoutes = [
 
 export const authRoute = [
   {
-    // index: true,
-    path: 'login',
-    component: Login,
-  },
-  {
-    path: urlRouter.REGISTER,
-    component: Register,
+    path: urlRouter.AUTH,
+    component: AuthLayout
   },
   {
     path: 'forgot-password',

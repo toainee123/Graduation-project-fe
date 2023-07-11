@@ -42,7 +42,7 @@ axiosClient.interceptors.response.use(
       (error.response.status === 500 && error.response.data.message === 'Error: invalid signature') ||
       (error.response.status === 500 && error.response.data.message === 'Error: Permission denied')
     ) {
-      window.location.href = urlRouter.LOGIN;
+      window.location.href = urlRouter.AUTH;
       window.localStorage.clear();
     }
 
