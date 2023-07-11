@@ -1,20 +1,13 @@
 import React from 'react'
-import { Button, Form, Input, InputNumber } from 'antd';
-import { Link } from 'react-router-dom';
-import { urlRouter } from 'src/utils/constants';
+import { Button, Form, Input } from 'antd';
+import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 
 const Register = () => {
-
-    const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
-    };
-
     const validateMessages = {
-        required: '${label} không được bỏ trống',
+        required: '${name} không được bỏ trống',
         types: {
-            email: '${label} không đúng định dạng email',
-            regexp: '${label} không đúng định dạng số điện thoại',
+            email: 'Email không đúng định dạng email',
+            regexp: '${name} không đúng định dạng số điện thoại',
         },
     };
 
@@ -23,39 +16,34 @@ const Register = () => {
     };
     return (
         <div>
-            <div className='text-center'>
-                <label htmlFor='login' style={{ fontSize: '20px', color: 'red' }} >
-                    Register
-                </label>
-            </div>
             <Form
-                {...layout}
                 name="nest-messages"
                 onFinish={onFinish}
-                style={{ maxWidth: 600 }}
                 validateMessages={validateMessages}
             >
-                <Form.Item name={['user', 'name']} label="Tên người dùng" rules={[{ required: true }]}>
-                    <Input />
+                <Form.Item name='name' rules={[{ required: true, message: "Tên người dùng không được bỏ trống" }]}>
+                    <Input size='large' prefix={<UserOutlined />} placeholder="Tên người dùng" />
                 </Form.Item>
-                <Form.Item name={['user', 'email']} label="Email" rules={[{ required: true }, { type: 'email' }]}>
-                    <Input />
+                <Form.Item name='email' rules={[{ required: true, message: "Email không được bỏ trống" }, { type: 'email' }]}>
+                    <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
                 </Form.Item>
-                <Form.Item name={['user', 'phoneNumber']} label="Số điện thoại" rules={[{ required: true }]}>
-                    <Input />
+                <Form.Item name='phoneNumber' rules={[{ required: true, message: "Số điện thoại không được bỏ trống" }]}>
+                    <Input size='large' prefix={<PhoneOutlined />} placeholder='Số điện thoại' />
                 </Form.Item>
 
                 <Form.Item
-                    name={['user', 'password']}
-                    label="Password"
-                    rules={[{ required: true }]}
+                    name='password'
+                    rules={[{ required: true, message: "Mật khẩu không được bỏ trống" }]}
                 >
-                    <Input.Password />
+                    <Input.Password
+                        size='large'
+                        prefix={<LockOutlined />}
+                        placeholder="Mật khẩu"
+                    />
                 </Form.Item>
-                <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Link to={`/${urlRouter.AUTH}/${urlRouter.LOGIN}`} >bạn đã có tài khoản</Link ><br />
-                    <Button type="primary" htmlType="submit">
-                        Submit
+                <Form.Item >
+                    <Button type="primary" size='large' shape='round' htmlType="submit" className='w-full'>
+                        ĐĂNG KÝ
                     </Button>
                 </Form.Item>
             </Form>

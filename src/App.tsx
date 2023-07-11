@@ -21,7 +21,7 @@ function App() {
           <Route path='/' element={<ProtectedAuth Component={LandingLayout} />} />
 
           <Route path={urlRouter.AUTH} element={<AuthLayout />}>
-            <Route index element={<Navigate to={urlRouter.LOGIN} />} />
+            <Route index element={<Navigate to={urlRouter.AUTH} />} />
 
             {authRoute.map((route, index) => {
               const Page = route.component;
