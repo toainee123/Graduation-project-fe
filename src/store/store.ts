@@ -7,12 +7,14 @@ import establishSlice from 'src/features/establish/establishSlice';
 import chargeSlice from 'src/features/charge/chargeSlice';
 import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
 import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
+import houseReducer from 'src/features/room/houseSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     dialog: dialogReducer,
     dashboard: dashboardReducer,
+    house: houseReducer,
     listService: listServiceReducer,
     establish: establishSlice,
     charge: chargeSlice,

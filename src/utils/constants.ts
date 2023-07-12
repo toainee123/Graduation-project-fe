@@ -45,7 +45,7 @@ export const pathUrl = {
 };
 
 // export const baseURL = process.env.BASE_URL
-export const baseURL = process.env.REACT_APP_BASE_URL_API;
+export const baseURL = process.env.REACT_APP_BASE_API;
 
 // Key localStorage
 export const localStorageConstants = {
