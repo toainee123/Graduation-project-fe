@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { baseURL, localStorageConstants, urlRouter } from "../utils/constants";
 
 const axiosClient = axios.create({
-  baseURL: `${baseURL}/api`,
+  baseURL: `${baseURL}`,
   headers: {
     Accept: 'application/json', 'Content-Type': 'application/json',
   }
@@ -18,7 +18,7 @@ axiosClient.interceptors.request.use(
 
     const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
 
-    config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2ODg5MTY4NjEsImV4cCI6MTY4OTAwMzI2MX0.RfOOI2egeALAeZlHxbPAP8HE5Ge-3sISfrkrVYpCuw4'
+    config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2ODkxNDkxMDMsImV4cCI6MTY4OTIzNTUwM30.ENShFAXcCLmj8XfIuU42zbi78Y7FPoTAEMk9C-CQzAA'
     return config
   },
   function (error) {
