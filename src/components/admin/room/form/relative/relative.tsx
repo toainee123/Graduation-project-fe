@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
-import { Space, Table } from 'antd';
+import { Form, Input, Space, Table } from 'antd';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const Relative = () => {
         console.log(counter);
     };
 
-    const dataSource = Array.from(Array(counter)).map((c, index) => {
+    const dataSource = Array.from(Array(counter)).map((c, index: any) => {
 
         return {
             key: `${index}`,
@@ -104,16 +104,6 @@ const Relative = () => {
     ];
     return (
         <div>
-
-
-            {/* {Object.keys(inputValues).map((c) => {
-                return <p>{inputValues[c]}</p>;
-            })} */}
-
-            {/* <form action=""> */}
-            <form action="">
-
-            </form>
             <Table dataSource={dataSource} columns={columns} summary={() => (
                 <Table.Summary >
                     <Table.Summary.Cell index={100}> <button className='text-xl' onClick={handleClick}><i className="fa-solid fa-circle-plus" style={{ color: '#18af31' }} />
@@ -121,7 +111,6 @@ const Relative = () => {
 
                 </Table.Summary>
             )} />
-            {/* </form> */}
         </div>
     )
 }

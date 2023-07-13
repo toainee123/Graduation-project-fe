@@ -5,6 +5,7 @@ export const urlRouter = {
 
   // Admin
   ADMIN: 'admin',
+  HOMEPAGE: 'homepage',
   DASHBOARD: 'dashboard',
   ROOM: 'room',
   LIST_MEMBER: 'listMember',
@@ -14,20 +15,26 @@ export const urlRouter = {
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
-  DATA_WATER: 'DataWater', //tiền nước
+  DATA_WATER: 'Da ', //tiền nước
   ARISE: 'arise', //dịch vụ
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
+  ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
+  ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
+  ReportInvoiceDetail: 'ReportInvoiceDetail',
+
+
+
   PG: 'pg',
   LIST_PG: 'list',
   ASSETS: 'assets',
   ESTABLISH: 'establish',
   CHARGE: 'charge',
-
+  KEEP_ROOM: 'keep-room',
+  CREATE_KEEP_ROOM: 'create-keep-room',
   // auth
   AUTH: 'auth',
-  LOGIN: 'login',
   FORGOT_PASSWORD: 'auth/forgot-password',
 };
 
@@ -38,7 +45,7 @@ export const pathUrl = {
 };
 
 // export const baseURL = process.env.BASE_URL
-export const baseURL = process.env.REACT_APP_BASE_URL_API;
+export const baseURL = process.env.REACT_APP_BASE_API;
 
 // Key localStorage
 export const localStorageConstants = {

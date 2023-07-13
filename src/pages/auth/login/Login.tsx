@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { fetchLogin, selectFetchUserLoading, selectUserRole } from '../../features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useNavigate } from 'react-router-dom';
-import { urlRouter } from '../../utils/constants';
-import { dialogActions } from '../../features/dialog/dialogSlice';
+import { fetchLogin, selectFetchUserLoading, selectUserRole } from '../../../features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { urlRouter } from '../../../utils/constants';
+import { dialogActions } from '../../../features/dialog/dialogSlice';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 
 type Props = {};
 
@@ -40,28 +41,27 @@ const Login = (props: Props) => {
     <div>
       <Form
         name='basic'
-        style={{ maxWidth: 500, textAlign: 'center' }}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
         autoComplete='off'
       >
         <Form.Item
-          label='Email'
           name='email'
           rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}
         >
-          <Input />
+          <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
         </Form.Item>
 
         <Form.Item
-          label='Password'
           name='password'
           rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Input.Password />
+          <Input.Password
+            size='large'
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            placeholder="Mật khẩu"
+          />
         </Form.Item>
 
         {
@@ -70,13 +70,19 @@ const Login = (props: Props) => {
           )
         }
 
-        <Form.Item name='remember' valuePropName='checked' wrapperCol={{ offset: 8, span: 16 }}>
-          <Checkbox>Remember me</Checkbox>
+        <Form.Item >
+          <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Checkbox>nhớ mật khẩu</Checkbox>
+          </Form.Item>
+
+          <Link to="#" className="float-right" >
+            quên mật khẩu
+          </Link>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type='primary' htmlType='submit'>
-            Submit
+        <Form.Item >
+          <Button type='primary' size='large' shape='round' htmlType='submit' className='w-full'>
+            ĐĂNG NHẬP
           </Button>
         </Form.Item>
       </Form>
