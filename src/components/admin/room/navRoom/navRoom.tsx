@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import "./navRoom.scss"
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { httpMessage } from 'src/utils/constants';
-import { useAppDispatch } from 'src/store/hooks'
-import { createHouse } from 'src/features/room/houseSlice'
+import { useAppDispatch, useAppSelector } from 'src/store/hooks'
+import { createHouse, getAllHouse } from 'src/features/room/houseSlice'
 
 const props: UploadProps = {
     name: 'file',
@@ -38,7 +38,12 @@ const NavRoom = () => {
     const [districtStore, setDistrictStore] = useState()
     const [wardStore, setWardStore] = useState()
     const [form] = Form.useForm();
+
+    const house = useAppSelector(state => state.house.value)
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(getAllHouse())
+    }, [])
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -143,13 +148,13 @@ const NavRoom = () => {
             </div>
             <div className="xl:flex justify-between items-center mt-4">
                 <div className='inline-block'>
-                    <span className='font-semibold text-base px-2'>Còn trống 3</span>
-                    <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê 1</span>
+                    <span className='font-semibold text-base px-2'>Còn trống {house?.room?.roomAvailable}</span>
+                    <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê {house?.room?.roomAlready}</span>
                     <span className='font-semibold text-base px-2'>Chưa thu phí</span>
                 </div>
                 <div className='md:my-2'>
                     <Link to="#">
-                        <button onClick={showModal} className="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900"><i className="fa-sharp fa-solid fa-upload"></i> Nhập phòng từ .CSV</button>
+                        <button onClick={showModal} className="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900"><i className="fa-sharp fa-solid fa-upload"></i> Nhập phòng từ .CSV</button>
                     </Link>
                     <Modal title="Nhập phòng từ file Excel " open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                         <Upload {...props}>
@@ -166,13 +171,13 @@ const NavRoom = () => {
                     </Modal>
 
                     <Link to="listMember">
-                        <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'> <i className="fa-solid fa-users"></i> Khách thuê</button>
+                        <button className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'> <i className="fa-solid fa-users"></i> Khách thuê</button>
                     </Link>
                     <Link to="listRoom">
-                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'><i className="fa-solid fa-list"></i> Phòng</button>
+                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'><i className="fa-solid fa-list"></i> Phòng</button>
                     </Link>
                     <Link to="#">
-                        <button onClick={() => setOpen(true)} className='focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900'><i className="fa-solid fa-building-columns"></i> Thêm nhà</button>
+                        <button onClick={() => setOpen(true)} className='focus:outline-none text-white bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm px-5 py-2.5'><i className="fa-solid fa-building-columns"></i> Thêm nhà</button>
                     </Link>
                     <Modal
                         title="Thêm nhà"

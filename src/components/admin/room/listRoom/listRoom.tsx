@@ -1,29 +1,31 @@
 import { Tabs } from 'antd';
 import CardRoom from '../cardRoom/cardRoom';
-
-const room = [
-    "Tầng 1", "Tầng 2"
-]
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { useEffect } from 'react';
+import { getAllHouse } from 'src/features/room/houseSlice';
 
 const ListRooms = () => {
+    const house = useAppSelector(state => state.house.value)
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getAllHouse())
+    }, [])
+
+    const items = house?.result?.map((item: any, i: any) => {
+        return {
+            key: i,
+            label: item.name,
+            children: <CardRoom />
+        }
+    })
+
     return (
         <div className='mt-9'>
             <Tabs
                 defaultActiveKey="1"
                 type='card'
-                items={room.map((Icon, i) => {
-                    const id = String(i + 1);
-
-                    return {
-                        label: (
-                            <span>
-                                {Icon}
-                            </span>
-                        ),
-                        key: id,
-                        children: <CardRoom />,
-                    };
-                })}
+                items={items}
             />
 
         </div>
