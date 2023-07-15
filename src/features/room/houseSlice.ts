@@ -18,13 +18,13 @@ export const createHouse = createAsyncThunk(
         }
     }
 )
+
 export const getAllHouse = createAsyncThunk(
     "house/getAllHouse",
     async (rejectWithValue) => {
         try {
             const { data }: any = await get()
-            console.log(data);
-            return data.result
+            return data
         } catch (error) {
             return rejectWithValue
         }

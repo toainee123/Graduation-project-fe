@@ -3,7 +3,7 @@ import "./listMember.scss"
 
 import { Select, Space, Table } from 'antd';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment'
 
 const dataSource = [
@@ -92,7 +92,7 @@ const handleChange = (value: string) => {
     console.log(`selected ${value}`);
 };
 const ListMember = () => {
-
+    const navigate = useNavigate()
     return (
         <div>
             <div>

@@ -1,7 +1,6 @@
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 
-import FooterComponent from '../footer/Footer';
 import Sidebar from '../sidebar/Sidebar';
 
 import "./AdminLayout.scss"
