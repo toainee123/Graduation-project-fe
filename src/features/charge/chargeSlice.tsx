@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { addBill, deleteBill, getBillNoDate, getBills, getBillsHouse, updatePaid } from 'src/api/charge';
 
 interface chargeType {
   value: any;
@@ -7,79 +8,53 @@ interface chargeType {
 const date = new Date();
 const year = date.getFullYear();
 const month = date.getMonth() + 1;
-export const getCharge = createAsyncThunk('charge/getData', async () => {
-  const { data }: any = await axios.get(
-    `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-  );
+const day = date.getDate();
+const strDay = day < 10 ? '0' + day : day;
+const strMonth = month < 10 ? '0' + month : month;
+const stringDate = year + '-' + strMonth + '-' + strDay;
 
-  return data;
+export const getCharge = createAsyncThunk('charge/getData', async () => {
+  const { data }: any = await getBills(stringDate);
+  return data.result;
 });
 
 export const getChargeFilter = createAsyncThunk('charge/getChargeFilter', async (filter: any) => {
+  console.log(filter);
+  const strDay = filter.day < 10 ? '0' + filter.day : filter.day;
+  const strMonth = filter.month < 10 ? '0' + filter.month : filter.month;
+  const stringDate = year + '-' + strMonth + '-' + strDay;
+
   if (filter.house == 'Tất cả') {
-    const { data }: any = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-    );
-    return data;
+    const { data }: any = await getBills(stringDate);
+
+    return data.result;
   } else {
-    const { data }: any = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${filter.house}`
-    );
-    return data;
+    const { data }: any = await getBillsHouse({ date: stringDate, houseId: filter.house });
+    return data.result;
   }
 });
 
 export const removeCharge = createAsyncThunk('charge/removeCharge', async (id: any) => {
-  await axios.delete(`http://localhost:3001/bills/${id}`);
-
+  await deleteBill(id);
   return id;
 });
 
 export const addCharge = createAsyncThunk('charge/addCharge', async (values: any) => {
   const fter = values.valueFilter;
-  await axios.post(`http://localhost:3001/bills`, values.dataBill);
-  let res;
-  if (fter === undefined || fter.house === 'Tất cả') {
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-    );
-  } else if (+fter.house === +values.dataBill.houseId) {
-    console.log('ahihi');
-
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
-    );
-  } else if (+fter.house !== +values.dataBill.houseId) {
-    console.log('ahuhu');
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
-    );
+  console.log(values);
+  try {
+    const { data } = await addBill(values);
+    console.log(data);
+    return data;
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    alert(error.response.data.message);
   }
-  return res?.data;
 });
 
 export const updatePaidBill = createAsyncThunk('charge/updatePaidBill', async (value: any) => {
-  const fter = value.valueFilter;
-  const { data }: any = await axios.patch(`http://localhost:3001/bills/${value.id}`, value);
-
-  let res;
-  if (fter === undefined || fter.house === 'Tất cả') {
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}`
-    );
-  } else if (+fter.house === +value.house) {
-    console.log('ahihi');
-
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
-    );
-  } else if (+fter.house !== +value.house) {
-    console.log('ahuhu');
-    res = await axios.get(
-      `http://localhost:3001/bills?_expand=house&_expand=customer&_expand=room&month=${month}&year=${year}&houseId=${fter.house}`
-    );
-  }
-  return res?.data;
+  await updatePaid({ id: value.id, paid: value.paid });
+  return value;
 });
 
 // Define the initial state using that type
@@ -101,15 +76,29 @@ export const chargeSlice = createSlice({
     });
 
     builder.addCase(removeCharge.fulfilled, (state, action) => {
-      return void (state.value = state.value.filter((item: any) => item.id !== action.payload));
+      return void (state.value = state.value?.filter((item: any) => item.id != action.payload));
     });
 
     builder.addCase(addCharge.fulfilled, (state, action) => {
-      return void (state.value = action.payload);
+      console.log(action.payload);
+
+      const newState = state.value?.map((item: any) => {
+        if (item.houseid === action.payload.houseId && item.roomid === action.payload.roomId) {
+          return { ...item, paid: action.payload.paid, owed: action.payload.owen, totalbill: action.payload.totalBill };
+        }
+        return item;
+      });
+      return void (state.value = newState);
     });
 
     builder.addCase(updatePaidBill.fulfilled, (state, action) => {
-      return void (state.value = action.payload);
+      const newState = state.value?.map((item: any) => {
+        if (item.id === action.payload.id) {
+          return { ...item, paid: action.payload.paid };
+        }
+        return item;
+      });
+      return void (state.value = newState);
     });
 
     // builder.addCase(updateAstablishContract.fulfilled, (state, action) => {

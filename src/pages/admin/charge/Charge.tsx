@@ -27,6 +27,7 @@ import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
+import { addBill, getHouses, getRoom } from 'src/api/charge';
 
 type Props = {};
 
@@ -39,30 +40,27 @@ const Charge = () => {
     dispatch(getCharge());
     dispatch(getAstablishContract());
     const getHouse = async () => {
-      const { data } = await axios.get('http://localhost:3001/houses');
+      const { data } = await getHouses();
 
-      setHouses(data);
+      setHouses(data.result);
     };
     getHouse();
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   const chargeData = useAppSelector((state: any) => state.charge.value);
-  console.log(chargeData);
 
-  const dataSource = chargeData.map((item: any, index: number) => {
+  const dataSource = chargeData?.map((item: any, index: number) => {
     return {
       id: item.id,
       key: item.id,
-      month: item.month,
-      year: item.year,
-      ky: item.ky,
-      house: item.house.name,
-      room: item.room.name,
-      user: item.customer.name,
-      tien: item.total_bill,
+      house: item.namehouse,
+      date: item.date,
+      room: item.nameroom,
+      user: item.namecustomer,
+      tien: item.totalbill,
       tiendatra: item.paid,
-      tienconlai: item.total_bill - item.paid,
+      tienconlai: item.totalbill - item.paid,
     };
   });
 
@@ -119,22 +117,27 @@ const Charge = () => {
     });
   };
   const handleClickView = (record: any) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
     const data: any = {
       '@AreaName': record.house,
       '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
       '@InvoiceNo': '0009',
       '@InvoiceDate': '22/05/2023',
-      '@MonthYear': `${record.month}/${record.year}`,
-      '@PayType': record.ky,
+      '@MonthYear': `${month}/${year}`,
       '@FromDate': '18/4/2023',
       '@ToDate': '18/5/2023',
-      '@CustomerName': record.user,
+      '@CustomerName': record.namecustomer,
       '@RoomName': record.room,
       '@BeginRent': '18/4/2023',
       '@ContentHtmlInvoiceService':
         '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
       '@SumAmount': record.tien,
     };
+
+    console.log(data);
     const exampleData80mm = printForm?.replaceAll(
       /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
       (matched: any) => {
@@ -240,7 +243,6 @@ const Charge = () => {
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
               onClick={async () => {
                 await handleClickView(record);
-
                 await handlePrintBill();
               }}
             >
@@ -310,15 +312,15 @@ const Charge = () => {
     let length = 0;
     const dataExport = chargeData.map((item: any) => {
       length++;
-      tienl += +item.total_bill;
-      tiendattral += +item.rest;
+      tienl += +item.totalbill;
+      tiendattral += +item.paid;
       return {
-        house: item.house.name,
-        room: item.room.name,
-        user: item.customer.name,
-        tien: +item.total_bill,
-        tiendatra: +item.rest,
-        tienconlai: +item.total_bill - +item.rest,
+        house: item.namehouse,
+        room: item.nameroom,
+        user: item.namecustomer,
+        tien: +item.totalbill,
+        tiendatra: +item.paid,
+        tienconlai: +item.totalbill - +item.paid,
       };
     });
     dataExport.push({
@@ -400,11 +402,13 @@ const Charge = () => {
     const year = moment(values.dateTime).year();
     const month = moment(values.dateTime).month() + 1;
     const house = values.house;
-    const filter = { month: month, house: house, year: year };
+    const day = moment(values.dateTime).date();
+    const filter = { month: month, house: house, year: year, day: day };
     setValueFilter({
       month: month,
       year: year,
       house: house,
+      day: day,
     });
     dispatch(getChargeFilter(filter));
   };
@@ -434,9 +438,6 @@ const Charge = () => {
           updatePaidBill({
             id: selectedRow[i].id,
             paid: selectedRow[i].tienconlai,
-            house: selectedRow[i].house,
-            rest: 0,
-            valueFilter,
           })
         );
       }
@@ -446,17 +447,31 @@ const Charge = () => {
   // tinh tien
   const [room, setRoom] = useState([]);
   const handleSelectHouse = async (value: any) => {
-    const { data } = await axios.get(`http://localhost:3001/rooms?houseId=${value}`);
-    setRoom(data);
+    const { data } = await getRoom(value);
+    console.log(data);
+    setRoom(data.result?.responses);
   };
   const handleSubmituserform = async (values: any) => {
-    // kiem tra phong dc thue hay ko
-    const resRoom = await axios.get(`http://localhost:3001/list_member/${values.roomId}`);
-    const dataRoom = resRoom?.data;
-    if (dataRoom === undefined || dataRoom === null) {
-      alert('Phong` chua co ai thue');
-    } else {
-      // lay thong tin cac dich vu phong dang ki
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const strDay = day < 10 ? '0' + day : day;
+    const strMonth = month < 10 ? '0' + month : month;
+    const stringDate = year + '-' + strMonth + '-' + strDay;
+    try {
+      const dataInput = {
+        houseId: values.house,
+        roomId: values.room,
+        date: stringDate,
+        indexElectricity: values.elec,
+        indexWater: values.water,
+      };
+
+      // const data = await addBill(dataInput);
+      dispatch(addCharge(dataInput));
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -501,7 +516,7 @@ const Charge = () => {
                     options={room?.map((item: any, index: number) => {
                       return { value: item.id, label: item.name, key: index };
                     })}
-                    defaultValue={{ value: 0, label: 'Chọn nhà' }}
+                    defaultValue={{ value: 0, label: 'Chọn phòng' }}
                   />
                 </Form.Item>
 
@@ -572,7 +587,7 @@ const Charge = () => {
             <div className='flex  w-9/12 mt-5 items-center'>
               <div className='flex-item'>
                 <Form.Item label='Tháng/năm' name='dateTime'>
-                  <DatePicker picker='month' />
+                  <DatePicker />
                 </Form.Item>
               </div>
 
@@ -661,7 +676,7 @@ const Charge = () => {
             pageData.forEach((item) => {
               tongtien += +item.tien;
               ttiendatra += +item.tiendatra;
-              ttienconlai += item.tienconlai;
+              ttienconlai += +item.tienconlai;
             });
             return (
               <Table.Summary.Row>

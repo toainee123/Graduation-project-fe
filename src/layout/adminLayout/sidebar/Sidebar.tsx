@@ -189,7 +189,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: <Link to={urlRouter.KEEP_ROOM}>Cọc phòng</Link>,
-      key: '12',
+      key: '14',
       icon: <FileOutlined />,
     },
   ];
