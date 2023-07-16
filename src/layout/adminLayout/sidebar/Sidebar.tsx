@@ -214,7 +214,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
 
         <div className='userLogin'>

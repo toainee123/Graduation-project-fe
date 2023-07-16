@@ -1,4 +1,9 @@
 import axiosClient from './axiosClient';
+export const createRoom = async (room: any) => {
+    const url = `/room`;
+    return axiosClient.post(url, room);
+};
+
 export const getRoom = async (id: any, query?: any) => {
     const url = `/room/${id}`;
     return axiosClient.get(url, query);

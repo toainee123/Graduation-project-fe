@@ -57,3 +57,8 @@ export const httpMessage = {
   UPLOAD_SUCCESS: 'file uploaded successfully',
   UPLOAD_FAILED: 'file upload failed',
 };
+
+export const limitCountUpload = {
+  LIMIT_COUNT: 6,
+  LIMIT_SIZE: 2,
+}
