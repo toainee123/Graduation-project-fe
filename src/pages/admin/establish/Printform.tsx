@@ -16,11 +16,6 @@ type Props = {
 };
 
 const Printform = (props: Props) => {
-  const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value);
-    setValue(e.target.value);
-  };
-
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
 
@@ -91,20 +86,6 @@ const Printform = (props: Props) => {
 
   return (
     <div>
-      <div className='select_option_print'>
-        <span className='default_option'>Khổ in mặc định:</span>
-        <Radio.Group
-          onChange={(e) => {
-            setValue(e.target.value);
-            props.getSelectOption(e.target.value);
-          }}
-          value={value}
-        >
-          <Radio value={1}>In Bill khổ 80mm</Radio>
-          <Radio value={2}>In khổ A5</Radio>
-        </Radio.Group>
-      </div>
-
       <div className='print_bill_80'>
         <div className='title'>
           <h3 className='name'>In Bill (Khổ 80mm)</h3>
