@@ -74,7 +74,7 @@ const FormCreateRoom = () => {
                 <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
-                        {/* <Upload listType="picture-card" multiple={true} action="local">
+                        {/* <Upload listType="picture-card" multiple={true} action="local" >
                             {countImg.length >= limitCountUpload.LIMIT_COUNT ? null : (
                                 <div className='btn-upload'>
                                     <PlusOutlined />

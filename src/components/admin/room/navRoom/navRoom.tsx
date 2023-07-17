@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SearchOutlined } from '@ant-design/icons'
-import { Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd'
+import { Button, Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd'
 import { Link } from 'react-router-dom'
 
 import "./navRoom.scss"
@@ -107,7 +107,7 @@ const NavRoom = () => {
         <div className="room_selected row" >
             <div className="room_form">
                 <Form>
-                    <div className='flex'>
+                    <div className='flex gap-2'>
                         <Form.Item>
                             <Select
                                 placeholder="-Trạng thái phòng-"
@@ -141,7 +141,10 @@ const NavRoom = () => {
                             <Input style={{ width: 200 }} placeholder="Tìm phòng..." />
                         </Form.Item>
                         <Form.Item>
-                            <button className='btn_search'><SearchOutlined /> Tìm kiếm</button>
+                            <button className='btn_search' >
+                                <i className="fa-solid fa-magnifying-glass px-1"></i>
+                                Tìm kiếm
+                            </button>
                         </Form.Item>
                     </div>
                 </Form>
@@ -202,7 +205,7 @@ const NavRoom = () => {
                         >
                             <div>
                                 <div className='text-base mb-2'>Tên nhà</div>
-                                <Form.Item name="name" rules={[{ required: true }]}>
+                                <Form.Item name="name" rules={[{ required: true, message: "Tên nhà không được bỏ trống" }]}>
                                     <Input placeholder='tên nhà' />
                                 </Form.Item>
                             </div>

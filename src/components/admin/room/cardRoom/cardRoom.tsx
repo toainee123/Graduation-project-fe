@@ -1,10 +1,8 @@
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Modal, Tooltip } from 'antd';
-import { type } from 'os';
+import { Alert, Button, Modal, Result, Tooltip, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getRoom } from 'src/api/room';
-import { ROOM_TYPE } from 'src/types/room';
 import { urlRouter } from 'src/utils/constants';
 
 const { confirm } = Modal;
@@ -24,29 +22,37 @@ const showDeleteConfirm = () => {
     },
   });
 };
-const CardRoom = () => {
+const CardRoom = ({ idHouse }: any) => {
   const [listRoom, setListRoom] = useState<any>([]);
   const [analyticRoom, setAnalyticRoom] = useState<any>();
 
   useEffect(() => {
     const fetchRoom = async () => {
-      const { data } = await getRoom(3);
-
+      const { data } = await getRoom(idHouse);
       setListRoom(data.result?.responses);
       setAnalyticRoom(data.room);
     };
     fetchRoom();
-  }, []);
+  }, [idHouse]);
 
   return (
     <div>
       <div className='xl:flex justify-between items-center mb-5'>
-        <div className='inline-block'>
-          <span className='font-semibold text-base px-2'>Còn trống {analyticRoom?.roomAvailable || 'N/A'}</span>
-          <span className='font-semibold text-base px-2 border-l-2 border-black'>
-            Đã cho thuê {analyticRoom?.roomAlready || 'N/A'}
-          </span>
-        </div>
+        {
+          analyticRoom?.roomAvailable > 0 ? (
+            <div className='inline-block'>
+              <span className='font-semibold text-base px-2'>Còn trống {analyticRoom?.roomAvailable || '0'}</span>
+              <span className='font-semibold text-base px-2 border-l-2 border-black'>
+                Đã cho thuê {analyticRoom?.roomAlready || '0'}
+              </span>
+            </div>
+          ) : (
+            <div>
+              <Alert message="Chưa có phòng nào được thêm tại đây !" type="warning" showIcon />
+            </div>
+          )
+        }
+
         <div className='md:my-2 flex-col'>
           <Link to={urlRouter.CREATE_ROOM}>
             <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
@@ -54,7 +60,7 @@ const CardRoom = () => {
             </button>
           </Link>
           <Link to='#'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
+            <button className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
               <i className='fa-solid fa-pen'></i> Sửa nhà
             </button>
           </Link>
@@ -148,7 +154,7 @@ const CardRoom = () => {
                     <button>
                       <Link
                         to={urlRouter.CREATE_MEMBER}
-                        className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 text-center mr-2 '
+                        className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 font-medium rounded-lg text-sm p-2 text-center mr-2 '
                       >
                         Thêm khách
                       </Link>
@@ -167,7 +173,7 @@ const CardRoom = () => {
                     <button>
                       <Link
                         to='#'
-                        className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
+                        className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
                       >
                         <i className='fa-solid fa-gear'></i> Chỉnh sửa
                       </Link>
@@ -175,7 +181,7 @@ const CardRoom = () => {
                     <button onClick={showDeleteConfirm}>
                       <Link
                         to='#'
-                        className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
+                        className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
                       >
                         <i className='fa-solid fa-trash'></i> Xóa
                       </Link>
