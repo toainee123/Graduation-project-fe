@@ -14,9 +14,9 @@ const ListRooms = () => {
 
     const items = house?.result?.map((item: any, i: any) => {
         return {
-            key: i,
+            key: item.id,
             label: item.name,
-            children: <CardRoom />
+            children: <CardRoom idHouse={item?.id} />
         }
     })
 

@@ -4,6 +4,11 @@ export const createRoom = async (room: any) => {
     return axiosClient.post(url, room);
 };
 
+export const getAllRoom = async () => {
+    const url = `/room/list-room`
+    return axiosClient.get(url)
+};
+
 export const getRoom = async (id: any, query?: any) => {
     const url = `/room/${id}`;
     return axiosClient.get(url, query);
