@@ -23,7 +23,7 @@ export const urlRouter = {
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
-
+  UPDATE_DEPOSIT: 'Update-deposit',
 
 
   PG: 'pg',

@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
-export const getRoom = async (id: any, query?: any) => {
-    const url = `/room/${id}`;
-    return axiosClient.get(url, query);
+export const getRoom = async (idHouse: any) => {
+    const data = await axiosClient.get(`http://localhost:5000/api/room/${idHouse}`);
+    return data
 };
 
 export const getDistrict = async (provincesId: any) => {

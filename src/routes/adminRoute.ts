@@ -29,6 +29,7 @@ import HomePage from '../pages/admin/homePage/index';
 import Register from 'src/pages/auth/register/register';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
+import UpdateDeposit from 'src/pages/admin/keep-room/update-deposit';
 
 export const adminRoutes = [
   {
@@ -122,6 +123,10 @@ export const adminRoutes = [
   {
     path: urlRouter.CREATE_KEEP_ROOM,
     component: CreateKeepRoom,
+  },
+  {
+    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
+    component: UpdateDeposit,
   },
 
   {

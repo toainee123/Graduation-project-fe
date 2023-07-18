@@ -1,33 +1,64 @@
-import { DatePicker, DatePickerProps, Select, message } from 'antd';
+import { DatePicker, DatePickerProps, Form, Select, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getListHouse } from 'src/api/house';
+import { getDeposit } from 'src/api/keep-room';
 import { getRoom } from 'src/api/room';
-import { fetchHouse } from 'src/features/house/houseSlice';
-import { useAppDispatch } from 'src/store/hooks';
 import { urlRouter } from 'src/utils/constants';
 
-const CreateKeepRoom = () => {
-  const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm();
+const UpdateDeposit = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [estimateTimeOrderFrom, setEstimateTimeOrderFrom] = useState('');
   const [estimateTimeRoomTo, setEstimateTimeRoomTo] = useState('');
   const [homeId, setHomeId] = useState([]);
   const [house, setHouse] = useState([]);
   const [room, setRoom] = useState([]);
   const [roomId, setRoomId] = useState([]);
-  const [messageApi, contextHolder] = message.useMessage();
-  const navigate = useNavigate();
+  const [dataUpdate, setDataUpdate] = useState([]);
+  const [nameHouse, setNameHouse] = useState();
+  const dateFormatList = ['DD/MM/YYYY'];
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    watch,
+  } = useForm();
 
+  useEffect(() => {
+    const getOneDeposit = async (id: any) => {
+      const { data } = await getDeposit(id);
+      setNameHouse(data?.nameHouse);
+      const payload = {
+        ...data,
+      };
+      reset(payload);
+    };
+    const getHouse = async () => {
+      const { data } = await getListHouse();
+      setHouse(data.result);
+    };
+    getHouse();
+    getOneDeposit(id);
+  }, [id]);
+  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date, dateString);
+  };
+  const lastChange: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date);
+  };
   const estimateTimeOrder: DatePickerProps['onChange'] = (date, dateString) => {
     setEstimateTimeOrderFrom(dateString);
   };
   const estimateTimeRoom: DatePickerProps['onChange'] = (data, dateString) => {
     setEstimateTimeRoomTo(dateString);
   };
-  const info = () => {
-    messageApi.success('Đã thêm thành công');
+  const handleChangeRoomId = (value: any) => {
+    console.log(value, ' value');
+    setRoomId(value);
   };
   const handleChangeHomeId = async (value: any) => {
     setHomeId(value);
@@ -39,54 +70,13 @@ const CreateKeepRoom = () => {
         console.log(err.message);
       });
   };
-  const handleChangeRoomId = (value: any) => {
-    console.log(value, ' value');
-    setRoomId(value);
-  };
-  useEffect(() => {
-    const getHouse = async () => {
-      const { data } = await getListHouse();
-      setHouse(data.result);
-    };
-    getHouse();
-  }, []);
-
-  const Onsubmit = async (data: any) => {
-    const payload = {
-      name: data.name,
-      roomId: roomId,
-      houseId: homeId,
-      bookingDate: estimateTimeOrderFrom,
-      checkInDate: estimateTimeRoomTo,
-      phone: data.phoneNumber,
-      note: data.note,
-      money: data.moneyOrder,
-    };
-    console.log(payload);
-
-    // await createDeposit(result);
-    //Call fetchHouse tu SliceHouse -> t/so payload
-    dispatch(fetchHouse(payload))
-      .unwrap()
-      .then((resp) => {
-        //khi success -> xu ly logic trong nay
-        info();
-        setTimeout(() => {
-          navigate(-1);
-        }, 3000);
-      })
-      .catch((err) => {
-        //Khi api fail -> logic error
-        messageApi.error(err.message);
-        console.log('err', err);
-      });
-  };
   const handleBack = () => {
     navigate(-1);
   };
+  const Onsubmit = (data: any) => {};
+
   return (
     <div>
-      {contextHolder}
       <div className='text-lg font-medium mt-3'>
         <h1>Thêm mới cọc phòng</h1>
       </div>
@@ -97,9 +87,16 @@ const CreateKeepRoom = () => {
               Nhà <b className='color-red'>*</b>
             </label>
             <div className='w-full h-58px'>
-              <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeHomeId}>
+              <Select
+                defaultValue='Danh sách nhà'
+                size='large'
+                value={nameHouse && nameHouse}
+                {...register('nameHouse')}
+                className='w-full'
+                onChange={handleChangeHomeId}
+              >
                 {house.map((item: any) => (
-                  <Select.Option key={item.id} value={item.id}>
+                  <Select.Option key={item.id} value={item.id} {...register('houseId')}>
                     {item.name}
                   </Select.Option>
                 ))}
@@ -127,7 +124,7 @@ const CreateKeepRoom = () => {
                 className='border-2 p-4 outline-0 w-full h-58px'
                 type='number'
                 placeholder='Số điện thoại người cọc'
-                {...register('phoneNumber')}
+                {...register('phone')}
               />
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>
@@ -142,7 +139,7 @@ const CreateKeepRoom = () => {
               Thời gian đặt cọc <b className='color-red'>*</b>
             </label>
             <div className='w-full h-58px'>
-              <DatePicker className='w-full h-58px' onChange={estimateTimeOrder} name='estimateTimeOrder' />
+              <DatePicker className='w-full h-58px' onChange={estimateTimeOrder} name='bookingdate' />
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Họ và tên người cọc <b className='color-red'>*</b>
@@ -202,4 +199,4 @@ const CreateKeepRoom = () => {
   );
 };
 
-export default CreateKeepRoom;
+export default UpdateDeposit;

@@ -1,15 +1,35 @@
-import { DatePicker, DatePickerProps, Select, Space } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, DatePicker, DatePickerProps, Form, Popconfirm, Select, Space, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getListDeposit } from 'src/api/keep-room';
+import { getDeposit, getListDeposit } from 'src/api/keep-room';
+import { fetchDeleteDeposit, fetchDeposit, selectSuccessDeposit } from 'src/features/deposit/deposit';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { convertDate } from 'src/utils/helps';
 
 const KeepRoom = () => {
-  const [open, setOpen] = useState(false);
+  const statusState = useAppSelector(selectSuccessDeposit);
+  const [messageApi] = message.useMessage();
   const [data, setData] = useState([]);
-  const showModal = () => {
-    setOpen(true);
+  const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deposit, setDeposit] = useState([]);
+  const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
+
+  const info = () => {
+    messageApi.success('Đã xác nhận thành công');
   };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = async () => {};
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const dateFormatList = ['DD/MM/YYYY'];
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
     console.log(date, dateString);
@@ -24,7 +44,48 @@ const KeepRoom = () => {
     };
     getDeposit();
   }, []);
-  console.log('data', data);
+
+  const handleChangeStatus = async (id: any, status: any) => {
+    const payload = {
+      id,
+      status: status,
+    };
+    dispatch(fetchDeposit(payload))
+      .unwrap()
+      .then((resp: any) => {
+        const getDeposit = async () => {
+          const { data } = await getListDeposit();
+          setData(data.responses);
+        };
+        getDeposit();
+        info();
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  };
+
+  const confirm = async (id: any) => {
+    dispatch(fetchDeleteDeposit(id))
+      .unwrap()
+      .then((resp) => {
+        const getDeposit = async () => {
+          const { data } = await getListDeposit();
+          setData(data.responses);
+        };
+        getDeposit();
+        messageApi.success('Đã xoa thành công');
+      })
+      .catch((err) => {
+        messageApi.success('Xoa khong thành công');
+      });
+  };
+  const handleUpdate = async (id: number) => {
+    console.log('id', id);
+    setOpen(true);
+    const { data } = await getDeposit(id);
+    setDeposit(data);
+  };
 
   return (
     <div>
@@ -64,7 +125,6 @@ const KeepRoom = () => {
                 <div className=''>
                   <Link to='http://localhost:3000/admin/create-keep-room'>
                     <button
-                      onClick={showModal}
                       className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
                       style={{ marginRight: 15 }}
                     >
@@ -154,6 +214,10 @@ const KeepRoom = () => {
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                       Số phòng
                     </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Trạng thái
+                    </th>
+                    <th scope='col' colSpan={2} className='text-sm font-medium text-gray-900 px-6 py-4 text-left'></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -176,6 +240,44 @@ const KeepRoom = () => {
                       </td>
                       <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>{item.houseId}</td>
                       <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>{item.roomId}</td>
+                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                        {item.status === null ? (
+                          <div>
+                            <button
+                              className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'
+                              onClick={() => handleChangeStatus(item.id, true)}
+                            >
+                              <i className='fa-solid fa-check'></i> Nhận phòng
+                            </button>
+                            <button
+                              onClick={() => handleChangeStatus(item.id, false)}
+                              className='focus:outline-none text-white bg-red-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'
+                            >
+                              Hủy
+                            </button>
+                          </div>
+                        ) : item.status === true ? (
+                          <div>Đã nhận phòng</div>
+                        ) : (
+                          <div className='text-red-500'>Đã hủy</div>
+                        )}
+                      </td>
+                      <td className='flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                        <div>
+                          <Popconfirm
+                            title='Bạn có muốn xóa không ?'
+                            onConfirm={() => confirm(item.id)}
+                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                          >
+                            <Button danger>Delete</Button>
+                          </Popconfirm>
+                        </div>
+                        <div className='ml-2'>
+                          <Link to={`/admin/Update-deposit/${item.id}`}>
+                            <Button name={item.id}>Update</Button>
+                          </Link>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

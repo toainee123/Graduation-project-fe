@@ -7,6 +7,8 @@ import establishSlice from 'src/features/establish/establishSlice';
 import chargeSlice from 'src/features/charge/chargeSlice';
 import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
 import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
+import houseReducer from 'src/features/house/houseSlice';
+import depositReducer from 'src/features/deposit/deposit';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
     charge: chargeSlice,
     listArise: listAriseReducer,
     updateArise: updateAriseReducer,
+    house: houseReducer,
+    deposit: depositReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
