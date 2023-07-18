@@ -79,7 +79,7 @@ const OweRoomMoneyList = () => {
     <div className=' '>
       <h1>Danh sách Khách nợ tiền phòng</h1>
       <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />;
+        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
       </div>
     </div>
   );

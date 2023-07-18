@@ -38,7 +38,7 @@ export const RoomAvailability = () => {
     <div className=' '>
       <h1>Danh sách phòng trống</h1>
       <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />;
+        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
       </div>
     </div>
   );

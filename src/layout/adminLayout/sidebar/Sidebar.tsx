@@ -100,8 +100,9 @@ const Sidebar = (props: Props) => {
       icon: <FileTextOutlined />,
       children: [
         {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách Đang thuê phòng</Link>,
           key: '8.1',
+
           icon: <FileTextOutlined />,
         },
         {
@@ -129,6 +130,7 @@ const Sidebar = (props: Props) => {
       key: '9',
       icon: <FileTextOutlined />,
     },
+
     {
       label: (
         <Link className='label-router' to={urlRouter.CHARGE}>
@@ -136,45 +138,6 @@ const Sidebar = (props: Props) => {
         </Link>
       ),
       key: '10',
-      icon: <FileTextOutlined />,
-      children: [
-        {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách thuê phòng</Link>,
-          key: '10.1',
-          icon: <FileTextOutlined />,
-        },
-        {
-          label: (
-            <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>
-              Danh sách khách hàng sắp hết hạn hợp đồng
-            </Link>
-          ),
-          key: '10.2',
-          icon: <FileTextOutlined />,
-        },
-        {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
-          key: '10.3',
-          icon: <FileTextOutlined />,
-        },
-      ],
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.ASSETS}>
-          Tài sản
-        </Link>
-      ),
-      key: '11',
-      icon: <FileTextOutlined />,
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.CHARGE}>
-          Tính tiền
-        </Link>
-      ),
-      key: '12',
       icon: <CalculatorOutlined />,
     },
     {
@@ -183,7 +146,7 @@ const Sidebar = (props: Props) => {
           Thiết lập
         </Link>
       ),
-      key: '13',
+      key: '11',
 
       icon: <FileOutlined />,
     },
@@ -201,7 +164,7 @@ const Sidebar = (props: Props) => {
 
   return (
     <div id='sidebar'>
-      <Sider theme={theme}>
+      <Sider theme={theme} width={220}>
         <div className='sidebarLogo'>
           <SketchOutlined />
         </div>
@@ -231,8 +194,7 @@ const Sidebar = (props: Props) => {
                 {!collapsedSide && <LeftCircleOutlined />}
                 {collapsedSide && <RightCircleOutlined />}
               </button>
-            </div>
-
+            </div
             <Menu mode={mode} items={menuListItem} />
         </Sider>} */}
     </div>

@@ -24,7 +24,9 @@
   border-bottom: 1px solid #f0f0f0;
 }
 .ant-layout-sider {
-  min-width: 214px !important;
+  // min-width: 214px !important;
+  max-width: 220px !important;
+  width: 100%;
   border-radius: 10px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }

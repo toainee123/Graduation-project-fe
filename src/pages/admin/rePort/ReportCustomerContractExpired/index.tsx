@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DatePicker, Select, Button, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { getListReportCustomerContractExpired } from 'src/api/report';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
-
-const dataSource = [] as any;
 
 const columns = [
   {
@@ -14,47 +14,58 @@ const columns = [
   },
   {
     title: 'Địa chỉ',
-    dataIndex: 'age',
-    key: 'age',
+    dataIndex: 'address',
+    key: 'address',
   },
   {
     title: 'Điện thoại',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'phone',
+    key: 'phone',
   },
   {
     title: 'Nhà',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Thuê phòng',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'nameroom',
+    key: 'nameroom',
   },
   {
     title: 'Số HĐ',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'expirationdate',
+    key: 'expirationdate',
   },
   {
     title: 'Ngày kí',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'contractdate',
+    key: 'contractdate',
+    render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
   {
     title: 'Ngày hết hạn HĐ',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'contractexpir',
+    key: 'contractexpir',
+    render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
   {
     title: 'Số ngày còn lại',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'expiry',
+    key: 'expiry',
   },
 ];
 
 const ReportCustomerRent = () => {
+  const [dataSource, setDataSource] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await getListReportCustomerContractExpired();
+      setDataSource(data.responses);
+    };
+    getData();
+  }, []);
   return (
     <div className='es-container'>
       <div className='title'>
@@ -103,7 +114,7 @@ const ReportCustomerRent = () => {
         </div>
       </div>
       <div className='mt-5'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />;
+        <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
       </div>
     </div>
   );
