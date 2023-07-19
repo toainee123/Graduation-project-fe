@@ -40,15 +40,24 @@ export const removeCharge = createAsyncThunk('charge/removeCharge', async (id: a
 });
 
 export const addCharge = createAsyncThunk('charge/addCharge', async (values: any) => {
-  const fter = values.valueFilter;
-  console.log(values);
   try {
-    const { data } = await addBill(values);
-    console.log(data);
-    return data;
-  } catch (error: any) {
-    console.log(error.response.data.message);
-    alert(error.response.data.message);
+    await addBill(values.input);
+    if (values.filter !== undefined) {
+      console.log('ahihi');
+
+      const filterValue = values.filter;
+      const strDay = filterValue.day < 10 ? '0' + filterValue.day : filterValue.day;
+      const strMonth = filterValue.month < 10 ? '0' + filterValue.month : filterValue.month;
+      const stringDate = filterValue.year + '-' + strMonth + '-' + strDay;
+      const { data }: any = await getBillsHouse({ date: stringDate, houseId: filterValue.house });
+      return data.result;
+    } else if (values.filter === undefined) {
+      console.log('ahihaa');
+      const { data }: any = await getBills(stringDate);
+      return data.result;
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -80,15 +89,7 @@ export const chargeSlice = createSlice({
     });
 
     builder.addCase(addCharge.fulfilled, (state, action) => {
-      console.log(action.payload);
-
-      const newState = state.value?.map((item: any) => {
-        if (item.houseid === action.payload.houseId && item.roomid === action.payload.roomId) {
-          return { ...item, paid: action.payload.paid, owed: action.payload.owen, totalbill: action.payload.totalBill };
-        }
-        return item;
-      });
-      return void (state.value = newState);
+      return void (state.value = action.payload);
     });
 
     builder.addCase(updatePaidBill.fulfilled, (state, action) => {

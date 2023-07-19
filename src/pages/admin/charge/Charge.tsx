@@ -469,7 +469,7 @@ const Charge = () => {
       };
 
       // const data = await addBill(dataInput);
-      dispatch(addCharge(dataInput));
+      dispatch(addCharge({ input: dataInput, filter: valueFilter }));
     } catch (error) {
       console.log(error);
     }
