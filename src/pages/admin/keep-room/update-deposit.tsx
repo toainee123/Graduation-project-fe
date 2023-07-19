@@ -1,9 +1,10 @@
-import { DatePicker, DatePickerProps, Form, Select, Space } from 'antd';
+import { DatePicker, DatePickerProps, Select } from 'antd';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getListHouse } from 'src/api/house';
-import { getDeposit } from 'src/api/keep-room';
+import { getDeposit, updateDeposit } from 'src/api/keep-room';
 import { getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 
@@ -17,7 +18,6 @@ const UpdateDeposit = () => {
   const [house, setHouse] = useState([]);
   const [room, setRoom] = useState([]);
   const [roomId, setRoomId] = useState([]);
-  const [dataUpdate, setDataUpdate] = useState([]);
   const [nameHouse, setNameHouse] = useState();
   const dateFormatList = ['DD/MM/YYYY'];
   const {
@@ -26,6 +26,8 @@ const UpdateDeposit = () => {
     reset,
     formState: { errors },
     watch,
+    getValues,
+    setValue,
   } = useForm();
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const UpdateDeposit = () => {
         ...data,
       };
       reset(payload);
+      console.log(getValues());
     };
     const getHouse = async () => {
       const { data } = await getListHouse();
@@ -44,23 +47,20 @@ const UpdateDeposit = () => {
     getHouse();
     getOneDeposit(id);
   }, [id]);
-  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
-  };
-  const lastChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date);
-  };
+
   const estimateTimeOrder: DatePickerProps['onChange'] = (date, dateString) => {
     setEstimateTimeOrderFrom(dateString);
+    setValue('bookingdate', moment(dateString, 'YYYY-MM-DD'));
   };
   const estimateTimeRoom: DatePickerProps['onChange'] = (data, dateString) => {
     setEstimateTimeRoomTo(dateString);
+    setValue('checkindate', moment(dateString, 'YYYY-MM-DD'));
   };
   const handleChangeRoomId = (value: any) => {
-    console.log(value, ' value');
     setRoomId(value);
   };
   const handleChangeHomeId = async (value: any) => {
+    setValue('houseId', value);
     setHomeId(value);
     const getRoomWithHomeId = await getRoom(value)
       .then((res) => {
@@ -73,8 +73,12 @@ const UpdateDeposit = () => {
   const handleBack = () => {
     navigate(-1);
   };
-  const Onsubmit = (data: any) => {};
-
+  const Onsubmit = async (id: any, data: any) => {
+    console.log('dataa', data);
+    // await updateDeposit(id, {
+    //   ...data,
+    // });
+  };
   return (
     <div>
       <div className='text-lg font-medium mt-3'>
@@ -88,15 +92,15 @@ const UpdateDeposit = () => {
             </label>
             <div className='w-full h-58px'>
               <Select
-                defaultValue='Danh sách nhà'
+                // defaultValue={getValues('houseId')}
                 size='large'
-                value={nameHouse && nameHouse}
-                {...register('nameHouse')}
+                value={getValues('houseId')}
+                {...register('houseId')}
                 className='w-full'
                 onChange={handleChangeHomeId}
               >
                 {house.map((item: any) => (
-                  <Select.Option key={item.id} value={item.id} {...register('houseId')}>
+                  <Select.Option key={item.id} value={item.id}>
                     {item.name}
                   </Select.Option>
                 ))}
@@ -131,7 +135,13 @@ const UpdateDeposit = () => {
               Thời gian dự kiến nhận phòng <b className='color-red'>*</b>
             </label>
             <div className='w-full h-58px'>
-              <DatePicker className='w-full h-58px' onChange={estimateTimeRoom} name='estimateTimeRoom' />
+              <DatePicker
+                className='w-full h-58px'
+                value={moment(getValues('bookingdate'), 'YYYY-MM-DD')}
+                onChange={estimateTimeRoom}
+                name='estimateTimeRoom'
+                format={'YYYY-MM-DD'}
+              />
             </div>
           </div>
           <div className='flex justify-between items-center gap-12 py-3'>
@@ -139,7 +149,13 @@ const UpdateDeposit = () => {
               Thời gian đặt cọc <b className='color-red'>*</b>
             </label>
             <div className='w-full h-58px'>
-              <DatePicker className='w-full h-58px' onChange={estimateTimeOrder} name='bookingdate' />
+              <DatePicker
+                className='w-full h-58px'
+                value={moment(getValues('checkindate'), 'YYYY-MM-DD')}
+                {...register('checkindate')}
+                onChange={estimateTimeOrder}
+                name='bookingdate'
+              />
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Họ và tên người cọc <b className='color-red'>*</b>
@@ -161,7 +177,7 @@ const UpdateDeposit = () => {
                 className='border-2 p-4 outline-0 w-full h-58px'
                 type='number'
                 placeholder='Số tiền đặt cọc'
-                {...register('moneyOrder')}
+                {...register('money')}
               />
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>

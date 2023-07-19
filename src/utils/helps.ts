@@ -1,5 +1,5 @@
 
-export const convertDate = (date: any) => {
+export const convertDate = (date: any): any => {
     const convert = new Date(date); // Create a new Date object with the current date and time
 
     // Extract individual date components

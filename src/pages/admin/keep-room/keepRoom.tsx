@@ -20,15 +20,6 @@ const KeepRoom = () => {
   const info = () => {
     messageApi.success('Đã xác nhận thành công');
   };
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = async () => {};
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   const dateFormatList = ['DD/MM/YYYY'];
   const onChange: DatePickerProps['onChange'] = (date, dateString) => {
@@ -79,12 +70,6 @@ const KeepRoom = () => {
       .catch((err) => {
         messageApi.success('Xoa khong thành công');
       });
-  };
-  const handleUpdate = async (id: number) => {
-    console.log('id', id);
-    setOpen(true);
-    const { data } = await getDeposit(id);
-    setDeposit(data);
   };
 
   return (
