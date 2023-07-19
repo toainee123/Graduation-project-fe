@@ -67,13 +67,18 @@ const Charge = () => {
   // modal
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
   };
   const dt = useAppSelector((state: any) => state.establish.value);
   const printForm = dt.sample_bill_80mm;
   const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
+  const [idUpdatePaid, setIdUpdatePaid] = useState('');
   const [printListBillData, setPrintListBillData] = useState('');
 
   const handleListData = () => {
@@ -204,6 +209,10 @@ const Charge = () => {
     }
   };
 
+  const handleRenderData = (record: any) => {
+    setIdUpdatePaid(record.id);
+  };
+
   const houseDataFilter = houses?.map((item: any, index: number) => {
     return { value: item.id, label: item.name, key: item.id };
   });
@@ -226,7 +235,13 @@ const Charge = () => {
               <EyeOutlined />
             </button>
 
-            <button className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'>
+            <button
+              className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'
+              onClick={() => {
+                handleRenderData(record);
+                setIsModalOpen1(true);
+              }}
+            >
               <DollarOutlined />
             </button>
 
@@ -732,6 +747,39 @@ const Charge = () => {
           <div id='pdf' className='p-3' ref={cpPrintBillRef}>
             {parse(printData ? printData : '')}
           </div>
+        </Modal>
+
+        <Modal
+          title='Basic Modal'
+          open={isModalOpen1}
+          onOk={() => {
+            form
+              .validateFields()
+              .then((values) => {
+                form.resetFields();
+                dispatch(updatePaidBill({ id: idUpdatePaid, paid: values.paid }));
+                setIsModalOpen1(false);
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info);
+              });
+          }}
+          onCancel={handleCancel1}
+        >
+          <Form form={form}>
+            <Form.Item
+              name='paid'
+              label='Tiền đã thu'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số tiền đã thu',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
         </Modal>
 
         <div className='p-3 hide' ref={cpPrintBillRef}>
