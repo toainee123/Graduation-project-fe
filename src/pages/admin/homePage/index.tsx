@@ -7,6 +7,7 @@ import { RoomAvailability } from './sections/RoomAvailability';
 import OweRoomMoneyList from './sections/OweRoomMoneyList';
 import ContractExpiration from './sections/ContractExpirationTable';
 import { UnfinishedWorkTable } from './sections/UnfinishedWorkTable';
+import { getDashboard } from 'src/api/dashboard';
 
 interface Props {}
 
@@ -31,6 +32,14 @@ const Homepage = (props: Props) => {
       values: 145,
     },
   ]);
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getDashboard();
+      setDataSource(data.revenue);
+    };
+
+    getList();
+  }, []);
   const [dataPie, setDataPie] = useState<Array<object>>([
     { type: 'Đang thuê', value: 60 },
     { type: 'Phòng trống', value: 40 },
@@ -44,6 +53,17 @@ const Homepage = (props: Props) => {
       })
       .catch();
   }, []);
+  const [dataSource, setDataSource] = useState();
+
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getDashboard();
+      setDataSource(data);
+    };
+
+    getList();
+  }, []);
+  console.log(dataSource);
 
   return (
     <div className=''>

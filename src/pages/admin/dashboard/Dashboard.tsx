@@ -4,6 +4,8 @@ import { fetchDataChart } from '../../../features/dashboard/DashboardSlice';
 import { useAppDispatch } from '../../../store/hooks';
 
 import './dashboard.scss';
+import { getDashboard } from 'src/api/dashboard';
+import { log } from 'console';
 
 interface Props {}
 
@@ -19,7 +21,6 @@ const Dashboard = (props: Props) => {
       })
       .catch();
   }, []);
-
   return (
     <div>
       <div className='title_page'>

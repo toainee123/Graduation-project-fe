@@ -1,6 +1,7 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getDashboard } from 'src/api/dashboard';
 
 type dataList = {
   key: string;
@@ -14,67 +15,42 @@ type dataList = {
 const columns: ColumnsType<dataList> = [
   {
     title: 'Nhà',
-    dataIndex: 'home',
-    key: 'home',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
     title: 'Phòng',
-    dataIndex: 'room',
-    key: 'room',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Khách',
-    dataIndex: 'customer',
-    key: 'customer',
+    dataIndex: 'namecustomer',
+    key: 'namecustomer',
   },
   {
     title: 'Tháng',
-    dataIndex: 'month',
-    key: 'month',
+    dataIndex: 'date',
+    key: 'date',
   },
   {
     title: 'Số tiền (VNĐ)',
-    dataIndex: 'money',
-    key: 'money',
+    dataIndex: 'owed',
+    key: 'owed',
     render: (value: number) => value.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }),
   },
 ];
 
 const OweRoomMoneyList = () => {
-  const [dataSource, setDataSource] = useState<dataList[]>([
-    {
-      key: '1',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      month: 2,
-      money: 1000000,
-    },
-    {
-      key: '2',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      month: 2,
-      money: 1000000,
-    },
-    {
-      key: '3',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      month: 2,
-      money: 1000000,
-    },
-    {
-      key: '4',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      month: 2,
-      money: 1000000,
-    },
-  ]);
+  const [dataSource, setDataSource] = useState();
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getDashboard();
+      setDataSource(data.customerOwed);
+    };
+
+    getList();
+  }, []);
   return (
     <div className=' '>
       <h1>Danh sách Khách nợ tiền phòng</h1>
