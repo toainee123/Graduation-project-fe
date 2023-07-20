@@ -12,29 +12,19 @@ type Props = {};
 const Login = (props: Props) => {
   // const role = useAppSelector(selectUserRole)
   const role = useAppSelector(selectUserRole);
-  const loading = useAppSelector(selectFetchUserLoading)
-  const [messageFail, setMessageFail] = useState(false)
+  const loading = useAppSelector(selectFetchUserLoading);
+  const [messageFail, setMessageFail] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onFinish = (values: any) => {
     dispatch(fetchLogin(values))
       .unwrap()
-      .then((resp) => {
-
-        if (resp?.user?.role && resp?.user?.role === 'ADMIN') {
-          navigate(urlRouter.DASHBOARD);
-        }
-
-        if (resp?.user?.role && resp?.user?.role === 'STUDENT') {
-          navigate(urlRouter.FORGOT_PASSWORD);
-        }
-      })
+      .then((resp) => {})
       .catch((error) => {
         console.log(error);
-        setMessageFail(true)
+        setMessageFail(true);
       });
-
   };
 
   return (
@@ -46,41 +36,31 @@ const Login = (props: Props) => {
         // onFinishFailed={onFinishFailed}
         autoComplete='off'
       >
-        <Form.Item
-          name='email'
-          rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}
-        >
+        <Form.Item name='email' rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}>
           <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
         </Form.Item>
 
-        <Form.Item
-          name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
+        <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
           <Input.Password
             size='large'
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            placeholder="Mật khẩu"
+            prefix={<LockOutlined className='site-form-item-icon' />}
+            placeholder='Mật khẩu'
           />
         </Form.Item>
 
-        {
-          messageFail && (
-            <span>Thông tin đăng nhập không chính xác!</span>
-          )
-        }
+        {messageFail && <span>Thông tin đăng nhập không chính xác!</span>}
 
-        <Form.Item >
-          <Form.Item name="remember" valuePropName="checked" noStyle>
+        <Form.Item>
+          <Form.Item name='remember' valuePropName='checked' noStyle>
             <Checkbox>nhớ mật khẩu</Checkbox>
           </Form.Item>
 
-          <Link to="#" className="float-right" >
+          <Link to='#' className='float-right'>
             quên mật khẩu
           </Link>
         </Form.Item>
 
-        <Form.Item >
+        <Form.Item>
           <Button type='primary' size='large' shape='round' htmlType='submit' className='w-full'>
             ĐĂNG NHẬP
           </Button>
