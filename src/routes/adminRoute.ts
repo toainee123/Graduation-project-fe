@@ -5,8 +5,6 @@ import CreateMember from 'src/pages/admin/room/createMember/createMember';
 import ListMember from 'src/pages/admin/room/listMember/listMember';
 import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Charge from 'src/pages/admin/charge/Charge';
-import { Form } from 'antd';
-import { Navigate } from 'react-router-dom';
 import DataPower from 'src/pages/admin/dataPower/dataPower';
 import DataWater from 'src/pages/admin/dataWater/dataWater';
 import Establish from 'src/pages/admin/establish/establish';
@@ -20,15 +18,15 @@ import AuthLayout from '../layout/authLayout/AuthLayout';
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
-import Login from '../pages/auth/login/Login';
 import { urlRouter } from '../utils/constants';
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import HomePage from '../pages/admin/homePage/index';
-import Register from 'src/pages/auth/register/register';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
+import NavRoom from 'src/components/admin/room/navRoom/navRoom';
+import EditHouse from 'src/components/admin/room/editHouse/editHouse';
 
 export const adminRoutes = [
   {
@@ -52,6 +50,10 @@ export const adminRoutes = [
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
   },
+  // {
+  //   path: `${urlRouter.ROOM}/${urlRouter.UPDATE_ROOM}/:id`,
+  //   component: EditHouse,
+  // },
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
     component: CreateMember,

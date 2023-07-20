@@ -1,30 +1,23 @@
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Alert, Button, Modal, Result, Tooltip, message } from 'antd';
+import { Alert, Modal, Tooltip, Form, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import { getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
+import EditHouse from '../editHouse/editHouse';
+import { remove } from 'src/api/house';
+import { useAppDispatch } from 'src/store/hooks';
+import { deleteHouse } from 'src/features/room/houseSlice';
 
 const { confirm } = Modal;
-const showDeleteConfirm = () => {
-  confirm({
-    title: 'Bạn có chắc chắn muốn xóa phòng này không',
-    icon: <ExclamationCircleFilled />,
-    content: 'Toàn bộ dữ liệu trong phòng, và khách thuê sẽ bị xóa',
-    okText: 'Đồng ý',
-    okType: 'danger',
-    cancelText: 'Cancel',
-    onOk() {
-      console.log('OK');
-    },
-    onCancel() {
-      console.log('Cancel');
-    },
-  });
-};
+
 const CardRoom = ({ idHouse }: any) => {
   const [listRoom, setListRoom] = useState<any>([]);
   const [analyticRoom, setAnalyticRoom] = useState<any>();
+  const [open, setOpen] = useState(false);
+  const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -34,6 +27,33 @@ const CardRoom = ({ idHouse }: any) => {
     };
     fetchRoom();
   }, [idHouse]);
+  const onFinish = (e: any) => {
+    console.log(e);
+  }
+
+  const showDeleteConfirm = (idHouse: any) => {
+    confirm({
+      title: 'Bạn có chắc muốn xóa không',
+      icon: <ExclamationCircleFilled />,
+      content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa',
+      okText: 'Đồng ý',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk() {
+        // remove(idHouse);
+        // setListRoom(listRoom.filter((item: any) => item.id !== idHouse))
+        dispatch(deleteHouse(idHouse)).unwrap().then((resp) => {
+          message.success("xóa nhà thành công")
+        })
+          .catch((err) => {
+            message.error("xóa nhà không thành công")
+          })
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
 
   return (
     <div>
@@ -53,21 +73,41 @@ const CardRoom = ({ idHouse }: any) => {
           )
         }
 
-        <div className='md:my-2 flex-col'>
+        <div className='md:my-2'>
           <Link to={urlRouter.CREATE_ROOM}>
             <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
               <i className='fa-solid fa-bed'></i> Thêm phòng
             </button>
           </Link>
-          <Link to='#'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
+
+          <Link to="#">
+            <button onClick={() => setOpen(true)} className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
               <i className='fa-solid fa-pen'></i> Sửa nhà
             </button>
           </Link>
+          <Modal
+            centered
+            open={open}
+            onOk={() => {
+              form
+                .validateFields()
+                .then((values) => {
+                  form.resetFields();
+                  onFinish(values);
+                })
+                .catch((info) => {
+                  console.log('Validate Failed:', info);
+                });
+            }}
+            onCancel={() => setOpen(false)}
+            className="ant-modal-create"
+          >
+            <EditHouse form={form} idHouse={idHouse} />
+          </Modal>
           <Link
             to='#'
           >
-            <button className='focus:outline-none text-white bg-red-700 hover:bg-red-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'>
+            <button onClick={() => showDeleteConfirm(idHouse)} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'>
               <i className='fa-solid fa-trash'></i> Xóa
             </button>
           </Link>
