@@ -593,14 +593,14 @@ const Charge = () => {
               <MailOutlined className='icon-btn' /> Email
             </button>
 
-            <button
+            {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
               onClick={() => {
                 selectRowDelete();
               }}
             >
               <DeleteOutlined className='icon-btn' /> Xoá
-            </button>
+            </button> */}
           </div>
         </div>
 
