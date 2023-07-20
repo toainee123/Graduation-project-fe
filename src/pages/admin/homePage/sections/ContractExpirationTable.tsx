@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
 
@@ -34,6 +35,7 @@ const columns: ColumnsType<dataList> = [
     title: 'Ngày hết hạn',
     dataIndex: 'contractexpir',
     key: 'contractexpir',
+    render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
 ];
 

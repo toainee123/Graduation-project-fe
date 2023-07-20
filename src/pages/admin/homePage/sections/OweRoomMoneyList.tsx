@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
 
@@ -32,6 +33,7 @@ const columns: ColumnsType<dataList> = [
     title: 'Tháng',
     dataIndex: 'date',
     key: 'date',
+    render: (value: string) => moment(value).format('MM/YYYY'),
   },
   {
     title: 'Số tiền (VNĐ)',

@@ -41,13 +41,13 @@ const columns = [
   },
   {
     title: 'Dịch Vụ(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'priceservice',
+    key: 'priceservice',
   },
   {
     title: 'Tổng tiền(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'price',
+    key: 'price',
   },
 ];
 

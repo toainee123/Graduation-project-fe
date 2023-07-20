@@ -1,4 +1,4 @@
-import { Column, ColumnConfig } from '@ant-design/charts';
+import { Column, ColumnConfig } from '@ant-design/plots';
 
 type Props = {
   data: Array<object>;

@@ -6,40 +6,24 @@ import PieChart from 'src/components/specific/chart/Pie';
 import { RoomAvailability } from './sections/RoomAvailability';
 import OweRoomMoneyList from './sections/OweRoomMoneyList';
 import ContractExpiration from './sections/ContractExpirationTable';
-import { UnfinishedWorkTable } from './sections/UnfinishedWorkTable';
 import { getDashboard } from 'src/api/dashboard';
+import { TransFormToBarData } from './hooks/useTranformToBarData';
 
 interface Props {}
 
 const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<object>>([]);
-  const [dataChart, setDataChart] = useState<Array<object>>([
-    {
-      month: 'Tháng 1',
-      values: 112,
-    },
-    {
-      month: 'Tháng 2',
-      values: 52,
-    },
-    {
-      month: 'Tháng 3',
-      values: 100,
-    },
-    {
-      month: 'Tháng 4',
-      values: 145,
-    },
-  ]);
+  const [dataChart, setDataChart] = useState<Array<object>>([]);
   useEffect(() => {
     const getList = async () => {
       const { data } = await getDashboard();
-      setDataSource(data.revenue);
+      setDataChart(TransFormToBarData(data.revenue));
     };
 
     getList();
   }, []);
+
   const [dataPie, setDataPie] = useState<Array<object>>([
     { type: 'Đang thuê', value: 60 },
     { type: 'Phòng trống', value: 40 },
@@ -78,7 +62,7 @@ const Homepage = (props: Props) => {
         <div className=' '>
           <h1> doanh thu vn đồng</h1>
           <div className='bg-gray-100'>
-            <ColumnChart data={dataChart} xField='month' yField='values' />
+            <ColumnChart data={dataChart} xField='month' yField='totalRevenue' />
           </div>
         </div>
       </div>
@@ -88,7 +72,6 @@ const Homepage = (props: Props) => {
       </div>
       <div className=' w-full grid grid-cols-2 gap-4 '>
         <ContractExpiration />
-        <UnfinishedWorkTable />
       </div>
     </div>
   );
