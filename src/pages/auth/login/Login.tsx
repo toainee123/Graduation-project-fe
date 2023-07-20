@@ -55,7 +55,7 @@ const Login = (props: Props) => {
             <Checkbox>nhớ mật khẩu</Checkbox>
           </Form.Item>
 
-          <Link to='#' className='float-right'>
+          <Link to='/auth/forgot-password' className='float-right'>
             quên mật khẩu
           </Link>
         </Form.Item>

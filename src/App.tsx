@@ -13,6 +13,8 @@ import Loading from './components/common/loading/Loading';
 import ProtectedAuth from './components/specific/ProtectedAuth/ProtectedAuth';
 import { urlRouter } from './utils/constants';
 import ProtectedRoute from './components/specific/protectedRoute/ProtectedRoute';
+import Forgotpassword from './pages/auth/forgot-password/Forgotpassword';
+import Createpassword from './pages/auth/forgot-password/Createpassword';
 
 function App() {
   return (
@@ -33,12 +35,14 @@ function App() {
 
             {authRoute.map((route, index) => {
               const Page = route.component;
-
               return <Route key={index} path={route.path} element={<Page />} />;
             })}
 
             <Route path='*' element={<Navigate to={''} replace />} />
           </Route>
+
+          <Route path='/auth/forgot-password' element={<Forgotpassword />} />
+          <Route path='/auth/create-new-password' element={<Createpassword />} />
 
           <Route
             path='admin'
