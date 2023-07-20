@@ -12,7 +12,7 @@ const ProtectedAuth = ({ children }: Props) => {
   console.log(roleStore);
 
   const userData: any = JSON.parse(localStorage.getItem('user') as string);
-  if (userData.role !== 'ADMIN') {
+  if (userData?.role !== 'ADMIN') {
     return <>{children}</>;
   }
   return <Navigate to={'/admin'} />;

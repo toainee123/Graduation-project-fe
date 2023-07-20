@@ -245,14 +245,14 @@ const Charge = () => {
               <DollarOutlined />
             </button>
 
-            <button
+            {/* <button
               className=' flex justify-center items-center bg-red-500 text-white p-1 rounded mx-1'
               onClick={() => {
                 handleDelete(record.id);
               }}
             >
               <DeleteOutlined />
-            </button>
+            </button> */}
 
             <button
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
@@ -446,9 +446,17 @@ const Charge = () => {
 
   const selectRowThutien = () => {
     for (let i = 0; i < selectedRow.length; i++) {
-      console.log(selectedRow[i].tienconlai);
-
-      if (selectedRow[i].tienconlai !== 0) {
+      // console.log(+selectedRow[i].tienconlai + +selectedRow[i].tiendatra);
+      if (+selectedRow[i].tiendatra > 0) {
+        const sum = +selectedRow[i].tienconlai + +selectedRow[i].tiendatra;
+        dispatch(
+          updatePaidBill({
+            id: selectedRow[i].id,
+            paid: sum,
+          })
+        );
+      } else if (selectedRow[i].tienconlai !== 0) {
+        console.log('ahihiiahsd');
         dispatch(
           updatePaidBill({
             id: selectedRow[i].id,

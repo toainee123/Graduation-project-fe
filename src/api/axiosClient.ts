@@ -9,11 +9,12 @@ const axiosClient = axios.create({
   }
 })
 
-const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
-console.log(token);
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
+    const token = JSON.parse(localStorage.getItem('access_token') as string);
+    console.log(token);
     // Do something before request is sent
     if (!config?.headers) {
       throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)
