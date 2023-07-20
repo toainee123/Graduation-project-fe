@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authApi from '../../api/auth';
 import { RootState } from '../../store/store';
 import { localStorageConstants } from '../../utils/constants';
+import { toast } from 'react-toastify';
 
 interface UserState {
   body: any;
@@ -20,9 +21,12 @@ export const fetchLogin = createAsyncThunk(
     const { data } = response;
     localStorage.setItem('access_token', JSON.stringify(data.accessToken));
     localStorage.setItem('user', JSON.stringify(data));
+    toast.success('Đăng nhập thành công');
     return data;
   }
 );
+
+
 
 const roleLocal: any = localStorage.getItem(localStorageConstants.USER);
 
