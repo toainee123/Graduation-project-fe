@@ -3,10 +3,11 @@ import './style.scss';
 import { Checkbox } from 'antd';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
+import { Select } from 'antd';
 
 
 const UpdateSevice = () => {
-
+    const { Option } = Select;
     const [dataRequest, setDataRequest] = useState({
         serviceName: null,
         type: null,
@@ -27,11 +28,14 @@ const UpdateSevice = () => {
             [field]: e.target.value
         })
     }
+    const handleChange = (value) => {
+        console.log(`Selected: ${value}`);
+    };
     console.log(dataRequest)
     return (
         <>
             <div>
-                <h1>Sửa dịch vụ</h1>
+                <h1>Thêm dịch vụ</h1>
             </div>
             <div className='mt-8'>
                 <form action=''>
@@ -46,11 +50,17 @@ const UpdateSevice = () => {
                             Loại <b className='color-red'>*</b>
                         </label>
                         <div className='w-full'>
-                            <select className='border-2 p-4 outline-0 w-full' onChange={e => handleUpdateField(e, "type", "select")} name='' id=''>
-                                <option value='1'>Loại 1</option>
-                                <option value='2'>Loại 2</option>
-                                <option value='3'>Loại 3</option>
-                            </select>
+                            <Select
+                                mode="multiple"
+                                style={{ width: '100%' }}
+                                placeholder="Please select"
+                                onChange={handleChange}
+                            >
+                                <Option value="option1">Option 1</Option>
+                                <Option value="option2">Option 2</Option>
+                                <Option value="option3">Option 3</Option>
+                                {/* Add more Option elements as needed */}
+                            </Select>
                         </div>
                     </div>
                     <div className='flex justify-between items-center gap-12 py-3'>
