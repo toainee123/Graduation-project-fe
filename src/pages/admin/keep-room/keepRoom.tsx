@@ -1,41 +1,67 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, DatePicker, DatePickerProps, Form, Popconfirm, Select, Space, message } from 'antd';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { getDeposit, getListDeposit } from 'src/api/keep-room';
+import { getListDeposit } from 'src/api/deposit';
+import { getListHouse } from 'src/api/house';
+import { getRoom } from 'src/api/room';
 import { fetchDeleteDeposit, fetchDeposit, selectSuccessDeposit } from 'src/features/deposit/deposit';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { convertDate } from 'src/utils/helps';
+import { convertDate, convertDateFilter } from 'src/utils/helps';
 
 const KeepRoom = () => {
+  const { register, handleSubmit } = useForm();
   const statusState = useAppSelector(selectSuccessDeposit);
   const [messageApi] = message.useMessage();
+  const [dateTo, setDateTo] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deposit, setDeposit] = useState([]);
+  const [homeId, setHomeId] = useState([]);
+  const [roomId, setRoomId] = useState([]);
   const [form] = Form.useForm();
+  const [room, setRoom] = useState([]);
+  const [house, setHouse] = useState([]);
   const dispatch = useAppDispatch();
 
   const info = () => {
     messageApi.success('Đã xác nhận thành công');
   };
 
-  const dateFormatList = ['DD/MM/YYYY'];
-  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+  const dateFormatList = ['YYYY/MM/DD'];
+  const DateToOnChange: DatePickerProps['onChange'] = (date, dateString) => {
+    setDateTo(dateString);
   };
-  const lastChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date);
+  const DateFromChange: DatePickerProps['onChange'] = (date, dateString) => {
+    setDateFrom(dateString);
   };
   useEffect(() => {
     const getDeposit = async () => {
-      const { data } = await getListDeposit();
+      const { data } = await getListDeposit({});
       setData(data.responses);
     };
+    const getHouse = async () => {
+      const { data } = await getListHouse();
+      setHouse(data.result);
+    };
+    getHouse();
     getDeposit();
   }, []);
 
+  const handleChangeHomeId = async (value: any) => {
+    setHomeId(value);
+    const getRoomWithHomeId = await getRoom(value)
+      .then((res) => {
+        setRoom(res.data.result.responses);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  const handleChangeRoomId = (value: any) => {
+    console.log(value, ' value');
+    setRoomId(value);
+  };
   const handleChangeStatus = async (id: any, status: any) => {
     const payload = {
       id,
@@ -45,7 +71,7 @@ const KeepRoom = () => {
       .unwrap()
       .then((resp: any) => {
         const getDeposit = async () => {
-          const { data } = await getListDeposit();
+          const { data } = await getListDeposit({});
           setData(data.responses);
         };
         getDeposit();
@@ -61,7 +87,7 @@ const KeepRoom = () => {
       .unwrap()
       .then((resp) => {
         const getDeposit = async () => {
-          const { data } = await getListDeposit();
+          const { data } = await getListDeposit({});
           setData(data.responses);
         };
         getDeposit();
@@ -72,6 +98,28 @@ const KeepRoom = () => {
       });
   };
 
+  const Onsubmit = async (data: any) => {
+    const result = {
+      dateTo: dateTo && convertDateFilter(dateTo),
+      dateFrom: dateFrom && convertDateFilter(dateFrom),
+      houseId: homeId,
+      roomId: roomId,
+    };
+    if (result) {
+      const getDeposit = async () => {
+        const { data } = await getListDeposit(result);
+        setData(data.responses);
+      };
+      getDeposit();
+    } else {
+      const getDeposit = async () => {
+        const { data } = await getListDeposit({});
+        setData(data.responses);
+      };
+      getDeposit();
+    }
+  };
+
   return (
     <div>
       <div className='room'>
@@ -79,14 +127,14 @@ const KeepRoom = () => {
           <div className='row'>
             <h1>Cọc giữ phòng</h1>
           </div>
-          <form action='' style={{ marginTop: 30 }}>
+          <form onSubmit={handleSubmit(Onsubmit)} style={{ marginTop: 30 }}>
             <div style={{ display: 'flex', marginBottom: 20 }}>
               <div style={{ marginRight: 160 }}>
                 <label htmlFor='' style={{ marginRight: 15 }}>
                   Từ ngày
                 </label>
                 <Space direction='vertical'>
-                  <DatePicker onChange={onChange} format={dateFormatList} placeholder='Chọn ngày từ...' />
+                  <DatePicker onChange={DateToOnChange} format='YYYY-MM-DD' placeholder='Chọn ngày từ...' />
                 </Space>
               </div>
               <div>
@@ -94,39 +142,8 @@ const KeepRoom = () => {
                   đến
                 </label>
                 <Space direction='vertical'>
-                  <DatePicker onChange={lastChange} format={dateFormatList} placeholder='Chọn ngày từ...' />
+                  <DatePicker onChange={DateFromChange} format='YYYY-MM-DD' placeholder='Chọn ngày từ...' />
                 </Space>
-              </div>
-              <div style={{ display: 'flex', marginLeft: 200 }}>
-                <Link to='#'>
-                  <button
-                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                    style={{ marginRight: 15 }}
-                  >
-                    {' '}
-                    <i className='fa-solid fa-users'></i>Tìm kiếm
-                  </button>
-                </Link>
-                <div className=''>
-                  <Link to='http://localhost:3000/admin/create-keep-room'>
-                    <button
-                      className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                      style={{ marginRight: 15 }}
-                    >
-                      {' '}
-                      <i className='fa-solid fa-users'></i> Thêm
-                    </button>
-                  </Link>
-                  <Link to='#'>
-                    <button
-                      className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                      style={{ marginRight: 15 }}
-                    >
-                      {' '}
-                      <i className='fa-solid fa-users'></i> Xuất file Excel
-                    </button>
-                  </Link>
-                </div>
               </div>
             </div>
             <div style={{ display: 'flex', marginBottom: 20 }}>
@@ -134,38 +151,58 @@ const KeepRoom = () => {
                 <label htmlFor='' style={{ marginRight: 38 }}>
                   Nhà
                 </label>
-                <Select
-                  defaultValue='Danh sách phòng'
-                  style={{ width: '200', marginRight: '10px' }}
-                  options={[
-                    {
-                      options: [
-                        { label: 'Tầng 1', value: 'jack' },
-                        { label: 'Tầng 2', value: 'lucy' },
-                      ],
-                    },
-                  ]}
-                />
+                <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeHomeId}>
+                  {house.map((item: any) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </div>
               <div>
                 <label htmlFor='' style={{ marginRight: 38 }}>
                   Phòng
                 </label>
-                <Select
-                  defaultValue='Danh sách phòng'
-                  style={{ width: '200', marginRight: '10px' }}
-                  options={[
-                    {
-                      options: [
-                        { label: 'Tầng 1', value: 'jack' },
-                        { label: 'Tầng 2', value: 'lucy' },
-                      ],
-                    },
-                  ]}
-                />
+                <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeRoomId}>
+                  {room.map((item: any) => (
+                    <Select.Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </div>
             </div>
+            <div style={{ display: 'flex', marginLeft: 200 }}>
+              <button
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                style={{ marginRight: 15 }}
+                type='submit'
+              >
+                {' '}
+                <i className='fa-solid fa-users'></i>Tìm kiếm
+              </button>
+            </div>
           </form>
+          <div className=''>
+            <Link to='http://localhost:3000/admin/create-keep-room'>
+              <button
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                style={{ marginRight: 15 }}
+              >
+                {' '}
+                <i className='fa-solid fa-users'></i> Thêm
+              </button>
+            </Link>
+            <Link to='#'>
+              <button
+                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                style={{ marginRight: 15 }}
+              >
+                {' '}
+                <i className='fa-solid fa-users'></i> Xuất file Excel
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       <div className='flex flex-col'>

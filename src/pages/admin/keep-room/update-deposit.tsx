@@ -1,10 +1,10 @@
-import { DatePicker, DatePickerProps, Select } from 'antd';
+import { DatePicker, DatePickerProps, Select, message } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getListHouse } from 'src/api/house';
-import { getDeposit, updateDeposit } from 'src/api/keep-room';
+import { getDeposit, updateDeposit } from 'src/api/deposit';
 import { getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 
@@ -19,6 +19,7 @@ const UpdateDeposit = () => {
   const [room, setRoom] = useState([]);
   const [roomId, setRoomId] = useState([]);
   const [nameHouse, setNameHouse] = useState();
+  const [messageApi, contextHolder] = message.useMessage();
   const dateFormatList = ['DD/MM/YYYY'];
   const {
     register,
@@ -70,14 +71,29 @@ const UpdateDeposit = () => {
         console.log(err.message);
       });
   };
+  const info = () => {
+    messageApi.success('Đã thêm thành công');
+  };
   const handleBack = () => {
     navigate(-1);
   };
-  const Onsubmit = async (id: any, data: any) => {
+  const Onsubmit = async (data: any) => {
     console.log('dataa', data);
-    // await updateDeposit(id, {
-    //   ...data,
-    // });
+    await updateDeposit(Number(id), {
+      houseId: data.houseId,
+      roomId: data.roomId,
+      name: data.name,
+      phone: data.phone,
+      money: data.money,
+      note: data.note,
+      bookingDate: data.bookingdate,
+      checkInDate: data.checkindate,
+    }).then((res) => {
+      // info();
+      setTimeout(() => {
+        navigate(-1);
+      }, 3000);
+    });
   };
   return (
     <div>

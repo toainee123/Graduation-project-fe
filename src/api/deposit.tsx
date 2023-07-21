@@ -3,9 +3,11 @@ export const createDeposit = async (deposit: any) => {
   const url = `http://localhost:5000/api/deposit`;
   return axiosClient.post(url, deposit);
 };
-export const getListDeposit = async () => {
+export const getListDeposit = async (data: any) => {
   const url = `http://localhost:5000/api/deposit`;
-  return axiosClient.get(url);
+  return axiosClient.get(url, {
+    params: data,
+  });
 };
 export const updateStatus = async (id: any, status: any) => {
   const url = `http://localhost:5000/api/deposit/${id}/status`;

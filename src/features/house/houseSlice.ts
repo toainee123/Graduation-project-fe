@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createDeposit } from "src/api/keep-room";
+import { createDeposit } from "src/api/deposit";
 import { RootState } from "src/store/store";
 
 
