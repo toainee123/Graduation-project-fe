@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-
 import { Space, Table } from 'antd';
+import * as XLSX from 'xlsx-js-style';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+
 import { getAllRoom } from 'src/api/room';
 
-// const handleChange = (value: string) => {
-//     console.log(`selected ${value}`);
-// };
 const ListMember = () => {
     const [listRoom, setListRoom] = useState<any>([]);
     const [analyticRoom, setAnalyticRoom] = useState<any>();
@@ -89,12 +87,24 @@ const ListMember = () => {
             ),
         },
     ];
+    const handleExportToExcel = () => {
+        const columnsWithoutKey = columns.filter((column) => column.dataIndex !== 'key');
+        const worksheet = XLSX.utils.json_to_sheet(dataSource);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
 
+        XLSX.writeFile(workbook, 'data-house.xlsx');
+        console.log("click");
+    };
     return (
         <div>
             <div>
                 <div className="title_page">
                     <h1>danh sách phòng </h1>
+                </div>
+                <div className='float-right'>
+
+                    <button onClick={() => handleExportToExcel()} className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium text-sm px-3 py-1.5 ml-2 "><i className="fa-sharp fa-solid fa-file-excel"></i> Xuất file excel</button>
                 </div>
             </div>
             <Table dataSource={dataSource}

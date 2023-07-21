@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { SearchOutlined } from '@ant-design/icons'
-import { Button, Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd'
+import { useEffect, useState } from 'react'
+import { Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd'
 import { Link } from 'react-router-dom'
 
 import "./navRoom.scss"
+
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { httpMessage } from 'src/utils/constants';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
@@ -95,12 +95,18 @@ const NavRoom = () => {
     }, [districtStore])
 
     const onFinish = async (values: any) => {
-        try {
-            await dispatch(createHouse(values))
+        await dispatch(createHouse(values)).unwrap().then((resp: any) => {
             message.success(`Thêm ${values.name} thành công`)
-        } catch (error) {
-            message.error(`thêm ${values.name} thất bại`)
-        }
+        })
+            .catch((err: any) => {
+                message.error(`thêm ${values.name} thất bại`)
+            })
+        // try {
+        //     await dispatch(createHouse(values))
+        //     message.success(`Thêm ${values.name} thành công`)
+        // } catch (error) {
+        //     message.error(`thêm ${values.name} thất bại`)
+        // }
 
     }
     return (
@@ -183,7 +189,6 @@ const NavRoom = () => {
                         <button onClick={() => setOpen(true)} className='focus:outline-none text-white bg-purple-700 hover:bg-purple-800 font-medium rounded-lg text-sm px-5 py-2.5'><i className="fa-solid fa-building-columns"></i> Thêm nhà</button>
                     </Link>
                     <Modal
-                        title="Thêm nhà"
                         centered
                         open={open}
                         onOk={() => {
@@ -200,6 +205,9 @@ const NavRoom = () => {
                         onCancel={() => setOpen(false)}
                         className="ant-modal-create"
                     >
+                        <div className="title_page">
+                            <h1>thêm nhà</h1>
+                        </div>
                         <Form
                             form={form}
                         >
