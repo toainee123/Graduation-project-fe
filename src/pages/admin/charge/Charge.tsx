@@ -41,7 +41,6 @@ const Charge = () => {
     dispatch(getAstablishContract());
     const getHouse = async () => {
       const { data } = await getHouses();
-
       setHouses(data.result);
     };
     getHouse();
@@ -239,6 +238,7 @@ const Charge = () => {
               className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'
               onClick={() => {
                 handleRenderData(record);
+                setOldPaid(+record.tiendatra as any);
                 setIsModalOpen1(true);
               }}
             >
@@ -444,6 +444,7 @@ const Charge = () => {
 
   const [form] = Form.useForm();
 
+  const [oldPaid, setOldPaid] = useState<number>(0);
   const selectRowThutien = () => {
     for (let i = 0; i < selectedRow.length; i++) {
       // console.log(+selectedRow[i].tienconlai + +selectedRow[i].tiendatra);
@@ -764,8 +765,10 @@ const Charge = () => {
             form
               .validateFields()
               .then((values) => {
+                const valuesNumber = +values.paid + oldPaid;
+
                 form.resetFields();
-                dispatch(updatePaidBill({ id: idUpdatePaid, paid: values.paid }));
+                dispatch(updatePaidBill({ id: idUpdatePaid, paid: valuesNumber }));
                 setIsModalOpen1(false);
               })
               .catch((info) => {
