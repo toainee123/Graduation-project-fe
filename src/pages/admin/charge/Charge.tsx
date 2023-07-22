@@ -28,6 +28,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
 import { addBill, getHouses, getRoom } from 'src/api/charge';
+import { getHouseId } from 'src/api/house';
 
 type Props = {};
 
@@ -48,12 +49,13 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   const chargeData = useAppSelector((state: any) => state.charge.value);
-
   const dataSource = chargeData?.map((item: any, index: number) => {
     return {
       id: item.id,
       key: item.id,
       house: item.namehouse,
+      houseid: item.houseid,
+      roomid: item.roomid,
       date: item.date,
       room: item.nameroom,
       user: item.namecustomer,
@@ -74,13 +76,16 @@ const Charge = () => {
     setIsModalOpen1(false);
   };
   const dt = useAppSelector((state: any) => state.establish.value);
-  const printForm = dt.sample_bill_80mm;
+  // console.log(dt);
+
+  const printForm = dt?.result?.samplebill;
+
   const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
   const [idUpdatePaid, setIdUpdatePaid] = useState('');
   const [printListBillData, setPrintListBillData] = useState('');
 
-  const handleListData = () => {
+  const handleListData = async () => {
     let stringList = '';
     let arrData: any;
     if (selectedRow.length !== 0) {
@@ -88,21 +93,32 @@ const Charge = () => {
     } else {
       arrData = dataSource;
     }
-    arrData.map((item: any) => {
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    arrData.map(async (item: any) => {
+      console.log(item);
+
+      const resHouse = await getHouseId(item.houseid);
+      const resRoom = await getRoom(item.houseid);
+      const arrRoomHouse = await resRoom?.data?.result?.responses;
+      const room = await arrRoomHouse.find((item: any) => item.id === item.roomid);
+      console.log(room);
+
       const data: any = {
         '@AreaName': item.house,
-        '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+        '@Address': resHouse?.data?.result?.address,
         '@InvoiceNo': '0009',
         '@InvoiceDate': '22/05/2023',
-        '@MonthYear': `${item.month}/${item.year}`,
+        '@MonthYear': `${month}/${year}`,
         '@PayType': item.ky,
         '@FromDate': '18/4/2023',
         '@ToDate': '18/5/2023',
         '@CustomerName': item.user,
         '@RoomName': item.room,
         '@BeginRent': '18/4/2023',
-        '@ContentHtmlInvoiceService':
-          '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
         '@SumAmount': item.tien,
       };
 
@@ -120,28 +136,29 @@ const Charge = () => {
       setPrintListBillData(stringList);
     });
   };
-  const handleClickView = (record: any) => {
+  const handleClickView = async (record: any) => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
 
+    const resHouse = await getHouseId(record.houseid);
+    const resRoom = await getRoom(record.houseid);
+    const arrRoomHouse = await resRoom?.data?.result?.responses;
+    const room = await arrRoomHouse.find((item: any) => item.id === record.roomid);
+
     const data: any = {
       '@AreaName': record.house,
-      '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+      '@Address': resHouse?.data?.result?.address,
       '@InvoiceNo': '0009',
       '@InvoiceDate': '22/05/2023',
       '@MonthYear': `${month}/${year}`,
-      '@FromDate': '18/4/2023',
-      '@ToDate': '18/5/2023',
-      '@CustomerName': record.namecustomer,
+      '@CustomerName': record.user,
       '@RoomName': record.room,
-      '@BeginRent': '18/4/2023',
-      '@ContentHtmlInvoiceService':
-        '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr>
+      <tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
       '@SumAmount': record.tien,
     };
 
-    console.log(data);
     const exampleData80mm = printForm?.replaceAll(
       /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
       (matched: any) => {

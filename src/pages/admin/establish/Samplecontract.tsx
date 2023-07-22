@@ -5,7 +5,7 @@ import './establish.scss';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { changeContentContract, getAstablishContract } from 'src/features/establish/establishSlice';
-// import { changeContentContract, getAstablishContract } from 'src/features/astablish/astablishSlice';
+
 type Props = {};
 
 const Samplecontract = (props: Props) => {

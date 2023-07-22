@@ -45,7 +45,9 @@ const Printform = (props: Props) => {
   }, []);
 
   const data = useAppSelector((state: any) => state.establish.value);
+
   const sample80mm: any = data.sample_bill_80mm;
+  console.log(sample80mm);
   const sampleA5: any = data.sample_bill_A5;
 
   const [value, setValue] = useState(1);
