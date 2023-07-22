@@ -100,16 +100,14 @@ const Sidebar = (props: Props) => {
       icon: <FileTextOutlined />,
       children: [
         {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Danh sách Đang thuê phòng</Link>,
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Đang thuê phòng</Link>,
           key: '8.1',
 
           icon: <FileTextOutlined />,
         },
         {
           label: (
-            <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>
-              Danh sách khách hàng sắp hết hạn hợp đồng
-            </Link>
+            <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>Sắp hết hạn hợp đồng</Link>
           ),
           key: '8.2',
           icon: <FileTextOutlined />,

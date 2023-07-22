@@ -3,6 +3,7 @@ import { DatePicker, Select, Button, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent } from 'src/api/report';
 import moment from 'moment';
+import { transFormData, transFormDataReportCustomRent } from './hooks/transform';
 
 const { RangePicker } = DatePicker;
 
@@ -41,23 +42,23 @@ const columns = [
   },
   {
     title: 'Dịch Vụ(VNĐ)',
-    dataIndex: 'priceservice',
-    key: 'priceservice',
+    dataIndex: 'totalService',
+    key: 'totalService',
   },
   {
     title: 'Tổng tiền(VNĐ)',
-    dataIndex: 'price',
-    key: 'price',
+    dataIndex: 'total',
+    key: 'total',
   },
 ];
 
 const ReportCustomerRent = () => {
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource] = useState<transFormData[]>([]);
 
   useEffect(() => {
     const getList = async () => {
       const { data } = await getListReportCustomerRent();
-      setDataSource(data.responses);
+      setDataSource(transFormDataReportCustomRent(data.responses));
     };
     getList();
   }, []);

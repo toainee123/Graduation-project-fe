@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { fetchDataChart, selectDashboardLoading } from '../../../features/dashboard/DashboardSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import ColumnChart from 'src/components/specific/chart/Bar';
+import LineChart from 'src/components/specific/chart/Bar';
 import PieChart from 'src/components/specific/chart/Pie';
 import { RoomAvailability } from './sections/RoomAvailability';
 import OweRoomMoneyList from './sections/OweRoomMoneyList';
 import ContractExpiration from './sections/ContractExpirationTable';
 import { getDashboard } from 'src/api/dashboard';
-import { TransFormToBarData } from './hooks/useTranformToBarData';
+import { TransFormToBarData, TransFormToPieChart } from './hooks/useTranformToBarData';
 
 interface Props {}
 
@@ -15,19 +15,16 @@ const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<object>>([]);
   const [dataChart, setDataChart] = useState<Array<object>>([]);
+  const [dataPie, setDataPie] = useState<Array<object>>([]);
   useEffect(() => {
     const getList = async () => {
       const { data } = await getDashboard();
       setDataChart(TransFormToBarData(data.revenue));
+      setDataPie(TransFormToPieChart(data.staticRoom));
     };
 
     getList();
   }, []);
-
-  const [dataPie, setDataPie] = useState<Array<object>>([
-    { type: 'Đang thuê', value: 60 },
-    { type: 'Phòng trống', value: 40 },
-  ]);
 
   useEffect(() => {
     dispatch(fetchDataChart())
@@ -37,18 +34,6 @@ const Homepage = (props: Props) => {
       })
       .catch();
   }, []);
-  const [dataSource, setDataSource] = useState();
-
-  useEffect(() => {
-    const getList = async () => {
-      const { data } = await getDashboard();
-      setDataSource(data);
-    };
-
-    getList();
-  }, []);
-  console.log(dataSource);
-
   return (
     <div className=''>
       <h2>HomePage</h2>
@@ -56,13 +41,13 @@ const Homepage = (props: Props) => {
         <div className=' '>
           <h1>Trạng thái phòng</h1>
           <div className='bg-gray-100'>
-            <PieChart data={dataPie} angleField='value' colorField='type' />
+            <PieChart data={dataPie} angleField='count' colorField='roomStatus' />
           </div>
         </div>
         <div className=' '>
           <h1> doanh thu vn đồng</h1>
           <div className='bg-gray-100'>
-            <ColumnChart data={dataChart} xField='month' yField='totalRevenue' />
+            <LineChart data={dataChart} xField='month' yField='totalRevenue' />
           </div>
         </div>
       </div>

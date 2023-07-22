@@ -16,13 +16,13 @@ type dataList = {
 const columns: ColumnsType<dataList> = [
   {
     title: 'Nhà',
-    dataIndex: 'id',
-    key: 'id',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Phòng',
-    dataIndex: 'namehouse',
-    key: 'namehouse',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
     title: 'Khách',
