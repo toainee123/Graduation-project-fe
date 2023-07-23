@@ -9,6 +9,10 @@ export const get = async () => {
     return axiosClient.get(url);
 };
 
+export const getHouseId = async (id: any) => {
+    const url = `/house/${id}`;
+    return axiosClient.get(url);
+};
 export const getById = async (idHouse: any) => {
     const url = `/house/${idHouse}`;
     return axiosClient.get(url);

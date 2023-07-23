@@ -37,6 +37,7 @@ export const urlRouter = {
   // auth
   AUTH: 'auth',
   FORGOT_PASSWORD: 'auth/forgot-password',
+  CREATE_NEW_PASSWORD: 'auth/create-new-password'
 };
 
 // router link

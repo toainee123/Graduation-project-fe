@@ -25,8 +25,8 @@ import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import HomePage from '../pages/admin/homePage/index';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
-import NavRoom from 'src/components/admin/room/navRoom/navRoom';
-import EditHouse from 'src/components/admin/room/editHouse/editHouse';
+import Forgotpassword from 'src/pages/auth/forgot-password/Forgotpassword';
+import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 
 export const adminRoutes = [
   {
@@ -139,6 +139,18 @@ export const adminRoutes = [
     path: urlRouter.ESTABLISH,
     component: Establish,
   },
+
+  {
+    path: urlRouter.FORGOT_PASSWORD,
+    component: Forgotpassword,
+  },
+
+  {
+    path: urlRouter.CREATE_NEW_PASSWORD,
+    component: Createpassword,
+  },
+
+
 ];
 
 export const authRoute = [
@@ -146,8 +158,5 @@ export const authRoute = [
     path: urlRouter.AUTH,
     component: AuthLayout
   },
-  {
-    path: 'forgot-password',
-    component: AuthLayout,
-  },
+
 ];

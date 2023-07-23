@@ -40,3 +40,10 @@ export const addBill = async (data: any) => {
     const url = `/bill`;
     return axiosClient.post(url, data);
 };
+
+export const getEstablish = async () => {
+    const url = `/establish`;
+    return axiosClient.get(url);
+};
+
+
