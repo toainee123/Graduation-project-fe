@@ -32,6 +32,7 @@ const NavRoom = () => {
     const [open, setOpen] = useState(false);
     const [provinces, setProvinces] = useState<any[]>([])
     const [districts, setDistricts] = useState<any[]>([])
+    const [nameDistrict, setNameDistrict] = useState('');
     const [wards, setWards] = useState<any[]>([])
     const [address, setAddress] = useState("")
     const [city, setCity] = useState()
@@ -62,7 +63,10 @@ const NavRoom = () => {
         setCity(e)
     };
     const handleChangeDistricts = (e: any) => {
-        console.log(`selectedDistrict ${e}`);
+        console.log(`selectedDistrict`, districts);
+        const name = districts.find((item: any) => item.district_id === e)
+        console.log('nameDistrict', nameDistrict);
+        setNameDistrict(name)
         setDistrictStore(e)
     };
     const handleChangeWard = (e: any) => {
@@ -79,21 +83,24 @@ const NavRoom = () => {
     }, [])
 
     useEffect(() => {
-        const fetchDistrict = async () => {
-            const { data } = await getDistrict(city)
-            setDistricts(data.results)
+        if (city) {
+            const fetchDistrict = async () => {
+                const { data } = await getDistrict(city)
+                setDistricts(data.results)
+            }
+            fetchDistrict()
         }
-        fetchDistrict()
     }, [city])
 
     useEffect(() => {
-        const fetchWard = async () => {
-            const { data } = await getWards(districtStore)
-            setWards(data.results)
+        if (districtStore) {
+            const fetchWard = async () => {
+                const { data } = await getWards(districtStore)
+                setWards(data.results)
+            }
+            fetchWard()
         }
-        fetchWard()
     }, [districtStore])
-
     const onFinish = async (values: any) => {
         await dispatch(createHouse(values)).unwrap().then((resp: any) => {
             message.success(`Thêm ${values.name} thành công`)
@@ -101,13 +108,7 @@ const NavRoom = () => {
             .catch((err: any) => {
                 message.error(`thêm ${values.name} thất bại`)
             })
-        // try {
-        //     await dispatch(createHouse(values))
-        //     message.success(`Thêm ${values.name} thành công`)
-        // } catch (error) {
-        //     message.error(`thêm ${values.name} thất bại`)
-        // }
-
+        setOpen(false)
     }
     return (
         <div className="room_selected row" >
@@ -288,7 +289,6 @@ const NavRoom = () => {
                                     <Input type="text" className='w-full py-1 pl-2 border' value={`${address ? `${address},` : ""} ${wardStore ? `${wards.find(item => item.ward_id === wardStore)?.ward_name},` : ""} ${districtStore ? `${districts.find(item => item.district_id === districtStore)?.district_name},` : ""} ${city ? `${provinces.find(item => item.province_id === city)?.province_name}.` : ""}`} readOnly />
                                 </Form.Item>
                             </div>
-
                         </Form>
                     </Modal>
                 </div>
