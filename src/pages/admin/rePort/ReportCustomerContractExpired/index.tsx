@@ -56,7 +56,7 @@ const columns = [
   },
 ];
 
-const ReportCustomerRent = () => {
+const ReportCustomerContractExpired = () => {
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
@@ -120,4 +120,4 @@ const ReportCustomerRent = () => {
   );
 };
 
-export default ReportCustomerRent;
+export default ReportCustomerContractExpired;

@@ -21,8 +21,8 @@ const columns: ColumnsType<dataList> = [
   },
   {
     title: 'Phòng',
-    dataIndex: 'id',
-    key: 'id',
+    dataIndex: 'nameroom',
+    key: 'nameroom',
   },
   {
     title: 'Khách',
