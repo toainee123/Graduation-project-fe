@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { getEstablish } from 'src/api/charge';
 import { RootState } from 'src/store/store';
 
 interface AstablishType {
@@ -13,7 +14,7 @@ const initialState: AstablishType = {
 };
 
 export const getAstablishContract = createAsyncThunk('astablish/contract/getAstablishContract', async () => {
-  const { data }: any = await axios.get(`http://localhost:3001/astablish/1`);
+  const { data }: any = await getEstablish();
   return data;
 });
 

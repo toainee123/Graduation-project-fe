@@ -150,7 +150,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: <Link to={urlRouter.KEEP_ROOM}>Cọc phòng</Link>,
-      key: '12',
+      key: '14',
       icon: <FileOutlined />,
     },
   ];
@@ -175,7 +175,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
 
         <div className='userLogin'>
