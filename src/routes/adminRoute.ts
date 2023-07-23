@@ -15,6 +15,7 @@ import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
+
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
@@ -26,6 +27,10 @@ import HomePage from '../pages/admin/homePage/index';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
 import { urlRouter } from '../utils/constants';
+import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
+import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
+import Forgotpassword from 'src/pages/auth/forgot-password/Forgotpassword';
+import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 
 export const adminRoutes = [
   {
@@ -49,6 +54,10 @@ export const adminRoutes = [
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
   },
+  // {
+  //   path: `${urlRouter.ROOM}/${urlRouter.UPDATE_ROOM}/:id`,
+  //   component: EditHouse,
+  // },
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
     component: CreateMember,
@@ -138,6 +147,18 @@ export const adminRoutes = [
     path: urlRouter.ESTABLISH,
     component: Establish,
   },
+
+  {
+    path: urlRouter.FORGOT_PASSWORD,
+    component: Forgotpassword,
+  },
+
+  {
+    path: urlRouter.CREATE_NEW_PASSWORD,
+    component: Createpassword,
+  },
+
+
 ];
 
 export const authRoute = [
@@ -145,8 +166,5 @@ export const authRoute = [
     path: urlRouter.AUTH,
     component: AuthLayout
   },
-  {
-    path: 'forgot-password',
-    component: AuthLayout,
-  },
+
 ];

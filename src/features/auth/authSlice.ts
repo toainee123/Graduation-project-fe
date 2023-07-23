@@ -2,30 +2,34 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import authApi from '../../api/auth';
 import { RootState } from '../../store/store';
 import { localStorageConstants } from '../../utils/constants';
+import { toast } from 'react-toastify';
 
 interface UserState {
   body: any;
   loading: true | false;
   userRole: {} | any;
   accessToken: null | any;
+  email: string | null,
+  password: string | null
 }
 
 export const fetchLogin = createAsyncThunk(
   'auth/fetchUser',
   async (payload: Partial<UserState>, { rejectWithValue }) => {
-    try {
-        const response = await authApi.login(payload);
-        localStorage.setItem('access_token', JSON.stringify(response.data.token));
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-
-        return response.data;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+    const userLogin = { email: payload.email, password: payload.password }
+    const response = await authApi.login(userLogin);
+    const { data } = response;
+    localStorage.setItem('access_token', JSON.stringify(data.accessToken));
+    localStorage.setItem('user', JSON.stringify(data));
+    toast.success('Đăng nhập thành công');
+    return data;
   }
 );
 
+
+
 const roleLocal: any = localStorage.getItem(localStorageConstants.USER);
+
 
 const initialState: Partial<UserState> = {
   loading: false,
@@ -49,10 +53,11 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {
-        // debugger
+        console.log(action.payload);
+
         state.loading = false;
-        state.userRole = action.payload.user;
-        state.accessToken = action.payload.token;
+        state.userRole = action.payload.role;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(fetchLogin.rejected, (state, action) => {
         state.loading = false;

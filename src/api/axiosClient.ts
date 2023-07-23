@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { baseURL, localStorageConstants, urlRouter } from "../utils/constants";
+import { log } from "console";
 
 const axiosClient = axios.create({
   baseURL: `${baseURL}`,
@@ -8,9 +9,12 @@ const axiosClient = axios.create({
   }
 })
 
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
+    const token = JSON.parse(localStorage.getItem('access_token') as string);
+    console.log(token);
     // Do something before request is sent
     if (!config?.headers) {
       throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)

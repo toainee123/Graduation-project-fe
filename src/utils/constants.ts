@@ -11,6 +11,7 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
+  UPDATE_ROOM: 'edit',
   CREATE_MEMBER: 'createMember',
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
@@ -36,6 +37,7 @@ export const urlRouter = {
   // auth
   AUTH: 'auth',
   FORGOT_PASSWORD: 'auth/forgot-password',
+  CREATE_NEW_PASSWORD: 'auth/create-new-password'
 };
 
 // router link
