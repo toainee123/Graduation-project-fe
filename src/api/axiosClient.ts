@@ -1,22 +1,26 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { baseURL, localStorageConstants, urlRouter } from "../utils/constants";
+import { log } from "console";
 
 const axiosClient = axios.create({
-  baseURL: `${baseURL}/api`,
+  baseURL: `${baseURL}`,
   headers: {
     Accept: 'application/json', 'Content-Type': 'application/json',
   }
 })
 
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
+    const token = JSON.parse(localStorage.getItem('access_token') as string);
+    console.log(token);
     // Do something before request is sent
     if (!config?.headers) {
       throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)
     }
 
-    const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
+    // const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
 
     config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2OTAxMjQ1MjIsImV4cCI6MTY5MDIxMDkyMn0.g_7w8jv_Ws1WoMxw--ZKG316uxVJF65_cd9jsg8jcM0'
     return config
@@ -42,7 +46,7 @@ axiosClient.interceptors.response.use(
       (error.response.status === 500 && error.response.data.message === 'Error: invalid signature') ||
       (error.response.status === 500 && error.response.data.message === 'Error: Permission denied')
     ) {
-      window.location.href = urlRouter.LOGIN;
+      window.location.href = urlRouter.AUTH;
       window.localStorage.clear();
     }
 

@@ -1,6 +1,9 @@
 .ant-modal-create {
   width: 70vw !important;
-  height: 50vh;
+  height: 80vh;
+}
+.ant-modal-create .ant-modal-header {
+  border-radius: 20px 20px 0 0;
 }
 .select-province {
   width: 100% !important;

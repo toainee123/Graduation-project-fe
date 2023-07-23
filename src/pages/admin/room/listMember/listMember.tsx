@@ -2,8 +2,9 @@ import React from 'react'
 import "./listMember.scss"
 
 import { Select, Space, Table } from 'antd';
+import * as XLSX from 'xlsx-js-style';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment'
 
 const dataSource = [
@@ -88,11 +89,19 @@ const columns = [
     },
 ];
 
+const handleExportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(dataSource);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+    XLSX.writeFile(workbook, 'data-member.xlsx');
+    console.log("click");
+};
 const handleChange = (value: string) => {
     console.log(`selected ${value}`);
 };
 const ListMember = () => {
-
+    const navigate = useNavigate()
     return (
         <div>
             <div>
@@ -110,7 +119,7 @@ const ListMember = () => {
                             }
                         })}
                     />
-                    <button className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium text-sm px-3 py-1.5 ml-2 "><i className="fa-sharp fa-solid fa-file-excel"></i> Xuất file excel</button>
+                    <button onClick={() => handleExportToExcel()} className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium text-sm px-3 py-1.5 ml-2 "><i className="fa-sharp fa-solid fa-file-excel"></i> Xuất file excel</button>
                 </div>
             </div>
             <Table dataSource={dataSource} columns={columns} />

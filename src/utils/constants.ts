@@ -11,6 +11,7 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
+  UPDATE_ROOM: 'edit',
   CREATE_MEMBER: 'createMember',
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
@@ -35,9 +36,8 @@ export const urlRouter = {
   CREATE_KEEP_ROOM: 'create-keep-room',
   // auth
   AUTH: 'auth',
-  LOGIN: 'login',
-  REGISTER: 'register',
   FORGOT_PASSWORD: 'auth/forgot-password',
+  CREATE_NEW_PASSWORD: 'auth/create-new-password'
 };
 
 // router link
@@ -47,7 +47,7 @@ export const pathUrl = {
 };
 
 // export const baseURL = process.env.BASE_URL
-export const baseURL = process.env.REACT_APP_BASE_URL_API;
+export const baseURL = process.env.REACT_APP_BASE_API;
 
 // Key localStorage
 export const localStorageConstants = {
@@ -59,3 +59,8 @@ export const httpMessage = {
   UPLOAD_SUCCESS: 'file uploaded successfully',
   UPLOAD_FAILED: 'file upload failed',
 };
+
+export const limitCountUpload = {
+  LIMIT_COUNT: 6,
+  LIMIT_SIZE: 2,
+}

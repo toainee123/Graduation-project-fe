@@ -81,3 +81,28 @@ h6 {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+.ant-tabs-content-holder {
+  border: none !important;
+}
+.ant-input {
+  border-radius: 6px !important;
+}
+.ant-form-item {
+  margin: 0 !important;
+}
+.ant-select-selector {
+  border-radius: 6px !important;
+}
+.ant-btn {
+  border-radius: 6px !important;
+}
+.ant-modal-content {
+  border-radius: 6px !important;
+}
+.ant-table-cell {
+  font-size: 14px;
+  font-weight: 500;
+}
+.ant-picker {
+  border-radius: 6px !important;
+}

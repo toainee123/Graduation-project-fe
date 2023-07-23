@@ -1,34 +1,36 @@
 import Assets from 'src/pages/admin/Assets/Assest';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
-import CreateMember from 'src/pages/admin/room/createMember/createMember';
-import ListMember from 'src/pages/admin/room/listMember/listMember';
-import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Charge from 'src/pages/admin/charge/Charge';
-import { Form } from 'antd';
-import { Navigate } from 'react-router-dom';
 import DataPower from 'src/pages/admin/dataPower/dataPower';
 import DataWater from 'src/pages/admin/dataWater/dataWater';
 import Establish from 'src/pages/admin/establish/establish';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
+import CreateMember from 'src/pages/admin/room/createMember/createMember';
 import CreateRoom from 'src/pages/admin/room/createRoom/createRoom';
+import ListMember from 'src/pages/admin/room/listMember/listMember';
+import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
-import UpdateSevice from 'src/pages/admin/service/UpdateService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
+
+import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
+import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
+import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
+import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
+import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
+import CreateSevice from 'src/pages/admin/service/CreateService';
+import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
+import HomePage from '../pages/admin/homePage/index';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
-import Login from '../pages/auth/login/Login';
 import { urlRouter } from '../utils/constants';
-import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
-import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
-import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
-import HomePage from '../pages/admin/homePage/index';
-import Register from 'src/pages/auth/register/register';
 import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
+import Forgotpassword from 'src/pages/auth/forgot-password/Forgotpassword';
+import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 
 export const adminRoutes = [
   {
@@ -52,6 +54,10 @@ export const adminRoutes = [
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
   },
+  // {
+  //   path: `${urlRouter.ROOM}/${urlRouter.UPDATE_ROOM}/:id`,
+  //   component: EditHouse,
+  // },
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
     component: CreateMember,
@@ -63,7 +69,11 @@ export const adminRoutes = [
   },
   {
     path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
-    component: UpdateSevice,
+    component: CreateSevice,
+  },
+  {
+    path: `${urlRouter.SERVICE}/:id`,
+    component: UpdateService,
   },
   {
     path: urlRouter.DATA_POWER,
@@ -129,8 +139,7 @@ export const adminRoutes = [
     component: Pg,
     children: [
       { path: urlRouter.LIST_PG, component: ListPg, index: true },
-      // { path: 'create', component: Login },
-      // { path: 'update', component: Login },
+
     ],
   },
 
@@ -138,20 +147,24 @@ export const adminRoutes = [
     path: urlRouter.ESTABLISH,
     component: Establish,
   },
+
+  {
+    path: urlRouter.FORGOT_PASSWORD,
+    component: Forgotpassword,
+  },
+
+  {
+    path: urlRouter.CREATE_NEW_PASSWORD,
+    component: Createpassword,
+  },
+
+
 ];
 
 export const authRoute = [
   {
-    // index: true,
-    path: 'login',
-    component: Login,
+    path: urlRouter.AUTH,
+    component: AuthLayout
   },
-  {
-    path: urlRouter.REGISTER,
-    component: Register,
-  },
-  {
-    path: 'forgot-password',
-    component: AuthLayout,
-  },
+
 ];
