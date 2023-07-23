@@ -1,14 +1,43 @@
-.editable-cell {
-  position: relative;
+td {
+  display: table-cell;
+}
+thead tr {
+  height: 40px;
+  border-radius: 10px;
+  color: white;
 }
 
-.editable-cell-value-wrap {
-  padding: 5px 12px;
-  cursor: pointer;
+thead tr th:first-child {
+  border-radius: 10px 0 0 0;
 }
 
-.editable-row:hover .editable-cell-value-wrap {
-  padding: 4px 11px;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
+thead tr th:last-child {
+  border-radius: 0 10px 0 0;
 }
+
+tbody tr {
+  height: 60px;
+}
+
+tbody tr td {
+  padding: 10px;
+}
+
+.gender {
+  width: 153px;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+}
+
+tr:last-child {
+  border: none;
+}
+
+// table,
+// th,
+// td {
+//   border: 1px solid black;
+//   border-collapse: collapse;
+// }

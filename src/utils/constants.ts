@@ -11,7 +11,7 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
-  CREATE_MEMBER: 'createMember',
+  CREATE_MEMBER: 'createMember/:id',
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện

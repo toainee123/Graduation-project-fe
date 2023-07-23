@@ -23,3 +23,10 @@ export const getWards = async (districtId: any) => {
     const url = `/province/ward/${districtId}`;
     return axiosClient.get(url);
 };
+
+export const addRoomMember = async (member: any) => {
+    const url = `/roomTenant/add-member`;
+    return axiosClient.post(url, member);
+};
+
+
