@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { create, get, remove } from '../../api/house'
+import { create, get, remove, update } from '../../api/house'
 import { RootState } from 'src/store/store';
 interface houseValue {
     value: any,
@@ -47,7 +47,17 @@ export const deleteHouse = createAsyncThunk(
         }
     }
 )
-
+export const editHouse = createAsyncThunk(
+    "house/editHouse",
+    async ({ idHouse, value }: any, rejectWithValue) => {
+        try {
+            return await update({ idHouse, value })
+            // return data
+        } catch (error) {
+            return rejectWithValue
+        }
+    }
+)
 export const houseSlice = createSlice({
     name: 'house',
     initialState,
@@ -71,6 +81,9 @@ export const houseSlice = createSlice({
             // state.value = action.payload
             console.log('truee');
             state.isDelete = true
+        })
+        builder.addCase(editHouse.fulfilled, (state, action) => {
+            // state.value.push(action.payload);
         })
     }
 })

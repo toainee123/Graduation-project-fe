@@ -14,9 +14,9 @@ export const getById = async (idHouse: any) => {
     return axiosClient.get(url);
 };
 
-export const update = (house: any) => {
-    const url = `/house/${house.idHouse}`
-    return axiosClient.put(url, house)
+export const update = ({ idHouse, value }: any) => {
+    const url = `/house/${idHouse}`
+    return axiosClient.put(url, value)
 }
 
 export const remove = (id: any) => {

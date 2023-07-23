@@ -10,11 +10,14 @@ export const getProvinces = async () => {
 };
 
 export const getDistrict = async (provincesId: any) => {
+  console.log('provincesId', provincesId);
+
   const url = `/province/district/${provincesId}`;
   return apiProvinces.get(url);
 };
 
 export const getWards = async (districtId: any) => {
+  console.log('districtId', districtId);
   const url = `/province/ward/${districtId}`;
   return apiProvinces.get(url);
 };

@@ -1,14 +1,13 @@
-import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Alert, Modal, Tooltip, Form, message } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { Alert, Modal, Tooltip, Form, message } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import { getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
-import { remove } from 'src/api/house';
 import { useAppDispatch } from 'src/store/hooks';
-import { deleteHouse } from 'src/features/room/houseSlice';
+import { deleteHouse, editHouse, getAllHouse } from 'src/features/room/houseSlice';
 
 const { confirm } = Modal;
 
@@ -27,8 +26,16 @@ const CardRoom = ({ idHouse }: any) => {
     };
     fetchRoom();
   }, [idHouse]);
-  const onFinish = (e: any) => {
-    console.log(e);
+
+  const onFinish = async (value: any) => {
+    dispatch(editHouse({ idHouse, value }))
+      .unwrap().then((resp) => {
+        dispatch(getAllHouse())
+        setOpen(false)
+        return message.success(`Cập nhật ${value.name} thành công`)
+      }).catch((err) => {
+        return message.error(`Cập nhật ${value.name} thất bại`)
+      })
   }
 
   const showDeleteConfirm = (idHouse: any) => {
@@ -80,19 +87,20 @@ const CardRoom = ({ idHouse }: any) => {
             </button>
           </Link>
 
-          <Link to="#">
+          <Link to="">
             <button onClick={() => setOpen(true)} className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'>
               <i className='fa-solid fa-pen'></i> Sửa nhà
             </button>
           </Link>
           <Modal
             centered
+            okText="Cập nhật"
             open={open}
             onOk={() => {
               form
                 .validateFields()
                 .then((values) => {
-                  form.resetFields();
+                  // form.resetFields();
                   onFinish(values);
                 })
                 .catch((info) => {
@@ -102,7 +110,7 @@ const CardRoom = ({ idHouse }: any) => {
             onCancel={() => setOpen(false)}
             className="ant-modal-create"
           >
-            <EditHouse form={form} idHouse={idHouse} />
+            {open && <EditHouse form={form} idHouse={idHouse} />}
           </Modal>
           <Link
             to='#'
