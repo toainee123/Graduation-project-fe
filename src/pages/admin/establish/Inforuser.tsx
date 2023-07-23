@@ -37,7 +37,7 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
     getProvices();
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const handleGetDistrict = async (idProvice: number) => {
     const { data } = await getDistrict(idProvice);
