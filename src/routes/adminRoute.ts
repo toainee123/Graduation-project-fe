@@ -16,8 +16,6 @@ import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
 
-import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
-import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
