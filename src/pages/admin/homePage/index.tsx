@@ -1,40 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { fetchDataChart, selectDashboardLoading } from '../../../features/dashboard/DashboardSlice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import ColumnChart from 'src/components/specific/chart/Bar';
+import LineChart from 'src/components/specific/chart/Bar';
 import PieChart from 'src/components/specific/chart/Pie';
 import { RoomAvailability } from './sections/RoomAvailability';
 import OweRoomMoneyList from './sections/OweRoomMoneyList';
 import ContractExpiration from './sections/ContractExpirationTable';
-import { UnfinishedWorkTable } from './sections/UnfinishedWorkTable';
+import { getDashboard } from 'src/api/dashboard';
+import { TransFormToBarData, TransFormToPieChart } from './hooks/useTranformToBarData';
 
 interface Props {}
 
 const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<Array<object>>([]);
-  const [dataChart, setDataChart] = useState<Array<object>>([
-    {
-      month: 'Tháng 1',
-      values: 112,
-    },
-    {
-      month: 'Tháng 2',
-      values: 52,
-    },
-    {
-      month: 'Tháng 3',
-      values: 100,
-    },
-    {
-      month: 'Tháng 4',
-      values: 145,
-    },
-  ]);
-  const [dataPie, setDataPie] = useState<Array<object>>([
-    { type: 'Đang thuê', value: 60 },
-    { type: 'Phòng trống', value: 40 },
-  ]);
+  const [dataChart, setDataChart] = useState<Array<object>>([]);
+  const [dataPie, setDataPie] = useState<Array<object>>([]);
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getDashboard();
+      setDataChart(TransFormToBarData(data.revenue));
+      setDataPie(TransFormToPieChart(data.staticRoom));
+    };
+
+    getList();
+  }, []);
 
   useEffect(() => {
     dispatch(fetchDataChart())
@@ -44,7 +34,6 @@ const Homepage = (props: Props) => {
       })
       .catch();
   }, []);
-
   return (
     <div className=''>
       <h2>HomePage</h2>
@@ -52,13 +41,13 @@ const Homepage = (props: Props) => {
         <div className=' '>
           <h1>Trạng thái phòng</h1>
           <div className='bg-gray-100'>
-            <PieChart data={dataPie} angleField='value' colorField='type' />
+            <PieChart data={dataPie} angleField='count' colorField='roomStatus' />
           </div>
         </div>
         <div className=' '>
           <h1> doanh thu vn đồng</h1>
           <div className='bg-gray-100'>
-            <ColumnChart data={dataChart} xField='month' yField='values' />
+            <LineChart data={dataChart} xField='month' yField='totalRevenue' />
           </div>
         </div>
       </div>
@@ -68,7 +57,6 @@ const Homepage = (props: Props) => {
       </div>
       <div className=' w-full grid grid-cols-2 gap-4 '>
         <ContractExpiration />
-        <UnfinishedWorkTable />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { baseURL, localStorageConstants, urlRouter } from "../utils/constants";
+import { log } from "console";
 
 const axiosClient = axios.create({
   baseURL: `${baseURL}`,
@@ -8,15 +9,18 @@ const axiosClient = axios.create({
   }
 })
 
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
+    const token = JSON.parse(localStorage.getItem('access_token') as string);
+    console.log(token);
     // Do something before request is sent
     if (!config?.headers) {
       throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)
     }
 
-    const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
+    // const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
 
     config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2OTAxMDUyNjYsImV4cCI6MTY5MDE5MTY2Nn0.2LPPzXjfZCw5YdvAKauu-IbEzDSOuKopU5CfwxP1PpE'
     return config

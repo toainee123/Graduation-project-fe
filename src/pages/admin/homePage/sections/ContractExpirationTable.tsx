@@ -1,74 +1,60 @@
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import React, { useState } from 'react';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { getDashboard } from 'src/api/dashboard';
 
 type dataList = {
-  key: string;
-  home: string;
-  room: number;
-  customer: string;
-  date: string;
+  address: string;
+  contractexpir: string;
+  expirationdate: string;
+  id: number;
+  name: string;
+  namehouse: string;
+  nameroom: string;
+  phone: string;
 };
 
 const columns: ColumnsType<dataList> = [
   {
     title: 'Nhà',
-    dataIndex: 'home',
-    key: 'home',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Phòng',
-    dataIndex: 'room',
-    key: 'room',
+    dataIndex: 'nameroom',
+    key: 'nameroom',
   },
   {
     title: 'Khách',
-    dataIndex: 'customer',
-    key: 'customer',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Ngày hết hạn',
-    dataIndex: 'date',
-    key: 'date',
+    dataIndex: 'contractexpir',
+    key: 'contractexpir',
+    render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
 ];
 
 const ContractExpiration = () => {
-  const [dataSource, setDataSource] = useState<dataList[]>([
-    {
-      key: '1',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      date: '30-04-2023',
-    },
-    {
-      key: '2',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      date: '30-04-2023',
-    },
-    {
-      key: '3',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      date: '30-04-2023',
-    },
-    {
-      key: '4',
-      home: 'Phòng 1',
-      room: 32,
-      customer: 'Mike',
-      date: '30-04-2023',
-    },
-  ]);
+  const [dataSource, setDataSource] = useState();
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getDashboard();
+      setDataSource(data.contractExpire);
+    };
+
+    getList();
+  }, []);
+  // console.log(dataSource);
   return (
     <div className=' '>
       <h1>Khách sắp hết hạn hợp đồng</h1>
       <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />;
+        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
       </div>
     </div>
   );

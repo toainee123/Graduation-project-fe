@@ -2,13 +2,13 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import dashboardReducer from '../features/dashboard/DashboardSlice';
 import dialogReducer from '../features/dialog/dialogSlice';
-import listServiceReducer from '../pages/admin/service/ListService/reducer';
 import establishSlice from 'src/features/establish/establishSlice';
 import chargeSlice from 'src/features/charge/chargeSlice';
 import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
 import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
 import houseReducer from 'src/features/room/houseSlice'
 import roomReducer from 'src/features/room/roomSlice'
+import depositReducer from 'src/features/deposit/deposit';
 
 export const store = configureStore({
   reducer: {
@@ -17,11 +17,11 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     house: houseReducer,
     room: roomReducer,
-    listService: listServiceReducer,
     establish: establishSlice,
     charge: chargeSlice,
     listArise: listAriseReducer,
     updateArise: updateAriseReducer,
+    deposit: depositReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

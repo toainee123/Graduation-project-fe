@@ -28,6 +28,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
 import { addBill, getHouses, getRoom } from 'src/api/charge';
+import { getHouseId } from 'src/api/house';
 
 type Props = {};
 
@@ -41,7 +42,6 @@ const Charge = () => {
     dispatch(getAstablishContract());
     const getHouse = async () => {
       const { data } = await getHouses();
-
       setHouses(data.result);
     };
     getHouse();
@@ -49,12 +49,13 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   const chargeData = useAppSelector((state: any) => state.charge.value);
-
   const dataSource = chargeData?.map((item: any, index: number) => {
     return {
       id: item.id,
       key: item.id,
       house: item.namehouse,
+      houseid: item.houseid,
+      roomid: item.roomid,
       date: item.date,
       room: item.nameroom,
       user: item.namecustomer,
@@ -67,16 +68,24 @@ const Charge = () => {
   // modal
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen1, setIsModalOpen1] = useState(false);
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleCancel1 = () => {
+    setIsModalOpen1(false);
+  };
   const dt = useAppSelector((state: any) => state.establish.value);
-  const printForm = dt.sample_bill_80mm;
+  // console.log(dt);
+
+  const printForm = dt?.result?.samplebill;
+
   const [username, setUsernam] = useState('');
   const [printData, setPrintData] = useState('');
+  const [idUpdatePaid, setIdUpdatePaid] = useState('');
   const [printListBillData, setPrintListBillData] = useState('');
 
-  const handleListData = () => {
+  const handleListData = async () => {
     let stringList = '';
     let arrData: any;
     if (selectedRow.length !== 0) {
@@ -84,21 +93,32 @@ const Charge = () => {
     } else {
       arrData = dataSource;
     }
-    arrData.map((item: any) => {
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    arrData.map(async (item: any) => {
+      console.log(item);
+
+      const resHouse = await getHouseId(item.houseid);
+      const resRoom = await getRoom(item.houseid);
+      const arrRoomHouse = await resRoom?.data?.result?.responses;
+      const room = await arrRoomHouse.find((item: any) => item.id === item.roomid);
+      console.log(room);
+
       const data: any = {
         '@AreaName': item.house,
-        '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+        '@Address': resHouse?.data?.result?.address,
         '@InvoiceNo': '0009',
         '@InvoiceDate': '22/05/2023',
-        '@MonthYear': `${item.month}/${item.year}`,
+        '@MonthYear': `${month}/${year}`,
         '@PayType': item.ky,
         '@FromDate': '18/4/2023',
         '@ToDate': '18/5/2023',
         '@CustomerName': item.user,
         '@RoomName': item.room,
         '@BeginRent': '18/4/2023',
-        '@ContentHtmlInvoiceService':
-          '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
         '@SumAmount': item.tien,
       };
 
@@ -116,28 +136,29 @@ const Charge = () => {
       setPrintListBillData(stringList);
     });
   };
-  const handleClickView = (record: any) => {
+  const handleClickView = async (record: any) => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
 
+    const resHouse = await getHouseId(record.houseid);
+    const resRoom = await getRoom(record.houseid);
+    const arrRoomHouse = await resRoom?.data?.result?.responses;
+    const room = await arrRoomHouse.find((item: any) => item.id === record.roomid);
+
     const data: any = {
       '@AreaName': record.house,
-      '@Address': 'Tân Chánh Hiệp - Q12 - TPHCM',
+      '@Address': resHouse?.data?.result?.address,
       '@InvoiceNo': '0009',
       '@InvoiceDate': '22/05/2023',
       '@MonthYear': `${month}/${year}`,
-      '@FromDate': '18/4/2023',
-      '@ToDate': '18/5/2023',
-      '@CustomerName': record.namecustomer,
+      '@CustomerName': record.user,
       '@RoomName': record.room,
-      '@BeginRent': '18/4/2023',
-      '@ContentHtmlInvoiceService':
-        '<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">2,500,000</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>',
+      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr>
+      <tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
       '@SumAmount': record.tien,
     };
 
-    console.log(data);
     const exampleData80mm = printForm?.replaceAll(
       /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
       (matched: any) => {
@@ -204,6 +225,10 @@ const Charge = () => {
     }
   };
 
+  const handleRenderData = (record: any) => {
+    setIdUpdatePaid(record.id);
+  };
+
   const houseDataFilter = houses?.map((item: any, index: number) => {
     return { value: item.id, label: item.name, key: item.id };
   });
@@ -226,18 +251,25 @@ const Charge = () => {
               <EyeOutlined />
             </button>
 
-            <button className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'>
+            <button
+              className=' flex justify-center items-center bg-emerald-500 text-white p-1 rounded mx-1'
+              onClick={() => {
+                handleRenderData(record);
+                setOldPaid(+record.tiendatra as any);
+                setIsModalOpen1(true);
+              }}
+            >
               <DollarOutlined />
             </button>
 
-            <button
+            {/* <button
               className=' flex justify-center items-center bg-red-500 text-white p-1 rounded mx-1'
               onClick={() => {
                 handleDelete(record.id);
               }}
             >
               <DeleteOutlined />
-            </button>
+            </button> */}
 
             <button
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
@@ -429,11 +461,20 @@ const Charge = () => {
 
   const [form] = Form.useForm();
 
+  const [oldPaid, setOldPaid] = useState<number>(0);
   const selectRowThutien = () => {
     for (let i = 0; i < selectedRow.length; i++) {
-      console.log(selectedRow[i].tienconlai);
-
-      if (selectedRow[i].tienconlai !== 0) {
+      // console.log(+selectedRow[i].tienconlai + +selectedRow[i].tiendatra);
+      if (+selectedRow[i].tiendatra > 0) {
+        const sum = +selectedRow[i].tienconlai + +selectedRow[i].tiendatra;
+        dispatch(
+          updatePaidBill({
+            id: selectedRow[i].id,
+            paid: sum,
+          })
+        );
+      } else if (selectedRow[i].tienconlai !== 0) {
+        console.log('ahihiiahsd');
         dispatch(
           updatePaidBill({
             id: selectedRow[i].id,
@@ -469,7 +510,7 @@ const Charge = () => {
       };
 
       // const data = await addBill(dataInput);
-      dispatch(addCharge(dataInput));
+      dispatch(addCharge({ input: dataInput, filter: valueFilter }));
     } catch (error) {
       console.log(error);
     }
@@ -570,14 +611,14 @@ const Charge = () => {
               <MailOutlined className='icon-btn' /> Email
             </button>
 
-            <button
+            {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
               onClick={() => {
                 selectRowDelete();
               }}
             >
               <DeleteOutlined className='icon-btn' /> Xoá
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -732,6 +773,41 @@ const Charge = () => {
           <div id='pdf' className='p-3' ref={cpPrintBillRef}>
             {parse(printData ? printData : '')}
           </div>
+        </Modal>
+
+        <Modal
+          title='Basic Modal'
+          open={isModalOpen1}
+          onOk={() => {
+            form
+              .validateFields()
+              .then((values) => {
+                const valuesNumber = +values.paid + oldPaid;
+
+                form.resetFields();
+                dispatch(updatePaidBill({ id: idUpdatePaid, paid: valuesNumber }));
+                setIsModalOpen1(false);
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info);
+              });
+          }}
+          onCancel={handleCancel1}
+        >
+          <Form form={form}>
+            <Form.Item
+              name='paid'
+              label='Tiền đã thu'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số tiền đã thu',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
         </Modal>
 
         <div className='p-3 hide' ref={cpPrintBillRef}>

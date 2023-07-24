@@ -1,4 +1,4 @@
-import { Column, ColumnConfig } from '@ant-design/charts';
+import { Column, Line, ColumnConfig, LineConfig } from '@ant-design/plots';
 
 type Props = {
   data: Array<object>;
@@ -6,15 +6,16 @@ type Props = {
   yField: string;
 };
 
-const ColumnChart = ({ data, xField, yField }: Props) => {
-  const config: ColumnConfig = {
+const LineChart = ({ data, xField, yField }: Props) => {
+  const config: LineConfig = {
     data,
     xField,
     yField,
+    legend: false,
     label: {
       position: 'middle', // 'top', 'bottom', 'middle',
       style: {
-        fill: '#FFFFFF',
+        fill: '#000',
         opacity: 0.6,
       },
     },
@@ -24,9 +25,17 @@ const ColumnChart = ({ data, xField, yField }: Props) => {
         autoRotate: false,
       },
     },
+    meta: {
+      xField: {
+        alias: 'Tháng',
+      },
+      yField: {
+        alias: 'Doanh thu',
+      },
+    },
   };
 
-  return <Column {...config} />;
+  return <Line {...config} />;
 };
 
-export default ColumnChart;
+export default LineChart;
