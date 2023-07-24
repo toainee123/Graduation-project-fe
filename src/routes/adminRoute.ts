@@ -54,15 +54,15 @@ export const adminRoutes = [
     component: CreateRoom,
   },
   {
-    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
-    component: UpdateDeposit,
+    path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}/:roomId`,
+    component: CreateMember,
   },
-  // {
-  //   path: `${urlRouter.ROOM}/${urlRouter.UPDATE_ROOM}/:id`,
-  //   component: EditHouse,
-  // },
   {
-    path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}`,
+    path: `${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/:roomId`,
+    component: CreateMember,
+  },
+  {
+    path: `${urlRouter.ROOM}/${urlRouter.UPDATE_MEMBER_IN_ROOM}/:roomId`,
     component: CreateMember,
   },
   {

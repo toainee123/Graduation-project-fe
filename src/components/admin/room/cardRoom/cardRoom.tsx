@@ -8,6 +8,7 @@ import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
 import { useAppDispatch } from 'src/store/hooks';
 import { deleteHouse, editHouse, getAllHouse } from 'src/features/room/houseSlice';
+import FormCreateMember from '../form/createMember/formCreateMember';
 
 const { confirm } = Modal;
 
@@ -28,7 +29,7 @@ const CardRoom = ({ idHouse }: any) => {
   }, [idHouse]);
 
   const onFinish = async (value: any) => {
-    dispatch(editHouse({ idHouse, value }))
+    await dispatch(editHouse({ idHouse, value }))
       .unwrap().then((resp) => {
         dispatch(getAllHouse())
         setOpen(false)
@@ -66,7 +67,7 @@ const CardRoom = ({ idHouse }: any) => {
     <div>
       <div className='xl:flex justify-between items-center mb-5'>
         {
-          analyticRoom?.roomAvailable > 0 ? (
+          listRoom?.length > 0 ? (
             <div className='inline-block'>
               <span className='font-semibold text-base px-2'>Còn trống {analyticRoom?.roomAvailable || '0'}</span>
               <span className='font-semibold text-base px-2 border-l-2 border-black'>
@@ -136,7 +137,7 @@ const CardRoom = ({ idHouse }: any) => {
                   <div className='action text-center'>
                     <Tooltip title="xem phòng">
                       <Link
-                        to='#'
+                        to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.id}?key=view`}
                       >
                         <button
                           className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'
@@ -147,7 +148,7 @@ const CardRoom = ({ idHouse }: any) => {
                     </Tooltip>
                     <Tooltip title="Chỉnh sửa phòng">
                       <Link
-                        to='#'
+                        to={`/admin/${urlRouter.ROOM}/${urlRouter.UPDATE_MEMBER_IN_ROOM}/${item.id}?key=update`}
                       >
                         <button
                           className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'
@@ -201,10 +202,11 @@ const CardRoom = ({ idHouse }: any) => {
                   <div className='action text-center'>
                     <button>
                       <Link
-                        to={urlRouter.CREATE_MEMBER}
+                        to={`${urlRouter.CREATE_MEMBER}/${item.id}`}
                         className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 font-medium rounded-lg text-sm p-2 text-center mr-2 '
                       >
                         Thêm khách
+
                       </Link>
                     </button>
                   </div>
