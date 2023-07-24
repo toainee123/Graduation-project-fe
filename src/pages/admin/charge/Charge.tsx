@@ -27,7 +27,7 @@ import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
-import { addBill, getHouses, getRoom } from 'src/api/charge';
+import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 
 type Props = {};
@@ -103,9 +103,18 @@ const Charge = () => {
       const resHouse = await getHouseId(item.houseid);
       const resRoom = await getRoom(item.houseid);
       const arrRoomHouse = await resRoom?.data?.result?.responses;
-      const room = await arrRoomHouse.find((item: any) => item.id === item.roomid);
-      console.log(room);
+      const room = await arrRoomHouse.find((itemroom: any) => itemroom.id === item.roomid);
+      console.log(item.roomid);
+      const resBill = await getBillID(item.id);
+      console.log(resBill.data?.bill?.pricewater);
 
+      const listSvBill = resBill?.data?.service.map((item: any) => {
+        return `  <tr>
+  
+       <td style='width:70%'>${item.nameservice}</td>
+       <td style='width:30%;text-align:right'>${item.priceservice}</td>
+     </tr>`;
+      });
       const data: any = {
         '@AreaName': item.house,
         '@Address': resHouse?.data?.result?.address,
@@ -118,7 +127,10 @@ const Charge = () => {
         '@CustomerName': item.user,
         '@RoomName': item.room,
         '@BeginRent': '18/4/2023',
-        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr><tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
+      ${listSvBill}</tbody>`,
         '@SumAmount': item.tien,
       };
 
@@ -146,6 +158,17 @@ const Charge = () => {
     const arrRoomHouse = await resRoom?.data?.result?.responses;
     const room = await arrRoomHouse.find((item: any) => item.id === record.roomid);
 
+    const resBill = await getBillID(record.id);
+    console.log(resBill.data?.bill?.pricewater);
+
+    const listSvBill = resBill?.data?.service.map((item: any) => {
+      return `  <tr>
+
+     <td style='width:70%'>${item.nameservice}</td>
+     <td style='width:30%;text-align:right'>${item.priceservice}</td>
+   </tr>`;
+    });
+
     const data: any = {
       '@AreaName': record.house,
       '@Address': resHouse?.data?.result?.address,
@@ -154,8 +177,10 @@ const Charge = () => {
       '@MonthYear': `${month}/${year}`,
       '@CustomerName': record.user,
       '@RoomName': record.room,
-      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:2%">1)</td><td style="width:70%">Tiền nhà</td><td style="width:25%;text-align:right">${room?.price}</td></tr>
-      <tr><td style="width:2%">2)</td><td style="width:70%">Tiền nước</td><td style="width:25%;text-align:right">50,000</td></tr><tr><td style="width:2%">3)</td><td style="width:70%">Gửi xe</td><td style="width:25%;text-align:right">100,000</td></tr></tbody>`,
+      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
+      ${listSvBill}</tbody>`,
       '@SumAmount': record.tien,
     };
 
@@ -172,20 +197,24 @@ const Charge = () => {
 
   const handleExportPDF = () => {
     const htmlInput: any = document.querySelector('#pdf');
-    html2canvas(htmlInput).then((canvas) => {
+    html2canvas(htmlInput, { width: 800, height: 800 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const componentWidth = pdf.internal.pageSize.getWidth();
       const componentHeight = pdf.internal.pageSize.getHeight();
       pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+
       pdf.save('download.pdf');
+      var pdfBase64 = pdf.output('datauristring');
+      console.log(pdfBase64);
     });
   };
 
   const handleExportImage = async (imageFileName: any) => {
     const htmlInput: any = document.querySelector('#pdf');
-    const canvas = await html2canvas(htmlInput);
+    const canvas = await html2canvas(htmlInput, { width: 800, height: 800 });
     const image = canvas.toDataURL('image/png', 1.0);
+    console.log(image);
     downloadImage(image, imageFileName);
   };
 
