@@ -20,7 +20,9 @@ axiosClient.interceptors.request.use(
       throw new Error(`Expected 'config' and 'config.headers' not to be undefined`)
     }
 
-    config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2ODk3MjUxNjgsImV4cCI6MTY4OTgxMTU2OH0.fmSgDgiFOHIHETbgzf7LIe4OnUlbPq-xbvlR8beQHF8'
+    // const token = localStorage.getItem(localStorageConstants.ACCESS_TOKEN);
+
+    config.headers.Authorization = token ? `Bearer ${token}` : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoiZHVuZ25jMDQwMkBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2OTAxMDUyNjYsImV4cCI6MTY5MDE5MTY2Nn0.2LPPzXjfZCw5YdvAKauu-IbEzDSOuKopU5CfwxP1PpE'
     return config
   },
   function (error) {

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DatePicker, Select, Button, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { getListReportCustomerRent } from 'src/api/report';
+import moment from 'moment';
+import { transFormData, transFormDataReportCustomRent } from './hooks/transform';
 
 const { RangePicker } = DatePicker;
-
-const dataSource = [] as any;
 
 const columns = [
   {
@@ -12,90 +13,61 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
   },
-  {
-    title: 'Địa chỉ',
-    dataIndex: 'age',
-    key: 'age',
-  },
+
   {
     title: 'Điện thoại',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'phone',
+    key: 'phone',
   },
   {
     title: 'Nhà',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Thuê phòng',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'nameroom',
+    key: 'namehouse',
   },
   {
-    title: 'Từ ngày',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Thuê ngày',
+    dataIndex: 'date',
+    key: 'date',
+    render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
   {
-    title: 'Đến ngày',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Tiền Nhà(VNĐ)',
+    dataIndex: 'price',
+    key: 'price',
   },
   {
-    title: 'Ngày hết hạn HĐ',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Dịch Vụ(VNĐ)',
+    dataIndex: 'totalService',
+    key: 'totalService',
   },
   {
-    title: 'Trạng thái',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Đơn giá(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tiền cọc(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tổng tiền phí(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Đã trả(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Còn lại(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Người giới thiệu',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Ngày sinh',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Tổng tiền(VNĐ)',
+    dataIndex: 'total',
+    key: 'total',
   },
 ];
 
 const ReportCustomerRent = () => {
+  const [dataSource, setDataSource] = useState<transFormData[]>([]);
+
+  useEffect(() => {
+    const getList = async () => {
+      const { data } = await getListReportCustomerRent();
+      setDataSource(transFormDataReportCustomRent(data.responses));
+    };
+    getList();
+  }, []);
   return (
     <div className='es-container'>
       <div className='title'>
         <div className='title--name'>
           <h2>
-            <strong>Danh sách khách thuê phòng</strong>
+            <strong>Danh sách khách Đang thuê phòng</strong>
           </h2>
         </div>
       </div>
@@ -103,15 +75,6 @@ const ReportCustomerRent = () => {
       {/* filter */}
       <div className='filter'>
         {' '}
-        <div className='flex  w-full mt-5 items-center'>
-          <div className='flex-item'>
-            <label className='text-base font-semibold mr-4  '>Ngày thuê</label>
-            <RangePicker placeholder={['từ ngày', 'đến ngày']} />
-          </div>
-          <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4 pt-2 rounded flex items-center justify-between'>
-            <SearchOutlined className='icon-btn' /> Xem
-          </button>
-        </div>
         <div className='flex w-full mt-5 items-center'>
           <div className='mr-2'>
             <label className='text-base font-semibold mr-4 '>Nhà</label>
@@ -129,18 +92,6 @@ const ReportCustomerRent = () => {
             <label className='text-base font-semibold mr-4 '>Phòng</label>
             <Select
               defaultValue='phòng'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className='text-base font-semibold mr-2 '>Trạng thái</label>
-            <Select
-              defaultValue='Tất cả'
               style={{ width: 200 }}
               options={[
                 { value: 'jack', label: 'Jack' },

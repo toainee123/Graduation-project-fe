@@ -1,65 +1,80 @@
-import React from 'react';
-import { DatePicker, Select, Button, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { DatePicker, Select, Button, Table, TableProps } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { getListReportInvoiceDetail } from 'src/api/report';
+import { log } from 'console';
+import { REPORT_TYPE } from 'src/types/report';
 
 const { RangePicker } = DatePicker;
 
 const dataSource = [] as any;
 
-const columns = [
+const columns: TableProps<REPORT_TYPE>['columns'] = [
   {
     title: 'Nhà',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'namehouse',
+    key: 'namehouse',
   },
   {
     title: 'Phòng',
-    dataIndex: 'age',
-    key: 'age',
+    dataIndex: 'nameroom',
+    key: 'nameroom',
   },
   {
     title: 'Tên khách',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'namecustomer',
+    key: 'namecustomer',
   },
   {
     title: 'Tiền phòng',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'priceroom',
+    key: 'priceroom',
   },
   {
     title: 'Tiền điện',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'priceelectricity',
+    key: 'priceelectricity',
   },
   {
     title: 'Tiền nước',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'pricewater',
+    key: 'pricewater',
   },
   {
     title: 'Dịch vụ khác',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Thu khác',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'priceservice',
+    key: 'priceservice',
   },
   {
     title: 'Nợ tháng trước',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'owedold',
+    key: 'owedold',
   },
   {
     title: 'Tổng tiền(VNĐ)',
-    dataIndex: 'address',
-    key: 'address',
+    key: 'total',
+    render(_, record, _index) {
+      return (
+        Number(record.priceroom) +
+        Number(record.priceelectricity) +
+        Number(record.priceservice) +
+        Number(record.pricewater) +
+        Number(record.owedold)
+      );
+    },
   },
 ];
 
-const ReportCustomerRent = () => {
+const ReportInvoiceDetail = () => {
+  const [dataSource, setDataSource] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await getListReportInvoiceDetail();
+      setDataSource(data);
+    };
+    getData();
+  }, []);
   return (
     <div className='es-container'>
       <div className='title'>
@@ -119,4 +134,4 @@ const ReportCustomerRent = () => {
   );
 };
 
-export default ReportCustomerRent;
+export default ReportInvoiceDetail;

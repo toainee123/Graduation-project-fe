@@ -12,6 +12,9 @@ export const urlRouter = {
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
   CREATE_MEMBER: 'createMember/:id',
+  UPDATE_ROOM: 'edit',
+  VIEW_MEMBER_IN_ROOM: 'view',// XEM THÀNH VIÊN TRONG PHÒNG
+  UPDATE_MEMBER_IN_ROOM: 'update',
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
@@ -20,6 +23,7 @@ export const urlRouter = {
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
+  UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
