@@ -8,18 +8,19 @@ import moment from 'moment';
 const Relative = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
-    const { id } = useParams();
+    const { roomId } = useParams();
     const [items, setItems] = useState([]);
-    const myParam = useLocation().search;
-    const idH = new URLSearchParams(myParam).get('idHouse');
+    console.log(roomId);
+    // const myParam = useLocation().search;
+    // const idH = new URLSearchParams(myParam).get('idHouse');
     const [listRoom, setListRoom] = useState();
     const [status, setStatus] = useState(false)
     useEffect(() => {
         const getData = async () => {
-            const respon = await getRoom(idH)
-            setListRoom(respon.data.result.responses)
-            const response = await getRoomMember(id);
-            console.log(response.data);
+            // const respon = await getRoom(idH)
+            // setListRoom(respon.data.result.responses)
+
+            const response = await getRoomMember(roomId);
             const newArrr = response.data.map(item => {
                 console.log(moment(item.bod));
                 return {
@@ -29,6 +30,7 @@ const Relative = () => {
                     cccd: item.cccd,
                     address: item.address,
                     host: false,
+                    email: item.email,
                     phone: item.phone,
                     vehicleNumber: item.vehiclenumber,
                     gender: item.gender
@@ -46,13 +48,13 @@ const Relative = () => {
 
 
     const onFinish = async (values) => {
-        const room = listRoom?.find(item => item.id === +id)
-        const maxCustomer = room.maxCustomer;
-        if (values?.items.length > maxCustomer - 1) {
-            alert(`Phòng giói hạn chỉ có ${maxCustomer} thành viên(đã tính chủ phòng)`)
-        }
+        // const room = listRoom?.find(item => item.id === +id)
+        // const maxCustomer = room.maxCustomer;
+        // if (values?.items.length > maxCustomer - 1) {
+        //     alert(`Phòng giói hạn chỉ có ${maxCustomer} thành viên(đã tính chủ phòng)`)
+        // }
 
-        const resss = await getRoomMember(id);
+        const resss = await getRoomMember(roomId);
         const dataMember = resss.data
         for (const key in dataMember) {
             console.log(dataMember[key].id);
@@ -66,7 +68,7 @@ const Relative = () => {
             const birthdayYear = birthdayDate.year()
             const strBodDate = birthdayYear + '/' + birthdayMonth + '/' + birthdayDay
             return {
-                roomId: +id,
+                roomId: +roomId,
                 name: item.name,
                 email: item.email,
                 phone: item.phone,

@@ -11,8 +11,8 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
-  CREATE_MEMBER: 'createMember/:id',
   UPDATE_ROOM: 'edit',
+  CREATE_MEMBER: 'createMember',
   VIEW_MEMBER_IN_ROOM: 'view',// XEM THÀNH VIÊN TRONG PHÒNG
   UPDATE_MEMBER_IN_ROOM: 'update',
   SERVICE: 'service', //dịch vụ
