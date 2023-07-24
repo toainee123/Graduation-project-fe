@@ -13,6 +13,8 @@ export const urlRouter = {
   CREATE_ROOM: 'createRoom',
   UPDATE_ROOM: 'edit',
   CREATE_MEMBER: 'createMember',
+  VIEW_MEMBER_IN_ROOM: 'view',// XEM THÀNH VIÊN TRONG PHÒNG
+  UPDATE_MEMBER_IN_ROOM: 'update',
   SERVICE: 'service', //dịch vụ
   ADD_SERVICE: 'add-service', //dịch vụ
   DATA_POWER: 'DataPower', //tiền điện
