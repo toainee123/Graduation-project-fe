@@ -30,3 +30,14 @@ export const addRoomMember = async (member: any) => {
 };
 
 
+export const getRoomMember = async (id: any) => {
+    const url = `/roomTenant/${id}`;
+    return axiosClient.get(url);
+};
+
+export const deleteMember = async (id: any) => {
+    const url = `/roomTenant/${id}`;
+    return axiosClient.delete(url);
+}
+
+

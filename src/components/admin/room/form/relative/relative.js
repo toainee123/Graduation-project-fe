@@ -3,22 +3,45 @@ import { Form, Button, Table, Input, DatePicker, Radio, Space, Popconfirm } from
 import { PlusOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import '../relative/relative.scss'
 import { useLocation, useParams } from 'react-router-dom';
-import { addRoomMember, getRoom } from 'src/api/room';
+import { addRoomMember, deleteMember, getRoom, getRoomMember } from 'src/api/room';
+import moment from 'moment';
 const Relative = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const { id } = useParams();
-    const [items, setItems] = useState({ items: [] });
+    const [items, setItems] = useState([]);
     const myParam = useLocation().search;
     const idH = new URLSearchParams(myParam).get('idHouse');
     const [listRoom, setListRoom] = useState();
+    const [status, setStatus] = useState(false)
     useEffect(() => {
-        const getHouseId = async () => {
+        const getData = async () => {
             const respon = await getRoom(idH)
             setListRoom(respon.data.result.responses)
+            const response = await getRoomMember(id);
+            console.log(response.data);
+            const newArrr = response.data.map(item => {
+                console.log(moment(item.bod));
+                return {
+                    id: item.id,
+                    name: item.name,
+                    bod: moment(item.bod),
+                    cccd: item.cccd,
+                    address: item.address,
+                    host: false,
+                    phone: item.phone,
+                    vehicleNumber: item.vehiclenumber,
+                    gender: item.gender
+                }
+            })
+            form.setFieldsValue(
+                { items: newArrr }
+            )
         }
-        getHouseId();
-    }, [])
+        getData();
+    }, [status])
+
+
 
 
 
@@ -28,40 +51,55 @@ const Relative = () => {
         if (values?.items.length > maxCustomer - 1) {
             alert(`Phòng giói hạn chỉ có ${maxCustomer} thành viên(đã tính chủ phòng)`)
         }
+
+        const resss = await getRoomMember(id);
+        const dataMember = resss.data
+        for (const key in dataMember) {
+            console.log(dataMember[key].id);
+            await deleteMember(dataMember[key].id);
+        }
+
         const listMemberData = values?.items.map((item) => {
-            const birthdayDate = item.birthday
+            const birthdayDate = item.bod
             const birthdayDay = birthdayDate.date() + 1 >= 10 ? birthdayDate.date() + 1 : '0' + (birthdayDate.date() + 1)
             const birthdayMonth = birthdayDate.month() + 1 >= 10 ? birthdayDate.month() + 1 : '0' + (birthdayDate.month() + 1)
             const birthdayYear = birthdayDate.year()
             const strBodDate = birthdayYear + '/' + birthdayMonth + '/' + birthdayDay
             return {
                 roomId: +id,
-                name: item.fullname,
+                name: item.name,
                 email: item.email,
-                phone: item.phone_number,
+                phone: item.phone,
                 cccd: item.cccd,
                 address: item.address,
                 host: false,
                 bod: strBodDate,
-                vehicleNumber: item.vehicle_number,
+                vehicleNumber: item.vehicleNumber,
                 gender: item.gender
             }
         })
-
-        console.log(listMemberData);
 
         try {
             for (const key in listMemberData) {
                 await addRoomMember(listMemberData[key])
             }
+            setStatus(true)
         } catch (error) {
-            console.log(error);
+            alert(error.response.data.message ? 'Email đã tồn tại' : '')
+            console.log(error.response.data.message);
         }
 
     }
+
+    const handleRemoveItem = (index) => {
+        const updatedItems = [...items];
+        updatedItems.splice(index, 1);
+        setItems(updatedItems);
+    };
+
     return (
 
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} >
             <table className='w-full text-sm text-center' >
                 <thead className=" bg-gray-50 dark:bg-gray-700 ">
                     <tr >
@@ -76,7 +114,7 @@ const Relative = () => {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <Form.List name="items">
+                <Form.List name="items" >
                     {(fields, { add, remove }) => (
                         <tbody>
                             {fields.map((field, index) => (
@@ -85,7 +123,7 @@ const Relative = () => {
                                         <Form.Item
                                             required={true}
                                             key={field.key}
-                                            name={[field.name, "fullname"]}
+                                            name={[field.name, "name"]}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -95,7 +133,7 @@ const Relative = () => {
                                         <Form.Item
                                             required={true}
                                             key={field.key}
-                                            name={[field.name, "birthday"]}
+                                            name={[field.name, "bod"]}
                                         >
                                             <DatePicker />
                                         </Form.Item>
@@ -138,7 +176,7 @@ const Relative = () => {
                                         <Form.Item
                                             required={true}
                                             key={field.key}
-                                            name={[field.name, "phone_number"]}
+                                            name={[field.name, "phone"]}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -148,7 +186,7 @@ const Relative = () => {
                                         <Form.Item
                                             required={true}
                                             key={field.key}
-                                            name={[field.name, "vehicle_number"]}
+                                            name={[field.name, "vehicleNumber"]}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -169,7 +207,7 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                         >
-                                            <Button onClick={() => add()} block className='flex justify-center items-center' type="primary" danger>
+                                            <Button onClick={() => remove(field.name)} block className='flex justify-center items-center' type="primary" danger>
                                                 <DeleteOutlined />
                                             </Button>
                                         </Form.Item>
