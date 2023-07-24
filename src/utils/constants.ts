@@ -21,6 +21,7 @@ export const urlRouter = {
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
   REPORT: 'Report',
+  UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',

@@ -29,6 +29,7 @@ import KeepRoom from 'src/pages/admin/keep-room/keepRoom';
 import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 import Forgotpassword from 'src/pages/auth/forgot-password/Forgotpassword';
 import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
+import UpdateDeposit from 'src/pages/admin/keep-room/updateDeposit';
 
 export const adminRoutes = [
   {
@@ -51,6 +52,10 @@ export const adminRoutes = [
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
     component: CreateRoom,
+  },
+  {
+    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
+    component: UpdateDeposit,
   },
   // {
   //   path: `${urlRouter.ROOM}/${urlRouter.UPDATE_ROOM}/:id`,

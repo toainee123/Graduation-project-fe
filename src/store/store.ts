@@ -8,6 +8,7 @@ import listAriseReducer from '../pages/admin/arise/ListArise/reducer';
 import updateAriseReducer from '../pages/admin/arise/UpdateArise/reducer';
 import houseReducer from 'src/features/room/houseSlice'
 import roomReducer from 'src/features/room/roomSlice'
+import depositReducer from 'src/features/deposit/deposit';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     charge: chargeSlice,
     listArise: listAriseReducer,
     updateArise: updateAriseReducer,
+    deposit: depositReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
