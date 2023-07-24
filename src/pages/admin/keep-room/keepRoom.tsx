@@ -126,82 +126,112 @@ const KeepRoom = () => {
         <div className='room_filter my-3'>
           <div className='row'>
             <h1>Cọc giữ phòng</h1>
-          </div>
-          <form onSubmit={handleSubmit(Onsubmit)} style={{ marginTop: 30 }}>
-            <div style={{ display: 'flex', marginBottom: 20 }}>
-              <div style={{ marginRight: 160 }}>
-                <label htmlFor='' style={{ marginRight: 15 }}>
-                  Từ ngày
-                </label>
-                <Space direction='vertical'>
-                  <DatePicker onChange={DateToOnChange} format='YYYY-MM-DD' placeholder='Chọn ngày từ...' />
-                </Space>
-              </div>
+            <div className='flex'>
               <div>
-                <label htmlFor='' style={{ marginRight: 55 }}>
-                  đến
-                </label>
-                <Space direction='vertical'>
-                  <DatePicker onChange={DateFromChange} format='YYYY-MM-DD' placeholder='Chọn ngày từ...' />
-                </Space>
+                <form onSubmit={handleSubmit(Onsubmit)} style={{ marginTop: 30 }}>
+                  <div className='flex'>
+                    <div>
+                      <div style={{ display: 'flex', marginBottom: 20 }}>
+                        <div style={{ marginRight: 195 }}>
+                          <label htmlFor='' style={{ marginRight: 15 }}>
+                            Từ ngày
+                          </label>
+                          <br />
+                          <Space direction='vertical'>
+                            <DatePicker
+                              onChange={DateToOnChange}
+                              size='large'
+                              format='YYYY-MM-DD'
+                              placeholder='Chọn ngày từ...'
+                            />
+                          </Space>
+                        </div>
+                        <div>
+                          <label htmlFor='' style={{ marginRight: 70 }}>
+                            đến
+                          </label>
+                          <br />
+                          <Space direction='vertical'>
+                            <DatePicker
+                              onChange={DateFromChange}
+                              size='large'
+                              format='YYYY-MM-DD'
+                              placeholder='Chọn ngày từ...'
+                            />
+                          </Space>
+                        </div>
+                        <div style={{ marginLeft: 100, marginTop: 20 }}>
+                          <button
+                            className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                            style={{ marginRight: 15 }}
+                            type='submit'
+                          >
+                            {' '}
+                            <i className='fa-solid fa-users'></i>Tìm kiếm
+                          </button>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', marginBottom: 20 }}>
+                        <div style={{ marginRight: 150 }}>
+                          <label htmlFor='' style={{ marginRight: 38 }}>
+                            Nhà
+                          </label>
+                          <Select
+                            defaultValue='Danh sách nhà'
+                            size='large'
+                            className='w-full'
+                            onChange={handleChangeHomeId}
+                          >
+                            {house.map((item: any) => (
+                              <Select.Option key={item.id} value={item.id}>
+                                {item.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                        <div>
+                          <label htmlFor='' style={{ marginRight: 38 }}>
+                            Phòng
+                          </label>
+                          <Select
+                            defaultValue='Danh sách nhà'
+                            size='large'
+                            className='w-full'
+                            onChange={handleChangeRoomId}
+                          >
+                            {room.map((item: any) => (
+                              <Select.Option key={item.id} value={item.id}>
+                                {item.name}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div style={{ marginTop: 50 }}>
+                <Link to='http://localhost:3000/admin/create-keep-room'>
+                  <button
+                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                    style={{ marginRight: 15 }}
+                  >
+                    {' '}
+                    <i className='fa-solid fa-users'></i> Thêm
+                  </button>
+                </Link>
+                <Link to='#'>
+                  <button
+                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                    style={{ marginRight: 15 }}
+                  >
+                    {' '}
+                    <i className='fa-solid fa-users'></i> Xuất file Excel
+                  </button>
+                </Link>
               </div>
             </div>
-            <div style={{ display: 'flex', marginBottom: 20 }}>
-              <div style={{ marginRight: 150 }}>
-                <label htmlFor='' style={{ marginRight: 38 }}>
-                  Nhà
-                </label>
-                <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeHomeId}>
-                  {house.map((item: any) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-              <div>
-                <label htmlFor='' style={{ marginRight: 38 }}>
-                  Phòng
-                </label>
-                <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeRoomId}>
-                  {room.map((item: any) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div style={{ display: 'flex', marginLeft: 200 }}>
-              <button
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                style={{ marginRight: 15 }}
-                type='submit'
-              >
-                {' '}
-                <i className='fa-solid fa-users'></i>Tìm kiếm
-              </button>
-            </div>
-          </form>
-          <div className=''>
-            <Link to='http://localhost:3000/admin/create-keep-room'>
-              <button
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                style={{ marginRight: 15 }}
-              >
-                {' '}
-                <i className='fa-solid fa-users'></i> Thêm
-              </button>
-            </Link>
-            <Link to='#'>
-              <button
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                style={{ marginRight: 15 }}
-              >
-                {' '}
-                <i className='fa-solid fa-users'></i> Xuất file Excel
-              </button>
-            </Link>
           </div>
         </div>
       </div>
