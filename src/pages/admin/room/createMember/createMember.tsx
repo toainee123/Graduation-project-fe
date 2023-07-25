@@ -36,15 +36,15 @@ const CreateMember = () => {
     console.log('data', getData);
 
     useEffect(() => {
-        if (keyLocation === null) {
+        // if (keyLocation === null) {
 
-            const fetchRoom = async (roomId: any) => {
-                const { data } = await getByIdRoom(roomId);
-                console.log("data");
-                setDetailRoom(data);
-            };
-            fetchRoom(roomId);
-        }
+        const fetchRoom = async (roomId: any) => {
+            const { data } = await getByIdRoom(roomId);
+            console.log("data");
+            setDetailRoom(data);
+        };
+        fetchRoom(roomId);
+        // }
     }, [roomId]);
 
     const items: TabsProps['items'] = [
