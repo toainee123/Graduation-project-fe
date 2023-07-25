@@ -29,6 +29,9 @@ import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
 import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
+import dayjs from 'dayjs';
+import { format } from 'path';
+import { ToastContainer } from 'react-toastify';
 
 type Props = {};
 
@@ -533,18 +536,22 @@ const Charge = () => {
       const dataInput = {
         houseId: values.house,
         roomId: values.room,
-        date: stringDate,
+        date: moment(values.date).format('YYYY-MM-DD'),
         indexElectricity: values.elec,
         indexWater: values.water,
       };
 
       // const data = await addBill(dataInput);
       dispatch(addCharge({ input: dataInput, filter: valueFilter }));
+      form.resetFields();
     } catch (error) {
       console.log(error);
     }
   };
 
+  const disabledDate = (current: any) => {
+    return current && current > dayjs().endOf('month');
+  };
   return (
     <Form.Provider>
       <div className='es-container'>
@@ -570,6 +577,9 @@ const Charge = () => {
                 onFinish={handleSubmituserform}
                 initialValues={initValueCacula}
               >
+                <Form.Item name='date' label='Ngày tháng'>
+                  <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
+                </Form.Item>
                 <Form.Item name='house' label='Nhà'>
                   <Select
                     style={{ width: '100%' }}
@@ -847,6 +857,7 @@ const Charge = () => {
           {parse(printListBillData ? printListBillData : '')}
         </div>
       </div>
+      <ToastContainer />
     </Form.Provider>
   );
 };
