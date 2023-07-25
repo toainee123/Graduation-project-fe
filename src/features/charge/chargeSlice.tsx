@@ -43,8 +43,7 @@ export const addCharge = createAsyncThunk('charge/addCharge', async (values: any
   try {
     await addBill(values.input);
     if (values.filter !== undefined) {
-      console.log('ahihi');
-
+      console.log('ahihi', values.filter);
       const filterValue = values.filter;
       const strDay = filterValue.day < 10 ? '0' + filterValue.day : filterValue.day;
       const strMonth = filterValue.month < 10 ? '0' + filterValue.month : filterValue.month;
