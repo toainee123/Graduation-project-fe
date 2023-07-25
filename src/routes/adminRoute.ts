@@ -30,6 +30,8 @@ import CreateKeepRoom from 'src/pages/admin/keep-room/create-keep-room';
 import Forgotpassword from 'src/pages/auth/forgot-password/Forgotpassword';
 import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 import UpdateDeposit from 'src/pages/admin/keep-room/updateDeposit';
+import TemplateEmail from 'src/pages/admin/sendEmail';
+import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
 
 export const adminRoutes = [
   {
@@ -160,6 +162,15 @@ export const adminRoutes = [
     path: urlRouter.CREATE_NEW_PASSWORD,
     component: Createpassword,
   },
+
+  {
+    path: urlRouter.LIST_EMAIL,
+    component: TemplateEmail,
+  },
+  {
+    path: urlRouter.CREATE_EMAIL,
+    component: CreateTemplateEmail,
+  }
 
 
 ];
