@@ -31,21 +31,23 @@ const Register = () => {
   return (
     <div>
       <Form name='nest-messages' onFinish={onFinish} validateMessages={validateMessages}>
-        <Form.Item name='name' rules={[{ required: true, message: 'Tên người dùng không được bỏ trống' }]}>
-          <Input size='large' prefix={<UserOutlined />} placeholder='Tên người dùng' />
-        </Form.Item>
-        <Form.Item name='email' rules={[{ required: true, message: 'Email không được bỏ trống' }, { type: 'email' }]}>
-          <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
-        </Form.Item>
+        <div className='flex flex-col gap-5 mb-8'>
+          <Form.Item name='name' rules={[{ required: true, message: 'Tên người dùng không được bỏ trống' }]}>
+            <Input size='large' prefix={<UserOutlined />} placeholder='Tên người dùng' />
+          </Form.Item>
+          <Form.Item name='email' rules={[{ required: true, message: 'Email không được bỏ trống' }, { type: 'email' }]}>
+            <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
+          </Form.Item>
 
-        <Form.Item name='password' rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}>
-          <Input.Password size='large' prefix={<LockOutlined />} placeholder='Mật khẩu' />
-        </Form.Item>
-        <Form.Item>
-          <Button type='primary' size='large' shape='round' htmlType='submit' className='w-full'>
-            ĐĂNG KÝ
-          </Button>
-        </Form.Item>
+          <Form.Item name='password' rules={[{ required: true, message: 'Mật khẩu không được bỏ trống' }]}>
+            <Input.Password size='large' prefix={<LockOutlined />} placeholder='Mật khẩu' />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' size='large' shape='round' htmlType='submit' className='w-full'>
+              ĐĂNG KÝ
+            </Button>
+          </Form.Item>
+        </div>
       </Form>
     </div>
   );
