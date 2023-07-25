@@ -69,6 +69,22 @@ const CardRoom = ({ idHouse }: any) => {
       },
     });
   };
+  const showDelete = (idHouse: any) => {
+    confirm({
+      title: 'Xác nhận khách trả phòng',
+      icon: <ExclamationCircleFilled />,
+      // content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa về mặc định !',
+      okText: 'Đồng ý',
+      okType: 'danger',
+      cancelText: 'Thoát',
+      onOk() {
+
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
 
   return (
     <div>
@@ -144,20 +160,26 @@ const CardRoom = ({ idHouse }: any) => {
                   </div>
 
                   <div className='action text-center'>
-                    <Tooltip title='xem phòng'>
+                    <Tooltip title='Trả phòng'>
+                      <button onClick={showDelete} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                        <i className="fa-solid fa-rotate-left"></i>
+                      </button>
+                    </Tooltip>
+                    <Tooltip title='Xem phòng'>
                       <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.id}?key=view`}>
-                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
                           <i className='fa-solid fa-eye'></i>
                         </button>
                       </Link>
                     </Tooltip>
                     <Tooltip title='Chỉnh sửa phòng'>
                       <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.UPDATE_MEMBER_IN_ROOM}/${item.id}?key=update`}>
-                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                        <button className='focus:outline-none text-white bg-yellow-600 hover:bg-yellow-700 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
                           <i className='fa-solid fa-gear'></i>
                         </button>
                       </Link>
                     </Tooltip>
+
                   </div>
                   <div>
                     <i className='fa-solid fa-user text-gray-500'></i>{' '}

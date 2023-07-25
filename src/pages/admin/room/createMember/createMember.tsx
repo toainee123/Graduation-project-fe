@@ -10,6 +10,7 @@ import FormCreateMember from 'src/components/admin/room/form/createMember/formCr
 import Relative from 'src/components/admin/room/form/relative/relative';
 import Contract from 'src/components/admin/room/contract/contract';
 import { apiGetRoomTenantDetail, getByIdRoom } from 'src/api/room';
+import Service from 'src/components/admin/room/form/service/service';
 
 const CreateMember = () => {
     const [detailRoom, setDetailRoom] = useState<any>();
@@ -52,6 +53,11 @@ const CreateMember = () => {
             label: 'Thông tin khách thuê',
             key: '1',
             children: <FormCreateMember detailRoom={detailRoom} roomId={roomId} initialValues={initialValues} getData={getData} />
+        },
+        {
+            label: 'Dịch vụ',
+            key: '4',
+            children: <Service />
         },
         {
             label: 'Thành viên',
