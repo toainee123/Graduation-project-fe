@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { addBill, deleteBill, getBillNoDate, getBills, getBillsHouse, updatePaid } from 'src/api/charge';
 
 interface chargeType {
@@ -56,7 +57,7 @@ export const addCharge = createAsyncThunk('charge/addCharge', async (values: any
       return data.result;
     }
   } catch (error) {
-    console.log(error);
+    toast.error('Tiền điện/nước phải lớn hơn tháng trước');
   }
 });
 

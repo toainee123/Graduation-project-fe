@@ -30,6 +30,8 @@ import Templatesms from '../establish/Templatesms';
 import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 import dayjs from 'dayjs';
+import { format } from 'path';
+import { ToastContainer } from 'react-toastify';
 
 type Props = {};
 
@@ -541,6 +543,7 @@ const Charge = () => {
 
       // const data = await addBill(dataInput);
       dispatch(addCharge({ input: dataInput, filter: valueFilter }));
+      form.resetFields();
     } catch (error) {
       console.log(error);
     }
@@ -854,6 +857,7 @@ const Charge = () => {
           {parse(printListBillData ? printListBillData : '')}
         </div>
       </div>
+      <ToastContainer />
     </Form.Provider>
   );
 };
