@@ -87,11 +87,7 @@ const CreateTemplateEmail = () => {
               Tiêu đề<b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input
-                className='border-2 p-4 outline-0 w-full'
-                placeholder='Họ và tên người cọc'
-                {...register('title')}
-              />
+              <input className='border-2 p-2 outline-0 w-full' placeholder='Tiêu đề email' {...register('title')} />
             </div>
           </div>
           <div>
