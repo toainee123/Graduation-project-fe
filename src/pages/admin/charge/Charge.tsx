@@ -112,7 +112,7 @@ const Charge = () => {
         return `  <tr>
   
        <td style='width:70%'>${item.nameservice}</td>
-       <td style='width:30%;text-align:right'>${item.priceservice}</td>
+       <td style='width:30%;text-align:right'>${Number(item.priceservice).toLocaleString('VND')}</td>
      </tr>`;
       });
       const data: any = {
@@ -127,9 +127,16 @@ const Charge = () => {
         '@CustomerName': item.user,
         '@RoomName': item.room,
         '@BeginRent': '18/4/2023',
-        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
-      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
-      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
+        // {Number(record).toLocaleString('VND')}
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
+          room?.price
+        ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.pricewater
+      ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.priceelectricity
+      ).toLocaleString('VND')}</td></tr>
       ${listSvBill}</tbody>`,
         '@SumAmount': item.tien,
       };
@@ -165,7 +172,7 @@ const Charge = () => {
       return `  <tr>
 
      <td style='width:70%'>${item.nameservice}</td>
-     <td style='width:30%;text-align:right'>${item.priceservice}</td>
+     <td style='width:30%;text-align:right'>${Number(item.priceservice).toLocaleString('VND')}</td>
    </tr>`;
     });
 
@@ -177,9 +184,15 @@ const Charge = () => {
       '@MonthYear': `${month}/${year}`,
       '@CustomerName': record.user,
       '@RoomName': record.room,
-      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
-      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
-      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
+      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
+        room?.price
+      ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.pricewater
+      ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.priceelectricity
+      ).toLocaleString('VND')}</td></tr>
       ${listSvBill}</tbody>`,
       '@SumAmount': record.tien,
     };
