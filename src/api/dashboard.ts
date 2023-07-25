@@ -5,3 +5,18 @@ export const getDashboard = async () => {
     return axiosClient.get(url)
 }
 
+export const getListEmail = () => {
+    const url = `/dashboard/list-email`
+    return axiosClient.get(url)
+}
+
+export const sendEmail = (data: any) => {
+    const url = `/dashboard/send-email`
+    return axiosClient.post(url, data)
+}
+
+export const getHistoryEmail = () => {
+    const url = `/dashboard/history-email`
+    return axiosClient.get(url)
+}
+
