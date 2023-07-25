@@ -95,18 +95,6 @@ const ReportInvoiceDetail = () => {
               <label className='text-base font-semibold mr-2 '>Tháng/năm</label>
               <DatePicker />
             </div>
-            <div className='flex-item'>
-              <label className='text-base font-semibold mr-2 '>Kỳ</label>
-              <Select
-                defaultValue='Tất cả'
-                style={{ width: 200 }}
-                options={[
-                  { value: 'jack', label: 'Jack' },
-                  { value: 'Tất cả', label: 'Tất cả' },
-                  { value: 'Yiminghe', label: 'yiminghe' },
-                ]}
-              />
-            </div>
             <div>
               <label className='text-base font-semibold mr-2 '>Nhà</label>
               <Select

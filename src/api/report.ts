@@ -1,15 +1,18 @@
 import axiosClient from "./axiosClient";
-
-export const getListReportCustomerRent = async () => {
-    const url = `http://localhost:5000/api/roomTenant/renting-room`;
+type TgetListReportCustomerRentParams = {
+    houseId: string;
+    roomId: string
+}
+export const getListReportCustomerRent = async (param?: TgetListReportCustomerRentParams) => {
+    const url = `http://localhost:5000/api/roomTenant/renting-room?${param?.houseId ? `houseId=${param?.houseId}` : ''}${param?.roomId ? `&roomId=${param?.roomId}` : ''}`;
     return axiosClient.get(url)
 }
 
-export const getListReportCustomerContractExpired = async () => {
-    const url = 'http://localhost:5000/api/contract';
+export const getListReportCustomerContractExpired = async (param?: TgetListReportCustomerRentParams) => {
+    const url = `http://localhost:5000/api/contract/?${param?.houseId ? `houseId=${param?.houseId}` : ''}${param?.roomId ? `&roomId=${param?.roomId}` : ''}`;
     return axiosClient.get(url)
 }
 export const getListReportInvoiceDetail = async () => {
-    const url = 'http://localhost:5000/api/roomTenant/detail-bill';
+    const url = 'http://localhost:5000/api/roomTenant/detail-bill?date=2023-07-10';
     return axiosClient.get(url)
 }
