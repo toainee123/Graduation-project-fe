@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Buffer } from 'buffer';
 import './charge.scss';
 import type { ColumnsType } from 'antd/es/table';
 import {
@@ -27,7 +28,7 @@ import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
 import Templatesms from '../establish/Templatesms';
-import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
+import { addBill, getBillID, getHouses, getRoom, postImageCharge } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 import dayjs from 'dayjs';
 import { format } from 'path';
@@ -215,13 +216,81 @@ const Charge = () => {
 
   const handleExportImage = async (imageFileName: any) => {
     const htmlInput: any = document.querySelector('#pdf');
+    console.log(htmlInput);
+
     const canvas = await html2canvas(htmlInput, { width: 800, height: 800 });
     const image = canvas.toDataURL('image/png', 1.0);
     console.log(image);
     downloadImage(image, imageFileName);
   };
 
+  const handleSendMail = async () => {
+    const htmlInput: any = document.querySelector('#hide');
+    console.log(htmlInput);
+
+    const canvas = await html2canvas(htmlInput, { width: 800, height: 800 });
+    const image: any = canvas.toDataURL('image/png', 1.0);
+    const file = new File([image], 'thai.png', { type: image.type });
+    console.log(image);
+    const formData = new FormData();
+    formData.append('file', file);
+    // const CLOUDINARY_PRESET = 'gtn4lbpo';
+    // const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
+    // const formData = new FormData();
+    // formData.append('file', file);
+    // formData.append('upload_preset', CLOUDINARY_PRESET);
+
+    // const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
+    //   headers: {
+    //     'Content-Type': 'application/form-data',
+    //   },
+    // });
+
+    // console.log(data);
+
+    await postImageCharge(formData);
+    // downloadImage(image, imageFileName);
+  };
+
+  // function base64ToImage(base64String: string) {
+  //   const buffer = Buffer.from(base64String, 'base64');
+  //   const blob = new Blob([buffer], { type: 'image/jpeg/png' });
+  //   return blob;
+  // }
+
+  // const b64toBlob = (b64Data: any, contentType = '', sliceSize = 512) => {
+  //   const byteCharacters = atob(b64Data);
+  //   const byteArrays = [];
+
+  //   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+  //     const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+  //     const byteNumbers = new Array(slice.length);
+  //     for (let i = 0; i < slice.length; i++) {
+  //       byteNumbers[i] = slice.charCodeAt(i);
+  //     }
+
+  //     const byteArray = new Uint8Array(byteNumbers);
+  //     byteArrays.push(byteArray);
+  //   }
+
+  //   const blob = new Blob(byteArrays, { type: contentType });
+  //   return blob;
+  // };
+  // function base64ToImage(base64String: any) {
+  //   const byteCharacters = atob(base64String);
+  //   const byteNumbers = new Array(byteCharacters.length);
+  //   for (let i = 0; i < byteCharacters.length; i++) {
+  //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //   }
+  //   const byteArray = new Uint8Array(byteNumbers);
+  //   const blob = new Blob([byteArray], { type: 'image/jpeg' });
+  //   console.log(blob);
+  // }
+
   const downloadImage = (blob: any, fileName: any) => {
+    // console.log(blob);
+
     const fakeLink = window.document.createElement('a');
     fakeLink.style.display = 'none';
     fakeLink.href = blob;
@@ -646,7 +715,12 @@ const Charge = () => {
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
 
-            <button className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'>
+            <button
+              className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                handleSendMail();
+              }}
+            >
               <MailOutlined className='icon-btn' /> Email
             </button>
 
@@ -810,6 +884,7 @@ const Charge = () => {
           ]}
         >
           <div id='pdf' className='p-3' ref={cpPrintBillRef}>
+            <div>ahihi</div>
             {parse(printData ? printData : '')}
           </div>
         </Modal>
@@ -855,6 +930,13 @@ const Charge = () => {
 
         <div className='p-3 hide' ref={cpPrintListBillRef}>
           {parse(printListBillData ? printListBillData : '')}
+        </div>
+
+        <div id='hide' style={{ width: '800px', height: '800px' }}>
+          <div id='pdf' className='p-3' ref={cpPrintBillRef}>
+            <div>ahihi</div>
+            {parse(printData ? printData : '')}
+          </div>
         </div>
       </div>
       <ToastContainer />

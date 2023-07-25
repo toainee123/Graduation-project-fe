@@ -10,6 +10,11 @@ export const getRoom = async (id: any) => {
     return axiosClient.get(url);
 };
 
+export const postImageCharge = async (file: any) => {
+    const url = `/dashboard/upload-file`;
+    return axiosClient.post(url, file);
+};
+
 
 export const getBills = async (date: any) => {
     const url = `/bill?date=${date}`;
