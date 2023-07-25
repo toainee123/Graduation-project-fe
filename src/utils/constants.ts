@@ -25,7 +25,8 @@ export const urlRouter = {
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
-
+  LIST_EMAIL: 'listEmail',
+  CREATE_EMAIL: 'create-email',
 
 
   PG: 'pg',
