@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiCreateRoomTenant, createMembers, createRoom } from '../../api/room'
+import { apiCreateRoomTenant, apiUpdateRoomTenant, createMembers, createRoom } from '../../api/room'
 interface roomValue {
     value: any
 }
@@ -8,7 +8,7 @@ const initialState: roomValue = {
 }
 
 export const createRooms = createAsyncThunk(
-    "house/createRoom",
+    "room/createRoom",
     async (dataRoom: any, { rejectWithValue }) => {
         try {
             const { data } = await createRoom(dataRoom)
@@ -20,7 +20,7 @@ export const createRooms = createAsyncThunk(
 )
 
 export const createMember = createAsyncThunk(
-    "house/createMember",
+    "room/createMember",
     async (dataRoom: any, { rejectWithValue }) => {
         try {
             const { data } = await createMembers(dataRoom)
@@ -32,10 +32,20 @@ export const createMember = createAsyncThunk(
 )
 
 export const createRoomTenant = createAsyncThunk(
-    "house/createRoomTenant",
+    "room/createRoomTenant",
     async (dataRoom: any, { rejectWithValue }) => {
         try {
             return await apiCreateRoomTenant(dataRoom)
+        } catch (error) {
+            return rejectWithValue
+        }
+    }
+)
+export const editTenant = createAsyncThunk(
+    "room/editTenant",
+    async ({ roomId, payload }: any, rejectWithValue) => {
+        try {
+            return await apiUpdateRoomTenant({ roomId, payload })
         } catch (error) {
             return rejectWithValue
         }
@@ -55,6 +65,9 @@ export const roomSlice = createSlice({
         })
         builder.addCase(createRoomTenant.fulfilled, (state, action) => {
             // state.value = action.payload
+        })
+        builder.addCase(editTenant.fulfilled, (state, action) => {
+            // state.value.push(action.payload);
         })
 
     }

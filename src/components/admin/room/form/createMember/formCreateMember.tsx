@@ -1,35 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { DatePicker, Form, Input, InputNumber, Radio, Select, message } from 'antd'
-import moment from 'moment'
 
 import './formCreateMember.scss'
 
-import { createMember, createRoomTenant } from 'src/features/room/roomSlice'
+import { createRoomTenant, editTenant } from 'src/features/room/roomSlice'
 import { useAppDispatch } from 'src/store/hooks'
-import { getRoom } from 'src/api/room'
 import { convertDateAntd } from 'src/utils/enums'
+import moment from 'moment'
+import { urlRouter } from 'src/utils/constants'
 
-const FormCreateMember = ({ key, detailRoom }: any) => {
+const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) => {
+    const [limitprice, setLimitPrice] = useState(Number);
+    const navigate = useNavigate()
     const search = useLocation().search;
     const keyLocation = new URLSearchParams(search).get('key');
-    // const keyLocationUpdate = new URLSearchParams(search).get('update');
-    console.log('keyLocation', keyLocation);
-
-    // console.log('keyLocation', keyLocationUpdate);
-
-    const [open, setOpen] = useState(false);
-    const [limitprice, setLimitPrice] = useState(Number);
-    // console.log(listRoom);
     const [form] = Form.useForm();
+    const dispatch = useAppDispatch()
+    const { Option } = Select
 
     useEffect(() => {
-        if (keyLocation === 'view' || keyLocation === 'update') {
-            console.log('Call api get roomTenant');
-            //call api get roomTenant
-            // form.resetFields()
+        if (getData) {
+            const fakeData = {
+                id: 12,
+                price: getData.price,
+                name: getData.name,
+                nameroom: getData.nameroom,
+                phone: getData.phone,
+                email: getData.email,
+                address: getData.address,
+                other: getData.other,
+                bod: moment(getData.bod),
+                memberid: 16,
+                date: moment(getData.date),
+                dateRangeCccd: moment(getData.daterangecccd),
+                issuedCccdBy: getData.issuedcccdby,
+                cccd: getData.cccd,
+                vehicleNumber: getData.vehiclenumber,
+                gender: getData.gender,
+                image: getData.image,
+                maxcustomer: getData.maxcustomer,
+                deposit: getData.deposit
+            }
+            form.setFieldsValue(fakeData)
         }
-    }, [keyLocation]);
+    }, [getData]);
+    console.log("dataform", getData);
 
     useEffect(() => {
         if (detailRoom) {
@@ -37,30 +53,19 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
         }
     }, [detailRoom]);
 
-    const navigate = useNavigate()
-    const dispatch = useAppDispatch()
-    const { Option } = Select
-    const initialValues = {
-        dateRangeCccd: moment(),
-        bod: moment(),
-        date: moment()
-    }
-
     const onChange = (value: any) => {
         setLimitPrice(value)
     }
     const onFinish = async (values: any) => {
-        const payload = {
-            ...values, host: true, roomId: detailRoom.id, bod: convertDateAntd(values.bod),
-            date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
-        }
-        delete payload.price;
-        delete payload.maxcustomer;
-        delete payload.nameroom;
-        delete payload.value;
-        delete payload.deposit;
-
         if (keyLocation === null) {
+            const payload = {
+                ...values, host: true, roomId: detailRoom.id, bod: convertDateAntd(values.bod),
+                date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
+            }
+            delete payload.price;
+            delete payload.maxcustomer;
+            delete payload.nameroom;
+            delete payload.value;
             await dispatch(createRoomTenant(payload)).unwrap().then((resp) => {
                 message.success(`Thêm nhà ${values.name} thành công`)
             }).catch((err) => {
@@ -68,18 +73,36 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
             })
         }
         if (keyLocation === 'update') {
-            //Call api update
+            const payload = {
+                ...values, memberId: getData.memberid, bod: convertDateAntd(values.bod),
+                date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
+            }
+            delete payload.price;
+            delete payload.maxcustomer;
+            delete payload.nameroom;
+            delete payload.value;
+
+            await dispatch(editTenant({ roomId, payload }))
+                .unwrap()
+                .then((resp) => {
+                    return message.success(`Cập nhật ${values.name} thành công`);
+                })
+                .catch((err) => {
+                    return message.error(`Cập nhật ${values.name} thất bại`);
+                });
             console.log('api update ');
 
+            navigate(`/admin/${urlRouter.ROOM}`)
         }
         console.log({
             ...values, host: true, roomId: detailRoom.id, bod: convertDateAntd(values.bod),
             date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
         });
+
     }
     return (
         <Form
-            initialValues={{ ...detailRoom, initialValues }}
+            initialValues={{ ...detailRoom, initialValues, getData }}
             form={form}
             onFinish={onFinish}
             size='large'>
@@ -139,12 +162,6 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
                 </div>
             </div>
             <div className='lg:flex gap-12 gap-8 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
-                <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Ngày sinh</label>
-                <div className='lg:w-1/2 sm:w-full'>
-                    <Form.Item name="bod" rules={[{ required: true, message: "Không được bỏ trống trường này" }]}>
-                        <DatePicker className='w-full' format="DD/MM/YYYY" />
-                    </Form.Item>
-                </div>
                 <div className='w-48 text-base font-medium text-slate-500'></div>
                 <div className='lg:w-1/2 sm:w-full'></div>
                 {/* <label htmlFor="" className="w-48 text-base font-medium text-slate-500">Nơi sinh</label>
@@ -153,6 +170,13 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
                         <Input className='w-full' placeholder='Nơi sinh' />
                     </Form.Item>
                 </div> */}
+                <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Ngày sinh</label>
+                <div className='lg:w-1/2 sm:w-full'>
+                    <Form.Item name="bod" rules={[{ required: true, message: "Không được bỏ trống trường này" }]}>
+                        <DatePicker className='w-full' format="DD/MM/YYYY" />
+                    </Form.Item>
+                </div>
+
             </div>
             <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
                 <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Địa chỉ thường chú</label>
@@ -179,7 +203,7 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
                 <label htmlFor="" className="w-48 text-base font-medium text-slate-500">Biển số xe</label>
                 <div className='lg:w-1/2 sm:w-full'>
                     <Form.Item name="vehicleNumber" rules={[{ required: true, message: "Không được bỏ trống trường này" }]}>
-                        <Input className='w-full' placeholder='biển số xe' />
+                        <Input className='w-full' placeholder='Biển số xe' />
                     </Form.Item>
                 </div>
             </div>
@@ -200,6 +224,7 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
                             parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                             onChange={onChange}
                             controls={false}
+                            readOnly
                             className='w-full outline-0 md: my-2' placeholder='Đơn giá' addonAfter="VNĐ"
                         />
                     </Form.Item>
@@ -238,19 +263,21 @@ const FormCreateMember = ({ key, detailRoom }: any) => {
             </div>
 
             <div className="sticky bottom-0 mt-8 bg-gray-100 border rounded flex justify-end py-2">
-                <Form.Item name="">
-                    <button onClick={() => navigate(-1)} className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
-                        Hủy
-                    </button>
-                    {
-                        keyLocation === null &&
+                <button onClick={() => navigate(-1)} className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
+                    Hủy
+                </button>
+                {
+                    keyLocation === null &&
+                    <Form.Item>
                         <button className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  "><i className="fa-solid fa-check"></i> Gửi</button>
-                    }
-                    {
-                        keyLocation === 'update' &&
+                    </Form.Item>
+                }
+                {
+                    keyLocation === 'update' &&
+                    <Form.Item>
                         <button className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  "><i className="fa-solid fa-check"></i> Cap nhat</button>
-                    }
-                </Form.Item>
+                    </Form.Item>
+                }
             </div>
         </Form >
     )

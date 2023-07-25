@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form, Input, Select } from 'antd';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { getAllHouse } from 'src/features/room/houseSlice';
 import { getProvinces, getDistrict, getWards } from 'src/api/provinces/provinces';
 import { getById } from 'src/api/house';
-import { useParams } from 'react-router-dom';
 const EditHouse = ({ form, idHouse }: any) => {
     console.log('update house');
 
