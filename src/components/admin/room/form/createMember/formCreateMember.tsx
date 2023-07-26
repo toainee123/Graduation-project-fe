@@ -21,8 +21,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
 
   useEffect(() => {
     if (getData) {
-      console.log(getData);
-
       const fakeData = {
         id: 12,
         price: getData.price,
@@ -47,11 +45,11 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       form.setFieldsValue(fakeData);
     }
   }, [getData]);
-  console.log('dataform', getData);
+  console.log('data romm', getData);
 
   useEffect(() => {
     if (detailRoom) {
-      form.resetFields();
+      form.setFieldsValue(detailRoom);
     }
   }, [detailRoom]);
 
@@ -80,6 +78,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         .catch((err) => {
           message.error(`thêm nhà ${values.name} thất bại`);
         });
+      navigate(`/admin/${urlRouter.ROOM}`);
     }
     if (keyLocation === 'update') {
       const payload = {
@@ -274,7 +273,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
 
       <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
         <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
-          Ngày bắt đầu
+          Ngày bắt đầu thuê ph
         </label>
         <div className='lg:w-1/2 sm:w-full'>
           <Form.Item name='date' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
@@ -294,7 +293,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
               onChange={onChange}
               controls={false}
               className='w-full outline-0 md: my-2'
-              placeholder='Đơn giá'
+              placeholder='Tiền cọc phòng'
               addonAfter='VNĐ'
             />
           </Form.Item>

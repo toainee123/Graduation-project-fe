@@ -17,7 +17,8 @@ export const getBills = async (date: any) => {
 };
 
 export const getBillsHouse = async (value: any) => {
-    const url = `/bill?date=${value.date}&houseId=${value.houseId}`;
+    const house = value.houseId === 'Tất cả' ? '' : value.houseId;
+    const url = `/bill?date=${value.date}&houseId=${house}`;
     return axiosClient.get(url);
 };
 

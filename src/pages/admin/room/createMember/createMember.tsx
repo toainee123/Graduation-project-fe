@@ -10,10 +10,12 @@ import FormCreateMember from 'src/components/admin/room/form/createMember/formCr
 import Relative from 'src/components/admin/room/form/relative/relative';
 import Contract from 'src/components/admin/room/contract/contract';
 import { apiGetRoomTenantDetail, getByIdRoom } from 'src/api/room';
+import Service from 'src/components/admin/room/form/service/service';
 
 const CreateMember = () => {
   const [detailRoom, setDetailRoom] = useState<any>();
   const [getData, setGetData] = useState<any>([]);
+  const [houseId, setHouseId] = useState<any>([]);
   const { roomId } = useParams();
   const search = useLocation().search;
   const keyLocation = new URLSearchParams(search).get('key');
@@ -28,24 +30,28 @@ const CreateMember = () => {
       console.log('Call api get roomTenant');
       const fetchDetailMember = async () => {
         const { data } = await apiGetRoomTenantDetail(roomId);
-        console.log(data);
-
         setGetData(data);
       };
+      const getIdHouse = async () => {
+        const { data } = await getByIdRoom(roomId);
+        setHouseId(data.idhouse);
+      };
+      getIdHouse();
       fetchDetailMember();
     }
   }, [keyLocation]);
   console.log('data', getData);
 
   useEffect(() => {
-    if (keyLocation === null) {
-      const fetchRoom = async (roomId: any) => {
-        const { data } = await getByIdRoom(roomId);
-        console.log('data');
-        setDetailRoom(data);
-      };
-      fetchRoom(roomId);
-    }
+    // if (keyLocation === null) {
+
+    const fetchRoom = async (roomId: any) => {
+      const { data } = await getByIdRoom(roomId);
+      console.log('data');
+      setDetailRoom(data);
+    };
+    fetchRoom(roomId);
+    // }
   }, [roomId]);
 
   const items: TabsProps['items'] = [
@@ -57,6 +63,11 @@ const CreateMember = () => {
       ),
     },
     {
+      label: 'Dịch vụ',
+      key: '4',
+      children: <Service />,
+    },
+    {
       label: 'Thành viên',
       key: '2',
       children: <Relative />,
@@ -64,7 +75,7 @@ const CreateMember = () => {
     {
       label: 'Hợp đồng',
       key: '3',
-      children: <Contract />,
+      children: <Contract houseid={houseId} />,
     },
   ];
   return (
