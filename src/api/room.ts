@@ -66,9 +66,5 @@ export const apiUpdateRoomTenant = async ({ roomId, payload }: any) => {
     return axiosClient.put(url, payload);
 };
 
-export const addContract = async (value: any) => {
 
-    const url = `//contract`;
-    return axiosClient.post(url, value);
-};
 
