@@ -6,31 +6,97 @@ import 'react-quill/dist/quill.snow.css';
 import '../contract/contract.scss';
 import { Form, Input, Button, DatePicker } from 'antd';
 import { useParams } from 'react-router-dom';
-import { addContract, apiGetRoomTenantDetail } from 'src/api/room';
+import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
+import { addContract } from 'src/api/contract';
+import { getInfoCustomer } from 'src/api/establish';
+import { getHouseId } from 'src/api/house';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
-const Contract = () => {
+const Contract = ({ houseid }: any) => {
+  console.log(houseid);
+
   const { roomId } = useParams();
   const [roomTenant, setRoomTenant] = useState<any>();
+  const [host, setHost] = useState<any>();
+  const [house, setHouse] = useState<any>();
+  const [formValue, setFormValue] = useState<any>();
+  const [printData, setPrintData] = useState('');
 
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAstablishContract());
     const getRoomTenant = async () => {
       const { data } = await apiGetRoomTenantDetail(roomId);
-
       setRoomTenant(data);
     };
+
+    const getHost = async () => {
+      const { data } = await getInfoCustomer();
+      setHost(data);
+    };
+
+    const getHouse = async () => {
+      const { data } = await getHouseId(houseid);
+
+      setHouse(data);
+    };
+    getHost();
+    getHouse();
     getRoomTenant();
   }, []);
-
   const establishData = useAppSelector((state: any) => state.establish.value);
+  const renderContract = () => {
+    const sampleContract = establishData?.result?.samplecontract;
+    const rvSampleContract = sampleContract?.replaceAll(/\\"/g, '"');
+    const upperCaseFULLNAMECUSTOMER = host?.result?.name.toUpperCase();
+    const upperCaseCUSTOMERNAMEROOMRENT = roomTenant?.name.toUpperCase();
 
-  const sampleContract = establishData?.result?.samplecontract;
-  const rvSampleContract = sampleContract?.replaceAll(/\\"/g, '"');
+    const dataContract: any = {
+      '@ContrasctDate': moment(formValue?.contractDate).format('DD/MM/YYYY'),
+      '@ContractDateDay': moment(formValue?.contractDate).format('DD'),
+      '@ContractNo': '',
+      '@ContractDateMonth': moment(formValue?.contractDate).format('MM'),
+      '@ContractDateYear': moment(formValue?.contractDate).format('YYYY'),
+      '@AddressCustomer': house?.result?.address,
+      '@FullNameCustomer': host?.result?.name,
+      '@BirthdayCustomerConfig': moment(host?.result?.bod).format('DD/MM/YYYY'),
+      '@AddressHost': host?.result?.address,
+      '@TelephoneCustomer': host?.result?.phone,
+      '@CustomerNameRoomRent': roomTenant?.name,
+      '@BirthdayRoomRent': moment(host?.bod).format('DD/MM/YYYY'),
+      '@IDCARDNORoomRent': roomTenant?.cccd,
+      '@DateIssueRoomRent': moment(roomTenant?.daterangecccd).format('DD/MM/YYYY'),
+      '@PlaceIssueRoomRent': roomTenant?.issuedcccdby,
+      '@AddressRoomRentasdasd': roomTenant?.address,
+      '@TelephoneRoomRent': roomTenant?.phone,
+      ' @RoomName': roomTenant?.nameroom,
+      '@AdressArea': house?.result?.address,
+      '@ContractMonths': formValue?.expiry,
+      '@BeginRent': moment(formValue?.contractDate).format('DD/MM/YYYY'),
+      '@RoomAmount': Number(roomTenant?.price).toLocaleString('VND'),
+      '@PayType': '',
+      '@DepositAmount': Number(roomTenant?.deposit).toLocaleString('VND'),
+      '@ProvinceName': '',
+      '@FULLNAMECUSTOMER': upperCaseFULLNAMECUSTOMER,
+      '@CUSTOMERNAMEROOMRENT': upperCaseCUSTOMERNAMEROOMRENT,
+    };
+
+    // moment(roomTenant?.daterangecccd).format('DD/MM/YYYY')
+    const newContract = rvSampleContract?.replaceAll(
+      /@ContrasctDate|@ContractDateDay|@ContractDateMonth|@ContractDateYear|@AddressCustomer|@FullNameCustomer|@BirthdayCustomerConfig|@AddressHost|@ContractNo|@TelephoneCustomer|@CustomerNameRoomRent|@BirthdayRoomRent|@IDCARDNORoomRent|@DateIssueRoomRent|@PlaceIssueRoomRent|@AddressRoomRentasdasd|@TelephoneRoomRent|@RoomName|@AdressArea|@ContractMonths|@BeginRent|@RoomAmount|@PayType|@DepositAmount|@ProvinceName|@FULLNAMECUSTOMERNAME /gi,
+      (matched: any) => {
+        return dataContract[matched];
+      }
+    );
+    setPrintData(newContract);
+  };
+
   const [form] = Form.useForm();
   const onFinish = async (values: any) => {
+    setFormValue(values);
     try {
       const dataPost = {
         customerId: roomTenant?.memberid,
@@ -39,14 +105,46 @@ const Contract = () => {
         contractExpir: moment(values.contractExpir).format('YYYY-MM-DD'),
         expiry: values.expiry,
       };
+      console.log(dataPost);
 
-      const response = await addContract(values);
+      const response = await addContract(dataPost);
       if (response) {
         toast.success('Thành công');
       }
     } catch (error) {
       toast.error('Không thành công');
     }
+  };
+
+  const handleExportPDF = () => {
+    const htmlInput: any = document.querySelector('.ql-editor');
+    htmlInput.removeAttribute('hidden');
+
+    html2canvas(htmlInput).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('download.pdf');
+    });
+
+    htmlInput.setAttribute('hidden', 'true');
+
+    // var header =
+    //   '<html>' +
+    //   '<head><meta charset="utf-8"><title>ahihi</title></meta><link rel="stylesheet" href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css"/></head>';
+    // var footer = '</body></html>';
+    // const bodyHtml: any = document.querySelector('.ql-editor');
+    // var sourceHTML: any = header + bodyHtml.innerHTML + footer;
+    // var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+    // var fileDownload = document.createElement('a');
+    // document.body.appendChild(fileDownload);
+    // fileDownload.href = source;
+    // fileDownload.download = 'document.doc';
+    // fileDownload.click();
+    // document.body.removeChild(fileDownload);
   };
   return (
     <div>
@@ -88,9 +186,25 @@ const Contract = () => {
               Lưu
             </Button>
           </Form.Item>
+
+          <Form.Item>
+            <Button
+              className='mt-4'
+              style={{ width: '100%' }}
+              onClick={async () => {
+                await renderContract();
+                await handleExportPDF();
+              }}
+            >
+              Xuất file PDF
+            </Button>
+          </Form.Item>
         </Form>
       </div>
-      <div className='ql-editor'>{parse(rvSampleContract ? rvSampleContract : '')}</div>
+
+      <div className='ql-editor ' hidden>
+        {parse(printData ? printData : '')}
+      </div>
       <ToastContainer />
     </div>
   );
