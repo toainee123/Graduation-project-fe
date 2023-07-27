@@ -190,13 +190,13 @@ const Charge = () => {
       '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
         room?.price
       ).toLocaleString('VND')}</td></tr>
-      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
-        resBill.data?.bill?.pricewater
-      ).toLocaleString('VND')}</td></tr>
-      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
-        resBill.data?.bill?.priceelectricity
-      ).toLocaleString('VND')}</td></tr>
-      ${listSvBill}</tbody>`,
+        <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.pricewater
+        ).toLocaleString('VND')}</td></tr>
+        <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.priceelectricity
+        ).toLocaleString('VND')}</td></tr>
+        ${listSvBill}</tbody>`,
       '@SumAmount': record.tien,
     };
 
@@ -221,8 +221,6 @@ const Charge = () => {
       pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
 
       pdf.save('download.pdf');
-      var pdfBase64 = pdf.output('datauristring');
-      console.log(pdfBase64);
     });
   };
 
