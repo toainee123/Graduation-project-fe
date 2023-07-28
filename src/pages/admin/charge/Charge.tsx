@@ -441,6 +441,8 @@ const Charge = () => {
       stringList += mg;
       setBillEmail(stringList);
     });
+
+    handleSendEmail();
   };
 
   const handleSendEmail: any = async () => {
@@ -454,7 +456,7 @@ const Charge = () => {
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
-      const canvas = await html2canvas(htmlItem, { width: 800, height: 800 });
+      const canvas = await html2canvas(htmlItem, { height: 1000 });
       const image = canvas.toDataURL('image/png', 1.0);
       const file = new File([image], 'image_thai.png', { type: 'image/png' });
       const formData = new FormData();
@@ -478,6 +480,7 @@ const Charge = () => {
         toast.success('Gửi email không thành công');
       }
     }
+    setBillEmail('');
   };
 
   // export excel
@@ -761,9 +764,8 @@ const Charge = () => {
             <button
               className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
               onClick={async () => {
-                await renderBillSendEmail().then(async () => {
-                  await handleSendEmail();
-                });
+                await renderBillSendEmail();
+                // await handleSendEmail();
               }}
             >
               <MailOutlined className='icon-btn' /> Email
