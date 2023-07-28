@@ -41,6 +41,7 @@ const Charge = () => {
   const [houses, setHouses] = useState([]);
   const [valueFilter, setValueFilter] = useState<any>();
   const [billEmail, setBillEmail] = useState<any>();
+  const [status, setStatus] = useState<any>(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -454,6 +455,7 @@ const Charge = () => {
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
+
       const canvas = await html2canvas(htmlItem, { height: 1000 });
       const image = canvas.toDataURL('image/png', 1.0);
       const file = new File([image], 'image_thai.png', { type: 'image/png' });
@@ -473,13 +475,12 @@ const Charge = () => {
         content: `Đây là bill thu tháng 7 của bạn(Ấn vào link để xem ảnh) ${i}: ${imgLink}`,
       });
       if (response?.status === 'success') {
+        htmlItem.setAttribute('class', 'hide');
         toast.success('Gửi email thành công');
       } else {
         toast.success('Gửi email không thành công');
       }
     }
-
-    setBillEmail('');
   };
 
   // export excel
@@ -723,7 +724,7 @@ const Charge = () => {
                 </Form.Item>
               </Form>
             </Modal>
-            <Tooltip title='Ấn 2 lần nút để in vào lần đầu'>
+            <Tooltip title='Ấn 2 lần nút để in '>
               <button
                 className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
                 onClick={async () => {
@@ -761,7 +762,7 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
-            <Tooltip title='Ấn 2 lần nút để gửi email vào lần đầu'>
+            <Tooltip title='Ấn 2 lần nút để gửi email'>
               <button
                 className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
                 onClick={async () => {
