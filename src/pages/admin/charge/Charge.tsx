@@ -470,15 +470,16 @@ const Charge = () => {
       const response: any = await sendEmail({
         to: [`${resBill?.data?.bill?.email}`],
         title: `Thông báo về hóa đơn tháng ${valueFilter ? valueFilter.month : month}`,
-        content: `Đây là bill thu tháng 7 của bạn(Ấn vào link để xem ảnh): ${imgLink}`,
+        content: `Đây là bill thu tháng 7 của bạn(Ấn vào link để xem ảnh) ${i}: ${imgLink}`,
       });
       if (response?.status === 'success') {
         toast.success('Gửi email thành công');
       } else {
         toast.success('Gửi email không thành công');
       }
-      setBillEmail('');
     }
+
+    setBillEmail('');
   };
 
   // export excel
