@@ -32,26 +32,32 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
           onChange(allFields);
         }}
       >
-        <Form.Item label='Họ và tên:' name='fullname'>
-          <Input />
-        </Form.Item>
+        <div className='mt-4'>
+          <Form.Item label='Họ và tên:' name='fullname'>
+            <Input />
+          </Form.Item>
+        </div>
 
-        <Form.Item label='Địa chỉ:' name='address'>
-          <Input />
-        </Form.Item>
-        <Form.Item label='Địa chỉ email:' name='email'>
-          <Input />
-        </Form.Item>
+        <div className='mt-4'>
+          <Form.Item label='Địa chỉ:' name='address' className='mt-4'>
+            <Input />
+          </Form.Item>
+        </div>
+        <div className='mt-4'>
+          <Form.Item label='Địa chỉ email:' name='email' className='mt-4'>
+            <Input />
+          </Form.Item>
+        </div>
 
         <div className='flex justify-between'></div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between gap-8 mt-4'>
           <Form.Item
             name='phone_number'
             label='Điện thoại: '
             className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{ span: 7 }}
+            style={{ width: '70%', marginRight: '10px' }}
+            labelCol={{ span: 6 }}
           >
             <Input />
           </Form.Item>
@@ -59,19 +65,10 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
             name='birthday'
             label='Ngày sinh:'
             className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{}}
+            style={{ width: '70%', marginLeft: '10px' }}
+            labelCol={{ span: 5 }}
           >
             <DatePicker style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item
-            name='ci_number'
-            label='CMND/ CCCD số:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{ span: 7 }}
-          >
-            <Input />
           </Form.Item>
         </div>
       </Form>
