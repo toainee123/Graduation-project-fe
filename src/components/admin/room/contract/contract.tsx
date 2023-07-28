@@ -9,11 +9,12 @@ import { useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
-import { addContract } from 'src/api/contract';
+import { addContract, getContractByIdRoom } from 'src/api/contract';
 import { getInfoCustomer } from 'src/api/establish';
 import { getHouseId } from 'src/api/house';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { log } from '@antv/g2plot/lib/utils';
 
 const Contract = ({ houseid }: any) => {
   console.log(houseid);
@@ -43,6 +44,18 @@ const Contract = ({ houseid }: any) => {
 
       setHouse(data);
     };
+
+    const getContract = async () => {
+      const { data } = await getContractByIdRoom(roomId);
+      console.log(data);
+
+      form.setFieldsValue({
+        expiry: data?.expiry,
+        contractDate: moment(data?.contractdate),
+        contractExpir: moment(data?.contractexpir),
+      });
+    };
+    getContract();
     getHost();
     getHouse();
     getRoomTenant();
@@ -93,7 +106,7 @@ const Contract = ({ houseid }: any) => {
     );
     setPrintData(newContract);
   };
-
+  console.log(roomId, house?.result?.id, roomTenant?.memberid);
   const [form] = Form.useForm();
   const onFinish = async (values: any) => {
     setFormValue(values);
@@ -153,17 +166,11 @@ const Contract = ({ houseid }: any) => {
       </span>
       <div className='ml-3 mr-3'>
         <Form action='' form={form} onFinish={onFinish}>
-          <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
-            <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
-              Số hợp đồng
-            </label>
-            <Form.Item className='lg:w-1/2 sm:w-full'>
-              <Input />
-            </Form.Item>
+          <div className='lg:flex  justify-start items-center  md:justify-start  my-4'>
             <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
               Thời gian hợp đồng
             </label>
-            <Form.Item className='lg:w-1/2 sm:w-full' name='expiry'>
+            <Form.Item className='lg:w-full sm:w-full' name='expiry'>
               <Input />
             </Form.Item>
           </div>
