@@ -14,7 +14,7 @@ import {
   SaveOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Tooltip, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
@@ -454,7 +454,7 @@ const Charge = () => {
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
-      const canvas = await html2canvas(htmlItem, { width: 800, height: 800 });
+      const canvas = await html2canvas(htmlItem, { height: 1000 });
       const image = canvas.toDataURL('image/png', 1.0);
       const file = new File([image], 'image_thai.png', { type: 'image/png' });
       const formData = new FormData();
@@ -477,6 +477,7 @@ const Charge = () => {
       } else {
         toast.success('Gửi email không thành công');
       }
+      setBillEmail('');
     }
   };
 
@@ -721,15 +722,17 @@ const Charge = () => {
                 </Form.Item>
               </Form>
             </Modal>
-            <button
-              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-              onClick={async () => {
-                await handleListData();
-                await handlePrintListBill();
-              }}
-            >
-              <PrinterOutlined className='icon-btn' /> In
-            </button>
+            <Tooltip title='Ấn 2 lần nút để in vào lần đầu'>
+              <button
+                className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+                onClick={async () => {
+                  await handleListData();
+                  await handlePrintListBill();
+                }}
+              >
+                <PrinterOutlined className='icon-btn' /> In
+              </button>
+            </Tooltip>
 
             <button
               className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
@@ -757,17 +760,17 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
-
-            <button
-              className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
-              onClick={async () => {
-                await renderBillSendEmail().then(async () => {
+            <Tooltip title='Ấn 2 lần nút để gửi email vào lần đầu'>
+              <button
+                className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
+                onClick={async () => {
+                  await renderBillSendEmail();
                   await handleSendEmail();
-                });
-              }}
-            >
-              <MailOutlined className='icon-btn' /> Email
-            </button>
+                }}
+              >
+                <MailOutlined className='icon-btn' /> Email
+              </button>
+            </Tooltip>
 
             {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
