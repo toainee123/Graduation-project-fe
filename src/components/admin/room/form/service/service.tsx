@@ -1,13 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Input, Space, Table, message } from 'antd';
+import { Checkbox, Table, } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
-import { deleteService, getListService } from 'src/api/service';
-import { urlRouter } from 'src/utils/constants';
+import { getListService } from 'src/api/service';
 
 const Service = () => {
     const [list, setList] = useState([]);
-    const [messageApi] = message.useMessage();
     useEffect(() => {
         const ListService = async () => {
             const { data } = await getListService();
@@ -15,20 +12,16 @@ const Service = () => {
         };
         ListService();
     }, []);
-
-    const handleRemove = async (id: any) => {
-        await deleteService(id)
-            .then((resp) => {
-                const getDeposit = async () => {
-                    const { data } = await getListService();
-                    setList(data.result);
-                };
-                getDeposit();
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    };
+    const dataSource = list.map((item: any, i: number) => {
+        return {
+            key: i,
+            name: item.name,
+            price: new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            }).format(+item?.price)
+        }
+    })
 
     const columns = [
         {
@@ -56,11 +49,10 @@ const Service = () => {
                 <strong>Lưu ý:</strong>
                 <p>
                     Vui lòng chọn dịch vụ cho khách thuê. Nếu khách có chọn dịch vụ thì khi tính tiền phòng phần mềm sẽ tự tính các khoản phí vào hóa đơn; ngược lại nếu không chọn phần mềm sẽ bỏ qua.<br />
-                    Đối với dịch vụ là loại điện/ nước thì sẽ tính theo chỉ số điện/ nước<br />
-                    Đối với các dịch vụ khác sẽ tính theo số lượng (ví dụ phòng có 2 xe đạp nhập số lượng là 2)<br />
+
                 </p>
             </div>
-            <Table dataSource={list} columns={columns} rowKey='name' />
+            <Table dataSource={dataSource} columns={columns} pagination={false} />
         </>
     );
 };
