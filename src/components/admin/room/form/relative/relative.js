@@ -14,14 +14,17 @@ const Relative = () => {
     // const myParam = useLocation().search;
     // const idH = new URLSearchParams(myParam).get('idHouse');
     const [listRoom, setListRoom] = useState();
-    const [status, setStatus] = useState(false)
+    const [status, setStatus] = useState(false);
+    const [roomTenant, setRoomTenant] = useState();
     useEffect(() => {
         const getData = async () => {
             // const respon = await getRoom(idH)
             // setListRoom(respon.data.result.responses)
 
             const response = await getRoomMember(roomId);
-            const newArrr = response.data.map(item => {
+            const { data } = response;
+            setData(data);
+            const newArrr = response?.data?.map(item => {
                 console.log(moment(item.bod));
                 return {
                     id: item.id,
@@ -45,19 +48,13 @@ const Relative = () => {
 
 
 
-
-
     const onFinish = async (values) => {
-        // const room = listRoom?.find(item => item.id === +id)
-        // const maxCustomer = room.maxCustomer;
-        // if (values?.items.length > maxCustomer - 1) {
-        //     alert(`Phòng giói hạn chỉ có ${maxCustomer} thành viên(đã tính chủ phòng)`)
-        // }
 
-        const resss = await getRoomMember(roomId);
-        const dataMember = resss.data
+
+        const dataMember = data ? data : [];
+        console.log(dataMember);
         for (const key in dataMember) {
-            console.log(dataMember[key].id);
+
             await deleteMember(dataMember[key].id);
         }
 
@@ -81,15 +78,17 @@ const Relative = () => {
             }
         })
 
+
         try {
             for (const key in listMemberData) {
                 await addRoomMember(listMemberData[key])
             }
-            setStatus(true)
+            console.log('set lai status');
+            setStatus(!status);
         } catch (error) {
-            alert(error.response.data.message ? 'Email đã tồn tại' : '')
-            console.log(error.response.data.message);
+            console.log(error);
         }
+
 
     }
 

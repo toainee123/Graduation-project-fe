@@ -72,9 +72,5 @@ export const apiGetOutRoomTenant = async (roomId: any) => {
     return axiosClient.get(url);
 };
 
-export const addContract = async (value: any) => {
 
-    const url = `//contract`;
-    return axiosClient.post(url, value);
-};
 

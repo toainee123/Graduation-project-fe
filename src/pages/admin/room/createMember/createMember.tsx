@@ -15,6 +15,7 @@ import Service from 'src/components/admin/room/form/service/service';
 const CreateMember = () => {
   const [detailRoom, setDetailRoom] = useState<any>();
   const [getData, setGetData] = useState<any>([]);
+  const [houseId, setHouseId] = useState<any>([]);
   const { roomId } = useParams();
   const search = useLocation().search;
   const keyLocation = new URLSearchParams(search).get('key');
@@ -31,6 +32,11 @@ const CreateMember = () => {
         const { data } = await apiGetRoomTenantDetail(roomId);
         setGetData(data);
       };
+      const getIdHouse = async () => {
+        const { data } = await getByIdRoom(roomId);
+        setHouseId(data.idhouse);
+      };
+      getIdHouse();
       fetchDetailMember();
     }
   }, [keyLocation]);
@@ -69,7 +75,7 @@ const CreateMember = () => {
     {
       label: 'Hợp đồng',
       key: '3',
-      children: <Contract />,
+      children: <Contract houseid={houseId} />,
     },
   ];
   return (

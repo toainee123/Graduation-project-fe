@@ -14,7 +14,7 @@ import {
   SaveOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Typography } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Modal, Select, Table, Tooltip, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { get } from 'http';
 import parse from 'html-react-parser';
@@ -31,7 +31,8 @@ import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 import dayjs from 'dayjs';
 import { format } from 'path';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { sendEmail } from 'src/api/dashboard';
 
 type Props = {};
 
@@ -39,6 +40,8 @@ const Charge = () => {
   const { Text } = Typography;
   const [houses, setHouses] = useState([]);
   const [valueFilter, setValueFilter] = useState<any>();
+  const [billEmail, setBillEmail] = useState<any>();
+  const [status, setStatus] = useState<any>(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -52,6 +55,7 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   const chargeData = useAppSelector((state: any) => state.charge.value);
+
   const dataSource = chargeData?.map((item: any, index: number) => {
     return {
       id: item.id,
@@ -113,26 +117,33 @@ const Charge = () => {
 
       const listSvBill = resBill?.data?.service.map((item: any) => {
         return `  <tr>
-  
        <td style='width:70%'>${item.nameservice}</td>
-       <td style='width:30%;text-align:right'>${item.priceservice}</td>
+       <td style='width:30%;text-align:right'>${Number(item.priceservice).toLocaleString('VND')}</td>
      </tr>`;
       });
+
       const data: any = {
         '@AreaName': item.house,
         '@Address': resHouse?.data?.result?.address,
         '@InvoiceNo': '0009',
         '@InvoiceDate': '22/05/2023',
-        '@MonthYear': `${month}/${year}`,
+        '@MonthYear': `${valueFilter ? valueFilter.month : month}/${valueFilter ? valueFilter.year : year}`,
         '@PayType': item.ky,
         '@FromDate': '18/4/2023',
         '@ToDate': '18/5/2023',
         '@CustomerName': item.user,
         '@RoomName': item.room,
         '@BeginRent': '18/4/2023',
-        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
-      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
-      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
+
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
+          room?.price
+        ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.pricewater
+      ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.priceelectricity
+      ).toLocaleString('VND')}</td></tr>
       ${listSvBill}</tbody>`,
         '@SumAmount': item.tien,
       };
@@ -147,7 +158,6 @@ const Charge = () => {
       const mg = `<div className='mbprint'>${dataaddDom}</div>`;
       stringList += mg;
       console.log(stringList);
-
       setPrintListBillData(stringList);
     });
   };
@@ -168,22 +178,29 @@ const Charge = () => {
       return `  <tr>
 
      <td style='width:70%'>${item.nameservice}</td>
-     <td style='width:30%;text-align:right'>${item.priceservice}</td>
+     <td style='width:30%;text-align:right'>${Number(item.priceservice).toLocaleString('VND')}</td>
    </tr>`;
     });
+    console.log(record);
 
     const data: any = {
       '@AreaName': record.house,
       '@Address': resHouse?.data?.result?.address,
       '@InvoiceNo': '0009',
       '@InvoiceDate': '22/05/2023',
-      '@MonthYear': `${month}/${year}`,
+      '@MonthYear': `${valueFilter ? valueFilter.month : month}/${valueFilter ? valueFilter.year : year}`,
       '@CustomerName': record.user,
       '@RoomName': record.room,
-      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${room?.price}</td></tr>
-      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${resBill.data?.bill?.pricewater}</td></tr>
-      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${resBill.data?.bill?.priceelectricity}</td></tr>
-      ${listSvBill}</tbody>`,
+      '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
+        room?.price
+      ).toLocaleString('VND')}</td></tr>
+        <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.pricewater
+        ).toLocaleString('VND')}</td></tr>
+        <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.priceelectricity
+        ).toLocaleString('VND')}</td></tr>
+        ${listSvBill}</tbody>`,
       '@SumAmount': record.tien,
     };
 
@@ -208,8 +225,6 @@ const Charge = () => {
       pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
 
       pdf.save('download.pdf');
-      var pdfBase64 = pdf.output('datauristring');
-      console.log(pdfBase64);
     });
   };
 
@@ -366,6 +381,106 @@ const Charge = () => {
   });
   const printCharge = () => {
     handlePrint();
+  };
+
+  // export image and send mail
+  const renderBillSendEmail = async () => {
+    let stringList = '';
+    let arrData: any;
+    arrData = selectedRow;
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    arrData.map(async (item: any) => {
+      const resHouse = await getHouseId(item.houseid);
+      const resRoom = await getRoom(item.houseid);
+      const arrRoomHouse = await resRoom?.data?.result?.responses;
+      const room = await arrRoomHouse.find((itemroom: any) => itemroom.id === item.roomid);
+      const resBill = await getBillID(item.id);
+
+      const listSvBill = resBill?.data?.service?.map((item: any) => {
+        return `<tr>
+       <td style='width:70%'>${item.nameservice}</td>
+       <td style='width:30%;text-align:right'>${Number(item.priceservice).toLocaleString('VND')}</td>
+       </tr>`;
+      });
+
+      const data: any = {
+        '@AreaName': item.house,
+        '@Address': resHouse?.data?.result?.address,
+        '@InvoiceNo': '0009',
+        '@InvoiceDate': '22/05/2023',
+        '@MonthYear': `${valueFilter ? valueFilter.month : month}/${valueFilter ? valueFilter.year : year}`,
+        '@PayType': item.ky,
+        '@FromDate': '18/4/2023',
+        '@ToDate': '18/5/2023',
+        '@CustomerName': item.user,
+        '@RoomName': item.room,
+        '@BeginRent': '18/4/2023',
+        '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
+          room?.price
+        ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.pricewater
+      ).toLocaleString('VND')}</td></tr>
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.priceelectricity
+      ).toLocaleString('VND')}</td></tr>
+      ${listSvBill}</tbody>`,
+        '@SumAmount': item.tien,
+      };
+
+      const dataaddDom = printForm?.replaceAll(
+        /@AreaName|@Address|@InvoiceNo|@InvoiceDate|@MonthYear|@PayType|@FromDate|@ToDate|@CustomerName|@RoomName|@BeginRent|@ContentHtmlInvoiceService|@SumAmount/gi,
+        (matched: any) => {
+          return data[matched];
+        }
+      );
+
+      const mg = `<div className='mbprint bill-${item.id}'>${dataaddDom}</div>`;
+      stringList += mg;
+      setBillEmail(stringList);
+    });
+  };
+
+  const handleSendEmail: any = async () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const CLOUDINARY_PRESET = 'gtn4lbpo';
+    const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
+    console.log(selectedRow);
+
+    for (let i = 0; i < selectedRow.length; i++) {
+      const resBill = await getBillID(selectedRow[i].id);
+      const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
+
+      const canvas = await html2canvas(htmlItem, { height: 1000 });
+      const image = canvas.toDataURL('image/png', 1.0);
+      const file = new File([image], 'image_thai.png', { type: 'image/png' });
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
+        headers: {
+          'Content-Type': 'application/form-data',
+        },
+      });
+      const imgLink = data.url;
+
+      const response: any = await sendEmail({
+        to: [`${resBill?.data?.bill?.email}`],
+        title: `Thông báo về hóa đơn tháng ${valueFilter ? valueFilter.month : month}`,
+        content: `Đây là bill thu tháng 7 của bạn(Ấn vào link để xem ảnh) ${i}: ${imgLink}`,
+      });
+      if (response?.status === 'success') {
+        htmlItem.setAttribute('class', 'hide');
+        toast.success('Gửi email thành công');
+      } else {
+        toast.success('Gửi email không thành công');
+      }
+    }
   };
 
   // export excel
@@ -609,15 +724,17 @@ const Charge = () => {
                 </Form.Item>
               </Form>
             </Modal>
-            <button
-              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-              onClick={async () => {
-                await handleListData();
-                await handlePrintListBill();
-              }}
-            >
-              <PrinterOutlined className='icon-btn' /> In
-            </button>
+            <Tooltip title='Ấn 2 lần nút để in '>
+              <button
+                className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+                onClick={async () => {
+                  await handleListData();
+                  await handlePrintListBill();
+                }}
+              >
+                <PrinterOutlined className='icon-btn' /> In
+              </button>
+            </Tooltip>
 
             <button
               className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
@@ -645,10 +762,17 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
-
-            <button className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'>
-              <MailOutlined className='icon-btn' /> Email
-            </button>
+            <Tooltip title='Ấn 2 lần nút để gửi email'>
+              <button
+                className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
+                onClick={async () => {
+                  await renderBillSendEmail();
+                  await handleSendEmail();
+                }}
+              >
+                <MailOutlined className='icon-btn' /> Email
+              </button>
+            </Tooltip>
 
             {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
@@ -856,6 +980,8 @@ const Charge = () => {
         <div className='p-3 hide' ref={cpPrintListBillRef}>
           {parse(printListBillData ? printListBillData : '')}
         </div>
+
+        <div className='p-3 '>{parse(billEmail ? billEmail : '')}</div>
       </div>
       <ToastContainer />
     </Form.Provider>

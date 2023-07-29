@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { DatePicker, Form, Input, InputNumber, Radio, Select, message } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { DatePicker, Form, Input, InputNumber, Radio, Select, message } from 'antd';
 
-import './formCreateMember.scss'
+import './formCreateMember.scss';
 
-import { createRoomTenant, editTenant } from 'src/features/room/roomSlice'
-import { useAppDispatch } from 'src/store/hooks'
-import { convertDateAntd } from 'src/utils/enums'
-import moment from 'moment'
-import { urlRouter } from 'src/utils/constants'
+import { createRoomTenant, editTenant } from 'src/features/room/roomSlice';
+import { useAppDispatch } from 'src/store/hooks';
+import { convertDateAntd } from 'src/utils/enums';
+import moment from 'moment';
+import { urlRouter } from 'src/utils/constants';
 
 const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) => {
     const [limitprice, setLimitPrice] = useState(Number);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const search = useLocation().search;
     const keyLocation = new URLSearchParams(search).get('key');
     const [form] = Form.useForm();
-    const dispatch = useAppDispatch()
-    const { Option } = Select
+    const dispatch = useAppDispatch();
+    const { Option } = Select;
 
     useEffect(() => {
         if (getData) {
@@ -40,68 +40,46 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
                 gender: getData.gender,
                 image: getData.image,
                 maxcustomer: getData.maxcustomer,
-                deposit: getData.deposit
-            }
-            form.setFieldsValue(fakeData)
+                deposit: getData.deposit,
+            };
+            form.setFieldsValue(fakeData);
         }
     }, [getData]);
-    console.log("data romm", getData);
-
+    console.log('data romm', getData);
 
     useEffect(() => {
         if (detailRoom) {
-            form.setFieldsValue(detailRoom)
+            form.setFieldsValue(detailRoom);
         }
     }, [detailRoom]);
 
     const onChange = (value: any) => {
-        setLimitPrice(value)
-    }
+        setLimitPrice(value);
+    };
     const onFinish = async (values: any) => {
         if (keyLocation === null) {
             const payload = {
-                ...values, host: true, roomId: detailRoom.id, bod: convertDateAntd(values.bod),
-                date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
-            }
+                ...values,
+                host: true,
+                roomId: detailRoom.id,
+                bod: convertDateAntd(values.bod),
+                date: convertDateAntd(values.date),
+                dateRangeCccd: convertDateAntd(values.dateRangeCccd),
+            };
             delete payload.price;
             delete payload.maxcustomer;
             delete payload.nameroom;
             delete payload.value;
-            await dispatch(createRoomTenant(payload)).unwrap().then((resp) => {
-                message.success(`Thêm nhà ${values.name} thành công`)
-            }).catch((err) => {
-                message.error(`thêm nhà ${values.name} thất bại`)
-            })
-            navigate(`/admin/${urlRouter.ROOM}`)
-
-        }
-        if (keyLocation === 'update') {
-            const payload = {
-                ...values, memberId: getData.memberid, bod: convertDateAntd(values.bod),
-                date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
-            }
-            delete payload.price;
-            delete payload.maxcustomer;
-            delete payload.nameroom;
-            delete payload.value;
-
-            await dispatch(editTenant({ roomId, payload }))
+            await dispatch(createRoomTenant(payload))
                 .unwrap()
                 .then((resp) => {
-                    return message.success(`Cập nhật ${values.name} thành công`);
+                    message.success(`Thêm nhà ${values.name} thành công`);
                 })
                 .catch((err) => {
-                    return message.error(`Cập nhật ${values.name} thất bại`);
+                    message.error(`thêm nhà ${values.name} thất bại`);
                 });
-            console.log('api update ');
-
-            navigate(`/admin/${urlRouter.ROOM}`)
+            navigate(`/admin/${urlRouter.ROOM}`);
         }
-        console.log({
-            ...values, host: true, roomId: detailRoom.id, bod: convertDateAntd(values.bod),
-            date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
-        });
-
     }
     return (
         <Form
