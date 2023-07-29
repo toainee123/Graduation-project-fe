@@ -6,6 +6,10 @@ export const addContract = async (value: any) => {
 };
 
 export const getContractByIdRoom = async (id: any) => {
-  const url = `/contract/${id}`;
+  console.log(typeof +id);
+
+  const url = `/contract/${+id}`;
+  console.log(`url: ${url}`);
+
   return axiosClient.get(url);
 };

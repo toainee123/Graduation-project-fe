@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
 import '../contract/contract.scss';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, message } from 'antd';
 import { useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,15 +17,13 @@ import jsPDF from 'jspdf';
 import { log } from '@antv/g2plot/lib/utils';
 
 const Contract = ({ houseid }: any) => {
-  console.log(houseid);
-
   const { roomId } = useParams();
   const [roomTenant, setRoomTenant] = useState<any>();
   const [host, setHost] = useState<any>();
   const [house, setHouse] = useState<any>();
   const [formValue, setFormValue] = useState<any>();
   const [printData, setPrintData] = useState('');
-
+  const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAstablishContract());
@@ -47,9 +45,16 @@ const Contract = ({ houseid }: any) => {
 
     const getContract = async () => {
       const { data } = await getContractByIdRoom(roomId);
-      console.log(data);
+      console.log(roomId);
 
       form.setFieldsValue({
+        expiry: data?.expiry,
+        contractDate: moment(data?.contractdate),
+        contractExpir: moment(data?.contractexpir),
+      });
+
+      setFormValue({
+        id: data.id,
         expiry: data?.expiry,
         contractDate: moment(data?.contractdate),
         contractExpir: moment(data?.contractexpir),
@@ -66,6 +71,7 @@ const Contract = ({ houseid }: any) => {
     const rvSampleContract = sampleContract?.replaceAll(/\\"/g, '"');
     const upperCaseFULLNAMECUSTOMER = host?.result?.name.toUpperCase();
     const upperCaseCUSTOMERNAMEROOMRENT = roomTenant?.name.toUpperCase();
+    console.log(host?.result?.address);
 
     const dataContract: any = {
       '@ContrasctDate': moment(formValue?.contractDate).format('DD/MM/YYYY'),
@@ -106,26 +112,25 @@ const Contract = ({ houseid }: any) => {
     );
     setPrintData(newContract);
   };
-  console.log(roomId, house?.result?.id, roomTenant?.memberid);
-  const [form] = Form.useForm();
+
   const onFinish = async (values: any) => {
     setFormValue(values);
+    const dataPost = {
+      customerId: roomTenant?.customerid,
+      roomId: roomId ? +roomId : '',
+      contractDate: moment(values.contractDate).format('YYYY-MM-DD'),
+      contractExpir: moment(values.contractExpir).format('YYYY-MM-DD'),
+      expiry: values.expiry,
+    };
     try {
-      const dataPost = {
-        customerId: roomTenant?.memberid,
-        roomId: roomId ? +roomId : '',
-        contractDate: moment(values.contractDate).format('YYYY-MM-DD'),
-        contractExpir: moment(values.contractExpir).format('YYYY-MM-DD'),
-        expiry: values.expiry,
-      };
-      console.log(dataPost);
-
       const response = await addContract(dataPost);
       if (response) {
         toast.success('Thành công');
       }
-    } catch (error) {
-      toast.error('Không thành công');
+    } catch (error: any) {
+      if (error?.response?.data?.message === 'Only Contract With Room') {
+        console.log('da co contract');
+      }
     }
   };
 
