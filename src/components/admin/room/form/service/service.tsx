@@ -1,19 +1,27 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Input, Space, Table, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { deleteService, getListService } from 'src/api/service';
+import { Link, useParams } from 'react-router-dom';
+import { createRoomService, deleteService, getListService, getService, getServicee } from 'src/api/service';
 import { urlRouter } from 'src/utils/constants';
 
 const Service = () => {
-  const [selectedRow, setSelectedRow] = useState<any[]>([]);
+  const [selectedRow, setSelectedRow] = useState<any>();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>();
   const [list, setList] = useState([]);
   const [messageApi] = message.useMessage();
+  const { roomId }: any = useParams();
+
   useEffect(() => {
     const ListService = async () => {
       const { data } = await getListService();
       setList(data.responses);
-      setSelectedRow([{ key: 1 }]);
+
+      const response = await getServicee(roomId);
+      const arrKey = response?.data?.map((item: any) => {
+        return item.id;
+      });
+      setSelectedRowKeys(arrKey);
     };
     ListService();
   }, []);
@@ -36,13 +44,22 @@ const Service = () => {
     {
       title: 'Dịch vụ sử dụng',
       dataIndex: 'name',
+      key: 'name',
     },
     {
       title: 'Đơn giá',
       dataIndex: 'price',
       width: 550,
+      key: 'price',
     },
   ];
+  const dataSource = list?.map((item: any, index) => {
+    return {
+      key: item.id,
+      name: item.name,
+      price: item.price,
+    };
+  });
 
   return (
     <>
@@ -59,15 +76,37 @@ const Service = () => {
         </p>
       </div>
       <Table
-        dataSource={list}
+        dataSource={dataSource}
         rowSelection={{
+          selectedRowKeys,
           type: 'checkbox',
           onChange(selectedRowKeys, selectedRows, info) {
             setSelectedRow(selectedRows);
+            setSelectedRowKeys(selectedRowKeys);
           },
         }}
         columns={columns}
-        rowKey='name'
+        footer={() => (
+          <Button
+            onClick={async () => {
+              // createRoomService
+              const arrSv = selectedRow?.map((item: any) => {
+                return item.key;
+              });
+
+              const valueCreateRoomService = {
+                name: 'Dien',
+                roomId: +roomId,
+                serviceId: arrSv,
+              };
+              // Thiếu id của room_service và api cập nhật
+              const response = await createRoomService(valueCreateRoomService);
+              console.log(response);
+            }}
+          >
+            Lưu
+          </Button>
+        )}
       />
     </>
   );

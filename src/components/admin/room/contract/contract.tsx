@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
-import { addContract, getContractByIdRoom } from 'src/api/contract';
+import { addContract, getContractByIdRoom, updateContract } from 'src/api/contract';
 import { getInfoCustomer } from 'src/api/establish';
 import { getHouseId } from 'src/api/house';
 import html2canvas from 'html2canvas';
@@ -22,6 +22,7 @@ const Contract = ({ houseid }: any) => {
   const [host, setHost] = useState<any>();
   const [house, setHouse] = useState<any>();
   const [formValue, setFormValue] = useState<any>();
+  const [contract, setContract] = useState<any>();
   const [printData, setPrintData] = useState('');
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
@@ -48,6 +49,13 @@ const Contract = ({ houseid }: any) => {
       console.log(roomId);
 
       form.setFieldsValue({
+        expiry: data?.expiry,
+        contractDate: moment(data?.contractdate),
+        contractExpir: moment(data?.contractexpir),
+      });
+
+      setContract({
+        id: data.id,
         expiry: data?.expiry,
         contractDate: moment(data?.contractdate),
         contractExpir: moment(data?.contractexpir),
@@ -91,7 +99,7 @@ const Contract = ({ houseid }: any) => {
       '@PlaceIssueRoomRent': roomTenant?.issuedcccdby,
       '@AddressRoomRentasdasd': roomTenant?.address,
       '@TelephoneRoomRent': roomTenant?.phone,
-      ' @RoomName': roomTenant?.nameroom,
+      '@RoomName': roomTenant?.nameroom,
       '@AdressArea': house?.result?.address,
       '@ContractMonths': formValue?.expiry,
       '@BeginRent': moment(formValue?.contractDate).format('DD/MM/YYYY'),
@@ -102,6 +110,8 @@ const Contract = ({ houseid }: any) => {
       '@FULLNAMECUSTOMER': upperCaseFULLNAMECUSTOMER,
       '@CUSTOMERNAMEROOMRENT': upperCaseCUSTOMERNAMEROOMRENT,
     };
+
+    console.log(dataContract);
 
     // moment(roomTenant?.daterangecccd).format('DD/MM/YYYY')
     const newContract = rvSampleContract?.replaceAll(
@@ -129,7 +139,12 @@ const Contract = ({ houseid }: any) => {
       }
     } catch (error: any) {
       if (error?.response?.data?.message === 'Only Contract With Room') {
-        console.log('da co contract');
+        const id = contract?.id;
+
+        const response = await updateContract(dataPost, id);
+        if (response) {
+          toast.success('Câp nhật thành công');
+        }
       }
     }
   };
