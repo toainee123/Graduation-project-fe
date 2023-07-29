@@ -71,6 +71,14 @@ export const apiGetOutRoomTenant = async (roomId: any) => {
     const url = `/roomTenant/out-room/${roomId}`;
     return axiosClient.get(url);
 };
+export const apiGetHostMember = async () => {
+    // console.log("payload , id", roomId, payload);
+    // console.log('roomid', roomId);
+
+    const url = `/roomTenant/member-host`;
+    return axiosClient.get(url);
+};
+
 
 
 
