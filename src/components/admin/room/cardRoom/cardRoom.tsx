@@ -3,12 +3,13 @@ import { Alert, Modal, Tooltip, Form, message } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-import { getRoom } from 'src/api/room';
+import { apiGetOutRoomTenant, getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
 import { useAppDispatch } from 'src/store/hooks';
 import { deleteHouse, editHouse, getAllHouse } from 'src/features/room/houseSlice';
 import FormCreateMember from '../form/createMember/formCreateMember';
+import { GetOutRoomTenant } from 'src/features/room/roomSlice';
 
 const { confirm } = Modal;
 
@@ -69,7 +70,7 @@ const CardRoom = ({ idHouse }: any) => {
       },
     });
   };
-  const showDelete = (idHouse: any) => {
+  const showConfirmGetOutRoom = (roomId: any) => {
     confirm({
       title: 'Xác nhận khách trả phòng',
       icon: <ExclamationCircleFilled />,
@@ -78,7 +79,20 @@ const CardRoom = ({ idHouse }: any) => {
       okType: 'danger',
       cancelText: 'Thoát',
       onOk() {
-
+        dispatch(GetOutRoomTenant(roomId))
+          .unwrap()
+          .then((resp) => {
+            message.success('Trả phòng thành công');
+            const fetchRoom = async () => {
+              const { data } = await getRoom(idHouse);
+              setListRoom(data.result?.responses);
+              setAnalyticRoom(data.room);
+            };
+            fetchRoom();
+          })
+          .catch((err) => {
+            message.error('Trả phòng không thành công');
+          });
       },
       onCancel() {
         console.log('Cancel');
@@ -161,7 +175,7 @@ const CardRoom = ({ idHouse }: any) => {
 
                   <div className='action text-center'>
                     <Tooltip title='Trả phòng'>
-                      <button onClick={showDelete} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                      <button onClick={() => showConfirmGetOutRoom(item.id)} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
                         <i className="fa-solid fa-rotate-left"></i>
                       </button>
                     </Tooltip>
@@ -263,7 +277,7 @@ const CardRoom = ({ idHouse }: any) => {
             )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

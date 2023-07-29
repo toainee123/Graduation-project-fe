@@ -61,9 +61,15 @@ export const apiGetRoomTenantDetail = async (id: any) => {
 };
 export const apiUpdateRoomTenant = async ({ roomId, payload }: any) => {
     console.log("payload , id", roomId, payload);
-
     const url = `/roomTenant/${roomId}`;
     return axiosClient.put(url, payload);
+};
+export const apiGetOutRoomTenant = async (roomId: any) => {
+    // console.log("payload , id", roomId, payload);
+    console.log('roomid', roomId);
+
+    const url = `/roomTenant/out-room/${roomId}`;
+    return axiosClient.get(url);
 };
 
 
