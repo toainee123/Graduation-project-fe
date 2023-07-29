@@ -114,7 +114,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
                 <div className='w-full'>
                     <div className="flex items-center justify-center w-full">
                         <Form.Item name="image">
-                            {keyLocation !== 'view ' ? <Input readOnly /> : <Input />}
+                            {keyLocation === 'view ' ? <Input readOnly /> : <Input />}
                         </Form.Item>
                     </div>
                 </div>
@@ -154,7 +154,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
                 <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Điện thoại 1</label>
                 <div className='lg:w-1/2 sm:w-full'>
                     <Form.Item name="phone" rules={[{ required: true, message: "Không được bỏ trống trường này" }]}>
-                        {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input type='number' className='w-full' />}
+                        {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
                     </Form.Item>
                 </div>
                 <label htmlFor="" className="w-48 text-base font-medium text-slate-500">Nơi cấp</label>
@@ -235,7 +235,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             </div>
 
             <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
-                <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Ngày bắt đầu thuê ph</label>
+                <label htmlFor="" className='w-48 text-base font-medium text-slate-500'>Ngày bắt đầu thuê phòng</label>
                 <div className='lg:w-1/2 sm:w-full'>
                     <Form.Item name="date" rules={[{ required: true, message: "Không được bỏ trống trường này" }]}>
                         {keyLocation === 'view' ? <DatePicker className='w-full' format="DD/MM/YYYY" disabled /> : <DatePicker className='w-full' format="DD/MM/YYYY" />}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { apiCreateRoomTenant, apiUpdateRoomTenant, createMembers, createRoom } from '../../api/room'
+import { apiCreateRoomTenant, apiGetOutRoomTenant, apiUpdateRoomTenant, createMembers, createRoom } from '../../api/room'
 interface roomValue {
     value: any
 }
@@ -51,6 +51,19 @@ export const editTenant = createAsyncThunk(
         }
     }
 )
+export const GetOutRoomTenant = createAsyncThunk(
+    "room/GetOutRoomTenant",
+    async (roomId: any, rejectWithValue) => {
+        try {
+            const { data }: any = await apiGetOutRoomTenant(roomId)
+            console.log('1222');
+
+            return data
+        } catch (error) {
+            return rejectWithValue
+        }
+    }
+)
 
 export const roomSlice = createSlice({
     name: 'room',
@@ -64,6 +77,9 @@ export const roomSlice = createSlice({
             state.value = action.payload
         })
         builder.addCase(createRoomTenant.fulfilled, (state, action) => {
+            // state.value = action.payload
+        })
+        builder.addCase(GetOutRoomTenant.fulfilled, (state, action) => {
             // state.value = action.payload
         })
         builder.addCase(editTenant.fulfilled, (state, action) => {
