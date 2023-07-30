@@ -2,7 +2,15 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Input, Space, Table, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { createRoomService, deleteService, getListService, getService, getServicee } from 'src/api/service';
+import { update } from 'src/api/house';
+import {
+  createRoomService,
+  deleteService,
+  getListService,
+  getService,
+  getServicee,
+  updateService,
+} from 'src/api/service';
 import { urlRouter } from 'src/utils/constants';
 
 const Service = () => {
@@ -19,8 +27,11 @@ const Service = () => {
 
       const response = await getServicee(roomId);
       const arrKey = response?.data?.map((item: any) => {
-        return item.id;
+        return item.serviceid;
       });
+
+      console.log(arrKey);
+
       setSelectedRowKeys(arrKey);
     };
     ListService();
@@ -94,13 +105,10 @@ const Service = () => {
                 return item.key;
               });
 
-              const valueCreateRoomService = {
-                name: 'Dien',
-                roomId: +roomId,
-                serviceId: arrSv,
-              };
               // Thiếu id của room_service và api cập nhật
-              const response = await createRoomService(valueCreateRoomService);
+              const response = await updateService(roomId, {
+                serviceId: arrSv,
+              });
               console.log(response);
             }}
           >

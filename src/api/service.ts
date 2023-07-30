@@ -25,8 +25,10 @@ export const createRoomService = async (value: any) => {
     return axiosClient.post(url, value);
 };
 
-export const updateService = async (id: number, service: any) => {
-    const url = `/service/${id}`
+export const updateService = async (roomid: number, service: any) => {
+
+    const url = `/service/room-service/${roomid}`
+    console.log(url);
     return axiosClient.put(url, service)
 }
 
