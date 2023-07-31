@@ -1,7 +1,6 @@
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 
-import FooterComponent from '../footer/Footer';
 import Sidebar from '../sidebar/Sidebar';
 
 import "./AdminLayout.scss"
@@ -17,13 +16,13 @@ const AdminLayout = (props: Props) => {
         <Sidebar />
         <Layout>
           <Content>
-            <div className='layout-admin'>
-              <div className="outlet">
+            <div className='layout-admin '>
+              <div className="outlet shadow-md">
                 <Outlet />
               </div>
             </div>
           </Content>
-          <FooterComponent />
+          {/* <FooterComponent /> */}
         </Layout>
       </Layout>
     </div >

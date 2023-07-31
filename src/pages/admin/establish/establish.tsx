@@ -1,19 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './establish.scss';
 import { RedoOutlined, SaveOutlined } from '@ant-design/icons';
-import { Tabs } from 'antd';
+import { Tabs, Form } from 'antd';
 import '../../../../node_modules/antd/dist/antd.css';
 import Inforuser from './Inforuser';
 import Samplecontract from './Samplecontract';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import Printform from './Printform';
 import Templatesms from './Templatesms';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
+import axios from 'axios';
+import moment from 'moment';
+import { getInfoCustomer, updateInfoCustomer } from 'src/api/establish';
 type Props = {};
 
 const Establish = (props: Props) => {
+  const [fields, setFields] = useState<any>([]);
+  useEffect(() => {
+    const getUserInfor = async () => {
+      const response = await getInfoCustomer();
+
+      console.log(response.data.result);
+      const data = response.data.result;
+      setFields([
+        {
+          name: ['fullname'],
+          value: data.name,
+        },
+
+        {
+          name: ['address'],
+          value: data.address,
+        },
+
+        {
+          name: ['email'],
+          value: data.email,
+        },
+
+        // cccd
+        {
+          name: ['ci_number'],
+          value: data.ci_number,
+        },
+
+        // {
+        //   name: ['ci_datecreate'],
+        //   value: moment(data.ci_datecreate),
+        // },
+
+        // {
+        //   name: ['ci_placecreate'],
+        //   value: data.ci_placecreate,
+        // },
+
+        {
+          name: ['phone_number'],
+          value: data.phone,
+        },
+
+        {
+          name: ['birthday'],
+          value: data.bod === null ? '' : moment(data.bod),
+        },
+      ]);
+    };
+    getUserInfor();
+  }, []);
   const onChange = (key: string) => {
     setTab(key);
   };
@@ -28,7 +83,10 @@ const Establish = (props: Props) => {
 
   const handleSave = () => {
     switch (tab) {
-      case '5':
+      case '1':
+        handleSaveInfor();
+        break;
+      case '4':
         saveContract();
         break;
 
@@ -40,42 +98,57 @@ const Establish = (props: Props) => {
   const handleGetSelect = (e: any) => {
     console.log(e);
   };
+  const handleSaveInfor = async () => {
+    console.log(fields);
 
+    const dataSave = {
+      name: fields[0].value,
+      address: fields[1].value,
+      email: fields[2].value,
+      phone: fields[3].value,
+      bod: moment(fields[4].value).format('YYYY-MM-DD'),
+      // cccd: fields[5].value,
+    };
+    console.log(dataSave);
+    try {
+      await updateInfoCustomer(dataSave);
+      toast.success('Cập nhật  thành công');
+    } catch (error) {
+      toast.error('Cập nhật không thành công');
+    }
+
+    // const { data } = await axios.put('http://localhost:3001/customer_profile/1', dataSave);
+  };
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
       key: '1',
-      children: <Inforuser />,
-    },
-
-    {
-      label: 'Thông tin gói',
-      key: '2',
-      children: 'Thông tin chủ trọ',
+      children: (
+        <Inforuser
+          fields={fields}
+          onChange={(newFields: any) => {
+            setFields(newFields);
+          }}
+        />
+      ),
     },
 
     {
       label: 'Mẫu tin nhắn SMS',
-      key: '3',
+      key: '2',
       children: <Templatesms />,
     },
 
     {
       label: 'Mẫu in',
-      key: '4',
+      key: '3',
       children: <Printform getSelectOption={handleGetSelect} />,
     },
 
     {
       label: 'Hợp đồng mẫu',
-      key: '5',
+      key: '4',
       children: <Samplecontract />,
-    },
-
-    {
-      label: 'Đơn giá điện nước bậc thang',
-      key: '6',
-      children: 'Mẫu tin nhắn SMS',
     },
   ];
   return (
@@ -101,6 +174,7 @@ const Establish = (props: Props) => {
       <div className='content'>
         <Tabs onChange={onChange} type='card' items={listItem} />
       </div>
+      <ToastContainer />
     </div>
   );
 };

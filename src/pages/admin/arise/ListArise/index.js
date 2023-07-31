@@ -113,7 +113,7 @@ const Arise = () => {
                 <div className='header-title'>
                     <h1>Danh sách phát sinh</h1>
                 </div>
-                {/* <div className='action'>
+                <div className='action'>
                     <Link to={urlRouter.ADD_SERVICE}>
                         <Button type='primary'>
                             {' '}
@@ -121,7 +121,7 @@ const Arise = () => {
                             Thêm phát sinh
                         </Button>
                     </Link>
-                </div> */}
+                </div>
             </div>
             <hr />
             <div className='description'>

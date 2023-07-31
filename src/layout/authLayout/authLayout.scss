@@ -1,15 +1,17 @@
 #loginContainer {
-    height: 100vh;
+  height: 100vh;
+  background: rgb(34, 193, 195);
+  background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(90, 45, 253, 1) 80%);
 }
 
-.loginWrap{
-    display: flex;
-    height: 90%;
-    justify-content: center;
-    align-items: center;
+.loginWrap {
+  display: flex;
+  justify-content: center;
 }
-
-.loginWrap .loginFormLeft,
-.loginWrap .loginImageRight{
-    width: 50%;
+.tabs {
+  border-radius: 8px;
+  background: #ffff;
+  margin-top: 10%;
+  min-width: 400px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }

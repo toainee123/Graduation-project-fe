@@ -3,8 +3,8 @@
 }
 
 .anticon-sketch.anticon svg {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin: 9px;
   color: red;
 }
@@ -24,7 +24,11 @@
   border-bottom: 1px solid #f0f0f0;
 }
 .ant-layout-sider {
-  min-width: 240px !important;
+  // min-width: 214px !important;
+  max-width: 220px !important;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 .ant-layout-sider-children {
   height: 100vh;
@@ -33,6 +37,13 @@
 
 #sidebar {
   display: flex;
+  // height: 100%;
+  min-height: '100vh !important';
+  position: fixed;
+  overflow: auto;
+  z-index: 1;
+  top: 0;
+  left: 0;
 }
 
 #sidebar .userLogin {
@@ -52,8 +63,12 @@
 .ant-menu-item {
   margin: 15px 0 !important ;
   overflow: unset !important;
-  white-space: unset !important;
+  // white-space: unset !important;
 }
 .ant-menu-title-content {
-  font-size: 18px !important;
+  font-size: 16px !important;
+}
+.label-router {
+  color: rgb(0 0 0 / 60%) !important;
+  font-weight: 500;
 }
