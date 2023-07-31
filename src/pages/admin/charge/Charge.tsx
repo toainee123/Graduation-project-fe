@@ -442,6 +442,8 @@ const Charge = () => {
       stringList += mg;
       setBillEmail(stringList);
     });
+
+    handleSendEmail();
   };
 
   const handleSendEmail: any = async () => {
@@ -455,7 +457,6 @@ const Charge = () => {
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
-
       const canvas = await html2canvas(htmlItem, { height: 1000 });
       const image = canvas.toDataURL('image/png', 1.0);
       const file = new File([image], 'image_thai.png', { type: 'image/png' });
@@ -481,6 +482,7 @@ const Charge = () => {
         toast.success('Gửi email không thành công');
       }
     }
+    setBillEmail('');
   };
 
   // export excel
