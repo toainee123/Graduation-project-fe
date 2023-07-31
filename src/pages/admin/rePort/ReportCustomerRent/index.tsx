@@ -112,6 +112,30 @@ const ReportCustomerRent = () => {
             </Button>
           </div>
         </Form>
+        <Form form={form} onFinish={handleSubmitSearch}>
+          <div className='flex w-full mt-5 items-center'>
+            <div className='mr-2'>
+              <Form.Item name='houseid' label='Nhà'>
+                <Select
+                  style={{ width: 200 }}
+                  allowClear
+                  options={dataSource.map((item) => ({
+                    label: item.namehouse,
+                    value: item.houseid,
+                  }))}
+                />
+              </Form.Item>
+            </div>
+            <div className='mr-2'>
+              <Form.Item name='roomid' label='Phòng'>
+                <Input />
+              </Form.Item>
+            </div>
+            <Button color='primary' htmlType='submit'>
+              Tìm
+            </Button>
+          </div>
+        </Form>
       </div>
       <div className='mt-5'>
         <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />;
