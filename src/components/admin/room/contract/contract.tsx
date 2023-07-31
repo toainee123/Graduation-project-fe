@@ -190,7 +190,11 @@ const Contract = ({ houseid }: any) => {
             <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
               Thời gian hợp đồng
             </label>
-            <Form.Item className='lg:w-full sm:w-full' name='expiry'>
+            <Form.Item
+              className='lg:w-full sm:w-full'
+              name='expiry'
+              rules={[{ required: true, message: 'Không để trống thời gian hợp đồng' }]}
+            >
               <Input />
             </Form.Item>
           </div>
@@ -198,13 +202,22 @@ const Contract = ({ houseid }: any) => {
             <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
               Ngày hợp đồng
             </label>
-            <Form.Item className='lg:w-1/2 sm:w-full' name='contractDate'>
+            <Form.Item
+              className='lg:w-1/2 sm:w-full'
+              name='contractDate'
+              rules={[{ required: true, message: 'Không để trống ngày hợp đồng' }]}
+            >
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
             <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
               Ngày kết thúc HĐ
             </label>
-            <Form.Item className='lg:w-1/2 sm:w-full' name='contractExpir'>
+
+            <Form.Item
+              className='lg:w-1/2 sm:w-full'
+              rules={[{ required: true, message: 'Không để trống ngày kết thúc hợp đồng' }]}
+              name='contractExpir'
+            >
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
           </div>
