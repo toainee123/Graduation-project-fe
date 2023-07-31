@@ -16,6 +16,7 @@ export const postApiService = createAsyncThunk("listServiceStore/postApiArise", 
     return json;
     //det som returneras här, kommer att bli vår action.payload
 });
+
 // export const deleteApiArise = createAsyncThunk("listServiceStore/deleteApiArise", async (id) => {
 //     let response = await axios.delete(`${baseApiArise}/${id}`);
 //     let json = await response.data;
