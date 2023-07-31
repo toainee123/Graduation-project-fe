@@ -15,7 +15,9 @@ export const getAllRoom = async () => {
 
 export const getRoom = async (id: any, query?: any) => {
     const url = `/room/${id}`;
-    return axiosClient.get(url, query);
+    return axiosClient.get(url, {
+        params: query,
+    });
 };
 
 export const getByIdRoom = async (id: any) => {
@@ -38,7 +40,6 @@ export const addRoomMember = async (member: any) => {
     return axiosClient.post(url, member);
 };
 
-
 export const getRoomMember = async (id: any) => {
     const url = `/roomTenant/${id}`;
     return axiosClient.get(url);
@@ -48,7 +49,6 @@ export const deleteMember = async (id: any) => {
     const url = `/roomTenant/${id}`;
     return axiosClient.delete(url);
 }
-
 
 export const apiCreateRoomTenant = async (room: any) => {
     const url = `/roomTenant`;
@@ -72,13 +72,21 @@ export const apiGetOutRoomTenant = async (roomId: any) => {
     return axiosClient.get(url);
 };
 export const apiGetHostMember = async () => {
-    // console.log("payload , id", roomId, payload);
-    // console.log('roomid', roomId);
-
     const url = `/roomTenant/member-host`;
     return axiosClient.get(url);
 };
 
+export const apiUpdateRoom = async ({ roomId, payload }: any) => {
+    console.log("payload ", payload);
+    const url = `/room/${roomId}`;
+    return axiosClient.put(url, payload);
+};
 
+export const uploadFileImage = async (payload: any) => {
+    console.log('payload', payload);
+
+    const url = `/dashboard/upload-file`;
+    return axiosClient.post(url, payload);
+};
 
 

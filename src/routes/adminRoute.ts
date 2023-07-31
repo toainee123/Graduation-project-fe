@@ -56,6 +56,10 @@ export const adminRoutes = [
     component: CreateRoom,
   },
   {
+    path: `${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/:roomId`,
+    component: CreateRoom,
+  },
+  {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_MEMBER}/:roomId`,
     component: CreateMember,
   },

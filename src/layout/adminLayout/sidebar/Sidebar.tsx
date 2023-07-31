@@ -62,38 +62,38 @@ const Sidebar = (props: Props) => {
       key: '3',
       icon: <ReconciliationOutlined />,
     },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.DATA_POWER}>
-          Tiền điện
-        </Link>
-      ),
-      key: '4',
-      icon: <ThunderboltOutlined />,
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.DATA_WATER}>
-          Tiền nước
-        </Link>
-      ),
-      key: '5',
-      icon: <MailOutlined />,
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.ARISE}>
-          Phát sinh
-        </Link>
-      ),
-      key: '6',
-      icon: <FormOutlined />,
-    },
-    {
-      label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
-      key: '7',
-      icon: <FileTextOutlined />,
-    },
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.DATA_POWER}>
+    //       Tiền điện
+    //     </Link>
+    //   ),
+    //   key: '4',
+    //   icon: <ThunderboltOutlined />,
+    // },
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.DATA_WATER}>
+    //       Tiền nước
+    //     </Link>
+    //   ),
+    //   key: '5',
+    //   icon: <MailOutlined />,
+    // },
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.ARISE}>
+    //       Phát sinh
+    //     </Link>
+    //   ),
+    //   key: '6',
+    //   icon: <FormOutlined />,
+    // },
+    // {
+    //   label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
+    //   key: '7',
+    //   icon: <FileTextOutlined />,
+    // },
     {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
       key: '8',
@@ -180,7 +180,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
 
         <div className='userLogin'>

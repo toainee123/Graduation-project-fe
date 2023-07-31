@@ -6,19 +6,44 @@ import { PlusOutlined } from '@ant-design/icons'
 import "./formCreateRoom.scss"
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getAllHouse } from 'src/features/room/houseSlice';
-import { limitCountUpload } from 'src/utils/constants';
-import { createRooms } from 'src/features/room/roomSlice';
+import { limitCountUpload, urlRouter } from 'src/utils/constants';
+import { createRooms, editRoom, uploadFile } from 'src/features/room/roomSlice';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getByIdRoom } from 'src/api/room';
 
 const FormCreateRoom = () => {
     const [countImg, setCountImg] = useState([])
+    const [detailRoom, setDetailRoom] = useState<any>();
     const [limitprice, setLimitPrice] = useState(Number);
+    const [linkImage, setLinkImage] = useState('');
+    const [fileListImage, setFileList] = useState()
+
+    const [form] = Form.useForm();
+    const navigate = useNavigate()
     const { Option } = Select
 
     const house = useAppSelector(state => state.house.value)
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(getAllHouse())
     }, [])
+
+    const search = useLocation().search;
+    const keyLocation = new URLSearchParams(search).get('key');
+    const { roomId } = useParams()
+    useEffect(() => {
+        if (keyLocation === "update") {
+            const fetchRoomById = async () => {
+                const { data } = await getByIdRoom(roomId)
+                setDetailRoom(data)
+                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer })
+                setFileList(data?.image)
+            }
+            fetchRoomById()
+        }
+    }, [keyLocation])
+
 
     const props: UploadProps = {
         name: 'file',
@@ -35,6 +60,17 @@ const FormCreateRoom = () => {
                 message.error(`Ảnh không vượt quá 2MB!`);
                 return isLimitImg || Upload.LIST_IGNORE;
             };
+
+            const formData = new FormData();
+            formData.append('file', file);
+            dispatch(uploadFile(formData)).unwrap().then((resp) => {
+                console.log('resp', resp);
+                setLinkImage(resp?.link)
+            })
+                .catch((err) => {
+                    console.log('err', err);
+
+                })
         },
         onChange: (info: any) => {
             setCountImg(info.fileList)
@@ -50,41 +86,57 @@ const FormCreateRoom = () => {
             strokeWidth: 2,
             format: (percent) => percent && `${parseFloat(percent.toFixed(1))}%`,
         },
-        maxCount: limitCountUpload.LIMIT_COUNT,
+        maxCount: 1,
     };
 
     const onChange = (value: any) => {
         setLimitPrice(value)
     }
     const onFinish = async (values: any) => {
-        try {
-            await dispatch(createRooms(values))
-            message.success(`Thêm nhà ${values.name} thành công`)
-        } catch (error) {
-            message.error(`thêm nhà ${values.name} thất bại`)
+        if (keyLocation === "update") {
+
+            try {
+                console.log('linkImage', linkImage);
+                await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }))
+                message.success(`Cập nhât ${values.name} thành công`)
+                // navigate(`/admin/${urlRouter.ROOM}`);
+            } catch (error) {
+                message.error(`Cập nhât ${values.name} thất bại`)
+            }
+        } else {
+            try {
+                await dispatch(createRooms({ ...values, image: linkImage }))
+                message.success(`Thêm phòng ${values.name} thành công`)
+            } catch (error) {
+                message.error(`Thêm phòng ${values.name} thất bại`)
+            }
         }
+
 
     }
     return (
         <div className='mt-8'>
             <Form
                 size='large'
+                form={form}
                 onFinish={onFinish}
+                initialValues={{ ...detailRoom }}
             >
                 <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
-                        {/* <Upload listType="picture-card" multiple={true} action="local" >
-                            {countImg.length >= limitCountUpload.LIMIT_COUNT ? null : (
+                        <Upload {...props} listType="picture-card"  >
+                            {countImg.length >= 1 ? null : (
                                 <div className='btn-upload'>
                                     <PlusOutlined />
                                     <div className='mt-2'>Upload</div>
-                                    <span>{countImg.length}/{limitCountUpload.LIMIT_COUNT}</span>
+                                    <span>{countImg.length}/{1}</span>
                                 </div>
                             )}
-                        </Upload> */}
-                        <Input placeholder='Link' className='w-full outline-0 md: my-2' />
+                        </Upload>
+                        {/* <Input placeholder='Link' className='w-full outline-0 md: my-2' /> */}
                     </Form.Item>
+                    {keyLocation === 'update' && <img src={fileListImage} alt="" style={{ width: '150px', height: '150px' }} />}
                 </div>
 
                 <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
@@ -112,7 +164,7 @@ const FormCreateRoom = () => {
                     <label htmlFor="" className='w-64 text-base font-semibold'>Số lượng người tối đa</label>
                     <div className='w-full'>
                         <Form.Item name="maxCustomer" rules={[{ required: true, message: "Không được bỏ trống" }]}>
-                            <InputNumber type='number' style={{ borderRadius: 6 }} controls={false} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="VNĐ" />
+                            <InputNumber type='number' style={{ borderRadius: 6 }} controls={false} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="Người" />
                         </Form.Item>
                     </div>
                     <label htmlFor="" className="w-64 text-base font-semibold">Đơn giá</label>
