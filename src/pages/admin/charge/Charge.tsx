@@ -529,13 +529,18 @@ const Charge = () => {
       font: { sz: 18, bold: true },
       alignment: { horizontal: 'center' },
     };
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dateExcel = valueFilter ? `${valueFilter.month}/${valueFilter.year}` : `${month}/${year}`;
+    const house = valueFilter ? `${valueFilter.house}` : `Tất cả`;
 
-    ws['A2'] = { t: 's', v: 'Tháng 5/2023 ' };
+    ws['A2'] = { t: 's', v: `Thời gian: ${dateExcel}` };
     ws['A2'].s = {
       font: { sz: 14, bold: true },
       alignment: { horizontal: 'center' },
     };
-    ws['A3'] = { t: 's', v: 'Nhà: Tất cả, Kỳ: Tất cả ' }; // note need fix ondata
+    ws['A3'] = { t: 's', v: `Nhà: ${house}` }; // note need fix ondata
     ws['A3'].s = {
       font: { sz: 14, bold: true },
       alignment: { horizontal: 'center' },
