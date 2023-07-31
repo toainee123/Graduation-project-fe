@@ -4,12 +4,19 @@ import { RootState } from 'src/store/store';
 interface houseValue {
     value: any,
     isDelete: boolean,
-    isSuccess: boolean
+    isSuccess: boolean,
+    idHouse: number,
+    filter: any
 }
 const initialState: houseValue = {
     value: [],
     isDelete: false,
-    isSuccess: false
+    isSuccess: false,
+    idHouse: 0,
+    filter: {
+        status: '',
+        search: ''
+    }
 }
 
 export const createHouse = createAsyncThunk(
@@ -67,7 +74,19 @@ export const houseSlice = createSlice({
         },
         resetIsSuccess(state) {
             state.isSuccess = initialState.isSuccess
-        }
+        },
+        funcAddIdHouse(state, action) {
+            console.log('action', action.payload);
+
+            state.idHouse = action.payload
+        },
+        resetIdHouse(state, action) {
+            state.idHouse = initialState.idHouse
+        },
+        filterHouse(state, action) {
+            state.filter.status = action.payload.status
+            state.filter.search = action.payload.search
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(createHouse.fulfilled, (state, action) => {
@@ -92,5 +111,7 @@ export const HouseSliceAction = houseSlice.actions
 
 export const selectIsDelete = (state: RootState) => state.house.isDelete;
 export const selectIsSuccess = (state: RootState) => state.house.isSuccess;
+export const selectIdHouse = (state: RootState) => state.house.idHouse;
+export const selectFilterHouse = (state: RootState) => state.house.filter;
 
 export default houseSlice.reducer

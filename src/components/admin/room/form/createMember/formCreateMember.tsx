@@ -70,15 +70,40 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             delete payload.maxcustomer;
             delete payload.nameroom;
             delete payload.value;
-            await dispatch(createRoomTenant(payload))
+            dispatch(createRoomTenant(payload))
                 .unwrap()
                 .then((resp) => {
+                    console.log('resp', resp);
                     message.success(`Thêm nhà ${values.name} thành công`);
+                    navigate(`/admin/${urlRouter.ROOM}`);
                 })
                 .catch((err) => {
-                    message.error(`thêm nhà ${values.name} thất bại`);
+                    console.log('err', err?.response);
+
+                    message.error(`${err?.response?.data?.message}`);
                 });
-            navigate(`/admin/${urlRouter.ROOM}`);
+        }
+        if (keyLocation === 'update') {
+            //Call api update
+            const payload = {
+                ...values, memberId: getData.memberid, bod: convertDateAntd(values.bod),
+                date: convertDateAntd(values.date), dateRangeCccd: convertDateAntd(values.dateRangeCccd)
+            }
+            delete payload.price;
+            delete payload.maxcustomer;
+            delete payload.nameroom;
+            delete payload.value;
+
+            await dispatch(editTenant({ roomId, payload }))
+                .unwrap()
+                .then((resp) => {
+                    return message.success(`Cập nhật ${values.name} thành công`);
+                    navigate(`/admin/${urlRouter.ROOM}`)
+                })
+                .catch((err) => {
+                    return message.error(`Cập nhật ${values.name} thất bại`);
+                });
+
         }
     }
     return (

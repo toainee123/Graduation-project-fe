@@ -3,12 +3,11 @@ import { Alert, Modal, Tooltip, Form, message } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-import { apiGetOutRoomTenant, getRoom } from 'src/api/room';
+import { getRoom } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
-import { useAppDispatch } from 'src/store/hooks';
-import { deleteHouse, editHouse, getAllHouse } from 'src/features/room/houseSlice';
-import FormCreateMember from '../form/createMember/formCreateMember';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { HouseSliceAction, deleteHouse, editHouse, getAllHouse, selectFilterHouse } from 'src/features/room/houseSlice';
 import { GetOutRoomTenant } from 'src/features/room/roomSlice';
 
 const { confirm } = Modal;
@@ -19,6 +18,8 @@ const CardRoom = ({ idHouse }: any) => {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
+  const filter = useAppSelector(selectFilterHouse);
+
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -28,6 +29,23 @@ const CardRoom = ({ idHouse }: any) => {
     };
     fetchRoom();
   }, [idHouse]);
+
+  useEffect(() => {
+    if (filter.status === '' || filter.status !== '' || filter.search !== '') {
+      const fetchRoom = async () => {
+        const { data } = await getRoom(idHouse, filter);
+        setListRoom(data.result?.responses);
+        setAnalyticRoom(data.room);
+      };
+      fetchRoom();
+    }
+  }, [filter])
+
+  useEffect(() => {
+    if (idHouse) {
+      dispatch(HouseSliceAction.funcAddIdHouse(idHouse))
+    }
+  }, [idHouse])
 
   const onFinish = async (value: any) => {
     await dispatch(editHouse({ idHouse, value }))
@@ -208,12 +226,10 @@ const CardRoom = ({ idHouse }: any) => {
 
                   <div className='action text-center'>
                     <Link
-                      to='#'
+                      to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
                       className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
                     >
-                      <button>
-                        <i className='fa-solid fa-gear'></i> Chỉnh sửa
-                      </button>
+                      <i className='fa-solid fa-gear'></i> Chỉnh sửa
                     </Link>
                     <button onClick={showDeleteConfirm}>
                       <Link
@@ -255,14 +271,12 @@ const CardRoom = ({ idHouse }: any) => {
                     </span>
                   </div>
                   <div className='action text-center'>
-                    <button>
-                      <Link
-                        to='#'
-                        className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      >
-                        <i className='fa-solid fa-gear'></i> Chỉnh sửa
-                      </Link>
-                    </button>
+                    <Link
+                      to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
+                      className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
+                    >
+                      <i className='fa-solid fa-gear'></i> Chỉnh sửa
+                    </Link>
                     <button onClick={showDeleteConfirm}>
                       <Link
                         to='#'

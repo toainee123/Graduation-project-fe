@@ -7,7 +7,7 @@ import "./navRoom.scss"
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { httpMessage } from 'src/utils/constants';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
-import { createHouse, getAllHouse } from 'src/features/room/houseSlice'
+import { HouseSliceAction, createHouse, getAllHouse, selectIdHouse } from 'src/features/room/houseSlice'
 
 const props: UploadProps = {
     name: 'file',
@@ -41,6 +41,9 @@ const NavRoom = () => {
     const [form] = Form.useForm();
 
     const house = useAppSelector(state => state.house.value)
+    const idHouse = useAppSelector(selectIdHouse);
+
+
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getAllHouse())
@@ -110,12 +113,18 @@ const NavRoom = () => {
             })
         setOpen(false)
     }
+
+    const onFilter = (values: any) => {
+        console.log('values', values);
+        dispatch(HouseSliceAction.filterHouse(values))
+    }
+
     return (
         <div className="room_selected row" >
             <div className="room_form">
-                <Form>
+                <Form onFinish={onFilter}>
                     <div className='flex gap-2'>
-                        <Form.Item>
+                        <Form.Item name='status'>
                             <Select
                                 placeholder="-Trạng thái phòng-"
                                 style={{ width: "200", marginRight: "10px" }}
@@ -123,32 +132,19 @@ const NavRoom = () => {
                                     {
                                         label: '-Trạng thái phòng-',
                                         options: [
-                                            { label: 'Còn trống', value: 'jack' },
-                                            { label: 'Đã cho thuê', value: 'lucy' },
+                                            { label: 'Tất cả', value: '' },
+                                            { label: 'Còn trống', value: 'false' },
+                                            { label: 'Đã cho thuê', value: 'true' },
                                         ],
                                     },
                                 ]}
                             />
                         </Form.Item>
-                        <Form.Item>
-                            <Select
-                                placeholder="-Trạng thái phí-"
-                                style={{ width: "200", marginRight: "10px" }}
-                                options={[
-                                    {
-                                        label: '-Trạng thái phí-',
-                                        options: [
-                                            { label: 'Chưa thu phí', value: 'jack' },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item>
+                        <Form.Item name='search'>
                             <Input style={{ width: 200 }} placeholder="Tìm phòng..." />
                         </Form.Item>
                         <Form.Item>
-                            <button className='btn_search' >
+                            <button className='btn_search'>
                                 <i className="fa-solid fa-magnifying-glass px-1"></i>
                                 Tìm kiếm
                             </button>

@@ -11,6 +11,7 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
+  EDIT_ROOM: 'editRoom',
   UPDATE_ROOM: 'edit',
   CREATE_MEMBER: 'createMember',
   VIEW_MEMBER_IN_ROOM: 'view',// XEM THÀNH VIÊN TRONG PHÒNG
