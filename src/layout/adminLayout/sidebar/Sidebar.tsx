@@ -81,27 +81,45 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
+      label: <Link to={urlRouter.USER}>User</Link>,
+      key: '6',
+      icon: <UserOutlined />,
+      children: [
+        {
+          label: <Link to={`${urlRouter.USER}`}>Thông tin cá nhân</Link>,
+          key: '6.1',
+
+          icon: <UserOutlined />,
+        },
+        {
+          label: <Link to={`${urlRouter.USER}/${urlRouter.USERREPORTDETAIL}`}>Hóa đơn</Link>,
+          key: '6.2',
+          icon: <FileTextOutlined />,
+        },
+      ],
+    },
+    {
       label: (
         <Link className='label-router' to={urlRouter.ARISE}>
           Phát sinh
         </Link>
       ),
-      key: '6',
+      key: '7',
       icon: <FormOutlined />,
     },
     {
       label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
-      key: '7',
+      key: '8',
       icon: <FileTextOutlined />,
     },
     {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
-      key: '8',
+      key: '9',
       icon: <FileTextOutlined />,
       children: [
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerRent}`}>Đang thuê phòng</Link>,
-          key: '8.1',
+          key: '9.1',
 
           icon: <FileTextOutlined />,
         },
@@ -109,12 +127,12 @@ const Sidebar = (props: Props) => {
           label: (
             <Link to={`${urlRouter.REPORT}/${urlRouter.ReportCustomerContractExpired}`}>Sắp hết hạn hợp đồng</Link>
           ),
-          key: '8.2',
+          key: '9.2',
           icon: <FileTextOutlined />,
         },
         {
           label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
-          key: '8.3',
+          key: '9.3',
           icon: <FileTextOutlined />,
         },
       ],
@@ -125,7 +143,7 @@ const Sidebar = (props: Props) => {
           Tài sản
         </Link>
       ),
-      key: '9',
+      key: '10',
       icon: <FileTextOutlined />,
     },
 
@@ -135,7 +153,7 @@ const Sidebar = (props: Props) => {
           Tính tiền
         </Link>
       ),
-      key: '10',
+      key: '11',
       icon: <CalculatorOutlined />,
     },
     {
@@ -144,18 +162,18 @@ const Sidebar = (props: Props) => {
           Thiết lập
         </Link>
       ),
-      key: '11',
+      key: '12',
 
       icon: <FileOutlined />,
     },
     {
       label: <Link to={urlRouter.KEEP_ROOM}>Cọc phòng</Link>,
-      key: '12',
+      key: '13',
       icon: <FileOutlined />,
     },
     {
       label: <Link to={urlRouter.LIST_EMAIL}>Gửi email/ Lịch sử gửi mail</Link>,
-      key: '13',
+      key: '14',
       icon: <MailOutlined />,
     },
   ];

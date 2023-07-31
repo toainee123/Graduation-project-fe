@@ -14,6 +14,7 @@ import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
+
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
 
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
@@ -32,6 +33,8 @@ import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 import UpdateDeposit from 'src/pages/admin/keep-room/updateDeposit';
 import TemplateEmail from 'src/pages/admin/sendEmail';
 import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
+import { UserIndex } from 'src/pages/user/index';
+import ReportDetail from 'src/pages/user/reportDetail';
 
 export const adminRoutes = [
   {
@@ -170,7 +173,16 @@ export const adminRoutes = [
   {
     path: urlRouter.CREATE_EMAIL,
     component: CreateTemplateEmail,
-  }
+  },
+  {
+    path: urlRouter.USER,
+    component: UserIndex,
+    children: [
+      { path: urlRouter.USERREPORTDETAIL, component: ReportDetail, index: true },
+
+    ],
+  },
+
 
 
 ];
