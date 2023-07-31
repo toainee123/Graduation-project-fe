@@ -5,7 +5,16 @@ export const addContract = async (value: any) => {
   return axiosClient.post(url, value);
 };
 
-export const getContractByIdRoom = async (id: any) => {
+export const updateContract = async (value: any, id: any) => {
   const url = `/contract/${id}`;
+  return axiosClient.put(url, value);
+};
+
+export const getContractByIdRoom = async (id: any) => {
+  console.log(typeof +id);
+
+  const url = `/contract/${+id}`;
+  console.log(`url: ${url}`);
+
   return axiosClient.get(url);
 };
