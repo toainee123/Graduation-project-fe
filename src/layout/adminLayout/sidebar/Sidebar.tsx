@@ -2,7 +2,6 @@ import {
   CalculatorOutlined,
   FileOutlined,
   FileTextOutlined,
-  FormOutlined,
   HomeOutlined,
   LineChartOutlined,
   // DashboardOutlined,
@@ -81,15 +80,15 @@ const Sidebar = (props: Props) => {
     //   key: '5',
     //   icon: <MailOutlined />,
     // },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.ARISE}>
-          Phát sinh
-        </Link>
-      ),
-      key: '6',
-      icon: <FormOutlined />,
-    },
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.ARISE}>
+    //       Phát sinh
+    //     </Link>
+    //   ),
+    //   key: '6',
+    //   icon: <FormOutlined />,
+    // },
     // {
     //   label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
     //   key: '7',
