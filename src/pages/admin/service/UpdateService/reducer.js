@@ -1,20 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getApiArise, postApiArise } from './api';
+import { getApiDetailService, postApiService, putApiService } from './api';
 
 const initialState = {
-    addArise: null,
+    addService: null,
+    updateService: null,
+    detailService: null,
     status: null,
 }
-
-export const updateAriseSlice = createSlice({
-    name: 'updateAriseStore',
+export const updateServiceSlice = createSlice({
+    name: 'updateServiceStore',
     initialState,
+    reducers: {
+        clearStore: () => initialState, // Trả về trạng thái ban đầu
+    },
     extraReducers: {
-        [postApiArise.fulfilled]: (state, action) => {
+        [postApiService.fulfilled]: (state, action) => {
             let response = (action.payload);
-            state.addArise = response;
+            state.addService = response;
+            state.status = "Thành công";
+        },
+        [getApiDetailService.fulfilled]: (state, action) => {
+            let response = (action.payload);
+            state.detailService = response;
+            state.status = "Thành công";
+        },
+        [putApiService.fulfilled]: (state, action) => {
+            let response = (action.payload);
+            state.updateService = response;
             state.status = "Thành công";
         },
     },
 })
-export default updateAriseSlice.reducer
+
+export const { clearStore } = updateServiceSlice.actions;
+export default updateServiceSlice.reducer

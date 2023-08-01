@@ -32,7 +32,7 @@ export const urlRouter = {
   CREATE_EMAIL: 'create-email',
   CREATE_ASSETS: 'create-assets',
   UPDATE_SERVICE: 'add-service', //dịch vụ
-  UPDATE_ARISE: 'add-arise', //dịch vụ
+  UPDATE_ARISE: 'update-arise', //dịch vụ
 
 
   PG: 'pg',
