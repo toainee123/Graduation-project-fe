@@ -14,11 +14,14 @@ const UpdateService = () => {
     const getOneService = async (id: any) => {
       const { data } = await getService(id);
       setService(data.result);
-      form.resetFields(service);
+      form.setFieldsValue({
+        name: data.result?.name,
+        price: data.result?.price,
+        code: data.result?.code,
+      });
     };
     getOneService(id);
-  }, []);
-  console.log('service', service);
+  }, [id]);
 
   const handleChange = (value: any) => {
     setChangeCode(value);
@@ -43,7 +46,7 @@ const UpdateService = () => {
         <h1>Sửa dịch vụ</h1>
       </div>
       <div className=''>
-        <Form size='large' initialValues={service} onFinish={Onsubmit}>
+        <Form size='large' form={form} onFinish={Onsubmit}>
           <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Tên dịch vụ <b style={{ color: 'red' }}>*</b>
