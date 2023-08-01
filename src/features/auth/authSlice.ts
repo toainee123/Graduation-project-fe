@@ -21,6 +21,7 @@ export const fetchLogin = createAsyncThunk(
     const { data } = response;
     localStorage.setItem('access_token', JSON.stringify(data.accessToken));
     localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem('email', JSON.stringify(data.email));
     toast.success('Đăng nhập thành công');
     return data;
   }

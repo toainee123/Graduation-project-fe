@@ -99,7 +99,7 @@ const FormCreateRoom = () => {
                 console.log('linkImage', linkImage);
                 await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }))
                 message.success(`Cập nhât ${values.name} thành công`)
-                // navigate(`/admin/${urlRouter.ROOM}`);
+                navigate(`/admin/${urlRouter.ROOM}`);
             } catch (error) {
                 message.error(`Cập nhât ${values.name} thất bại`)
             }
@@ -107,6 +107,7 @@ const FormCreateRoom = () => {
             try {
                 await dispatch(createRooms({ ...values, image: linkImage }))
                 message.success(`Thêm phòng ${values.name} thành công`)
+                navigate(`/admin/${urlRouter.ROOM}`);
             } catch (error) {
                 message.error(`Thêm phòng ${values.name} thất bại`)
             }
@@ -122,7 +123,7 @@ const FormCreateRoom = () => {
                 onFinish={onFinish}
                 initialValues={{ ...detailRoom }}
             >
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+                <div className='lg:flex justify-between py-2 items-center gap-6 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
                         <Upload {...props} listType="picture-card"  >
@@ -157,6 +158,20 @@ const FormCreateRoom = () => {
                                     <Option key={i} value={item.id}>{item.name}</Option>
                                 ))}
                             </Select>
+                        </Form.Item>
+                    </div>
+                </div>
+                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
+                    <label htmlFor="" className='w-64 text-base font-semibold'>Chỉ số điện</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexElectricity" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số điện' />
+                        </Form.Item>
+                    </div>
+                    <label htmlFor="" className="w-64 text-base font-semibold">Chỉ số nước</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexWater" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số nước' />
                         </Form.Item>
                     </div>
                 </div>
