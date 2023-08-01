@@ -51,9 +51,10 @@ const FormCreateRoom = () => {
             uid: '-1',
             name: 'image.png',
             status: 'done',
-            url: 'http://localhost:5000/api/public/1691652617418.cu-cho-thu-nay-vao-vi-tien-bao-sao-ban-ngheo-ben-vung-hinh-2.jpg',
+            url: data?.image,
           },
         ]);
+        setLinkImage(data?.image);
       };
       fetchRoomById();
     }
@@ -88,6 +89,7 @@ const FormCreateRoom = () => {
               url: resp?.link,
             },
           ]);
+          setLinkImage(resp?.link);
         })
         .catch((err) => {
           console.log('err', err);

@@ -26,8 +26,7 @@ import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
-import Templatesms from '../establish/Templatesms';
-import { addBill, getBillID, getHouses, getRoom } from 'src/api/charge';
+import { addBill, getBillID, getHouses, getRoom, sendMailBill } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 import dayjs from 'dayjs';
 import { format } from 'path';
@@ -442,8 +441,6 @@ const Charge = () => {
       stringList += mg;
       setBillEmail(stringList);
     });
-
-    handleSendEmail();
   };
 
   const handleSendEmail: any = async () => {
@@ -453,7 +450,9 @@ const Charge = () => {
     const CLOUDINARY_PRESET = 'gtn4lbpo';
     const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
     console.log(selectedRow);
-
+    const parent = document.querySelector('.paren');
+    parent?.removeAttribute('hidden');
+    const arrBill: any = [];
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
@@ -470,17 +469,26 @@ const Charge = () => {
       });
       const imgLink = data.url;
 
-      const response: any = await sendEmail({
-        to: [`${resBill?.data?.bill?.email}`],
+      const response: any = {
+        email: `${resBill?.data?.bill?.email}`,
         title: `Thông báo về hóa đơn tháng ${valueFilter ? valueFilter.month : month}`,
-        content: `Đây là bill thu tháng 7 của bạn(Ấn vào link để xem ảnh) ${i}: ${imgLink}`,
-      });
+        content: `${imgLink}`,
+      };
+      arrBill.push(response);
+      // if (response?.status === 'success') {
+      //   parent?.setAttribute('hidden', 'true');
+      //   toast.success('Gửi email thành công');
+      // } else {
+      //   toast.success('Gửi email không thành công');
+      // }
+    }
+    try {
+      const response: any = sendMailBill({ data: arrBill });
       if (response?.status === 'success') {
-        htmlItem.setAttribute('class', 'hide');
-        toast.success('Gửi email thành công');
-      } else {
-        toast.success('Gửi email không thành công');
+        toast.success('thành công');
       }
+    } catch (error) {
+      console.log(error);
     }
     setBillEmail('');
   };
@@ -988,7 +996,9 @@ const Charge = () => {
           {parse(printListBillData ? printListBillData : '')}
         </div>
 
-        <div className='p-3 '>{parse(billEmail ? billEmail : '')}</div>
+        <div className='p-3 paren' hidden>
+          {parse(billEmail ? billEmail : '')}
+        </div>
       </div>
       <ToastContainer />
     </Form.Provider>
