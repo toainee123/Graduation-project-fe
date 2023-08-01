@@ -39,7 +39,6 @@ const CreateKeepRoom = () => {
   return (
     <div>
       <div className='text-lg text-center font-medium mt-3'>Thêm mới cọc phòng</div>
-
       <div className='mt-8'>
         <form onSubmit={handleSubmit(Onsubmit)}>
           <div className='flex justify-between items-center gap-12 py-3'>

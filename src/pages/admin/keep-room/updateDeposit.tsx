@@ -78,7 +78,6 @@ const UpdateDeposit = () => {
     navigate(-1);
   };
   const Onsubmit = async (data: any) => {
-    console.log('dataa', data);
     await updateDeposit(Number(id), {
       houseId: data.houseId,
       roomId: data.roomId,

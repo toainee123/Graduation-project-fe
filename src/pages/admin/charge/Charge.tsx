@@ -571,7 +571,7 @@ const Charge = () => {
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    XLSX.writeFile(wb, 'thu-tien-5/2023.xlsx');
+    XLSX.writeFile(wb, 'thu-tien/2023.xlsx');
   };
 
   const initValueFormFilter = {
@@ -691,7 +691,7 @@ const Charge = () => {
             >
               <CalculatorOutlined className='icon-btn' /> Tính
             </button>
-            <Modal title='Basic Modal' open={isModalOpenCalculator} onOk={handleOk} onCancel={handleExit}>
+            <Modal title='Tính tiền' open={isModalOpenCalculator} onOk={handleOk} onCancel={handleExit}>
               <Form
                 form={form}
                 layout='vertical'
@@ -722,11 +722,11 @@ const Charge = () => {
                   />
                 </Form.Item>
 
-                <Form.Item name='elec' label='Tiền điện'>
+                <Form.Item name='elec' label='Chỉ số điện'>
                   <Input />
                 </Form.Item>
 
-                <Form.Item name='water' label='Tiền nước'>
+                <Form.Item name='water' label='Chỉ số nước'>
                   <Input />
                 </Form.Item>
               </Form>
