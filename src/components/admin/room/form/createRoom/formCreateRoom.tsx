@@ -241,3 +241,4 @@ const FormCreateRoom = () => {
         </div>
     )
 }
+export default FormCreateRoom
