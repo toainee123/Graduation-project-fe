@@ -11,7 +11,6 @@ export const listServiceSlice = createSlice({
     initialState,
     extraReducers: {
         [getApiService.fulfilled]: (state, action) => {
-            debugger
             let response = (action.payload);
             state.listService = response;
             state.status = "Thành công";

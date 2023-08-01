@@ -4,9 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 
 export const getApiService = createAsyncThunk("listServiceStore/getApiService", async () => {
-    debugger
-    let response = await axios.get("http://localhost:3000/api/services");
-    debugger
+    let response = await axios.get(baseApiServices);
     let json = await response.data;
     return json;
 });
@@ -21,5 +19,4 @@ export const postApiService = createAsyncThunk("listServiceStore/postApiArise", 
 //     let response = await axios.delete(`${baseApiArise}/${id}`);
 //     let json = await response.data;
 //     return json;
-//     //det som returneras här, kommer att bli vår action.payload
 // });

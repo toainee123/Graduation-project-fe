@@ -1,24 +1,36 @@
 import React, { useState } from 'react';
-import './style.scss';
-import { Checkbox } from 'antd';
+// import './style.scss';
+import { Checkbox, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
+import { useDispatch } from 'react-redux';
+import { postApiService } from './api';
+import './style.scss'
+import { checkBoxType, listItemService, numberType, selectType, textAreaType, textType } from './constant';
+
 
 
 const UpdateSevice = () => {
+    const dispatch = useDispatch();
     const [dataRequest, setDataRequest] = useState({
         serviceName: null,
-        type: null,
+        serviceType: null,
         price: null,
         using: null,
-        description: null,
+        serviceDescription: null,
     })
-
+    // 
     const handleUpdateField = (e, field, type) => {
-        if (type === "checkbox") {
+        if (type === checkBoxType) {
             return setDataRequest({
                 ...dataRequest,
                 [field]: e.target.checked
+            })
+        }
+        if (type === selectType) {
+            return setDataRequest({
+                ...dataRequest,
+                [field]: e
             })
         }
         return setDataRequest({
@@ -27,9 +39,122 @@ const UpdateSevice = () => {
         })
     }
 
-    const onHandleAddService = () => {
-        console.log(dataRequest)
+    const renderItem = (item) => {
+        if (item.type === textType) {
+            return (
+                <div
+                    className='col-6 justify-between items-center flex float-left'
+                >
+                    <div className='col-25'>
+                        <label htmlFor='' className=' text-base font-semibold'>
+                            {item.label} {item.required && (<b className='color-red'>*</b>)}
+                        </label>
+                    </div>
+                    <div className='col-75'>
+                        <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, item.field, item.type)} placeholder={item.placeholder} />
+                    </div>
+                </div>
+            )
+        }
+        if (item.type === numberType) {
+            return (
+                <div
+                    className='col-6 justify-between items-center flex float-left'
+                >
+                    <div className='col-25'>
+                        <label htmlFor='' className=' text-base font-semibold'>
+                            {item.label} {item.required && (<b className='color-red'>*</b>)}
+                        </label>
+                    </div>
+                    <div className='col-75'>
+                        <input className='w-full border-2 p-4 outline-0' type='number' onChange={e => handleUpdateField(e, item.field, item.type)} placeholder={item.placeholder} />
+                    </div>
+                </div>
+            )
+        }
+        if (item.type === selectType) {
+            return (
+                <div
+                    className='col-6 justify-between items-center flex float-left'
+                >
+                    <div className='col-25'>
+                        <label htmlFor='' className=' text-base font-semibold'>
+                            {item.label} {item.required && (<b className='color-red'>*</b>)}
+                        </label>
+                    </div>
+                    <div className='col-75 h-58'>
+                        <Select
+                            size='large'
+                            className='w-full'
+                            onChange={e => handleUpdateField(e, item.field, item.type)}
+                            options={[
+                                {
+                                    value: 'Premium',
+                                    label: 'Premium',
+                                },
+                                {
+                                    value: 'Special',
+                                    label: 'Special',
+                                },
+                                {
+                                    value: 'Economy',
+                                    label: 'Economy',
+                                },
+                            ]}
+                        />
+                    </div>
+                </div>
+            )
+        }
+        if (item.type === textAreaType) {
+            return (
+                <div
+                    className='col-12 justify-between items-center flex float-left'
+                >
+                    <div className='col-2'>
+                        <label htmlFor='' className=' text-base font-semibold'>
+                            {item.label} {item.required && (<b className='color-red'>*</b>)}
+                        </label>
+                    </div>
+                    <div className='col-10 h-58'>
+                        <textarea
+                            className='w-full border-2 p-4'
+                            rows={5}
+                            onChange={e => handleUpdateField(e, item.field, textAreaType)}
+                            placeholder='Thông tin ghi chú ...'
+                        />
+                    </div>
+                </div>
+            )
+        }
+        if (item.type === checkBoxType) {
+            return (
+                <div
+                    className='col-6 justify-between items-center flex float-left'
+                >
+                    <div className='col-25'>
+                        <label htmlFor='' className=' text-base font-semibold'>
+                            {item.label} {item.required && (<b className='color-red'>*</b>)}
+                        </label>
+                    </div>
+                    <div className='col-75 h-58'>
+                        <Checkbox
+                            onChange={e => handleUpdateField(e, item.field, item.type)}
+                        />
+                    </div>
+                </div>
+            )
+        }
     }
+
+    const onHandleAddService = () => {
+        const newDataRequestAddService = {
+            ...dataRequest,
+        }
+        console.log(newDataRequestAddService)
+        // dispatch(postApiService(newDataRequestAddService))
+    }
+
     return (
         <>
             <div>
@@ -37,26 +162,41 @@ const UpdateSevice = () => {
             </div>
             <div className='mt-8'>
                 {/* <form action=''>     */}
-                <div className='flex justify-between items-center gap-12 py-3'>
-                    <label htmlFor='' className='w-64 text-base font-semibold'>
-                        Tên dịch vụ <b className='color-red'>*</b>
-                    </label>
-                    <div className='w-full'>
-                        <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, "serviceName", "text")} placeholder='Tên dịch vụ' />
+                {/* <div className='flex justify-between items-center gap-12 py-3'> */}
+                <div
+                    className='col-12'
+                >
+                    {listItemService.map((item) => renderItem(item))}
+                    {/* <div
+                        className='col-6 justify-between items-center flex'
+                    >
+                        <div className='col-25'>
+                            <label htmlFor='' className=' text-base font-semibold'>
+                                Tên dịch vụ <b className='color-red'>*</b>
+                            </label>
+                        </div>
+                        <div className='col-75'>
+                            <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, "serviceName", "text")} placeholder='Tên dịch vụ' />
+                        </div>
                     </div>
-                    <label htmlFor='' className='w-64 text-base font-semibold'>
-                        Loại <b className='color-red'>*</b>
-                    </label>
-                    <div className='w-full'>
-                        <select className='border-2 p-4 outline-0 w-full' onChange={e => handleUpdateField(e, "type", "select")} name='' id=''>
-                            <option defaultChecked  >Chọn loại dịch vụ</option>
-                            <option value='1'>Loại 1</option>
-                            <option value='2'>Loại 2</option>
-                            <option value='3'>Loại 3</option>
-                        </select>
-                    </div>
+                    <div
+                        className='col-6'
+                    >
+                        <label htmlFor='' className='w-64 text-base font-semibold'>
+                            Loại <b className='color-red'>*</b>
+                        </label>
+                        <div className='w-full'>
+                            <select className='border-2 p-4 outline-0 w-full' onChange={e => handleUpdateField(e, "serviceType", "select")} name='' id=''>
+                                <option defaultChecked  >Chọn loại dịch vụ</option>
+                                <option value='1'>Loại 1</option>
+                                <option value='2'>Loại 2</option>
+                                <option value='3'>Loại 3</option>
+                            </select>
+                        </div>
+                    </div> */}
                 </div>
-                <div className='flex justify-between items-center gap-12 py-3'>
+                {/* </div> */}
+                {/* <div className='flex justify-between items-center gap-12 py-3'>
                     <label htmlFor='' className='w-64 text-base font-semibold'>
                         Đơn giá <b className='color-red'>*</b>
                     </label>
@@ -85,22 +225,7 @@ const UpdateSevice = () => {
                             placeholder='Thông tin ghi chú ...'
                         />
                     </div>
-                </div>
-                {/* <div className='flex justify-between items-center gap-12 py-3'>
-                        <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
-                        <div className='w-full'>
-                            <div className="flex items-center justify-center w-full">
-                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer ">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg aria-hidden="true" className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG (MAX. 800x400px)</p>
-                                    </div>
-                                    <input id="dropzone-file" type="file" className="hidden" />
-                                </label>
-                            </div>
-                        </div>
-                    </div> */}
+                </div> */}
                 <div className='warning-title'>
                     <h3> (*) Thông tin bắt buộc</h3>
                 </div>

@@ -81,20 +81,20 @@ const UpdateArise = () => {
                             onChange={e => handleUpdateField(e, "house", "select")}
                             options={[
                                 {
-                                    value: 'jack',
-                                    label: 'Jack',
+                                    value: 'Nhà 1',
+                                    label: 'Nhà 1',
                                 },
                                 {
-                                    value: 'lucy',
-                                    label: 'Lucy',
+                                    value: 'Nhà 2',
+                                    label: 'Nhà 2',
                                 },
                                 {
-                                    value: 'disabled',
-                                    label: 'Disabled',
+                                    value: 'Nhà 3',
+                                    label: 'Nhà 3',
                                 },
                                 {
-                                    value: 'Yiminghe',
-                                    label: 'yiminghe',
+                                    value: 'Nhà 4',
+                                    label: 'Nhà 4',
                                 },
                             ]}
                         />

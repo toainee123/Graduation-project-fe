@@ -3,22 +3,28 @@ import { Button, Input, Modal, Space, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 // import { getApiService } from './api';
-import { dataSource, columns } from './constant';
+import { columns } from './constant';
 import './style.scss'
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import { getApiService } from './api';
 
 const Service = () => {
-    // const count = useSelector((state) => state.counter.value)
+    const listServiceStore = useSelector((state) => state.listService);
+    const {
+        listService, // danh sách phát sinh
+        // deleteArise, // xóa phát sinh
+    } = listServiceStore;
     const dispatch = useDispatch()
     const [dataFilter, setDataFilter] = useState({
         nameService: ""
     })
 
+
+
+
     useEffect(() => {
         dispatch(getApiService());
-
     }, [])
 
     // get value select
@@ -80,8 +86,57 @@ const Service = () => {
         )
     }
     const handleSearch = () => {
-        // dispatch(getServiceList());
+        dispatch(getApiService());
     };
+
+    const handleEdit = () => {
+
+    }
+
+
+
+    const columns = [
+        {
+            title: 'Action',
+            key: 'action',
+            render: () => (
+                <Space size="middle">
+                    <EditFilled
+                        className="color-green action-table"
+                    // onClick={()}
+                    />
+                    <CloseCircleFilled
+                        className="color-red action-table"
+                    />
+                </Space>
+            ),
+        },
+        {
+            title: 'Tên dịch vụ',
+            dataIndex: 'serviceName',
+            key: 'serviceName',
+        },
+        {
+            title: 'Mô tả',
+            dataIndex: 'serviceDescription',
+            key: 'serviceDescription',
+        },
+        {
+            title: 'Loại dịch vụ',
+            dataIndex: 'serviceType',
+            key: 'serviceType',
+        },
+        {
+            title: 'Đơn giá ($)',
+            dataIndex: 'price',
+            key: 'price',
+        },
+        {
+            title: 'Đang dùng',
+            dataIndex: 'using',
+            key: 'using',
+        },
+    ];
     return (
         <>
             <div className='header'>
@@ -112,11 +167,16 @@ const Service = () => {
                     placeholder="Tên"
                 // onChange={e => handleUpdateField(e, item.field, item.type)}
                 />
-                <Button type="primary">Tìm</Button>
+                <Button
+                    onClick={() => handleSearch()}
+                    type="primary"
+                >
+                    Tìm
+                </Button>
             </div>
             <div>
                 <Table
-                    dataSource={dataSource}
+                    dataSource={(listService && listService.length && listService.length > 0 && listService) || []}
                     columns={columns}
                     rowSelection={{
                         // type: selectionType,
