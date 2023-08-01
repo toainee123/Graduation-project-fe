@@ -442,8 +442,6 @@ const Charge = () => {
       stringList += mg;
       setBillEmail(stringList);
     });
-
-    handleSendEmail();
   };
 
   const handleSendEmail: any = async () => {
