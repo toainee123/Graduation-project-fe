@@ -12,7 +12,7 @@ const Service = () => {
     const listServiceStore = useSelector((state) => state.listService);
     const {
         listService, // danh sách phát sinh
-        // deleteArise, // xóa phát sinh
+        deleteService, // xóa phát sinh
     } = listServiceStore;
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -25,7 +25,12 @@ const Service = () => {
         active: false,
         idDelete: null
     });
-
+    useEffect(() => {
+        if (deleteService) {
+            alert("Thành công")
+        }
+        dispatch(getApiService());
+    }, [deleteService])
     useEffect(() => {
         dispatch(getApiService());
     }, [])
@@ -61,7 +66,6 @@ const Service = () => {
     const handleDelete = () => {
         dispatch(deleteApiService(isActiveModal.idDelete))
     };
-
 
     const columns = [
         {
@@ -112,6 +116,7 @@ const Service = () => {
             ),
         },
     ];
+
     return (
         <>
             <div className='header'>
