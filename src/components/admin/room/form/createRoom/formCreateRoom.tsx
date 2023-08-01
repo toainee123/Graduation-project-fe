@@ -157,7 +157,6 @@ const FormCreateRoom = () => {
                                 </div>
                             )}
                         </Upload>
-                        {/* <Input placeholder='Link' className='w-full outline-0 md: my-2' /> */}
                     </Form.Item>
                     {keyLocation === 'update' && <img src={fileListImage} alt="" style={{ width: '150px', height: '150px' }} />}
                 </div>
