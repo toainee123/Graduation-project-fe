@@ -88,7 +88,7 @@ const UpdateDeposit = () => {
       bookingDate: data.bookingdate,
       checkInDate: data.checkindate,
     }).then((res) => {
-      // info();
+      info();
       setTimeout(() => {
         navigate(-1);
       }, 3000);

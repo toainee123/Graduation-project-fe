@@ -1,6 +1,5 @@
-import React from 'react';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import authApi from 'src/api/auth';
 

@@ -26,7 +26,6 @@ export const createRoomService = async (value: any) => {
 };
 
 export const updateService = async (roomid: number, service: any) => {
-
     const url = `/service/room-service/${roomid}`
     console.log(url);
     return axiosClient.put(url, service)
@@ -35,4 +34,9 @@ export const updateService = async (roomid: number, service: any) => {
 export const deleteService = async (id: number) => {
     const url = `/service/${id}`
     return axiosClient.delete(url)
+}
+
+export const updateServices = async (id: any, service: any) => {
+    const url = `/service/${id}`
+    return axiosClient.put(url, service)
 }

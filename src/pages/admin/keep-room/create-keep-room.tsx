@@ -21,7 +21,6 @@ const CreateKeepRoom = () => {
   const handleChangeHomeId = (value: any) => {
     setHomeId(value);
   };
-  console.log('estimateTimeOrderFrom', estimateTimeOrderFrom);
   const Onsubmit = (data: any) => {
     const result = {
       name: data.name,
@@ -33,7 +32,7 @@ const CreateKeepRoom = () => {
       note: data.note,
       money: data.moneyOrder,
     };
-    createDeposit(result);
+    createDeposit(result).then((res) => {});
   };
 
   return (
