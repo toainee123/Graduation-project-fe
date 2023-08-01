@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { getApiArise } from './api';
 import { dataSource, columns } from './constant';
 import './style.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import { deleteApiArise, getApiArise } from './api';
 
@@ -25,6 +25,7 @@ const Arise = () => {
         deleteArise, // xóa phát sinh
     } = listAriseStore;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [dataFilter, setDataFilter] = useState({
         nameArise: '',
     });
@@ -41,7 +42,9 @@ const Arise = () => {
             render: (item) => {
                 return (
                     <Space size='middle'>
-                        <EditFilled className='color-green action-table' />
+                        <EditFilled
+                            className='color-green action-table'
+                            onClick={() => navigate(urlRouter.UPDATE_ARISE, { state: item })} />
                         <CloseCircleFilled className='color-red action-table' onClick={() => showModal(item)} />
                     </Space>
                 );
@@ -58,14 +61,14 @@ const Arise = () => {
             key: 'room',
         },
         {
-            title: 'Diễn giải',
-            dataIndex: 'explain',
-            key: 'explain',
+            title: 'Số tiền (VNĐ)',
+            dataIndex: 'price',
+            key: 'price',
         },
         {
-            title: 'Số tiền (VNĐ)',
-            dataIndex: 'cost',
-            key: 'cost',
+            title: 'Ghi chú',
+            dataIndex: 'explain',
+            key: 'explain',
         },
     ];
     useEffect(() => {
@@ -86,7 +89,14 @@ const Arise = () => {
             idDelete: item.id
         });
     };
-
+    const handleEdit = (item) => {
+        if (item && item.id) {
+            const location = {
+                pathname: `/admin/${urlRouter.ADD_ARISE}`,
+                state: { item }
+            }
+        }
+    }
     const handleOk = (id) => {
         setIsActiveModal(false);
         handleDelete(id)
@@ -95,16 +105,10 @@ const Arise = () => {
     const handleCancel = () => {
         setIsActiveModal(false);
     };
-    const parseData = (item) => {
-        if (true) {
-            return <CloseCircleFilled />;
-        }
-    };
     const handleSearch = () => {
         dispatch(getApiArise());
     };
     const handleDelete = () => {
-        console.log(isActiveModal.idDelete);
         dispatch(deleteApiArise(isActiveModal.idDelete))
     };
     return (

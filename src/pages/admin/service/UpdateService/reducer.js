@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { postApiService } from './api';
+import { getApiService, postApiService } from './api';
 
 const initialState = {
     addService: null,
