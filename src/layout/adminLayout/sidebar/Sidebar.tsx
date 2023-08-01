@@ -2,19 +2,19 @@ import {
   CalculatorOutlined,
   FileOutlined,
   FileTextOutlined,
-  FormOutlined,
   HomeOutlined,
   LineChartOutlined,
   // DashboardOutlined,
   MailOutlined,
   ReconciliationOutlined,
-  SketchOutlined,
-  ThunderboltOutlined,
+
   UserOutlined,
 } from '@ant-design/icons';
 import { Avatar, Layout, Menu, MenuProps, MenuTheme } from 'antd';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import logo from './logo bee.png'
 
 import { AuthSliceAction } from '../../../features/auth/authSlice';
 import { useAppDispatch } from '../../../store/hooks';
@@ -28,12 +28,12 @@ const { Sider } = Layout;
 const Sidebar = (props: Props) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
   const [mode, setMode] = useState<'vertical' | 'inline'>('inline');
   const [theme, setTheme] = useState<MenuTheme>('light');
 
   type MenuItem = Required<MenuProps>['items'][number];
-
+  const getEmailLocalStorage = localStorage.getItem('email')
+  const resultEmail = getEmailLocalStorage?.substring(1, getEmailLocalStorage.length - 11)
   const menuListItem: MenuItem[] = [
     {
       label: (
@@ -168,22 +168,25 @@ const Sidebar = (props: Props) => {
   return (
     <div id='sidebar'>
       <Sider theme={theme} width={220}>
-        <div className='sidebarLogo'>
-          <SketchOutlined />
+        <div className='py-3 text-center flex flex-col gap-1 border-b-2 rounded-lg bg-slate-200'>
+          <Link to='/admin  ' className='title-dashboard'>
+            <img src={logo} alt="" width={60} className=' mx-auto' />
+            Quản Lý Nhà Trọ
+          </Link>
+          <span className=' text-base'>Xin Chào, <span className='uppercase'>{resultEmail}</span></span>
         </div>
         <Menu
           // style={{ width: 70 }}
           // style={{ minHeight: '100vh' }}
           // onClick={handleOpenMenu}
           defaultSelectedKeys={['1']}
-          // defaultOpenKeys={['2']}
+          defaultOpenKeys={['8']}
           mode={mode}
           theme={theme}
           items={menuListItem}
         // selectedKeys={[current]}
         />
-
-        <div className='userLogin'>
+        <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
           <span className='userTitle' style={{ cursor: 'pointer' }} onClick={logout}>
             Đăng xuất

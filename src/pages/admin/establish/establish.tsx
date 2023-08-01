@@ -133,23 +133,23 @@ const Establish = (props: Props) => {
       ),
     },
 
-    {
-      label: 'Mẫu tin nhắn SMS',
-      key: '2',
-      children: <Templatesms />,
-    },
+    // {
+    //   label: 'Mẫu tin nhắn SMS',
+    //   key: '2',
+    //   children: <Templatesms />,
+    // },
 
-    {
-      label: 'Mẫu in',
-      key: '3',
-      children: <Printform getSelectOption={handleGetSelect} />,
-    },
+    // {
+    //   label: 'Mẫu in',
+    //   key: '3',
+    //   children: <Printform getSelectOption={handleGetSelect} />,
+    // },
 
-    {
-      label: 'Hợp đồng mẫu',
-      key: '4',
-      children: <Samplecontract />,
-    },
+    // {
+    //   label: 'Hợp đồng mẫu',
+    //   key: '4',
+    //   children: <Samplecontract />,
+    // },
   ];
   return (
     <div className='es-container'>

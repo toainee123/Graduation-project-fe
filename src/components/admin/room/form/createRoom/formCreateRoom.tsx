@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd';
 import type { UploadProps } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons';
 
-import "./formCreateRoom.scss"
+import './formCreateRoom.scss';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getAllHouse } from 'src/features/room/houseSlice';
 import { limitCountUpload, urlRouter } from 'src/utils/constants';
@@ -12,38 +12,52 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getByIdRoom } from 'src/api/room';
 
 const FormCreateRoom = () => {
-    const [countImg, setCountImg] = useState([])
+    const [countImg, setCountImg] = useState([]);
     const [detailRoom, setDetailRoom] = useState<any>();
     const [limitprice, setLimitPrice] = useState(Number);
     const [linkImage, setLinkImage] = useState('');
-    const [fileListImage, setFileList] = useState()
+    const [fileListImage, setFileList] = useState<any>();
 
     const [form] = Form.useForm();
-    const navigate = useNavigate()
-    const { Option } = Select
+    const navigate = useNavigate();
+    const { Option } = Select;
 
-    const house = useAppSelector(state => state.house.value)
-    const dispatch = useAppDispatch()
+    const house = useAppSelector((state) => state.house.value);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getAllHouse())
-    }, [])
+        dispatch(getAllHouse());
+    }, []);
 
     const search = useLocation().search;
     const keyLocation = new URLSearchParams(search).get('key');
-    const { roomId } = useParams()
+    const { roomId } = useParams();
     useEffect(() => {
-        if (keyLocation === "update") {
+        if (keyLocation === 'update') {
             const fetchRoomById = async () => {
-                const { data } = await getByIdRoom(roomId)
-                setDetailRoom(data)
-                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer })
-                setFileList(data?.image)
-            }
-            fetchRoomById()
+                const { data } = await getByIdRoom(roomId);
+                setDetailRoom(data);
+                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer });
+                console.log(data);
+                // Đợi có trả về image thì setFileList([image])
+                // {
+                //     uid: '-1',
+                //     name: 'image.png',
+                //     status: 'done',
+                //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                //   }, ==> image mẫu
+                setFileList([
+                    {
+                        uid: '-1',
+                        name: 'image.png',
+                        status: 'done',
+                        url: 'http://localhost:5000/api/public/1691652617418.cu-cho-thu-nay-vao-vi-tien-bao-sao-ban-ngheo-ben-vung-hinh-2.jpg',
+                    },
+                ]);
+            };
+            fetchRoomById();
         }
-    }, [keyLocation])
-
+    }, [keyLocation]);
 
     const props: UploadProps = {
         name: 'file',
@@ -51,32 +65,40 @@ const FormCreateRoom = () => {
         beforeUpload: (file) => {
             const isImg = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
             if (!isImg) {
-                message.error("Chỉ nhận file jpeg/jpg/png")
+                message.error('Chỉ nhận file jpeg/jpg/png');
                 return isImg || Upload.LIST_IGNORE;
-            };
+            }
 
             const isLimitImg = file.size / 1024 / 1024 <= limitCountUpload.LIMIT_SIZE;
             if (!isLimitImg) {
                 message.error(`Ảnh không vượt quá 2MB!`);
                 return isLimitImg || Upload.LIST_IGNORE;
-            };
+            }
 
             const formData = new FormData();
             formData.append('file', file);
-            dispatch(uploadFile(formData)).unwrap().then((resp) => {
-                console.log('resp', resp);
-                setLinkImage(resp?.link)
-            })
+            dispatch(uploadFile(formData))
+                .unwrap()
+                .then((resp) => {
+                    setFileList([
+                        {
+                            uid: '-1',
+                            name: 'image.png',
+                            status: ' ',
+                            url: resp?.link,
+                        },
+                    ]);
+                })
                 .catch((err) => {
                     console.log('err', err);
-
-                })
+                });
         },
         onChange: (info: any) => {
-            setCountImg(info.fileList)
+            setCountImg(info.fileList);
+            setFileList(info.fileList);
         },
         showUploadList: {
-            showPreviewIcon: false
+            showPreviewIcon: false,
         },
         progress: {
             strokeColor: {
@@ -99,7 +121,7 @@ const FormCreateRoom = () => {
                 console.log('linkImage', linkImage);
                 await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }))
                 message.success(`Cập nhât ${values.name} thành công`)
-                // navigate(`/admin/${urlRouter.ROOM}`);
+                navigate(`/admin/${urlRouter.ROOM}`);
             } catch (error) {
                 message.error(`Cập nhât ${values.name} thất bại`)
             }
@@ -107,6 +129,7 @@ const FormCreateRoom = () => {
             try {
                 await dispatch(createRooms({ ...values, image: linkImage }))
                 message.success(`Thêm phòng ${values.name} thành công`)
+                navigate(`/admin/${urlRouter.ROOM}`);
             } catch (error) {
                 message.error(`Thêm phòng ${values.name} thất bại`)
             }
@@ -125,7 +148,7 @@ const FormCreateRoom = () => {
                 <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
-                        <Upload {...props} listType="picture-card"  >
+                        <Upload {...props} listType="picture-card" fileList={fileListImage} >
                             {countImg.length >= 1 ? null : (
                                 <div className='btn-upload'>
                                     <PlusOutlined />
@@ -157,6 +180,20 @@ const FormCreateRoom = () => {
                                     <Option key={i} value={item.id}>{item.name}</Option>
                                 ))}
                             </Select>
+                        </Form.Item>
+                    </div>
+                </div>
+                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
+                    <label htmlFor="" className='w-64 text-base font-semibold'>Chỉ số điện</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexElectricity" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số điện' />
+                        </Form.Item>
+                    </div>
+                    <label htmlFor="" className="w-64 text-base font-semibold">Chỉ số nước</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexWater" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số nước' />
                         </Form.Item>
                     </div>
                 </div>
@@ -204,5 +241,4 @@ const FormCreateRoom = () => {
         </div>
     )
 }
-
 export default FormCreateRoom

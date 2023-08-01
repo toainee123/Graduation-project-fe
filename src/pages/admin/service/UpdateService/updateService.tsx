@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { Form, Input } from 'antd';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import { getService, updateService } from 'src/api/service';
@@ -6,62 +7,66 @@ import { urlRouter } from 'src/utils/constants';
 
 const UpdateService = () => {
   const { id } = useParams();
-  const { register, handleSubmit, reset } = useForm();
-
+  const [service, setService] = useState()
+  const [form] = Form.useForm()
   useEffect(() => {
     const getOneService = async (id: any) => {
       const { data } = await getService(id);
-      reset(data.result);
+      setService(data.result);
+      form.setFieldsValue(service)
     };
     getOneService(id);
   }, []);
 
-  const Onsubmit = async (data: any) => {
-    const result = {
-      name: data.name,
-      type: data.type,
-      code: data.code,
-      price: data.price,
-      note: data.note,
-    };
-    await updateService(Number(id), result)
-      .then((res) => {
-        console.log('successfull');
-        console.log('res', res.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
+  // const Onsubmit = async (data: any) => {
+  //   const result = {
+  //     name: data.name,
+  //     type: data.type,
+  //     code: data.code,
+  //     price: data.price,
+  //     note: data.note,
+  //   };
+  //   await updateService(Number(id), result)
+  //     .then((res) => {
+  //       console.log('successfull');
+  //       console.log('res', res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // };
   return (
     <>
       <div>
         <h1>Thêm dịch vụ</h1>
       </div>
       <div className='mt-8'>
-        <form onSubmit={handleSubmit(Onsubmit)}>
+        <Form initialValues={service}>
           <div className='flex justify-between items-center gap-12 py-3'>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Tên dịch vụ <b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input
-                className='w-full border-2 p-4 outline-0'
-                type='text'
-                {...register('name')}
-                placeholder='Tên dịch vụ'
-              />
+              <Form.Item name="name">
+                <Input
+                  className='w-full border-2 p-4 outline-0'
+                  type='text'
+                  placeholder='Tên dịch vụ'
+                />
+              </Form.Item>
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Loại <b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input
-                className='w-full border-2 p-4 outline-0'
-                type='text'
-                {...register('type')}
-                placeholder='Loại dịch vụ'
-              />
+              <Form.Item name="type">
+
+                <Input
+                  className='w-full border-2 p-4 outline-0'
+                  type='text'
+                  placeholder='Loại dịch vụ'
+                />
+              </Form.Item>
             </div>
           </div>
           <div className='flex justify-between items-center gap-12 py-3'>
@@ -69,23 +74,27 @@ const UpdateService = () => {
               Đơn giá <b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input
-                className='border-2 p-4 outline-0 w-full'
-                type='number'
-                {...register('price')}
-                placeholder='Đơn giá'
-              />
+              <Form.Item name="price">
+
+                <Input
+                  className='border-2 p-4 outline-0 w-full'
+                  type='number'
+                  placeholder='Đơn giá'
+                />
+              </Form.Item>
             </div>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Mã dịch vụ <b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input
-                className='w-full border-2 p-4 outline-0'
-                type='text'
-                {...register('code')}
-                placeholder='Loại dịch vụ'
-              />
+              <Form.Item name="code">
+
+                <Input
+                  className='w-full border-2 p-4 outline-0'
+                  type='text'
+                  placeholder='Loại dịch vụ'
+                />
+              </Form.Item>
             </div>
           </div>
           <div className='flex justify-between items-center gap-12 py-3'>
@@ -93,7 +102,9 @@ const UpdateService = () => {
               Nội dung
             </label>
             <div className='w-full'>
-              <textarea className='w-full border-2 p-4' {...register('note')} placeholder='Thông tin ghi chú ...' />
+              <Form.Item name="note">
+                <Input className='w-full border-2 p-4' placeholder='Thông tin ghi chú ...' />
+              </Form.Item>
             </div>
           </div>
 
@@ -112,7 +123,7 @@ const UpdateService = () => {
               </Link>
             </div>
           </div>
-        </form>
+        </Form>
       </div>
     </>
   );
