@@ -5,7 +5,6 @@ const initialState = {
     addArise: null,
     status: null,
 }
-
 export const updateAriseSlice = createSlice({
     name: 'updateAriseStore',
     initialState,

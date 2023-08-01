@@ -10,6 +10,7 @@ import houseReducer from 'src/features/room/houseSlice'
 import roomReducer from 'src/features/room/roomSlice'
 import depositReducer from 'src/features/deposit/deposit';
 import listServiceReducer from '../pages/admin/service/ListService/reducer';
+import updateServiceReducer from '../pages/admin/service/UpdateService/reducer';
 
 
 export const store = configureStore({
@@ -25,6 +26,7 @@ export const store = configureStore({
     updateArise: updateAriseReducer,
     deposit: depositReducer,
     listService: listServiceReducer,
+    updateService: updateServiceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import './style.scss';
 import { Checkbox, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postApiService } from './api';
 import './style.scss'
 import { checkBoxType, listItemService, numberType, selectType, textAreaType, textType } from './constant';
@@ -11,7 +11,14 @@ import { checkBoxType, listItemService, numberType, selectType, textAreaType, te
 
 
 const UpdateSevice = () => {
+    const updateServiceStore = useSelector((state) => state.updateSevice);
+    debugger
+    const {
+        addService, // danh sách phát sinh
+    } = updateServiceStore;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // console.log(addService)
     const [dataRequest, setDataRequest] = useState({
         serviceName: null,
         serviceType: null,
@@ -19,6 +26,12 @@ const UpdateSevice = () => {
         using: null,
         serviceDescription: null,
     })
+
+    useEffect(() => {
+        if (addService && addService.id) {
+            navigate(`/admin/${urlRouter.SERVICE}`)
+        }
+    }, [addService])
     // 
     const handleUpdateField = (e, field, type) => {
         if (type === checkBoxType) {
@@ -121,7 +134,7 @@ const UpdateSevice = () => {
                             className='w-full border-2 p-4'
                             rows={5}
                             onChange={e => handleUpdateField(e, item.field, textAreaType)}
-                            placeholder='Thông tin ghi chú ...'
+                            placeholder={item.placeholder}
                         />
                     </div>
                 </div>
@@ -151,8 +164,7 @@ const UpdateSevice = () => {
         const newDataRequestAddService = {
             ...dataRequest,
         }
-        console.log(newDataRequestAddService)
-        // dispatch(postApiService(newDataRequestAddService))
+        dispatch(postApiService(newDataRequestAddService))
     }
 
     return (

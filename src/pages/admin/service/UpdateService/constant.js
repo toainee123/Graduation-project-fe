@@ -40,7 +40,7 @@ export const listItemService = [
     {
         label: "Mô tả",
         field: "serviceDescription",
-        placeholder: "Mô tả",
+        placeholder: "Thông tin mô tả ...",
         type: textAreaType,
         required: true,
     },
