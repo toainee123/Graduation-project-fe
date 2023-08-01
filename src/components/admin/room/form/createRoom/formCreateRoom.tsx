@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd';
 import type { UploadProps } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons';
 
-import "./formCreateRoom.scss"
+import './formCreateRoom.scss';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getAllHouse } from 'src/features/room/houseSlice';
 import { limitCountUpload, urlRouter } from 'src/utils/constants';
@@ -12,38 +12,52 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getByIdRoom } from 'src/api/room';
 
 const FormCreateRoom = () => {
-    const [countImg, setCountImg] = useState([])
+    const [countImg, setCountImg] = useState([]);
     const [detailRoom, setDetailRoom] = useState<any>();
     const [limitprice, setLimitPrice] = useState(Number);
     const [linkImage, setLinkImage] = useState('');
-    const [fileListImage, setFileList] = useState()
+    const [fileListImage, setFileList] = useState<any>();
 
     const [form] = Form.useForm();
-    const navigate = useNavigate()
-    const { Option } = Select
+    const navigate = useNavigate();
+    const { Option } = Select;
 
-    const house = useAppSelector(state => state.house.value)
-    const dispatch = useAppDispatch()
+    const house = useAppSelector((state) => state.house.value);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getAllHouse())
-    }, [])
+        dispatch(getAllHouse());
+    }, []);
 
     const search = useLocation().search;
     const keyLocation = new URLSearchParams(search).get('key');
-    const { roomId } = useParams()
+    const { roomId } = useParams();
     useEffect(() => {
-        if (keyLocation === "update") {
+        if (keyLocation === 'update') {
             const fetchRoomById = async () => {
-                const { data } = await getByIdRoom(roomId)
-                setDetailRoom(data)
-                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer })
-                setFileList(data?.image)
-            }
-            fetchRoomById()
+                const { data } = await getByIdRoom(roomId);
+                setDetailRoom(data);
+                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer });
+                console.log(data);
+                // Đợi có trả về image thì setFileList([image])
+                // {
+                //     uid: '-1',
+                //     name: 'image.png',
+                //     status: 'done',
+                //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                //   }, ==> image mẫu
+                setFileList([
+                    {
+                        uid: '-1',
+                        name: 'image.png',
+                        status: 'done',
+                        url: 'http://localhost:5000/api/public/1691652617418.cu-cho-thu-nay-vao-vi-tien-bao-sao-ban-ngheo-ben-vung-hinh-2.jpg',
+                    },
+                ]);
+            };
+            fetchRoomById();
         }
-    }, [keyLocation])
-
+    }, [keyLocation]);
 
     const props: UploadProps = {
         name: 'file',
@@ -51,32 +65,40 @@ const FormCreateRoom = () => {
         beforeUpload: (file) => {
             const isImg = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
             if (!isImg) {
-                message.error("Chỉ nhận file jpeg/jpg/png")
+                message.error('Chỉ nhận file jpeg/jpg/png');
                 return isImg || Upload.LIST_IGNORE;
-            };
+            }
 
             const isLimitImg = file.size / 1024 / 1024 <= limitCountUpload.LIMIT_SIZE;
             if (!isLimitImg) {
                 message.error(`Ảnh không vượt quá 2MB!`);
                 return isLimitImg || Upload.LIST_IGNORE;
-            };
+            }
 
             const formData = new FormData();
             formData.append('file', file);
-            dispatch(uploadFile(formData)).unwrap().then((resp) => {
-                console.log('resp', resp);
-                setLinkImage(resp?.link)
-            })
+            dispatch(uploadFile(formData))
+                .unwrap()
+                .then((resp) => {
+                    setFileList([
+                        {
+                            uid: '-1',
+                            name: 'image.png',
+                            status: ' ',
+                            url: resp?.link,
+                        },
+                    ]);
+                })
                 .catch((err) => {
                     console.log('err', err);
-
-                })
+                });
         },
         onChange: (info: any) => {
-            setCountImg(info.fileList)
+            setCountImg(info.fileList);
+            setFileList(info.fileList);
         },
         showUploadList: {
-            showPreviewIcon: false
+            showPreviewIcon: false,
         },
         progress: {
             strokeColor: {
@@ -123,10 +145,10 @@ const FormCreateRoom = () => {
                 onFinish={onFinish}
                 initialValues={{ ...detailRoom }}
             >
-                <div className='lg:flex justify-between py-2 items-center gap-6 md:justify-start gap-8'>
+                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
-                        <Upload {...props} listType="picture-card"  >
+                        <Upload {...props} listType="picture-card" fileList={fileListImage} >
                             {countImg.length >= 1 ? null : (
                                 <div className='btn-upload'>
                                     <PlusOutlined />
@@ -219,5 +241,3 @@ const FormCreateRoom = () => {
         </div>
     )
 }
-
-export default FormCreateRoom
