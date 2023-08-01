@@ -571,7 +571,7 @@ const Charge = () => {
 
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    XLSX.writeFile(wb, 'thu-tien-5/2023.xlsx');
+    XLSX.writeFile(wb, 'thu-tien/2023.xlsx');
   };
 
   const initValueFormFilter = {
