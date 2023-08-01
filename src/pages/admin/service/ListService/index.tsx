@@ -34,39 +34,34 @@ const Service = () => {
 
   const columns = [
     {
-      title: 'Active',
-      dataIndex: 'isActive',
-      render: (isActive: any) => (isActive ? 'Active' : 'Inactive'),
-    },
-    {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'id',
     },
     {
-      title: 'Name',
+      title: 'Tên dịch vụ',
       dataIndex: 'name',
     },
     {
-      title: 'Note',
-      dataIndex: 'note',
-    },
-    {
-      title: 'Price',
+      title: 'Giá',
       dataIndex: 'price',
     },
     {
-      title: 'Type',
+      title: 'Loại',
       dataIndex: 'type',
     },
     {
-      title: 'Actions',
+      title: 'Ghi chú',
+      dataIndex: 'note',
+    },
+    {
+      title: '',
       dataIndex: 'actions',
       render: (_: any, record: any) => (
         <Space size='middle'>
           <Link to={`http://localhost:3000/admin/service/${record.id}`}>
-            <Button>Edit</Button>
+            <Button>Sửa</Button>
           </Link>
-          <Button onClick={() => handleRemove(record.id)}>Remove</Button>
+          <Button onClick={() => handleRemove(record.id)}>Xóa</Button>
         </Space>
       ),
     },
@@ -76,7 +71,7 @@ const Service = () => {
     <>
       <div className='header'>
         <div className='header-title'>
-          <h1>List Service</h1>
+          <h1>Dịch vụ</h1>
         </div>
         <div className='action'>
           <Link to={urlRouter.ADD_SERVICE}>
@@ -93,8 +88,7 @@ const Service = () => {
         <strong>Lưu ý:</strong>
         <p>
           Các dịch vụ phải được gán cho từng khách thuê phòng để khi tính tiền sẽ có tiền dịch vụ đó. Để cấu hình đơn
-          giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước; sau đó vào menu "Thiết lập" ={'>'}{' '}
-          Tab "Đơn giá điện nước bậc thang" để thiết lập đơn giá.
+          giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước
         </p>
       </div>
       <div className='render-input'>

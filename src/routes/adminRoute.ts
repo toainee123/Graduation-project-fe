@@ -32,6 +32,8 @@ import Createpassword from 'src/pages/auth/forgot-password/Createpassword';
 import UpdateDeposit from 'src/pages/admin/keep-room/updateDeposit';
 import TemplateEmail from 'src/pages/admin/sendEmail';
 import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
+import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
+import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
 
 export const adminRoutes = [
   {
@@ -170,9 +172,15 @@ export const adminRoutes = [
   {
     path: urlRouter.CREATE_EMAIL,
     component: CreateTemplateEmail,
-  }
-
-
+  },
+  {
+    path: urlRouter.CREATE_ASSETS,
+    component: CreateAssets,
+  },
+  {
+    path: `${urlRouter.ASSETS}/:id`,
+    component: UpdateAssets,
+  },
 ];
 
 export const authRoute = [

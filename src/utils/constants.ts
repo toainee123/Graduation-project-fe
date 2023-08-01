@@ -29,6 +29,7 @@ export const urlRouter = {
   ReportInvoiceDetail: 'ReportInvoiceDetail',
   LIST_EMAIL: 'listEmail',
   CREATE_EMAIL: 'create-email',
+  CREATE_ASSETS: 'create-assets',
 
 
   PG: 'pg',

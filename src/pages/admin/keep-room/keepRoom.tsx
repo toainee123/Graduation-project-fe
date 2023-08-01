@@ -321,12 +321,12 @@ const KeepRoom = () => {
                             onConfirm={() => confirm(item.id)}
                             icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                           >
-                            <Button danger>Delete</Button>
+                            <Button danger>Xóa</Button>
                           </Popconfirm>
                         </div>
                         <div className='ml-2'>
                           <Link to={`/admin/Update-deposit/${item.id}`}>
-                            <Button name={item.id}>Update</Button>
+                            <Button name={item.id}>Sửa</Button>
                           </Link>
                         </div>
                       </td>
