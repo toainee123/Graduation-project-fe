@@ -273,8 +273,8 @@ const KeepRoom = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item: any) => (
-                    <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
+                  {data?.map((item: any, index: number) => (
+                    <tr key={index} className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.id}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.phone}</td>

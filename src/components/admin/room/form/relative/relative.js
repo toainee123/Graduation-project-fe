@@ -5,6 +5,7 @@ import '../relative/relative.scss'
 import { useLocation, useParams } from 'react-router-dom';
 import { addRoomMember, deleteMember, getRoom, getRoomMember } from 'src/api/room';
 import moment from 'moment';
+import { ToastContainer, toast } from 'react-toastify';
 const Relative = () => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
@@ -14,14 +15,17 @@ const Relative = () => {
     // const myParam = useLocation().search;
     // const idH = new URLSearchParams(myParam).get('idHouse');
     const [listRoom, setListRoom] = useState();
-    const [status, setStatus] = useState(false)
+    const [status, setStatus] = useState(false);
+    const [roomTenant, setRoomTenant] = useState();
     useEffect(() => {
         const getData = async () => {
             // const respon = await getRoom(idH)
             // setListRoom(respon.data.result.responses)
 
             const response = await getRoomMember(roomId);
-            const newArrr = response.data.map(item => {
+            const { data } = response;
+            setData(data);
+            const newArrr = response?.data?.map(item => {
                 console.log(moment(item.bod));
                 return {
                     id: item.id,
@@ -45,19 +49,13 @@ const Relative = () => {
 
 
 
-
-
     const onFinish = async (values) => {
-        // const room = listRoom?.find(item => item.id === +id)
-        // const maxCustomer = room.maxCustomer;
-        // if (values?.items.length > maxCustomer - 1) {
-        //     alert(`Phòng giói hạn chỉ có ${maxCustomer} thành viên(đã tính chủ phòng)`)
-        // }
 
-        const resss = await getRoomMember(roomId);
-        const dataMember = resss.data
+
+        const dataMember = data ? data : [];
+        console.log(dataMember);
         for (const key in dataMember) {
-            console.log(dataMember[key].id);
+
             await deleteMember(dataMember[key].id);
         }
 
@@ -81,15 +79,18 @@ const Relative = () => {
             }
         })
 
+
         try {
             for (const key in listMemberData) {
                 await addRoomMember(listMemberData[key])
             }
-            setStatus(true)
+            console.log('set lai status');
+            toast.success('Thành công!!!')
+            setStatus(!status);
         } catch (error) {
-            alert(error.response.data.message ? 'Email đã tồn tại' : '')
-            console.log(error.response.data.message);
+            console.log(error);
         }
+
 
     }
 
@@ -126,6 +127,7 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "name"]}
+                                            rules={[{ required: true, message: 'Không để trống họ tên' }]}
                                         >
                                             <Input />
                                         </Form.Item>
@@ -136,6 +138,7 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "bod"]}
+                                            rules={[{ required: true, message: 'Không để trống ngày sinh' }]}
                                         >
                                             <DatePicker />
                                         </Form.Item>
@@ -146,6 +149,7 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "gender"]}
+                                            rules={[{ required: true, message: 'Không để trống giới tính' }]}
                                         >
                                             <Radio.Group>
                                                 <Radio value={'MALE'}>Nam</Radio>
@@ -159,6 +163,8 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "cccd"]}
+                                            rules={[{ required: true, message: 'Không để trống cccd' }]}
+
                                         >
                                             <Input />
                                         </Form.Item>
@@ -169,6 +175,8 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "address"]}
+                                            rules={[{ required: true, message: 'Không để trống địa chỉ' }]}
+
                                         >
                                             <Input />
                                         </Form.Item>
@@ -178,6 +186,7 @@ const Relative = () => {
                                         <Form.Item
                                             required={true}
                                             key={field.key}
+                                            rules={[{ required: true, message: 'Không để trống số điện thoại' }]}
                                             name={[field.name, "phone"]}
                                         >
                                             <Input />
@@ -189,6 +198,8 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "vehicleNumber"]}
+                                            rules={[{ required: true, message: 'Không để trống số xe' }]}
+
                                         >
                                             <Input />
                                         </Form.Item>
@@ -199,6 +210,8 @@ const Relative = () => {
                                             required={true}
                                             key={field.key}
                                             name={[field.name, "email"]}
+                                            rules={[{ required: true, message: 'Không để trống email' }]}
+
                                         >
                                             <Input />
                                         </Form.Item>
@@ -239,6 +252,7 @@ const Relative = () => {
                     )}
                 </Form.List>
             </table>
+            <ToastContainer />
         </Form >
 
 
