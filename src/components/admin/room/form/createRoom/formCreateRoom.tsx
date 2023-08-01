@@ -54,6 +54,7 @@ const FormCreateRoom = () => {
             url: data?.image,
           },
         ]);
+        setLinkImage(data?.image);
       };
       fetchRoomById();
     }

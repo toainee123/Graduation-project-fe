@@ -62,6 +62,8 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           url: fakeData?.image,
         },
       ]);
+
+      setLinkImage(fakeData?.image);
     }
   }, [getData]);
   console.log('data romm', getData);
