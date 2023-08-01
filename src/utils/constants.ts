@@ -30,7 +30,8 @@ export const urlRouter = {
   ReportInvoiceDetail: 'ReportInvoiceDetail',
   LIST_EMAIL: 'listEmail',
   CREATE_EMAIL: 'create-email',
-
+  UPDATE_SERVICE: 'add-service', //dịch vụ
+  UPDATE_ARISE: 'add-arise', //dịch vụ
 
   PG: 'pg',
   LIST_PG: 'list',
