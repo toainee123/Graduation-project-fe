@@ -121,7 +121,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.ASSETS}>
+        <Link className='label-router' to={urlRouter.ASSET}>
           Tài sản
         </Link>
       ),

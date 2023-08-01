@@ -89,14 +89,6 @@ const Arise = () => {
             idDelete: item.id
         });
     };
-    const handleEdit = (item) => {
-        if (item && item.id) {
-            const location = {
-                pathname: `/admin/${urlRouter.ADD_ARISE}`,
-                state: { item }
-            }
-        }
-    }
     const handleOk = (id) => {
         setIsActiveModal(false);
         handleDelete(id)

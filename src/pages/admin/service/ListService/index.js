@@ -1,13 +1,12 @@
-import { CloseCircleFilled, EditFilled, PlusOutlined, RedoOutlined, ReloadOutlined, SmileOutlined } from '@ant-design/icons';
+import { CloseCircleFilled, EditFilled, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Space, Table } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-// import { getApiService } from './api';
-import { columns } from './constant';
 import './style.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
-import { getApiService } from './api';
+import { deleteApiService, getApiService } from './api';
+import { convertStringToStringsNoDecimal } from './common';
 
 const Service = () => {
     const listServiceStore = useSelector((state) => state.listService);
@@ -16,12 +15,16 @@ const Service = () => {
         // deleteArise, // xóa phát sinh
     } = listServiceStore;
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const [dataFilter, setDataFilter] = useState({
         nameService: ""
     })
 
-
-
+    // active modal
+    const [isActiveModal, setIsActiveModal] = useState({
+        active: false,
+        idDelete: null
+    });
 
     useEffect(() => {
         dispatch(getApiService());
@@ -36,77 +39,43 @@ const Service = () => {
     //     const data = handleGetOptions(field);
     //     return data.find(obj => obj.value === (dataFilter && dataFilter[field])) || null
     // }
-    const [isActiveModal, setIsActiveModal] = useState(false);
-
-    const showModal = () => {
-        setIsActiveModal(true);
+    // show modal
+    const showModal = (item) => {
+        setIsActiveModal({
+            ...isActiveModal,
+            active: true,
+            idDelete: item.id
+        });
     };
-
-    const handleOk = () => {
+    const handleOk = (id) => {
         setIsActiveModal(false);
+        handleDelete(id)
     };
 
     const handleCancel = () => {
         setIsActiveModal(false);
     };
-    const handleUpdateField = (e, field, type) => {
-        if (type === "drop-down") {
-            return setDataFilter({
-                ...dataFilter,
-                [field]: e ? e.value : null,
-            })
-        }
-        if (type === "date") {
-            return setDataFilter({
-                ...dataFilter,
-                [field]: e ? `${e.format('YYYY-MM-DD')}` : null
-            })
-        }
-        return (
-            setDataFilter({
-                ...dataFilter,
-                [field]: e.target.value
-            })
-        )
-    }
-    const resetFilter = () => {
-
-    }
-    const parseData = (item) => {
-        if (true) {
-            return <CloseCircleFilled />
-        }
-    }
-    const renderAcion = () => {
-        return (
-            <Space size="middle">
-                <EditFilled className="color-green action-table" />
-                <CloseCircleFilled className="color-red action-table" />
-            </Space>
-        )
-    }
     const handleSearch = () => {
         dispatch(getApiService());
     };
-
-    const handleEdit = () => {
-
-    }
-
+    const handleDelete = () => {
+        dispatch(deleteApiService(isActiveModal.idDelete))
+    };
 
 
     const columns = [
         {
-            title: 'Action',
+            title: 'Thao tác',
             key: 'action',
-            render: () => (
+            render: (item) => (
                 <Space size="middle">
                     <EditFilled
                         className="color-green action-table"
-                    // onClick={()}
+                        onClick={() => navigate(urlRouter.UPDATE_SERVICE, { state: item })}
                     />
                     <CloseCircleFilled
                         className="color-red action-table"
+                        onClick={() => showModal(item)}
                     />
                 </Space>
             ),
@@ -130,11 +99,17 @@ const Service = () => {
             title: 'Đơn giá ($)',
             dataIndex: 'price',
             key: 'price',
+            render: (item) => (
+                convertStringToStringsNoDecimal(item)
+            ),
         },
         {
             title: 'Đang dùng',
             dataIndex: 'using',
             key: 'using',
+            render: (item) => (
+                item ? "Đang sử dụng" : "Không sử dụng"
+            ),
         },
     ];
     return (
@@ -185,15 +160,11 @@ const Service = () => {
                 />
             </div>
             <div>
-                <Modal title="Basic Modal"
-                    open={isActiveModal}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                </Modal>
+                <div>
+                    <Modal title='Xác nhận hành động' open={isActiveModal.active} onOk={handleOk} onCancel={handleCancel}>
+                        <p>Bạn có chắc chắn xóa không</p>
+                    </Modal>
+                </div>
             </div>
         </>
     )
