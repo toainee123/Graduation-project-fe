@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { ToastContainer, toast } from 'react-toastify';
 import Printform from './Printform';
-import Templatesms from './Templatesms';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
 import axios from 'axios';
 import moment from 'moment';

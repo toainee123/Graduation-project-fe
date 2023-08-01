@@ -20,7 +20,7 @@ import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomer
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import CreateSevice from 'src/pages/admin/service/CreateService';
-import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
+import UpdateService from 'src/pages/admin/service/UpdateService/index';
 import HomePage from '../pages/admin/homePage/index';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
@@ -76,14 +76,14 @@ export const adminRoutes = [
   {
     path: urlRouter.SERVICE,
     component: Service,
-    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
+    children: [{ path: urlRouter.SERVICE,component: Service,index: true }],
   },
   {
     path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
-    component: CreateSevice,
+    component: UpdateService,
   },
   {
-    path: `${urlRouter.SERVICE}/:id`,
+    path: `${urlRouter.SERVICE}`,
     component: UpdateService,
   },
   {
@@ -149,7 +149,7 @@ export const adminRoutes = [
     path: 'pg',
     component: Pg,
     children: [
-      { path: urlRouter.LIST_PG, component: ListPg, index: true },
+      { path: urlRouter.LIST_PG,component: ListPg,index: true },
 
     ],
   },

@@ -53,7 +53,7 @@ export const getEstablish = async () => {
 };
 
 export const sendMailBill = async (data: any) => {
-    const url = `/dashboard/send-email`;
+    const url = `/dashboard/send-many-email`;
     return axiosClient.post(url, data);
 };
 

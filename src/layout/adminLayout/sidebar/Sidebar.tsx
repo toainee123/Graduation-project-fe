@@ -80,15 +80,15 @@ const Sidebar = (props: Props) => {
     //   key: '5',
     //   icon: <MailOutlined />,
     // },
-    // {
-    //   label: (
-    //     <Link className='label-router' to={urlRouter.ARISE}>
-    //       Phát sinh
-    //     </Link>
-    //   ),
-    //   key: '6',
-    //   icon: <FormOutlined />,
-    // },
+    {
+      label: (
+        <Link className='label-router' to={urlRouter.ARISE}>
+          Phát sinh
+        </Link>
+      ),
+      key: '6',
+      icon: <FormOutlined />,
+    },
     // {
     //   label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
     //   key: '7',
@@ -184,7 +184,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-        // selectedKeys={[current]}
+          // selectedKeys={[current]}
         />
         <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
