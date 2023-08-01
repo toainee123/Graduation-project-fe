@@ -114,7 +114,7 @@ const Arise = () => {
                     <h1>Danh sách phát sinh</h1>
                 </div>
                 <div className='action'>
-                    <Link to={urlRouter.ADD_SERVICE}>
+                    <Link to={urlRouter.ADD_ARISE}>
                         <Button type='primary'>
                             {' '}
                             <PlusOutlined style={{ fontSize: 15 }} />
