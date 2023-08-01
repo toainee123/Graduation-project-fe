@@ -16,6 +16,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
   const navigate = useNavigate();
   const [countImg, setCountImg] = useState([]);
   const search = useLocation().search;
+  const [linkImage, setLinkImage] = useState('');
   const keyLocation = new URLSearchParams(search).get('key');
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
@@ -58,7 +59,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           uid: '-1',
           name: 'image.png',
           status: 'done',
-          url: 'http://localhost:5000/api/public/1691652617418.cu-cho-thu-nay-vao-vi-tien-bao-sao-ban-ngheo-ben-vung-hinh-2.jpg',
+          url: fakeData?.image,
         },
       ]);
     }
@@ -75,9 +76,12 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
     setLimitPrice(value);
   };
   const onFinish = async (values: any) => {
+    console.log(values);
+
     if (keyLocation === null) {
       const payload = {
         ...values,
+        image: linkImage,
         host: true,
         roomId: detailRoom.id,
         bod: convertDateAntd(values.bod),
@@ -105,6 +109,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       //Call api update
       const payload = {
         ...values,
+        image: linkImage,
         memberId: getData.memberid,
         bod: convertDateAntd(values.bod),
         date: convertDateAntd(values.date),
@@ -156,6 +161,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
               url: resp?.link,
             },
           ]);
+          setLinkImage(resp?.link);
         })
         .catch((err: any) => {
           console.log('err', err);
