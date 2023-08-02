@@ -5,9 +5,11 @@ export const createAsset = async (assets: any) => {
     const url = `/asset`;
     return axiosClient.post(url, assets);
 };
-export const getListAssets = async () => {
+export const getListAssets = async (data: any) => {
     const url = `/asset`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, {
+        params: data,
+    });
 };
 
 export const getAsset = async (id: any) => {
