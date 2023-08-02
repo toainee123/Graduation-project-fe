@@ -155,8 +155,7 @@ const NavRoom = () => {
             <div className="xl:flex justify-between items-center mt-4">
                 <div className='inline-block'>
                     <span className='font-semibold text-base px-2'>Còn trống {house?.room?.roomAvailable}</span>
-                    <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê {house?.room?.roomAlready}</span>
-                    <span className='font-semibold text-base px-2'>Chưa thu phí</span>
+                    <span className='font-semibold text-base px-2  border-l-2 border-black'>Đã cho thuê {house?.room?.roomAlready}</span>
                 </div>
                 <div className='md:my-2'>
                     <Link to="listMember">
