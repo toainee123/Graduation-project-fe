@@ -20,7 +20,6 @@ import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomer
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import CreateSevice from 'src/pages/admin/service/CreateService';
-import UpdateService from 'src/pages/admin/service/UpdateService/index';
 import HomePage from '../pages/admin/homePage/index';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
@@ -34,6 +33,7 @@ import TemplateEmail from 'src/pages/admin/sendEmail';
 import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
 import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
 import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
+import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
 
 export const adminRoutes = [
   {
@@ -76,14 +76,14 @@ export const adminRoutes = [
   {
     path: urlRouter.SERVICE,
     component: Service,
-    children: [{ path: urlRouter.SERVICE,component: Service,index: true }],
+    children: [{ path: urlRouter.SERVICE, component: Service, index: true }],
   },
   {
     path: `${urlRouter.SERVICE}/${urlRouter.ADD_SERVICE}`,
-    component: UpdateService,
+    component: CreateSevice,
   },
   {
-    path: `${urlRouter.SERVICE}`,
+    path: `${urlRouter.SERVICE}/:id`,
     component: UpdateService,
   },
   {
@@ -153,7 +153,7 @@ export const adminRoutes = [
     path: 'pg',
     component: Pg,
     children: [
-      { path: urlRouter.LIST_PG,component: ListPg,index: true },
+      { path: urlRouter.LIST_PG, component: ListPg, index: true },
 
     ],
   },

@@ -22,7 +22,7 @@ const Service = () => {
 
   useEffect(() => {
     const ListService = async () => {
-      const { data } = await getListService();
+      const { data } = await getListService({});
       setList(data.responses);
 
       const response = await getServicee(roomId);
@@ -41,7 +41,7 @@ const Service = () => {
     await deleteService(id)
       .then((resp) => {
         const getDeposit = async () => {
-          const { data } = await getListService();
+          const { data } = await getListService({});
           setList(data.result);
         };
         getDeposit();
