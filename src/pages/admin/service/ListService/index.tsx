@@ -1,5 +1,5 @@
 import { ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Space, message, Modal } from 'antd';
+import { Button, Input, Space, message, Modal, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import './style.scss';
@@ -10,11 +10,10 @@ import { Table } from 'antd';
 const Service = () => {
   const [list, setList] = useState([]);
   const { confirm } = Modal;
-  const [isLoading, setIsLoading] = useState(true);
   const [messageApi] = message.useMessage();
   useEffect(() => {
     const ListService = async () => {
-      const { data } = await getListService();
+      const { data } = await getListService({});
       setList(data.responses);
     };
     ListService();
@@ -32,7 +31,7 @@ const Service = () => {
         await deleteService(id)
           .then((resp) => {
             const ListService = async () => {
-              const { data } = await getListService();
+              const { data } = await getListService({});
               setList(data.responses);
             };
             ListService();
@@ -81,6 +80,21 @@ const Service = () => {
       ),
     },
   ];
+  const onSubmit = (result: any) => {
+    if (result) {
+      const listService = async (result: any) => {
+        const { data } = await getListService(result);
+        setList(data.responses);
+      };
+      listService(result);
+    } else {
+      const getDeposit = async () => {
+        const { data } = await getListService({});
+        setList(data.responses);
+      };
+      getDeposit();
+    }
+  };
 
   return (
     <>
@@ -107,12 +121,16 @@ const Service = () => {
         </p>
       </div>
       <div className='render-input'>
-        <Input
-          // value={dataFilter[item.field]}
-          placeholder='Tên'
-          // onChange={e => handleUpdateField(e, item.field, item.type)}
-        />
-        <Button type='primary'>Tìm</Button>
+        <Form name='myForm' onFinish={onSubmit} style={{ display: 'flex' }}>
+          <Form.Item name='name' rules={[{ required: true, message: 'Vui lòng không được bỏ trống!' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Tìm kiếm
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
       <Table dataSource={list} columns={columns} rowKey='name' />
     </>

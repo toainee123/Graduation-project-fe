@@ -5,9 +5,11 @@ export const createService = async (service: any) => {
     return axiosClient.post(url, service);
 };
 
-export const getListService = async () => {
+export const getListService = async (data: any) => {
     const url = `/service`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, {
+        params: data,
+    });
 };
 
 export const getService = async (id: number) => {

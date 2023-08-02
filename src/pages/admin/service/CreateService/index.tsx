@@ -11,7 +11,6 @@ const CreateSevice = () => {
   const handleChange = (value: any) => {
     console.log('Selected value:', value);
     setChangeCode(value);
-    // You can use the selected value in your logic or state management
   };
   const Onsubmit = (data: any) => {
     console.log('data', data);
