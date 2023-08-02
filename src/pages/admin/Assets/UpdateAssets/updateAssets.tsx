@@ -1,30 +1,35 @@
-import React from 'react';
-import { DatePicker, DatePickerProps, Select, Radio } from 'antd';
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
-import { urlRouter } from 'src/utils/constants';
-import { getListDeposit } from 'src/api/deposit';
-import { getListHouse } from 'src/api/house';
-import { getRoom } from 'src/api/charge';
-import { getAsset, updateAsset } from 'src/api/assets';
+import { getValue } from '@testing-library/user-event/dist/utils';
+import { DatePicker, DatePickerProps, Form, Input, Select, message } from 'antd';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAsset, updateAsset } from 'src/api/assets';
+import { getRoom } from 'src/api/charge';
+import { getListHouse } from 'src/api/house';
 const UpdateAssets = () => {
-  const { handleSubmit, register, reset, setValue, getValues } = useForm();
+  const { handleSubmit, register, reset, setValue } = useForm();
+  const [form] = Form.useForm();
   const [house, setHouse] = useState([]);
   const [homeId, setHomeId] = useState([]);
   const [room, setRoom] = useState([]);
   const [roomId, setRoomId] = useState([]);
   const [dataUse, setDateUse] = useState('');
-  const [dateLiquidation, setDateLiquidation] = useState('');
-  const [isLiquidation, setIsLiquidation] = useState(true);
+  const [estimateTimeOrderFrom, setEstimateTimeOrderFrom] = useState('');
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAssetByID = async () => {
       const { data } = await getAsset(id);
-      reset(data);
-      setIsLiquidation(data.isliquidation);
+      form.setFieldsValue({
+        houseId: data.houseId,
+        roomId: data.roomId,
+        price: data.price,
+        name: data.name,
+        dateUse: moment(data.dateuse),
+        amount: data.amount,
+      });
     };
     const getHouse = async () => {
       const { data } = await getListHouse();
@@ -33,6 +38,10 @@ const UpdateAssets = () => {
     getHouse();
     getAssetByID();
   }, [id]);
+
+  const estimateTimeOrder: DatePickerProps['onChange'] = (date, dateString) => {
+    setEstimateTimeOrderFrom(dateString);
+  };
   const handleChangeHomeId = async (value: any) => {
     setValue('houseId', value);
     setHomeId(value);
@@ -47,20 +56,6 @@ const UpdateAssets = () => {
   const handleChangeRoomId = (value: any) => {
     setRoomId(value);
   };
-  const handleRadioChange = (e: any) => {
-    console.log('value', e.target.value);
-    setValue('isLiquidation', e.target.value);
-    setIsLiquidation(e.target.value);
-  };
-  const dateUseAsset: DatePickerProps['onChange'] = (date, dateString) => {
-    setDateUse(dateString);
-    setValue('dateuse', moment(dateString, 'YYYY-MM-DD'));
-  };
-  const DateLiquidation: DatePickerProps['onChange'] = (date, dateString) => {
-    setDateLiquidation(dateString);
-    setValue('dateLiquidation', moment(dateString, 'YYYY-MM-DD'));
-    console.log('dateString', dateString);
-  };
 
   const Onsubmit = async (data: any) => {
     const result = {
@@ -69,157 +64,130 @@ const UpdateAssets = () => {
       name: data.name,
       amount: data.amount,
       price: data.price,
-      isLiquidation: isLiquidation,
-      dateUse: data.dateuse,
-      dateLiquidation: null && dateLiquidation,
+      dateUse: estimateTimeOrderFrom,
     };
-    await updateAsset(id, isLiquidation === true ? { ...result, dateLiquidation: dateLiquidation } : result)
+    await updateAsset(id, result)
       .then((res) => {
-        console.log('successfull');
-        console.log('res', res.data);
+        message.success(`Cập nhật thành công`);
+        setTimeout(() => {
+          navigate(-1);
+        }, 1000);
       })
       .catch((err) => {
-        console.log(err.message);
+        message.error(err.message);
       });
   };
   return (
     <div>
       <div>
-        <h1 className='text-lg font-medium mt-3'>Thêm mới tài sản</h1>
-        <div className='mt-8'>
-          <form onSubmit={handleSubmit(Onsubmit)}>
-            <div className='flex justify-between items-center gap-12 py-3'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
-                Nhà <b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px'>
-                <Select
-                  defaultValue='Danh sách nhà'
-                  size='large'
-                  className='w-full'
-                  value={getValues('houseId')}
-                  {...register('houseId')}
-                  onChange={handleChangeHomeId}
-                >
-                  {house.map((item: any) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
-                Phòng <b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px'>
-                <Select
-                  defaultValue='Danh sách phòng'
-                  size='large'
-                  value={getValues('roomId')}
-                  {...register('nameRoom')}
-                  className='w-full'
-                  onChange={handleChangeRoomId}
-                >
-                  {room.map((item: any) => (
-                    <Select.Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <div className='flex justify-between items-center gap-12 py-3'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
-                Tên tài sản <b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px'>
-                <input
-                  className='border-2 p-4 outline-0 w-full h-58px'
-                  type='text'
-                  placeholder='Tên tài sản'
-                  {...register('name')}
-                />
-              </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
-                Giá tài sản<b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px'>
-                <input
-                  type='number'
-                  className='border-2 p-4 outline-0 w-full h-58px'
-                  placeholder='Giá tài sản'
-                  {...register('price')}
-                  width={500}
-                  height={50}
-                />
-              </div>
-            </div>
-            <div className='flex justify-between items-center gap-12 py-3'>
-              <label htmlFor='' className='w-64 text-base font-semibold flex items-center'>
-                Số lượng<b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px'>
-                <input
-                  className='border-2 p-4 outline-0 w-full h-58px'
-                  type='number'
-                  placeholder='Số lượng'
-                  {...register('amount')}
-                />
-              </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
-                Tình trạng <b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px flex items-center'>
-                <Radio.Group onChange={handleRadioChange} value={isLiquidation}>
-                  <Radio value={true}>Đã thanh lý</Radio>
-                  <Radio value={false}>Chưa thanh lý</Radio>
-                </Radio.Group>
-              </div>
-            </div>
-            <div className='flex justify-between items-center gap-12 py-3'>
-              <label htmlFor='' className='w-64 text-base font-semibold flex items-center'>
-                Ngày sử dụng<b className='color-red'>*</b>
-              </label>
-              <div className='w-full h-58px '>
-                <DatePicker
-                  className='w-full h-58px'
-                  value={moment(getValues('dateuse'), 'YYYY-MM-DD')}
-                  onChange={dateUseAsset}
-                  name='estimateTimeOrder'
-                />
-              </div>
-            </div>
-            {isLiquidation === true ? (
-              <div className=''>
-                <label htmlFor='' className='text-base font-semibold flex items-center'>
-                  Ngày thanh lý
+        <div className='title_page'>
+          <h1>Cập nhật dịch vụ</h1>
+        </div>
+        <div className='float-right '>
+          <button
+            onClick={() => navigate(-1)}
+            className='focus:outline-none text-black bg-gray-300  hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'
+          >
+            <i className='fa-solid fa-angles-left'></i> Quay về
+          </button>
+        </div>
+        <div className='mt-8' style={{ marginTop: 80 }}>
+          <div className='mt-8'>
+            <Form size='large' form={form} onFinish={Onsubmit}>
+              <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Nhà
                 </label>
-                <div className='w-full h-58px'>
-                  <DatePicker
-                    className='w-full h-58px'
-                    value={moment(getValues('dateliquidation'), 'YYYY-MM-DD')}
-                    {...register('dateliquidation')}
-                    onChange={DateLiquidation}
-                    name='dateLiquidation'
-                  />
+                <div className='w-full'>
+                  <Form.Item name='houseId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <Select defaultValue='Danh sách nhà' size='large' className='w-full' onChange={handleChangeHomeId}>
+                      {house.map((item: any, i: any) => (
+                        <Select.Option key={i} value={item.id}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Phòng số
+                </label>
+                <div className='w-full items-center'>
+                  <Form.Item name='roomId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <Select
+                      defaultValue='Danh sách phòng'
+                      size='large'
+                      className='w-full'
+                      onChange={handleChangeRoomId}
+                    >
+                      {room.map((item: any, i: any) => (
+                        <Select.Option key={i} value={item.id}>
+                          {item.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
                 </div>
               </div>
-            ) : (
-              ''
-            )}
-            <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
-              <div>
-                <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'>
-                  <i className='fa-solid fa-check'></i> Gửi
-                </button>
-                <Link to={`/admin/${urlRouter.CREATE_KEEP_ROOM}`}>
-                  <button className='text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 '>
-                    Hủy
-                  </button>
-                </Link>
+              <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Tên tài sản
+                </label>
+                <div className='w-full'>
+                  <Form.Item name='name' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <Input
+                      type='text'
+                      style={{ borderRadius: 6 }}
+                      className='w-full outline-0 md: my-2'
+                      placeholder='Tên sản sản'
+                    />
+                  </Form.Item>
+                </div>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Số lượng
+                </label>
+                <div className='w-full'>
+                  <Form.Item name='amount' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <Input
+                      type='number'
+                      style={{ borderRadius: 6, width: 100 }}
+                      className='w-full outline-0 md: my-2'
+                      placeholder='Số lượng'
+                    />
+                  </Form.Item>
+                </div>
               </div>
-            </div>
-          </form>
+              <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Giá
+                </label>
+                <div className='w-full'>
+                  <Form.Item name='price' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <Input
+                      className='w-full outline-0 items-center md: my-2'
+                      type='number'
+                      placeholder='Diện tích phòng (m2)'
+                    />
+                  </Form.Item>
+                </div>
+                <label htmlFor='' className='w-64 text-base font-semibold'>
+                  Ngày sử dụng
+                </label>
+                <div className='w-full'>
+                  <Form.Item name='dateUse' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                    <DatePicker className='w-full' onChange={estimateTimeOrder} name='estimateTimeOrder' />
+                  </Form.Item>
+                </div>
+              </div>
+              <Form.Item>
+                <div className='sticky bottom-0 mt-8 bg-gray-100 border rounded flex justify-end'>
+                  <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  '>
+                    <i className='fa-solid fa-check'></i> Gửi
+                  </button>
+                </div>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
       </div>
     </div>

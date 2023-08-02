@@ -1,17 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Input, Space, Table, message } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { update } from 'src/api/house';
-import {
-  createRoomService,
-  deleteService,
-  getListService,
-  getService,
-  getServicee,
-  updateService,
-} from 'src/api/service';
-import { urlRouter } from 'src/utils/constants';
+import { Button, Table, message } from 'antd';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { deleteService, getListService, getServicee, updateService } from 'src/api/service';
 
 const Service = () => {
   const [selectedRow, setSelectedRow] = useState<any>();

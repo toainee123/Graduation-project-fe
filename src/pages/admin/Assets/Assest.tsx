@@ -1,9 +1,11 @@
-import { ExclamationCircleFilled, QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, message } from 'antd';
+import { ExclamationCircleFilled, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, message, Modal, Select, Input, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getListAssets } from 'src/api/assets';
-import NavAssets from 'src/components/admin/assset/navAssets';
+import { deleteAsset, getListAssets } from 'src/api/assets';
+import { getRoom } from 'src/api/charge';
+import { getListDeposit } from 'src/api/deposit';
+import { getListHouse } from 'src/api/house';
 import { convertDate } from 'src/utils/helps';
 
 const column = [
@@ -39,44 +41,151 @@ const column = [
 ];
 
 const Assets = () => {
+  const { confirm } = Modal;
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [messageApi] = message.useMessage();
   const info = () => {
     messageApi.success('Đã xác nhận thành công');
   };
+  const [house, setHouse] = useState([]);
+  const [homeId, setHomeId] = useState([]);
+  const [room, setRoom] = useState([]);
+  const [roomId, setRoomId] = useState([]);
 
   useEffect(() => {
     const listAssets = async () => {
-      const { data } = await getListAssets();
+      const { data } = await getListAssets({});
       setData(data.responses);
     };
     listAssets();
+    const getDeposit = async () => {
+      const { data } = await getListDeposit({});
+      setData(data.responses);
+    };
+    const getHouse = async () => {
+      const { data } = await getListHouse();
+      setHouse(data.result);
+    };
+    getHouse();
+    getDeposit();
   }, []);
-  const showDeleteConfirm = () => {
+
+  const handleChangeHomeId = async (value: any) => {
+    setHomeId(value);
+    const getRoomWithHomeId = await getRoom(value)
+      .then((res) => {
+        setRoom(res.data.result.responses);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  const showDeleteConfirm = (id: any) => {
     confirm({
-      title: 'Are you sure delete this task?',
+      title: 'Bạn có muốn xóa dịch vụ này không ?',
       icon: <ExclamationCircleFilled />,
-      content: 'Some descriptions',
-      okText: 'Yes',
+      content: 'Lưu ý: Toàn bộ dữ liệu về dịch vụ này sẽ bị xóa',
+      okText: 'Có',
       okType: 'danger',
-      cancelText: 'No',
-      onOk() {
-        console.log('OK');
+      cancelText: 'Không',
+      async onOk() {
+        await deleteAsset(id)
+          .then((resp) => {
+            const listAssets = async () => {
+              const { data } = await getListAssets({});
+              setData(data.responses);
+            };
+            listAssets();
+            if (resp.status === 200) {
+              message.success('Xóa thành công');
+            }
+          })
+          .catch((err) => {
+            message.error(err.message);
+          });
       },
       onCancel() {
         console.log('Cancel');
       },
     });
+    console.log(1);
   };
-  const confirm = async (id: any) => {};
+  const handleChangeRoomId = (value: any) => {
+    setRoomId(value);
+  };
+  const Onsubmit = (data: any) => {
+    console.log('data', data);
+    const result = {
+      houseId: data.houseId,
+      roomId: data.roomId,
+      search: data.search,
+    };
+    if (result) {
+      const listAssets = async (result: any) => {
+        const { data } = await getListAssets(result);
+        setData(data.responses);
+      };
+      listAssets(result);
+    } else {
+      const getDeposit = async () => {
+        const { data } = await getListAssets({});
+        setData(data.responses);
+      };
+      getDeposit();
+    }
+  };
   return (
     <div className='room'>
       <div className='title_page'>
         <h1>Danh sách tài sản</h1>
       </div>
-
-      <NavAssets />
+      <div className='flex justify-end items-center mt-4'>
+        <div className=''>
+          <Link to='/admin/create-assets'>
+            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
+              {' '}
+              <i className='fa-solid fa-users'></i> Thêm mới tài sản
+            </button>
+          </Link>
+        </div>
+      </div>
+      <div className='room_form' style={{ marginTop: 30 }}>
+        <Form action='' onFinish={Onsubmit}>
+          <div className='flex'>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='houseId'>
+                <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
+                  {house.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='roomId'>
+                <Select defaultValue='Danh sách phòng' onChange={handleChangeRoomId}>
+                  {room.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item name='search'>
+                <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
+              </Form.Item>
+            </div>
+            <button className='btn_search ml-3'>
+              <SearchOutlined /> Tìm kiếm
+            </button>
+          </div>
+        </Form>
+      </div>
       <br />
       <div className='flex flex-col'>
         <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
@@ -100,12 +209,7 @@ const Assets = () => {
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                       Ngày bắt đầu sử dụng
                     </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Trạng thái tài sản
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Thời gian thanh lý
-                    </th>
+
                     <th scope='col' colSpan={2} className='text-sm font-medium text-gray-900 px-6 py-4 text-left'></th>
                   </tr>
                 </thead>
@@ -124,23 +228,12 @@ const Assets = () => {
                       <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
                         {convertDate(item?.dateuse)}
                       </td>
-                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
-                        {item.isliquidation === true ? 'Đã thanh lý' : 'Chưa thanh lý'}
-                      </td>
-                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
-                        {item.dateliquidation === null
-                          ? 'Không có thời gian thanh lý'
-                          : convertDate(item.dateliquidation)}
-                      </td>
+
                       <td className='flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
                         <div>
-                          <Popconfirm
-                            title='Bạn có muốn xóa không ?'
-                            onConfirm={() => confirm(item.id)}
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                          >
-                            <Button danger>Xóa</Button>
-                          </Popconfirm>
+                          <Button onClick={() => showDeleteConfirm(item.id)} danger>
+                            Xóa
+                          </Button>
                         </div>
                         <div className='ml-2'>
                           <Link to={`/admin/assets/${item.id}`}>

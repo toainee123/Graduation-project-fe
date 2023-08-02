@@ -80,7 +80,10 @@ const Service = () => {
       ),
     },
   ];
-  const onSubmit = (result: any) => {
+  const onSubmit = (data: any) => {
+    const result = {
+      search: data.name,
+    };
     if (result) {
       const listService = async (result: any) => {
         const { data } = await getListService(result);

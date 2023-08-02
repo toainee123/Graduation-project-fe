@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Input, message, Modal, Select, Upload, UploadProps } from 'antd';
+import { Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
@@ -69,7 +69,6 @@ const NavAssets = () => {
   };
 
   const handleChangeRoomId = (value: any) => {
-    console.log(value, ' value');
     setRoomId(value);
   };
 
@@ -84,34 +83,64 @@ const NavAssets = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
+  // const Onsubmit = async (data: any) => {
+  //   console.log('data', data);
+  //   const result = {
+  //     houseId: data.houseId,
+  //     roomId: data.roomId,
+  //     search: data.search
+  //   }
+  //   if (result) {
+  //     const listService = async (result: any) => {
+  //       const { data } = await get(result);
+  //       setList(data.responses);
+  //     };
+  //     listService(result);
+  //   } else {
+  //     const getDeposit = async () => {
+  //       const { data } = await getListService({});
+  //       setList(data.responses);
+  //     };
+  //     getDeposit();
+  //   }
+  // };
   return (
     <div className='room_selected row'>
       <div className='room_form' style={{ marginTop: 30 }}>
-        <form action=''>
-          <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
-            {house.map((item: any) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-          <Select
-            defaultValue='Danh sách phòng'
-            onChange={handleChangeRoomId}
-            style={{ marginLeft: 20, marginRight: 20 }}
-          >
-            {room.map((item: any) => (
-              <Select.Option key={item.id} value={item.id}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-          <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
-          <button className='btn_search ml-3'>
-            <SearchOutlined /> Tìm kiếm
-          </button>
-        </form>
+        <Form action=''>
+          <div className='flex'>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='houseId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
+                  {house.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='roomId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                <Select defaultValue='Danh sách phòng' onChange={handleChangeRoomId}>
+                  {room.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item name='search'>
+                <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
+              </Form.Item>
+            </div>
+            <button className='btn_search ml-3'>
+              <SearchOutlined /> Tìm kiếm
+            </button>
+          </div>
+        </Form>
       </div>
       <div className='flex justify-end items-center mt-4'>
         <div className=''>
