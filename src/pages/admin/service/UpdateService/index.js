@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import './style.scss';
 import { Checkbox, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
-import { useDispatch } from 'react-redux';
-import { postApiService } from './api';
+import { useDispatch, useSelector } from 'react-redux';
+import { getApiDetailService, postApiService, putApiService } from './api';
 import './style.scss'
-import { checkBoxType, listItemService, numberType, selectType, textAreaType, textType } from './constant';
+import { listItemService } from './constant';
+import moment from 'moment';
+import { clearStore } from './reducer';
 
 
 
 const UpdateSevice = () => {
+    const
+        updateServiceStore
+            = useSelector((state) => state.updateService)
+    const {
+        addService,
+        detailService, // chi tiết service
+        updateService, // chi tiết service
+    } = updateServiceStore
+    const { state } = useLocation()
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // console.log(addService)
     const [dataRequest, setDataRequest] = useState({
         serviceName: null,
         serviceType: null,
@@ -19,18 +32,48 @@ const UpdateSevice = () => {
         using: null,
         serviceDescription: null,
     })
-    // 
+
+    useEffect(() => {
+        if (addService && addService.id && !state) {
+            dispatch(clearStore())
+            navigate(`/admin/${urlRouter.SERVICE}`)
+        }
+    }, [addService])
+    useEffect(() => {
+        if (updateService && updateService.id && state) {
+            dispatch(clearStore())
+            navigate(`/admin/${urlRouter.SERVICE}`)
+        }
+    }, [updateService])
+    useEffect(() => {
+        if (state && state.id) {
+            dispatch(getApiDetailService(state.id))
+        }
+    }, [state])
+    useEffect(() => {
+        if (detailService && detailService.id) {
+            setDataRequest(detailService)
+        }
+    }, [detailService])
+
+    console.log(dataRequest)
     const handleUpdateField = (e, field, type) => {
-        if (type === checkBoxType) {
+        if (type === "CHECK-BOX") {
             return setDataRequest({
                 ...dataRequest,
                 [field]: e.target.checked
             })
         }
-        if (type === selectType) {
+        if (type === "SELECT") {
             return setDataRequest({
                 ...dataRequest,
                 [field]: e
+            })
+        }
+        if (type === "DATE") {
+            return setDataRequest({
+                ...dataRequest,
+                [field]: moment(e).format("YYYY/MM/DD")
             })
         }
         return setDataRequest({
@@ -38,9 +81,21 @@ const UpdateSevice = () => {
             [field]: e.target.value
         })
     }
+    const handleAdd = () => {
+        const newDataRequestAddService = {
+            ...dataRequest,
+        }
+        dispatch(postApiService(newDataRequestAddService))
+    }
+    const handleEdit = () => {
+        const newDataRequestAddService = {
+            ...dataRequest,
+        }
+        dispatch(putApiService(newDataRequestAddService))
+    }
 
     const renderItem = (item) => {
-        if (item.type === textType) {
+        if (item.type === "TEXT") {
             return (
                 <div
                     className='col-6 justify-between items-center flex float-left'
@@ -51,12 +106,18 @@ const UpdateSevice = () => {
                         </label>
                     </div>
                     <div className='col-75'>
-                        <input className='w-full border-2 p-4 outline-0' type='text' onChange={e => handleUpdateField(e, item.field, item.type)} placeholder={item.placeholder} />
+                        <input
+                            className='w-full border-2 p-4 outline-0'
+                            type='text'
+                            onChange={e => handleUpdateField(e, item.field, item.type)}
+                            placeholder={item.placeholder}
+                            value={dataRequest[item.field]}
+                        />
                     </div>
                 </div>
             )
         }
-        if (item.type === numberType) {
+        if (item.type === "NUMBER") {
             return (
                 <div
                     className='col-6 justify-between items-center flex float-left'
@@ -67,12 +128,17 @@ const UpdateSevice = () => {
                         </label>
                     </div>
                     <div className='col-75'>
-                        <input className='w-full border-2 p-4 outline-0' type='number' onChange={e => handleUpdateField(e, item.field, item.type)} placeholder={item.placeholder} />
+                        <input
+                            className='w-full border-2 p-4 outline-0'
+                            type='number'
+                            onChange={e => handleUpdateField(e, item.field, item.type)} placeholder={item.placeholder}
+                            value={dataRequest[item.field]}
+                        />
                     </div>
                 </div>
             )
         }
-        if (item.type === selectType) {
+        if (item.type === "SELECT") {
             return (
                 <div
                     className='col-6 justify-between items-center flex float-left'
@@ -101,12 +167,13 @@ const UpdateSevice = () => {
                                     label: 'Economy',
                                 },
                             ]}
+                            value={dataRequest[item.field]}
                         />
                     </div>
                 </div>
             )
         }
-        if (item.type === textAreaType) {
+        if (item.type === "TEXT-AREA") {
             return (
                 <div
                     className='col-12 justify-between items-center flex float-left'
@@ -120,14 +187,15 @@ const UpdateSevice = () => {
                         <textarea
                             className='w-full border-2 p-4'
                             rows={5}
-                            onChange={e => handleUpdateField(e, item.field, textAreaType)}
-                            placeholder='Thông tin ghi chú ...'
+                            onChange={e => handleUpdateField(e, item.field, item.type)}
+                            placeholder={item.placeholder}
+                            value={dataRequest[item.field]}
                         />
                     </div>
                 </div>
             )
         }
-        if (item.type === checkBoxType) {
+        if (item.type === "CHECK-BOX") {
             return (
                 <div
                     className='col-6 justify-between items-center flex float-left'
@@ -140,19 +208,12 @@ const UpdateSevice = () => {
                     <div className='col-75 h-58'>
                         <Checkbox
                             onChange={e => handleUpdateField(e, item.field, item.type)}
+                            checked={dataRequest[item.field]}
                         />
                     </div>
                 </div>
             )
         }
-    }
-
-    const onHandleAddService = () => {
-        const newDataRequestAddService = {
-            ...dataRequest,
-        }
-        console.log(newDataRequestAddService)
-        // dispatch(postApiService(newDataRequestAddService))
     }
 
     return (
@@ -208,7 +269,7 @@ const UpdateSevice = () => {
                     </label>
                     <div className='w-full'>
                         <Checkbox
-                            onChange={e => handleUpdateField(e, "using", "checkbox")}
+                            onChange={e => handleUpdateField(e, "using", "CHECK-BOX")}
                         />
                     </div>
                 </div>
@@ -231,12 +292,23 @@ const UpdateSevice = () => {
                 </div>
                 <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
                     <div>
-                        <button
-                            onClick={onHandleAddService}
-                            className='text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
-                        >
-                            Thêm dịch vụ
-                        </button>
+                        {state && state.id ? (
+                            <button
+                                className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                                onClick={() => handleEdit()}
+                            >
+                                <i className='fa-solid fa-check'></i>
+                                Cập nhật
+                            </button>
+                        ) : (
+                            <button
+                                className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                                onClick={() => handleAdd()}
+                            >
+                                <i className='fa-solid fa-check'></i>
+                                Thêm mới
+                            </button>
+                        )}
                         <Link
                             to={`/admin/${urlRouter.SERVICE}`}
                         >

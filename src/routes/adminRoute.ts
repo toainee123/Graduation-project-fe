@@ -103,6 +103,10 @@ export const adminRoutes = [
     component: UpdateArise,
   },
   {
+    path: `${urlRouter.ARISE}/${urlRouter.UPDATE_ARISE}`,
+    component: UpdateArise,
+  },
+  {
     path: urlRouter.PAYMENT,
     component: Payment,
   },
