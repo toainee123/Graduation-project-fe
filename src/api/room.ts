@@ -12,6 +12,10 @@ export const getAllRoom = async () => {
     const url = `/room/list-room`
     return axiosClient.get(url)
 };
+export const deleteRooms = async (roomId: any) => {
+    const url = `/room/${roomId}`
+    return axiosClient.delete(url)
+};
 
 export const getRoom = async (id: any, query?: any) => {
     const url = `/room/${id}`;

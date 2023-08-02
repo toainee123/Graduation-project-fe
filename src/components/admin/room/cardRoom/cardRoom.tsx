@@ -8,7 +8,7 @@ import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { HouseSliceAction, deleteHouse, editHouse, getAllHouse, selectFilterHouse } from 'src/features/room/houseSlice';
-import { GetOutRoomTenant } from 'src/features/room/roomSlice';
+import { GetOutRoomTenant, deleteRoom } from 'src/features/room/roomSlice';
 
 const { confirm } = Modal;
 
@@ -117,7 +117,35 @@ const CardRoom = ({ idHouse }: any) => {
       },
     });
   };
-
+  const showConfirmDeleteRoom = (roomId: any) => {
+    confirm({
+      title: 'Xác nhận khách trả phòng',
+      icon: <ExclamationCircleFilled />,
+      // content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa về mặc định !',
+      okText: 'Đồng ý',
+      okType: 'danger',
+      cancelText: 'Thoát',
+      onOk() {
+        dispatch(deleteRoom(roomId))
+          .unwrap()
+          .then((resp) => {
+            message.success('Trả phòng thành công');
+            const fetchRoom = async () => {
+              const { data } = await getRoom(idHouse);
+              setListRoom(data.result?.responses);
+              setAnalyticRoom(data.room);
+            };
+            fetchRoom();
+          })
+          .catch((err) => {
+            message.error('Trả phòng không thành công');
+          });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
   return (
     <div>
       <div className='xl:flex justify-between items-center mb-5'>
@@ -231,13 +259,10 @@ const CardRoom = ({ idHouse }: any) => {
                     >
                       <i className='fa-solid fa-gear'></i> Chỉnh sửa
                     </Link>
-                    <button onClick={showDeleteConfirm}>
-                      <Link
-                        to='#'
-                        className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      >
-                        <i className='fa-solid fa-trash'></i> Xóa
-                      </Link>
+                    <button
+                      className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
+                      onClick={() => showConfirmDeleteRoom(item?.id)}>
+                      <i className='fa-solid fa-trash'></i> Xóa
                     </button>
                   </div>
                 </div>
@@ -277,13 +302,10 @@ const CardRoom = ({ idHouse }: any) => {
                     >
                       <i className='fa-solid fa-gear'></i> Chỉnh sửa
                     </Link>
-                    <button onClick={showDeleteConfirm}>
-                      <Link
-                        to='#'
-                        className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      >
-                        <i className='fa-solid fa-trash'></i> Xóa
-                      </Link>
+                    <button
+                      className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
+                      onClick={() => showConfirmDeleteRoom(item?.id)}>
+                      <i className='fa-solid fa-trash'></i> Xóa
                     </button>
                   </div>
                 </div>
