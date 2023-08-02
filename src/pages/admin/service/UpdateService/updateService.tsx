@@ -1,32 +1,40 @@
 import { Form, Input, Select, message } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createService } from 'src/api/service';
-import './style.scss';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getService, updateService, updateServices } from 'src/api/service';
 
-const CreateSevice = () => {
-  const navigate = useNavigate();
-  const { Option } = Select;
+const UpdateService = () => {
+  const { id } = useParams();
+  const [service, setService] = useState([]);
   const [changeCode, setChangeCode] = useState('');
-  const handleChange = (value: any) => {
-    console.log('Selected value:', value);
-    setChangeCode(value);
-    // You can use the selected value in your logic or state management
-  };
-  const Onsubmit = (data: any) => {
-    console.log('data', data);
-
-    const result = {
-      ...data,
-      code: changeCode,
+  const { Option } = Select;
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const getOneService = async (id: any) => {
+      const { data } = await getService(id);
+      setService(data.result);
+      form.setFieldsValue({
+        name: data.result?.name,
+        price: data.result?.price,
+        code: data.result?.code,
+      });
     };
-    console.log('result', result);
-    createService(result)
+    getOneService(id);
+  }, [id]);
+
+  const handleChange = (value: any) => {
+    setChangeCode(value);
+  };
+  const Onsubmit = async (data: any) => {
+    const result = {
+      name: data.name,
+      code: changeCode,
+      price: data.price,
+    };
+    await updateServices(Number(id), result)
       .then((res) => {
-        setTimeout(() => {
-          navigate(-1);
-        }, 3000);
-        message.success(`Thêm dịch vụ ${result.name} thành công`);
+        message.success(`Sửa dịch vụ ${result.name} thành công`);
       })
       .catch((err) => {
         message.error(err.message);
@@ -35,11 +43,10 @@ const CreateSevice = () => {
   return (
     <>
       <div className='title_page'>
-        <h1>Thêm mới dịch vụ</h1>
+        <h1>Sửa dịch vụ</h1>
       </div>
-      <div className='float-right'></div>
       <div className=''>
-        <Form size='large' onFinish={Onsubmit}>
+        <Form size='large' form={form} onFinish={Onsubmit}>
           <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Tên dịch vụ <b style={{ color: 'red' }}>*</b>
@@ -97,4 +104,4 @@ const CreateSevice = () => {
   );
 };
 
-export default CreateSevice;
+export default UpdateService;

@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Space, message } from 'antd';
+import { ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
+import { Button, Input, Space, message, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import './style.scss';
@@ -9,6 +9,8 @@ import { Table } from 'antd';
 
 const Service = () => {
   const [list, setList] = useState([]);
+  const { confirm } = Modal;
+  const [isLoading, setIsLoading] = useState(true);
   const [messageApi] = message.useMessage();
   useEffect(() => {
     const ListService = async () => {
@@ -18,20 +20,35 @@ const Service = () => {
     ListService();
   }, []);
 
-  const handleRemove = async (id: any) => {
-    await deleteService(id)
-      .then((resp) => {
-        const getDeposit = async () => {
-          const { data } = await getListService();
-          setList(data.result);
-        };
-        getDeposit();
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+  const showDeleteConfirm = (id: any) => {
+    confirm({
+      title: 'Bạn có muốn xóa dịch vụ này không ?',
+      icon: <ExclamationCircleFilled />,
+      content: 'Lưu ý: Toàn bộ dữ liệu về dịch vụ này sẽ bị xóa',
+      okText: 'Có',
+      okType: 'danger',
+      cancelText: 'Không',
+      async onOk() {
+        await deleteService(id)
+          .then((resp) => {
+            const ListService = async () => {
+              const { data } = await getListService();
+              setList(data.responses);
+            };
+            ListService();
+            if (resp.status === 200) {
+              alert('thanh cong');
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
-
   const columns = [
     {
       title: 'STT',
@@ -46,12 +63,8 @@ const Service = () => {
       dataIndex: 'price',
     },
     {
-      title: 'Loại',
-      dataIndex: 'type',
-    },
-    {
-      title: 'Ghi chú',
-      dataIndex: 'note',
+      title: 'Mã dịch vụ',
+      dataIndex: 'code',
     },
     {
       title: '',
@@ -61,7 +74,9 @@ const Service = () => {
           <Link to={`http://localhost:3000/admin/service/${record.id}`}>
             <Button>Sửa</Button>
           </Link>
-          <Button onClick={() => handleRemove(record.id)}>Xóa</Button>
+          <Button onClick={() => showDeleteConfirm(record.id)} danger>
+            Xóa
+          </Button>
         </Space>
       ),
     },
