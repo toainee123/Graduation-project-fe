@@ -16,6 +16,10 @@ const authApi = {
     creatpassword(code: any, params: any) {
         const url = `/auth/create-new-password?code=${code}`
         return axiosClient.post(url, params)
+    },
+    changepassword(datachange: any) {
+        const url = `/auth/change-password`
+        return axiosClient.post(url, datachange)
     }
 }
 

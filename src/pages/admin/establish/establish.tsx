@@ -4,19 +4,20 @@ import { RedoOutlined, SaveOutlined } from '@ant-design/icons';
 import { Tabs, Form } from 'antd';
 import '../../../../node_modules/antd/dist/antd.css';
 import Inforuser from './Inforuser';
-import Samplecontract from './Samplecontract';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { ToastContainer, toast } from 'react-toastify';
-import Printform from './Printform';
+import ChangePassword from './ChangePassword';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
 import axios from 'axios';
 import moment from 'moment';
 import { getInfoCustomer, updateInfoCustomer } from 'src/api/establish';
+import authApi from 'src/api/auth';
 type Props = {};
 
 const Establish = (props: Props) => {
   const [fields, setFields] = useState<any>([]);
+  const [fieldsPassword, setFieldsPassword] = useState<any>([]);
   useEffect(() => {
     const getUserInfor = async () => {
       const response = await getInfoCustomer();
@@ -85,8 +86,8 @@ const Establish = (props: Props) => {
       case '1':
         handleSaveInfor();
         break;
-      case '4':
-        saveContract();
+      case '2':
+        handleChangePassword();
         break;
 
       default:
@@ -118,6 +119,22 @@ const Establish = (props: Props) => {
 
     // const { data } = await axios.put('http://localhost:3001/customer_profile/1', dataSave);
   };
+
+  const handleChangePassword = async () => {
+    console.log(fieldsPassword);
+    const dataSave = {
+      passwordOld: fieldsPassword[0].value,
+      password: fieldsPassword[1].value,
+      password_confirmation: fieldsPassword[2].value,
+    };
+
+    const response: any = authApi.changepassword(dataSave);
+    if (response?.message == 'success') {
+      toast.success('Đổi mật khẩu thành công! ');
+    } else {
+      toast.success('Đổi mật khẩu không thành công! ');
+    }
+  };
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
@@ -132,11 +149,19 @@ const Establish = (props: Props) => {
       ),
     },
 
-    // {
-    //   label: 'Mẫu tin nhắn SMS',
-    //   key: '2',
-    //   children: <Templatesms />,
-    // },
+    {
+      label: 'Đổi mật khẩu',
+      key: '2',
+      children: (
+        <ChangePassword
+          fields={fieldsPassword}
+          onChange={(newFieldsPassword: any) => {
+            console.log(newFieldsPassword);
+            setFieldsPassword(newFieldsPassword);
+          }}
+        />
+      ),
+    },
 
     // {
     //   label: 'Mẫu in',
@@ -159,9 +184,6 @@ const Establish = (props: Props) => {
           </h2>
         </div>
         <div className='title--button flex items-center'>
-          <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '>
-            <RedoOutlined className='icon-btn' /> Nhập lại
-          </button>
           <button
             onClick={handleSave}
             className='title-button-save bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
