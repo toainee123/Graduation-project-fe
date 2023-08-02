@@ -1,4 +1,6 @@
 import {
+  BgColorsOutlined,
+  BulbOutlined,
   CalculatorOutlined,
   FileOutlined,
   FileTextOutlined,
@@ -7,14 +9,13 @@ import {
   // DashboardOutlined,
   MailOutlined,
   ReconciliationOutlined,
-
   UserOutlined,
 } from '@ant-design/icons';
 import { Avatar, Layout, Menu, MenuProps, MenuTheme } from 'antd';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import logo from './logo bee.png'
+import logo from './logo bee.png';
 
 import { AuthSliceAction } from '../../../features/auth/authSlice';
 import { useAppDispatch } from '../../../store/hooks';
@@ -32,8 +33,8 @@ const Sidebar = (props: Props) => {
   const [theme, setTheme] = useState<MenuTheme>('light');
 
   type MenuItem = Required<MenuProps>['items'][number];
-  const getEmailLocalStorage = localStorage.getItem('email')
-  const resultEmail = getEmailLocalStorage?.substring(1, getEmailLocalStorage.length - 11)
+  const getEmailLocalStorage = localStorage.getItem('email');
+  const resultEmail = getEmailLocalStorage?.substring(1, getEmailLocalStorage.length - 11);
   const menuListItem: MenuItem[] = [
     {
       label: (
@@ -158,6 +159,18 @@ const Sidebar = (props: Props) => {
       key: '13',
       icon: <MailOutlined />,
     },
+
+    {
+      label: <Link to={urlRouter.WATER}>Chỉ số nước</Link>,
+      key: '14',
+      icon: <BgColorsOutlined />,
+    },
+
+    {
+      label: <Link to={urlRouter.ELECTRICITY}>Chỉ số điện</Link>,
+      key: '15',
+      icon: <BulbOutlined />,
+    },
   ];
 
   const logout = () => {
@@ -170,10 +183,12 @@ const Sidebar = (props: Props) => {
       <Sider theme={theme} width={220}>
         <div className='py-3 text-center flex flex-col gap-1 border-b-2 rounded-lg bg-slate-200'>
           <Link to='/admin  ' className='title-dashboard'>
-            <img src={logo} alt="" width={60} className=' mx-auto' />
+            <img src={logo} alt='' width={60} className=' mx-auto' />
             Quản Lý Nhà Trọ
           </Link>
-          <span className=' text-base'>Xin Chào, <span className='uppercase'>{resultEmail}</span></span>
+          <span className=' text-base'>
+            Xin Chào, <span className='uppercase'>{resultEmail}</span>
+          </span>
         </div>
         <Menu
           // style={{ width: 70 }}
@@ -184,7 +199,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-        // selectedKeys={[current]}
+          // selectedKeys={[current]}
         />
         <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
