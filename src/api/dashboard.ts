@@ -20,3 +20,7 @@ export const getHistoryEmail = () => {
     return axiosClient.get(url)
 }
 
+export const getNotification = () => {
+    const url = `dashboard/notification`
+    return axiosClient.get(url)
+}

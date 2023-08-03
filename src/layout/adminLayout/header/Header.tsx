@@ -1,40 +1,45 @@
 import { UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Button, Dropdown, Form, Input, Layout, Modal, Space } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import type { MenuProps, MenuTheme } from 'antd';
+import { Avatar, Badge, Button, Drawer, Dropdown, Form, Input, Layout, List, Modal, Space } from 'antd';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import './header.scss'
+
 import { AuthSliceAction } from 'src/features/auth/authSlice';
 import { useAppDispatch } from 'src/store/hooks';
 import { urlRouter } from 'src/utils/constants';
+import { getNotification } from 'src/api/dashboard';
+import moment from 'moment';
 
 type Props = {};
 
 const { Header } = Layout;
 
 const HeaderComponent = (props: Props) => {
+  const [notification, setNotification] = useState([])
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const getAllNotifi = async () => {
+      const { data } = await getNotification()
+      setNotification(data)
+    }
+    getAllNotifi()
+  }, [])
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   const logout = () => {
     dispatch(AuthSliceAction.logout());
     navigate(`/${urlRouter.AUTH}`);
-  };
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-    setIsModalOpen(false);
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
   };
   const items: MenuProps['items'] = [
     {
@@ -42,14 +47,6 @@ const HeaderComponent = (props: Props) => {
       label: (
         <a target='_blank' href=''>
           Thông tin tài khoản
-        </a>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <a target='_blank' onClick={showModal}>
-          Đổi mật khẩu
         </a>
       ),
     },
@@ -62,39 +59,62 @@ const HeaderComponent = (props: Props) => {
       ),
     },
   ];
+  const data = notification.map((item: any, index: number) => {
+    return {
+      key: index,
+      nameroom: item?.nameroom,
+      status: item?.status,
+      datenotification: moment(item?.datenotification).format('HH:MM - DD/MM'),
+      content: item?.content
+    }
+  })
 
   return (
-    <Header>
-      <Space wrap style={{ display: 'flex', justifyContent: 'flex-end' }}>
+    <Header >
+      <Space >
+        <button onClick={showDrawer}>
+          <Badge count={5}>
+            <i className="fa-solid fa-bell fa-xl mx-1"></i>
+          </Badge>
+        </button>
         <Dropdown menu={{ items }} placement='bottomLeft'>
-          <Button icon={<UserOutlined />}></Button>
+          <button>
+            <i className="fa-solid fa-user fa-xl mx-6"></i>
+          </button>
         </Dropdown>
       </Space>
-      <Modal title='Đổi mật khẩu' open={isModalOpen} onOk={onFinish} onCancel={handleCancel}>
-        <Form
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
-          onFinishFailed={onFinishFailed}
-          autoComplete='off'
-        >
-          <Form.Item
-            label='Mật khẩu cũ'
-            name='username'
-            rules={[{ required: true, message: 'Điền mật khẩu cũ của bạn!' }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label='Mật khẩu mới'
-            name='password'
-            rules={[{ required: true, message: 'Điền mặt khẩu mới của bạn!' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <Drawer size="default" title={<span>
+        <i className="fa-solid fa-bell fa-md mx-2"></i>Thông báo</span>} placement="right" onClose={onClose} open={open}>
+        <List
+          itemLayout="horizontal"
+          dataSource={data}
+          renderItem={(item, index) => (
+            <List.Item>
+              {item?.status ? (
+                <span className='text-center w-full'>Hiện chưa có thông báo nào. <Link onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>danh sách</Link></span>
+              ) : (
+                <List.Item.Meta
+                  className='px-3 hover:bg-gray-100 mb-1'
+                  title={
+                    <Link key={index} className='border-b-4 link-title' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
+                      <div className='flex justify-between'>
+                        <div>
+                          <div className='text-base'>
+                            {item?.nameroom}
+                          </div>
+                          <span className='text-xs text-gray-500'>{item?.datenotification}</span>
+                        </div>
+                        <span className='text-red-400'>Chưa xử lý</span>
+                      </div>
+                    </Link>
+                  }
+                  description={<p>{item?.content}</p>}
+                />
+              )}
+            </List.Item>
+          )}
+        />
+      </Drawer>
     </Header>
   );
 };

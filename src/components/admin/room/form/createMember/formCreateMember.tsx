@@ -54,15 +54,16 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       //     status: 'done',
       //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       //   }, ==> image mẫu
-      setFileList([
-        {
-          uid: '-1',
-          name: 'image.png',
-          status: 'done',
-          url: fakeData?.image,
-        },
-      ]);
-
+      if (keyLocation === "update" || keyLocation === "view") {
+        setFileList([
+          {
+            uid: '-1',
+            name: 'image.png',
+            status: 'done',
+            url: fakeData?.image,
+          },
+        ]);
+      }
       setLinkImage(fakeData?.image);
     }
   }, [getData]);
@@ -188,27 +189,25 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
   };
   return (
     <Form initialValues={{ ...detailRoom, initialValues, getData }} form={form} onFinish={onFinish} size='large'>
-      <div className='lg:flex justify-between items-center gap-2 py-3 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-24 text-base font-semibold'>
+      <div className='lg:flex justify-between items-center gap-6 py-3 md:justify-start gap-8 my-4'>
+        <label htmlFor='' className='w-36 text-base font-semibold'>
           Hình ảnh
         </label>
-        <div className='w-full'>
-          <div className='flex items-center justify-center w-full'>
-            <Form.Item name='image' className='form-upload'>
-              <Upload {...props} listType='picture-card' fileList={fileListImage}>
-                {countImg.length >= 1 ? null : (
-                  <div className='btn-upload'>
-                    <PlusOutlined />
-                    <div className='mt-2'>Upload</div>
-                    <span>
-                      {countImg.length}/{1}
-                    </span>
-                  </div>
-                )}
-              </Upload>
-              {/* <Input placeholder='Link' className='w-full outline-0 md: my-2' /> */}
-            </Form.Item>
-          </div>
+        <div >
+          <Form.Item name='image' className='form-upload'>
+            <Upload {...props} listType='picture-card' fileList={fileListImage}>
+              {countImg.length >= 1 ? null : (
+                <div className='btn-upload'>
+                  <PlusOutlined />
+                  <div className='mt-2'>Upload</div>
+                  <span>
+                    {countImg.length}/{1}
+                  </span>
+                </div>
+              )}
+            </Upload>
+            {/* <Input placeholder='Link' className='w-full outline-0 md: my-2' /> */}
+          </Form.Item>
         </div>
       </div>
       <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
@@ -225,7 +224,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         </label>
         <div className='lg:w-1/2 sm:w-full'>
           <Form.Item name='cccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
-            {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
+            {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input type='number' className='w-full' />}
           </Form.Item>
         </div>
       </div>
@@ -407,8 +406,8 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         </div>
       </div>
 
-      <div className='lg:flex gap-12 justify-between items-center gap-2 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-40 text-base font-medium text-slate-500'>
+      <div className='lg:flex gap-6 justify-between items-center gap-2 md:justify-start gap-8 my-4'>
+        <label htmlFor='' className='w-44 text-base font-medium text-slate-500'>
           Ghi chú khác
         </label>
         <div className='w-full '>
@@ -451,7 +450,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           </Form.Item>
         )}
       </div>
-    </Form>
+    </Form >
   );
 };
 
