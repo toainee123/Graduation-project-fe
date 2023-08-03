@@ -145,7 +145,10 @@ export const adminRoutes = [
     path: urlRouter.CREATE_KEEP_ROOM,
     component: CreateKeepRoom,
   },
-
+  {
+    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
+    component: UpdateDeposit,
+  },
   {
     path: 'pg',
     component: Pg,
