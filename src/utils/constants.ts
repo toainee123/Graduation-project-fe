@@ -34,8 +34,8 @@ export const urlRouter = {
   CREATE_ASSETS: 'create-assets',
   UPDATE_SERVICE: 'add-service', //dịch vụ
   UPDATE_ARISE: 'update-arise', //dịch vụ
-
-
+  WATER: 'water', //
+  ELECTRICITY: 'electricity',
   PG: 'pg',
   LIST_PG: 'list',
   ASSETS: 'assets',

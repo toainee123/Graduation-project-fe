@@ -2,8 +2,6 @@ import Assets from 'src/pages/admin/Assets/Assest';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 import Charge from 'src/pages/admin/charge/Charge';
-import DataPower from 'src/pages/admin/dataPower/dataPower';
-import DataWater from 'src/pages/admin/dataWater/dataWater';
 import Establish from 'src/pages/admin/establish/establish';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
@@ -35,6 +33,8 @@ import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
 import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
 import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
 import Notificatiton from 'src/pages/admin/notification/notificatiton';
+import Water from 'src/pages/admin/water/Water';
+import Electricity from 'src/pages/admin/electricity/Electricity';
 
 export const adminRoutes = [
   {
@@ -86,14 +86,6 @@ export const adminRoutes = [
   {
     path: `${urlRouter.SERVICE}/:id`,
     component: UpdateService,
-  },
-  {
-    path: urlRouter.DATA_POWER,
-    component: DataPower,
-  },
-  {
-    path: urlRouter.DATA_WATER,
-    component: DataWater,
   },
   {
     path: urlRouter.ARISE,
@@ -166,6 +158,16 @@ export const adminRoutes = [
   {
     path: urlRouter.ESTABLISH,
     component: Establish,
+  },
+
+  {
+    path: urlRouter.WATER,
+    component: Water,
+  },
+
+  {
+    path: urlRouter.ELECTRICITY,
+    component: Electricity,
   },
 
   {
