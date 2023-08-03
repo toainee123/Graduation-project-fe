@@ -15,9 +15,11 @@ export const sendEmail = (data: any) => {
     return axiosClient.post(url, data)
 }
 
-export const getHistoryEmail = () => {
+export const getHistoryEmail = (data: any) => {
     const url = `/dashboard/history-email`
-    return axiosClient.get(url)
+    return axiosClient.get(url, {
+        params: data,
+    })
 }
 
 export const getNotification = () => {
