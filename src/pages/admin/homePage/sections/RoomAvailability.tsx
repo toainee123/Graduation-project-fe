@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
-import './table.scss';
+import './tablehomepage.scss';
 
 type dataList = {
   key: string;
@@ -36,7 +36,7 @@ export const RoomAvailability = () => {
     getList();
   }, []);
   return (
-    <div className=' '>
+    <div className='table_homepage'>
       <div className='bg-gray-100 mt-4'>
         <Table dataSource={dataSource} columns={columns} scroll={{ y: 300 }} bordered />
       </div>
