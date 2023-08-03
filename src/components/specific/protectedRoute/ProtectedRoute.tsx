@@ -14,9 +14,11 @@ const ProtectedRoute = ({ children }: Props) => {
   console.log(roleStore);
 
   const userData: any = JSON.parse(localStorage.getItem('user') as string);
-  // if (userData?.role !== 'ADMIN') {
-  //   return <Navigate to='/auth' />;
-  // }
+  if (userData?.role !== 'ADMIN') {
+    return <Navigate to='/auth' />;
+  } else if (userData?.role === 'USER') {
+    return <Navigate to='/' />;
+  }
   return <>{children}</>;
 };
 
