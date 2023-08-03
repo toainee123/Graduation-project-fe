@@ -23,6 +23,7 @@ export const urlRouter = {
   ARISE: 'arise', //dịch vụ
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
+  NOTIFICATION: 'notification', // thông báo
   REPORT: 'Report',
   UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng

@@ -34,6 +34,7 @@ import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
 import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
 import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
 import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
+import Notificatiton from 'src/pages/admin/notification/notificatiton';
 
 export const adminRoutes = [
   {
@@ -109,6 +110,10 @@ export const adminRoutes = [
   {
     path: urlRouter.PAYMENT,
     component: Payment,
+  },
+  {
+    path: urlRouter.NOTIFICATION,
+    component: Notificatiton,
   },
   {
     path: urlRouter.REPORT,

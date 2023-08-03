@@ -10,7 +10,7 @@ import { AuthSliceAction } from 'src/features/auth/authSlice';
 import { useAppDispatch } from 'src/store/hooks';
 import { urlRouter } from 'src/utils/constants';
 import { getNotification } from 'src/api/dashboard';
-
+import moment from 'moment';
 
 type Props = {};
 
@@ -64,7 +64,7 @@ const HeaderComponent = (props: Props) => {
       key: index,
       nameroom: item?.nameroom,
       status: item?.status,
-      datenotification: item?.datenotification,
+      datenotification: moment(item?.datenotification).format('HH:MM - DD/MM'),
       content: item?.content
     }
   })
@@ -91,12 +91,12 @@ const HeaderComponent = (props: Props) => {
           renderItem={(item, index) => (
             <List.Item>
               {item?.status ? (
-                <span className='text-center w-full'>Hiện chưa có thông báo nào. <Link to="">danh sách</Link></span>
+                <span className='text-center w-full'>Hiện chưa có thông báo nào. <Link onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>danh sách</Link></span>
               ) : (
                 <List.Item.Meta
-                  className='p-2 hover:bg-gray-100 mb-1'
+                  className='px-3 hover:bg-gray-100 mb-1'
                   title={
-                    <Link className='border-b-4 link-title' to={`${index}`}>
+                    <Link key={index} className='border-b-4 link-title' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
                       <div className='flex justify-between'>
                         <div>
                           <div className='text-base'>
