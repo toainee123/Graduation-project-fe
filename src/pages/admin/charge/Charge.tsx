@@ -39,7 +39,7 @@ const Charge = () => {
   const { Text } = Typography;
   const [houses, setHouses] = useState([]);
   const [valueFilter, setValueFilter] = useState<any>();
-  const [billEmail, setBillEmail] = useState<any>();
+  const [billEmail, setBillEmail] = useState<any>('');
   const [status, setStatus] = useState<any>(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -53,6 +53,9 @@ const Charge = () => {
   }, []);
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
+  useEffect(() => {
+    renderBillSendEmail();
+  }, [selectedRow]);
   const chargeData = useAppSelector((state: any) => state.charge.value);
 
   const dataSource = chargeData?.map((item: any, index: number) => {
@@ -437,7 +440,7 @@ const Charge = () => {
         }
       );
 
-      const mg = `<div className='mbprint bill-${item.id}'>${dataaddDom}</div>`;
+      const mg = `<div className='mbprint bill-${item.id}' id='bill-temp-${item.id}'style="display:none;">${dataaddDom}</div>`;
       stringList += mg;
       setBillEmail(stringList);
     });
@@ -449,14 +452,19 @@ const Charge = () => {
     const month = date.getMonth() + 1;
     const CLOUDINARY_PRESET = 'gtn4lbpo';
     const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
-    console.log(selectedRow);
-    const parent = document.querySelector('.paren');
-    parent?.removeAttribute('hidden');
+    // const parent = document.querySelector('.paren');
+    // parent?.removeAttribute('hidden');
     const arrBill: any = [];
     for (let i = 0; i < selectedRow.length; i++) {
       const resBill = await getBillID(selectedRow[i].id);
       const htmlItem: any = document.querySelector(`.bill-${selectedRow[i].id}`);
-      const canvas = await html2canvas(htmlItem, { height: 1000 });
+      const canvas = await html2canvas(htmlItem, {
+        height: 1000,
+        onclone: function (docClone) {
+          const cloneEle: any = docClone.getElementById(`bill-temp-${selectedRow[i].id}`);
+          cloneEle.style.display = 'block';
+        },
+      });
       const image = canvas.toDataURL('image/png', 1.0);
       const file = new File([image], 'image_thai.png', { type: 'image/png' });
       const formData = new FormData();
@@ -475,18 +483,17 @@ const Charge = () => {
         content: `${imgLink}`,
       };
       arrBill.push(response);
-      // if (response?.status === 'success') {
-      //   parent?.setAttribute('hidden', 'true');
-      //   toast.success('Gửi email thành công');
-      // } else {
-      //   toast.success('Gửi email không thành công');
-      // }
+      if (response?.status === 'success') {
+        toast.success('Gửi email thành công');
+      } else {
+        toast.success('Gửi email không thành công');
+      }
     }
     try {
-      const response: any = sendMailBill({ data: arrBill });
-      if (response?.status === 'success') {
-        toast.success('thành công');
-      }
+      // const response: any = sendMailBill({ data: arrBill });
+      // if (response?.status === 'success') {
+      //   toast.success('thành công');
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -780,9 +787,9 @@ const Charge = () => {
             <Tooltip title='Ấn 2 lần nút để gửi email'>
               <button
                 className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
-                onClick={async () => {
-                  await renderBillSendEmail();
-                  await handleSendEmail();
+                onClick={() => {
+                  // await renderBillSendEmail();
+                  handleSendEmail();
                 }}
               >
                 <MailOutlined className='icon-btn' /> Email
@@ -996,9 +1003,7 @@ const Charge = () => {
           {parse(printListBillData ? printListBillData : '')}
         </div>
 
-        <div className='p-3 paren' hidden>
-          {parse(billEmail ? billEmail : '')}
-        </div>
+        <div className='p-3 paren'>{parse(billEmail ? billEmail : '')}</div>
       </div>
       <ToastContainer />
     </Form.Provider>
