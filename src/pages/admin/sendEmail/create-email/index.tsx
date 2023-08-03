@@ -1,14 +1,16 @@
-import { Select } from 'antd';
+import { Form, Input, Select, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import { getListEmail, sendEmail } from 'src/api/dashboard';
 import './index.scss';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTemplateEmail = () => {
   const [listEmail, setListEmail] = useState([]);
   const { register, handleSubmit, watch, setValue } = useForm();
   const [email, setEmail] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const getEmail = async () => {
       const { data } = await getListEmail();
@@ -43,6 +45,8 @@ const CreateTemplateEmail = () => {
     ],
   };
   const Onsubmit = async (data: any) => {
+    console.log('data', data);
+
     const result = {
       title: data.title,
       content: data.content,
@@ -50,10 +54,13 @@ const CreateTemplateEmail = () => {
     };
     await sendEmail(result)
       .then((res) => {
-        console.log('success');
+        message.success('Gửi email thành công');
+        setTimeout(() => {
+          navigate(-1);
+        }, 1000);
       })
-      .then((err) => {
-        console.log(err);
+      .catch((err) => {
+        message.error(err.message);
       });
   };
   return (
@@ -62,7 +69,7 @@ const CreateTemplateEmail = () => {
         <h1>Tạo mới email</h1>
       </div>
       <div>
-        <form onSubmit={handleSubmit(Onsubmit)} action=''>
+        <Form onFinish={Onsubmit} action=''>
           <div className='flex justify-between items-center gap-12 py-3'>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Email <b className='color-red'>*</b>
@@ -87,19 +94,32 @@ const CreateTemplateEmail = () => {
               Tiêu đề<b className='color-red'>*</b>
             </label>
             <div className='w-full'>
-              <input className='border-2 p-2 outline-0 w-full' placeholder='Tiêu đề email' {...register('title')} />
+              <Form.Item name='title'>
+                <Input className='border-2 p-2 outline-0 w-full' placeholder='Tiêu đề email' />
+              </Form.Item>
             </div>
           </div>
           <div>
             <label htmlFor='' className='w-64 text-base font-semibold' style={{ marginBottom: 20 }}>
               Nội dung <b className='color-red'>*</b>
             </label>
-            <ReactQuill theme='snow' onChange={handleChangeText} modules={modules} className='rich-text' />
+            <Form.Item name='content' rules={[{ required: true, message: 'Nội dung không được bỏ trống!' }]}>
+              <ReactQuill
+                theme='snow'
+                onChange={handleChangeText}
+                modules={modules}
+                className='rich-text'
+                style={{ height: 200 }}
+              />
+            </Form.Item>
           </div>
-          <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'>
+          <button
+            className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2 '
+            style={{ marginTop: 100 }}
+          >
             <i className='fa-solid fa-check'></i> Gửi
           </button>
-        </form>
+        </Form>
       </div>
     </>
   );

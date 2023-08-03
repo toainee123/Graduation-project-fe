@@ -1,24 +1,71 @@
-import React, { useEffect, useState } from 'react'
-import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Form, Input, InputNumber, Modal, Select, Upload, message } from 'antd';
 import type { UploadProps } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons';
 
-import "./formCreateRoom.scss"
+import './formCreateRoom.scss';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getAllHouse } from 'src/features/room/houseSlice';
-import { limitCountUpload } from 'src/utils/constants';
-import { createRooms } from 'src/features/room/roomSlice';
+import { limitCountUpload, urlRouter } from 'src/utils/constants';
+import { createRooms, editRoom, uploadFile } from 'src/features/room/roomSlice';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { getByIdRoom } from 'src/api/room';
 
 const FormCreateRoom = () => {
-    const [countImg, setCountImg] = useState([])
+    const [countImg, setCountImg] = useState([]);
+    const [detailRoom, setDetailRoom] = useState<any>();
     const [limitprice, setLimitPrice] = useState(Number);
-    const { Option } = Select
+    const [linkImage, setLinkImage] = useState('');
+    const [fileListImage, setFileList] = useState<any>();
 
-    const house = useAppSelector(state => state.house.value)
-    const dispatch = useAppDispatch()
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const { Option } = Select;
+
+    const house = useAppSelector((state) => state.house.value);
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
-        dispatch(getAllHouse())
-    }, [])
+        dispatch(getAllHouse());
+    }, []);
+
+    const search = useLocation().search;
+    const keyLocation = new URLSearchParams(search).get('key');
+    const { roomId } = useParams();
+    useEffect(() => {
+        if (keyLocation === 'update') {
+            const fetchRoomById = async () => {
+                const { data } = await getByIdRoom(roomId);
+                setDetailRoom(data);
+                form.setFieldsValue({
+                    ...data,
+                    name: data?.nameroom,
+                    houseId: data?.houseId,
+                    maxCustomer: data?.maxcustomer,
+                    indexElectricity: data?.indexelectricity,
+                    indexWater: data?.indexwater
+                });
+                console.log(data);
+                // Đợi có trả về image thì setFileList([image])
+                // {
+                //     uid: '-1',
+                //     name: 'image.png',
+                //     status: 'done',
+                //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+                //   }, ==> image mẫu
+                setFileList([
+                    {
+                        uid: '-1',
+                        name: 'image.png',
+                        status: 'done',
+                        url: data?.image,
+                    },
+                ]);
+                setLinkImage(data?.image);
+            };
+            fetchRoomById();
+        }
+    }, [keyLocation]);
 
     const props: UploadProps = {
         name: 'file',
@@ -26,21 +73,41 @@ const FormCreateRoom = () => {
         beforeUpload: (file) => {
             const isImg = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
             if (!isImg) {
-                message.error("Chỉ nhận file jpeg/jpg/png")
+                message.error('Chỉ nhận file jpeg/jpg/png');
                 return isImg || Upload.LIST_IGNORE;
-            };
+            }
 
             const isLimitImg = file.size / 1024 / 1024 <= limitCountUpload.LIMIT_SIZE;
             if (!isLimitImg) {
                 message.error(`Ảnh không vượt quá 2MB!`);
                 return isLimitImg || Upload.LIST_IGNORE;
-            };
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+            dispatch(uploadFile(formData))
+                .unwrap()
+                .then((resp) => {
+                    setFileList([
+                        {
+                            uid: '-1',
+                            name: 'image.png',
+                            status: ' ',
+                            url: resp?.link,
+                        },
+                    ]);
+                    setLinkImage(resp?.link);
+                })
+                .catch((err) => {
+                    console.log('err', err);
+                });
         },
         onChange: (info: any) => {
-            setCountImg(info.fileList)
+            setCountImg(info.fileList);
+            setFileList(info.fileList);
         },
         showUploadList: {
-            showPreviewIcon: false
+            showPreviewIcon: false,
         },
         progress: {
             strokeColor: {
@@ -50,43 +117,57 @@ const FormCreateRoom = () => {
             strokeWidth: 2,
             format: (percent) => percent && `${parseFloat(percent.toFixed(1))}%`,
         },
-        maxCount: limitCountUpload.LIMIT_COUNT,
+        maxCount: 1,
     };
 
     const onChange = (value: any) => {
         setLimitPrice(value)
     }
     const onFinish = async (values: any) => {
-        try {
-            await dispatch(createRooms(values))
-            message.success(`Thêm nhà ${values.name} thành công`)
-        } catch (error) {
-            message.error(`thêm nhà ${values.name} thất bại`)
+        if (keyLocation === "update") {
+
+            try {
+                console.log('linkImage', linkImage);
+                await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }))
+                message.success(`Cập nhât ${values.name} thành công`)
+                // navigate(`/admin/${urlRouter.ROOM}`);
+            } catch (error) {
+                message.error(`Cập nhât ${values.name} thất bại`)
+            }
+        } else {
+            try {
+                await dispatch(createRooms({ ...values, image: linkImage }))
+                message.success(`Thêm phòng ${values.name} thành công`)
+                navigate(`/admin/${urlRouter.ROOM}`);
+            } catch (error) {
+                message.error(`Thêm phòng ${values.name} thất bại`)
+            }
         }
+
 
     }
     return (
         <div className='mt-8'>
             <Form
                 size='large'
+                form={form}
                 onFinish={onFinish}
+                initialValues={{ ...detailRoom }}
             >
                 <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
                     <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
-                        {/* <Upload listType="picture-card" multiple={true} action="local" >
-                            {countImg.length >= limitCountUpload.LIMIT_COUNT ? null : (
+                        <Upload {...props} listType="picture-card" fileList={fileListImage} >
+                            {countImg.length >= 1 ? null : (
                                 <div className='btn-upload'>
                                     <PlusOutlined />
                                     <div className='mt-2'>Upload</div>
-                                    <span>{countImg.length}/{limitCountUpload.LIMIT_COUNT}</span>
+                                    <span>{countImg.length}/{1}</span>
                                 </div>
                             )}
-                        </Upload> */}
-                        <Input placeholder='Link' className='w-full outline-0 md: my-2' />
+                        </Upload>
                     </Form.Item>
                 </div>
-
                 <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
                     <label htmlFor="" className='w-64 text-base font-semibold'>Phòng số</label>
                     <div className='w-full items-center'>
@@ -109,10 +190,24 @@ const FormCreateRoom = () => {
                     </div>
                 </div>
                 <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
+                    <label htmlFor="" className='w-64 text-base font-semibold'>Chỉ số điện</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexElectricity" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số điện' />
+                        </Form.Item>
+                    </div>
+                    <label htmlFor="" className="w-64 text-base font-semibold">Chỉ số nước</label>
+                    <div className='w-full'>
+                        <Form.Item name="indexWater" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                            <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số nước' />
+                        </Form.Item>
+                    </div>
+                </div>
+                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
                     <label htmlFor="" className='w-64 text-base font-semibold'>Số lượng người tối đa</label>
                     <div className='w-full'>
                         <Form.Item name="maxCustomer" rules={[{ required: true, message: "Không được bỏ trống" }]}>
-                            <InputNumber type='number' style={{ borderRadius: 6 }} controls={false} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="VNĐ" />
+                            <InputNumber type='number' style={{ borderRadius: 6 }} controls={false} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="Người" />
                         </Form.Item>
                     </div>
                     <label htmlFor="" className="w-64 text-base font-semibold">Đơn giá</label>
@@ -152,5 +247,4 @@ const FormCreateRoom = () => {
         </div>
     )
 }
-
 export default FormCreateRoom

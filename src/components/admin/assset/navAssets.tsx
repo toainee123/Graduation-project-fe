@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Input, message, Modal, Select, Upload, UploadProps } from 'antd';
+import { Form, Input, message, Modal, Select, Upload, UploadProps } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import './navAsset.scss';
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { httpMessage } from 'src/utils/constants';
+import { getListDeposit } from 'src/api/deposit';
+import { getListHouse } from 'src/api/house';
+import { getRoom } from 'src/api/charge';
 
 type FormInputs = {
   nameRoom: string;
@@ -35,19 +38,39 @@ const props: UploadProps = {
 const NavAssets = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [districts, setDistricts] = useState<any[]>([]);
-  const [wards, setWards] = useState<any[]>([]);
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState();
-  const [districtStore, setDistrictStore] = useState();
-  const [wardStore, setWardStore] = useState();
+  const [data, setData] = useState([]);
+  const [house, setHouse] = useState([]);
+  const [homeId, setHomeId] = useState([]);
+  const [room, setRoom] = useState([]);
+  const [roomId, setRoomId] = useState([]);
 
-  // const { register, handleSubmit, formState } = useForm<FormInputs>()
+  useEffect(() => {
+    const getDeposit = async () => {
+      const { data } = await getListDeposit({});
+      setData(data.responses);
+    };
+    const getHouse = async () => {
+      const { data } = await getListHouse();
+      setHouse(data.result);
+    };
+    getHouse();
+    getDeposit();
+  }, []);
 
-  // const onSubmit: SubmitHandler<FormInputs> = (data: any) => {
-  //     console.log("form input", data);
-  // }
+  const handleChangeHomeId = async (value: any) => {
+    setHomeId(value);
+    const getRoomWithHomeId = await getRoom(value)
+      .then((res) => {
+        setRoom(res.data.result.responses);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const handleChangeRoomId = (value: any) => {
+    setRoomId(value);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -60,76 +83,64 @@ const NavAssets = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  const handleChangeProvinces = (e: any) => {
-    console.log(`selected ${e}`);
-    setCity(e);
-  };
-  const handleChangeDistricts = (e: any) => {
-    console.log(`selectedDistrict ${e}`);
-    setDistrictStore(e);
-  };
-  const handleChangeWard = (e: any) => {
-    console.log(`selected ${e}`);
-    setWardStore(e);
-  };
-
-  useEffect(() => {
-    const fetchProvinces = async () => {
-      const { data } = await getProvinces();
-      setProvinces(data.results);
-    };
-    fetchProvinces();
-  }, []);
-
-  useEffect(() => {
-    const fetchDistrict = async () => {
-      const { data } = await getDistrict(city);
-      setDistricts(data.results);
-    };
-    fetchDistrict();
-  }, [city]);
-
-  useEffect(() => {
-    const fetchWard = async () => {
-      const { data } = await getWards(districtStore);
-      setWards(data.results);
-    };
-    fetchWard();
-  }, [districtStore]);
-
+  // const Onsubmit = async (data: any) => {
+  //   console.log('data', data);
+  //   const result = {
+  //     houseId: data.houseId,
+  //     roomId: data.roomId,
+  //     search: data.search
+  //   }
+  //   if (result) {
+  //     const listService = async (result: any) => {
+  //       const { data } = await get(result);
+  //       setList(data.responses);
+  //     };
+  //     listService(result);
+  //   } else {
+  //     const getDeposit = async () => {
+  //       const { data } = await getListService({});
+  //       setList(data.responses);
+  //     };
+  //     getDeposit();
+  //   }
+  // };
   return (
     <div className='room_selected row'>
-      <div className='room_form'>
-        <form action=''>
-          <Select
-            defaultValue='-Danh sách tài sản-'
-            style={{ width: '200', marginRight: '10px' }}
-            options={[
-              {
-                label: '-Tất cả-',
-                options: [
-                  { label: 'Tầng 1', value: 'jack' },
-                  { label: 'Tầng 2', value: 'lucy' },
-                ],
-              },
-            ]}
-          />
-          <Select
-            defaultValue='-Phòng-'
-            style={{ width: '200', marginRight: '10px' }}
-            options={[
-              {
-                label: '-Phòng-',
-                options: [{ label: '1', value: 'jack' }],
-              },
-            ]}
-          />
-          <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
-          <button className='btn_search'>
-            <SearchOutlined /> Tìm kiếm
-          </button>
-        </form>
+      <div className='room_form' style={{ marginTop: 30 }}>
+        <Form action=''>
+          <div className='flex'>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='houseId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
+                  {house.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div style={{ marginRight: 20 }}>
+              <Form.Item name='roomId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
+                <Select defaultValue='Danh sách phòng' onChange={handleChangeRoomId}>
+                  {room.map((item: any, i: any) => (
+                    <Select.Option key={i} value={item.id}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item name='search'>
+                <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
+              </Form.Item>
+            </div>
+            <button className='btn_search ml-3'>
+              <SearchOutlined /> Tìm kiếm
+            </button>
+          </div>
+        </Form>
       </div>
       <div className='flex justify-end items-center mt-4'>
         <div className=''>
@@ -174,113 +185,12 @@ const NavAssets = () => {
             </Upload>
           </Modal>
 
-          <Link to='#'>
+          <Link to='/admin/create-assets'>
             <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
               {' '}
-              <i className='fa-solid fa-users'></i> Thêm
+              <i className='fa-solid fa-users'></i> Thêm mới tài sản
             </button>
           </Link>
-          <Link to='#'>
-            <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'>
-              <i className='fa-solid fa-list'></i> Xóa
-            </button>
-          </Link>
-          <Link to='#'>
-            <button
-              onClick={() => setOpen(true)}
-              className='focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900'
-            >
-              <i className='fa-solid fa-building-columns'></i> Xuất file excel
-            </button>
-          </Link>
-          {/* <Modal
-            title='Thêm nhà'
-            centered
-            open={open}
-            onOk={() => setOpen(false)}
-            onCancel={() => setOpen(false)}
-            className='ant-modal-create'
-          >
-            <form>
-              <div>
-                <div className='text-base mb-2'>Tên nhà</div>
-                <input type='text' className='w-full py-1 pl-2 border' placeholder='Tên nhà...' />
-              </div>
-
-              <div className=' flex gap-4 items-center my-2'>
-                <div className='flex-1'>
-                  <label className='text-base'>Thành phố/Tỉnh</label>
-                  <Select
-                    defaultValue='Thành phố/Tỉnh'
-                    showSearch
-                    className='select-province'
-                    onChange={(e) => handleChangeProvinces(e)}
-                    filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                    options={provinces?.map((proVince: any, i: number) => ({
-                      key: i,
-                      value: proVince.province_id,
-                      label: proVince.province_name,
-                    }))}
-                  />
-                </div>
-                <div className='flex-1'>
-                  <label className='text-base'>Quận/Huyện</label>
-                  <Select
-                    defaultValue='Quận/Huyện'
-                    showSearch
-                    filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-                    className='select-province'
-                    onChange={(e) => handleChangeDistricts(e)}
-                    options={districts?.map((item: any, i: number) => ({
-                      key: i,
-                      value: item.district_id,
-                      label: item.district_name,
-                    }))}
-                  />
-                </div>
-
-                <div className='flex-1'>
-                  <label className='text-base'>Phường/Xã</label>
-                  <Select
-                    defaultValue='Phường/Xã'
-                    className='select-province'
-                    onChange={(e) => handleChangeWard(e)}
-                    options={wards?.map((item: any, i: number) => ({
-                      key: i,
-                      value: item.ward_id,
-                      label: item.ward_name,
-                    }))}
-                  />
-                </div>
-              </div>
-              <div className='mb-2'>
-                <div className='text-base mb-2'>Địa chỉ</div>
-                <input
-                  type='text'
-                  className='w-full py-1 pl-2 border'
-                  placeholder='số nhà, ngõ,...'
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </div>
-              <div>
-                <div className='text-base mb-2'>Địa chỉ chính xác</div>
-                <input
-                  type='text'
-                  className='w-full py-1 pl-2 border'
-                  value={`${address ? `${address},` : ''} ${
-                    wardStore ? `${wards.find((item) => item.ward_id === wardStore)?.ward_name},` : ''
-                  } ${
-                    districtStore
-                      ? `${districts.find((item) => item.district_id === districtStore)?.district_name},`
-                      : ''
-                  } ${city ? `${provinces.find((item) => item.province_id === city)?.province_name}.` : ''}`}
-                  readOnly
-                />
-              </div>
-              <div className='text-red-500 mt-5'>(*) tất cả các trường bắt buộc</div>
-              <button>gửi</button>
-            </form>
-          </Modal> */}
         </div>
       </div>
     </div>

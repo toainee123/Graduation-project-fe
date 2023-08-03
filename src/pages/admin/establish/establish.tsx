@@ -4,22 +4,26 @@ import { RedoOutlined, SaveOutlined } from '@ant-design/icons';
 import { Tabs, Form } from 'antd';
 import '../../../../node_modules/antd/dist/antd.css';
 import Inforuser from './Inforuser';
-import Samplecontract from './Samplecontract';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
-import { toast } from 'react-toastify';
-import Printform from './Printform';
-import Templatesms from './Templatesms';
+import { ToastContainer, toast } from 'react-toastify';
+import ChangePassword from './ChangePassword';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
 import axios from 'axios';
 import moment from 'moment';
+import { getInfoCustomer, updateInfoCustomer } from 'src/api/establish';
+import authApi from 'src/api/auth';
 type Props = {};
 
 const Establish = (props: Props) => {
   const [fields, setFields] = useState<any>([]);
+  const [fieldsPassword, setFieldsPassword] = useState<any>([]);
   useEffect(() => {
     const getUserInfor = async () => {
-      const { data } = await axios.get('http://localhost:3001/customer_profile/1');
+      const response = await getInfoCustomer();
+
+      console.log(response.data.result);
+      const data = response.data.result;
       setFields([
         {
           name: ['fullname'],
@@ -36,29 +40,30 @@ const Establish = (props: Props) => {
           value: data.email,
         },
 
+        // cccd
         {
           name: ['ci_number'],
           value: data.ci_number,
         },
 
-        {
-          name: ['ci_datecreate'],
-          value: moment(data.ci_datecreate),
-        },
+        // {
+        //   name: ['ci_datecreate'],
+        //   value: moment(data.ci_datecreate),
+        // },
 
-        {
-          name: ['ci_placecreate'],
-          value: data.ci_placecreate,
-        },
+        // {
+        //   name: ['ci_placecreate'],
+        //   value: data.ci_placecreate,
+        // },
 
         {
           name: ['phone_number'],
-          value: data.phone_number,
+          value: data.phone,
         },
 
         {
           name: ['birthday'],
-          value: moment(data.birthday),
+          value: data.bod === null ? '' : moment(data.bod),
         },
       ]);
     };
@@ -81,8 +86,8 @@ const Establish = (props: Props) => {
       case '1':
         handleSaveInfor();
         break;
-      case '4':
-        saveContract();
+      case '2':
+        handleChangePassword();
         break;
 
       default:
@@ -100,13 +105,35 @@ const Establish = (props: Props) => {
       name: fields[0].value,
       address: fields[1].value,
       email: fields[2].value,
-      ci_number: fields[3].value,
-      ci_placecreate: fields[5].value,
-      ci_datecreate: fields[4].value,
-      phone_number: fields[6].value,
-      birthday: fields[7].value,
+      phone: fields[3].value,
+      bod: moment(fields[4].value).format('YYYY-MM-DD'),
+      // cccd: fields[5].value,
     };
-    const { data } = await axios.put('http://localhost:3001/customer_profile/1', dataSave);
+    console.log(dataSave);
+    try {
+      await updateInfoCustomer(dataSave);
+      toast.success('Cập nhật  thành công');
+    } catch (error) {
+      toast.error('Cập nhật không thành công');
+    }
+
+    // const { data } = await axios.put('http://localhost:3001/customer_profile/1', dataSave);
+  };
+
+  const handleChangePassword = async () => {
+    console.log(fieldsPassword);
+    const dataSave = {
+      passwordOld: fieldsPassword[0].value,
+      password: fieldsPassword[1].value,
+      password_confirmation: fieldsPassword[2].value,
+    };
+
+    const response: any = authApi.changepassword(dataSave);
+    if (response?.message == 'success') {
+      toast.success('Đổi mật khẩu thành công! ');
+    } else {
+      toast.success('Đổi mật khẩu không thành công! ');
+    }
   };
   const listItem = [
     {
@@ -123,22 +150,30 @@ const Establish = (props: Props) => {
     },
 
     {
-      label: 'Mẫu tin nhắn SMS',
+      label: 'Đổi mật khẩu',
       key: '2',
-      children: <Templatesms />,
+      children: (
+        <ChangePassword
+          fields={fieldsPassword}
+          onChange={(newFieldsPassword: any) => {
+            console.log(newFieldsPassword);
+            setFieldsPassword(newFieldsPassword);
+          }}
+        />
+      ),
     },
 
-    {
-      label: 'Mẫu in',
-      key: '3',
-      children: <Printform getSelectOption={handleGetSelect} />,
-    },
+    // {
+    //   label: 'Mẫu in',
+    //   key: '3',
+    //   children: <Printform getSelectOption={handleGetSelect} />,
+    // },
 
-    {
-      label: 'Hợp đồng mẫu',
-      key: '4',
-      children: <Samplecontract />,
-    },
+    // {
+    //   label: 'Hợp đồng mẫu',
+    //   key: '4',
+    //   children: <Samplecontract />,
+    // },
   ];
   return (
     <div className='es-container'>
@@ -149,9 +184,6 @@ const Establish = (props: Props) => {
           </h2>
         </div>
         <div className='title--button flex items-center'>
-          <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '>
-            <RedoOutlined className='icon-btn' /> Nhập lại
-          </button>
           <button
             onClick={handleSave}
             className='title-button-save bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
@@ -163,6 +195,7 @@ const Establish = (props: Props) => {
       <div className='content'>
         <Tabs onChange={onChange} type='card' items={listItem} />
       </div>
+      <ToastContainer />
     </div>
   );
 };

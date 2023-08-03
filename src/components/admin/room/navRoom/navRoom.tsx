@@ -7,7 +7,7 @@ import "./navRoom.scss"
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { httpMessage } from 'src/utils/constants';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
-import { createHouse, getAllHouse } from 'src/features/room/houseSlice'
+import { HouseSliceAction, createHouse, getAllHouse, selectIdHouse } from 'src/features/room/houseSlice'
 
 const props: UploadProps = {
     name: 'file',
@@ -41,6 +41,9 @@ const NavRoom = () => {
     const [form] = Form.useForm();
 
     const house = useAppSelector(state => state.house.value)
+    const idHouse = useAppSelector(selectIdHouse);
+
+
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getAllHouse())
@@ -110,12 +113,18 @@ const NavRoom = () => {
             })
         setOpen(false)
     }
+
+    const onFilter = (values: any) => {
+        console.log('values', values);
+        dispatch(HouseSliceAction.filterHouse(values))
+    }
+
     return (
         <div className="room_selected row" >
             <div className="room_form">
-                <Form>
+                <Form onFinish={onFilter}>
                     <div className='flex gap-2'>
-                        <Form.Item>
+                        <Form.Item name='status'>
                             <Select
                                 placeholder="-Trạng thái phòng-"
                                 style={{ width: "200", marginRight: "10px" }}
@@ -123,32 +132,19 @@ const NavRoom = () => {
                                     {
                                         label: '-Trạng thái phòng-',
                                         options: [
-                                            { label: 'Còn trống', value: 'jack' },
-                                            { label: 'Đã cho thuê', value: 'lucy' },
+                                            { label: 'Tất cả', value: '' },
+                                            { label: 'Còn trống', value: 'false' },
+                                            { label: 'Đã cho thuê', value: 'true' },
                                         ],
                                     },
                                 ]}
                             />
                         </Form.Item>
-                        <Form.Item>
-                            <Select
-                                placeholder="-Trạng thái phí-"
-                                style={{ width: "200", marginRight: "10px" }}
-                                options={[
-                                    {
-                                        label: '-Trạng thái phí-',
-                                        options: [
-                                            { label: 'Chưa thu phí', value: 'jack' },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </Form.Item>
-                        <Form.Item>
+                        <Form.Item name='search'>
                             <Input style={{ width: 200 }} placeholder="Tìm phòng..." />
                         </Form.Item>
                         <Form.Item>
-                            <button className='btn_search' >
+                            <button className='btn_search'>
                                 <i className="fa-solid fa-magnifying-glass px-1"></i>
                                 Tìm kiếm
                             </button>
@@ -159,27 +155,9 @@ const NavRoom = () => {
             <div className="xl:flex justify-between items-center mt-4">
                 <div className='inline-block'>
                     <span className='font-semibold text-base px-2'>Còn trống {house?.room?.roomAvailable}</span>
-                    <span className='font-semibold text-base px-2 border-r-2 border-l-2 border-black'>Đã cho thuê {house?.room?.roomAlready}</span>
-                    <span className='font-semibold text-base px-2'>Chưa thu phí</span>
+                    <span className='font-semibold text-base px-2  border-l-2 border-black'>Đã cho thuê {house?.room?.roomAlready}</span>
                 </div>
                 <div className='md:my-2'>
-                    <Link to="#">
-                        <button onClick={showModal} className="focus:outline-none text-white bg-yellow-500 hover:bg-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:focus:ring-yellow-900"><i className="fa-sharp fa-solid fa-upload"></i> Nhập phòng từ .CSV</button>
-                    </Link>
-                    <Modal title="Nhập phòng từ file Excel " open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                        <Upload {...props}>
-                            <div className="flex items-center justify-center w-full">
-                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer  ">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg aria-hidden="true" className="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">Chỉ nhận file .CSV</p>
-                                    </div>
-                                </label>
-                            </div>
-                        </Upload>
-                    </Modal>
-
                     <Link to="listMember">
                         <button className='text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'> <i className="fa-solid fa-users"></i> Khách thuê</button>
                     </Link>

@@ -1,7 +1,13 @@
 // path router
 export const urlRouter = {
-  // Landing
-  LANDING: '/',
+  // client
+  CLIENT_SERVICE: 'service',
+  CLIENT_CONTRACT: 'contract',
+  CLIENT_ARISE: 'arise',
+  CLIENT_ASSET: 'asset',
+  CLIENT_BILL: 'bill',
+  CLIENT_INFAORMATION: 'information',
+
 
   // Admin
   ADMIN: 'admin',
@@ -11,6 +17,7 @@ export const urlRouter = {
   LIST_MEMBER: 'listMember',
   LIST_ROOM: 'listRoom',
   CREATE_ROOM: 'createRoom',
+  EDIT_ROOM: 'editRoom',
   UPDATE_ROOM: 'edit',
   CREATE_MEMBER: 'createMember',
   VIEW_MEMBER_IN_ROOM: 'view',// XEM THÀNH VIÊN TRONG PHÒNG
@@ -22,8 +29,9 @@ export const urlRouter = {
   ARISE: 'arise', //dịch vụ
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
+  NOTIFICATION: 'notification', // thông báo
   REPORT: 'Report',
-  UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
+  UPDATE_DEPOSIT: 'update-deposit',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
@@ -33,6 +41,11 @@ export const urlRouter = {
   USERREPORTDETAIL: 'userReportDetail',
 
 
+  CREATE_ASSETS: 'create-assets',
+  UPDATE_SERVICE: 'add-service', //dịch vụ
+  UPDATE_ARISE: 'update-arise', //dịch vụ
+  WATER: 'water', //
+  ELECTRICITY: 'electricity',
   PG: 'pg',
   LIST_PG: 'list',
   ASSETS: 'assets',

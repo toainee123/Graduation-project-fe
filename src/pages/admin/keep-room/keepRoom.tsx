@@ -1,17 +1,19 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Button, DatePicker, DatePickerProps, Form, Popconfirm, Select, Space, message } from 'antd';
+import { ExclamationCircleFilled, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, DatePicker, DatePickerProps, Form, Popconfirm, Select, Space, message, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { getListDeposit } from 'src/api/deposit';
+import { deleteDeposit, getListDeposit } from 'src/api/deposit';
 import { getListHouse } from 'src/api/house';
 import { getRoom } from 'src/api/room';
 import { fetchDeleteDeposit, fetchDeposit, selectSuccessDeposit } from 'src/features/deposit/deposit';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { urlRouter } from 'src/utils/constants';
 import { convertDate, convertDateFilter } from 'src/utils/helps';
 
 const KeepRoom = () => {
   const { register, handleSubmit } = useForm();
+  const { confirm } = Modal;
   const statusState = useAppSelector(selectSuccessDeposit);
   const [messageApi] = message.useMessage();
   const [dateTo, setDateTo] = useState('');
@@ -82,20 +84,33 @@ const KeepRoom = () => {
       });
   };
 
-  const confirm = async (id: any) => {
-    dispatch(fetchDeleteDeposit(id))
-      .unwrap()
-      .then((resp) => {
-        const getDeposit = async () => {
-          const { data } = await getListDeposit({});
-          setData(data.responses);
-        };
-        getDeposit();
-        messageApi.success('Đã xoa thành công');
-      })
-      .catch((err) => {
-        messageApi.success('Xoa khong thành công');
-      });
+  const showDeleteConfirm = (id: any) => {
+    confirm({
+      title: 'Bạn có muốn xóa dịch vụ này không ?',
+      icon: <ExclamationCircleFilled />,
+      content: 'Lưu ý: Toàn bộ dữ liệu về cọc phòng này sẽ bị xóa',
+      okText: 'Có',
+      okType: 'danger',
+      cancelText: 'Không',
+      async onOk() {
+        await deleteDeposit(id)
+          .then((resp) => {
+            const listDeposit = async () => {
+              const { data } = await getListDeposit({});
+              setData(data.responses);
+            };
+            listDeposit();
+            message.success('Xóa thành công');
+          })
+          .catch((err) => {
+            message.error(err.message);
+          });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+    console.log(1);
   };
 
   const Onsubmit = async (data: any) => {
@@ -273,8 +288,8 @@ const KeepRoom = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item: any) => (
-                    <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
+                  {data?.map((item: any, index: number) => (
+                    <tr key={index} className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.id}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.phone}</td>
@@ -316,17 +331,13 @@ const KeepRoom = () => {
                       </td>
                       <td className='flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
                         <div>
-                          <Popconfirm
-                            title='Bạn có muốn xóa không ?'
-                            onConfirm={() => confirm(item.id)}
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                          >
-                            <Button danger>Delete</Button>
-                          </Popconfirm>
+                          <Button onClick={() => showDeleteConfirm(item.id)} danger>
+                            Xóa
+                          </Button>
                         </div>
                         <div className='ml-2'>
-                          <Link to={`/admin/Update-deposit/${item.id}`}>
-                            <Button name={item.id}>Update</Button>
+                          <Link to={`/admin/update-deposit/${item.id}`}>
+                            <Button name={item.id}>Sửa</Button>
                           </Link>
                         </div>
                       </td>

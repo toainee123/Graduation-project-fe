@@ -28,6 +28,7 @@ const ListRooms = () => {
     }, [isDelete, isSuccess])
 
     const items = house?.result?.map((item: any, i: any) => {
+
         return {
             key: item.id,
             label: item.name,

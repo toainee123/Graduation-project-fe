@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import './style.scss';
 import { Checkbox, DatePicker, Select } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import moment from "moment";
 import { useDispatch, useSelector } from 'react-redux';
-import { postApiArise } from './api';
+import { getApiDetailArise, postApiArise, putApiArise } from './api';
+import { clearStore } from './reducer';
 
 
-const UpdateArise = () => {
+const UpdateArise = (props) => {
     const
         updateAriseStore
             = useSelector((state) => state.updateArise)
     const {
-        addArise
+        addArise,
+        detailArise, // chi tiết arise
+        updateArise, // chi tiết arise
     } = updateAriseStore
 
+
+    const { state } = useLocation()
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [dataRequest, setDataRequest] = useState({
@@ -26,12 +31,29 @@ const UpdateArise = () => {
         explain: null,
     })
     useEffect(() => {
-        if (addArise && addArise.id) {
+        if (addArise && addArise.id && !state) {
+            dispatch(clearStore())
             navigate(`/admin/${urlRouter.ARISE}`)
         }
     }, [addArise])
+    useEffect(() => {
+        if (updateArise && updateArise.id && state) {
+            dispatch(clearStore())
+            navigate(`/admin/${urlRouter.ARISE}`)
+        }
+    }, [updateArise])
+    useEffect(() => {
+        if (state && state.id) {
+            dispatch(getApiDetailArise(state.id))
+        }
+    }, [state])
+    useEffect(() => {
+        if (detailArise && detailArise.id) {
+            setDataRequest(detailArise)
+        }
+    }, [detailArise])
 
-
+    console.log(dataRequest)
     const handleUpdateField = (e, field, type) => {
         if (type === "checkbox") {
             return setDataRequest({
@@ -62,6 +84,12 @@ const UpdateArise = () => {
         }
         dispatch(postApiArise(newDataRequestAddArise))
     }
+    const handleEdit = () => {
+        const newDataRequestAddArise = {
+            ...dataRequest,
+        }
+        dispatch(putApiArise(newDataRequestAddArise))
+    }
     return (
         <>
             <div>
@@ -75,26 +103,27 @@ const UpdateArise = () => {
                     </label>
                     <div className='w-full h-58px'>
                         <Select
-                            defaultValue='house'
+                            placeholder='Chọn nhà'
                             size='large'
                             className='w-full'
+                            value={dataRequest.house}
                             onChange={e => handleUpdateField(e, "house", "select")}
                             options={[
                                 {
-                                    value: 'jack',
-                                    label: 'Jack',
+                                    value: 'Nhà 1',
+                                    label: 'Nhà 1',
                                 },
                                 {
-                                    value: 'lucy',
-                                    label: 'Lucy',
+                                    value: 'Nhà 2',
+                                    label: 'Nhà 2',
                                 },
                                 {
-                                    value: 'disabled',
-                                    label: 'Disabled',
+                                    value: 'Nhà 3',
+                                    label: 'Nhà 3',
                                 },
                                 {
-                                    value: 'Yiminghe',
-                                    label: 'yiminghe',
+                                    value: 'Nhà 4',
+                                    label: 'Nhà 4',
                                 },
                             ]}
                         />
@@ -104,26 +133,27 @@ const UpdateArise = () => {
                     </label>
                     <div className='w-full h-58px'>
                         <Select
-                            defaultValue='lucy'
+                            placeholder='Chọn phòng'
                             size='large'
                             className='w-full'
+                            value={dataRequest.room}
                             onChange={e => handleUpdateField(e, "room", "select")}
                             options={[
                                 {
-                                    value: 'jack',
-                                    label: 'Jack',
+                                    value: 'Phòng 1',
+                                    label: 'Phòng 1',
                                 },
                                 {
-                                    value: 'lucy',
-                                    label: 'Lucy',
+                                    value: 'Phòng 2',
+                                    label: 'Phòng 2',
                                 },
                                 {
-                                    value: 'disabled',
-                                    label: 'Disabled',
+                                    value: 'Phòng 3',
+                                    label: 'Phòng 3',
                                 },
                                 {
-                                    value: 'Yiminghe',
-                                    label: 'yiminghe',
+                                    value: 'Phòng 4',
+                                    label: 'Phòng 4',
                                 },
                             ]}
                         />
@@ -136,6 +166,7 @@ const UpdateArise = () => {
                     <div className='w-full h-58px'>
                         <DatePicker
                             className='w-full h-58px'
+                            value={dataRequest.date ? moment(dataRequest.date) : null}
                             onChange={e => handleUpdateField(e, "date", "date")}
                         />
                     </div>
@@ -143,18 +174,25 @@ const UpdateArise = () => {
                         Số tiền
                     </label>
                     <div className='w-full h-58px'>
-                        <input className='border-2 p-4 outline-0 w-full h-58px' type='number' onChange={e => handleUpdateField(e, "price", "text")} placeholder='Số tiền' />
+                        <input
+                            className='border-2 p-4 outline-0 w-full h-58px'
+                            type='number'
+                            value={dataRequest.price}
+                            onChange={e => handleUpdateField(e, "price", "text")}
+                            placeholder='Số tiền'
+                        />
                     </div>
                 </div>
                 <div className='flex justify-between items-center gap-12 py-3'></div>
                 <div className='flex justify-between items-center gap-12 py-3'>
                     <label htmlFor='' className='w-28 text-base font-semibold'>
-                        Nội dung
+                        Ghi chú
                     </label>
                     <div className='w-full'>
                         <textarea
                             className='w-full border-2 p-4'
                             rows={5}
+                            value={dataRequest.explain}
                             onChange={e => handleUpdateField(e, "explain", "text")}
                             placeholder='Thông tin ghi chú ...'
                         />
@@ -180,12 +218,23 @@ const UpdateArise = () => {
                 </div>
                 <div className='sticky bottom-0 py-3 mt-8 bg-gray-100 border rounded flex justify-end'>
                     <div>
-                        <button
-                            className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
-                            onClick={() => handleAdd()}
-                        >
-                            <i className='fa-solid fa-check'></i> Gửi
-                        </button>
+                        {state && state.id ? (
+                            <button
+                                className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                                onClick={() => handleEdit()}
+                            >
+                                <i className='fa-solid fa-check'></i>
+                                Cập nhật
+                            </button>
+                        ) : (
+                            <button
+                                className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2'
+                                onClick={() => handleAdd()}
+                            >
+                                <i className='fa-solid fa-check'></i>
+                                Thêm mới
+                            </button>
+                        )}
                         <Link
                             to={`/admin/${urlRouter.ARISE}`}
                         >

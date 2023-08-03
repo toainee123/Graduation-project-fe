@@ -1,6 +1,5 @@
-import React from 'react';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import { LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import authApi from 'src/api/auth';
 
@@ -20,12 +19,17 @@ const Register = () => {
       role: 'ADMIN',
       password: values.password,
     };
-    await authApi.register(dataRegister);
-    toast.success('Đăng kí thành công');
+
     try {
-    } catch (error) {
-      console.log(error);
-      toast.error('Đăng kí không thành công');
+      await authApi.register(dataRegister);
+      toast.success('Đăng kí thành công');
+    } catch (error: any) {
+      console.log(error?.response?.data.message);
+      if (error?.response?.data.message === 'Email đã tồn tại') {
+        toast.error('Email đã tồn tại');
+      } else {
+        toast.error('Đăng kí không thành công');
+      }
     }
   };
   return (

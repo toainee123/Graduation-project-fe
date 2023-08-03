@@ -2,8 +2,6 @@ import Assets from 'src/pages/admin/Assets/Assest';
 import ListArise from 'src/pages/admin/arise/ListArise';
 import UpdateArise from 'src/pages/admin/arise/UpdateArise';
 import Charge from 'src/pages/admin/charge/Charge';
-import DataPower from 'src/pages/admin/dataPower/dataPower';
-import DataWater from 'src/pages/admin/dataWater/dataWater';
 import Establish from 'src/pages/admin/establish/establish';
 import Payment from 'src/pages/admin/payMent/payMent';
 import Report from 'src/pages/admin/rePort/report';
@@ -21,7 +19,6 @@ import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomer
 import ReportCustomerRent from 'src/pages/admin/rePort/ReportCustomerRent';
 import ReportInvoiceDetail from 'src/pages/admin/rePort/ReportInvoiceDetail';
 import CreateSevice from 'src/pages/admin/service/CreateService';
-import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
 import HomePage from '../pages/admin/homePage/index';
 import Pg from '../pages/admin/pg/Pg';
 import ListPg from '../pages/admin/pg/listPg/ListPg';
@@ -35,6 +32,12 @@ import TemplateEmail from 'src/pages/admin/sendEmail';
 import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
 import { UserIndex } from 'src/pages/user/index';
 import ReportDetail from 'src/pages/user/reportDetail';
+import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
+import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
+import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
+import Notificatiton from 'src/pages/admin/notification/notificatiton';
+import Water from 'src/pages/admin/water/Water';
+import Electricity from 'src/pages/admin/electricity/Electricity';
 
 export const adminRoutes = [
   {
@@ -56,6 +59,10 @@ export const adminRoutes = [
   },
   {
     path: `${urlRouter.ROOM}/${urlRouter.CREATE_ROOM}`,
+    component: CreateRoom,
+  },
+  {
+    path: `${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/:roomId`,
     component: CreateRoom,
   },
   {
@@ -84,14 +91,6 @@ export const adminRoutes = [
     component: UpdateService,
   },
   {
-    path: urlRouter.DATA_POWER,
-    component: DataPower,
-  },
-  {
-    path: urlRouter.DATA_WATER,
-    component: DataWater,
-  },
-  {
     path: urlRouter.ARISE,
     component: ListArise,
   },
@@ -100,8 +99,16 @@ export const adminRoutes = [
     component: UpdateArise,
   },
   {
+    path: `${urlRouter.ARISE}/${urlRouter.UPDATE_ARISE}`,
+    component: UpdateArise,
+  },
+  {
     path: urlRouter.PAYMENT,
     component: Payment,
+  },
+  {
+    path: urlRouter.NOTIFICATION,
+    component: Notificatiton,
   },
   {
     path: urlRouter.REPORT,
@@ -141,7 +148,10 @@ export const adminRoutes = [
     path: urlRouter.CREATE_KEEP_ROOM,
     component: CreateKeepRoom,
   },
-
+  {
+    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
+    component: UpdateDeposit,
+  },
   {
     path: 'pg',
     component: Pg,
@@ -154,6 +164,16 @@ export const adminRoutes = [
   {
     path: urlRouter.ESTABLISH,
     component: Establish,
+  },
+
+  {
+    path: urlRouter.WATER,
+    component: Water,
+  },
+
+  {
+    path: urlRouter.ELECTRICITY,
+    component: Electricity,
   },
 
   {
@@ -183,8 +203,15 @@ export const adminRoutes = [
     ],
   },
 
+  {
 
-
+    path: urlRouter.CREATE_ASSETS,
+    component: CreateAssets,
+  },
+  {
+    path: `${urlRouter.ASSETS}/:id`,
+    component: UpdateAssets,
+  },
 ];
 
 export const authRoute = [

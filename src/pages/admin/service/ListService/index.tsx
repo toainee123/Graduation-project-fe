@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Space, message } from 'antd';
+import { ExclamationCircleFilled, PlusOutlined } from '@ant-design/icons';
+import { Button, Input, Space, message, Modal, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import { urlRouter } from 'src/utils/constants';
 import './style.scss';
@@ -9,74 +9,101 @@ import { Table } from 'antd';
 
 const Service = () => {
   const [list, setList] = useState([]);
+  const { confirm } = Modal;
   const [messageApi] = message.useMessage();
   useEffect(() => {
     const ListService = async () => {
-      const { data } = await getListService();
+      const { data } = await getListService({});
       setList(data.responses);
     };
     ListService();
   }, []);
 
-  const handleRemove = async (id: any) => {
-    await deleteService(id)
-      .then((resp) => {
-        const getDeposit = async () => {
-          const { data } = await getListService();
-          setList(data.result);
-        };
-        getDeposit();
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+  const showDeleteConfirm = (id: any) => {
+    confirm({
+      title: 'Bạn có muốn xóa dịch vụ này không ?',
+      icon: <ExclamationCircleFilled />,
+      content: 'Lưu ý: Toàn bộ dữ liệu về dịch vụ này sẽ bị xóa',
+      okText: 'Có',
+      okType: 'danger',
+      cancelText: 'Không',
+      async onOk() {
+        await deleteService(id)
+          .then((resp) => {
+            const ListService = async () => {
+              const { data } = await getListService({});
+              setList(data.responses);
+            };
+            ListService();
+            if (resp.status === 200) {
+              alert('thanh cong');
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
-
   const columns = [
     {
-      title: 'Active',
-      dataIndex: 'isActive',
-      render: (isActive: any) => (isActive ? 'Active' : 'Inactive'),
-    },
-    {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'id',
     },
     {
-      title: 'Name',
+      title: 'Tên dịch vụ',
       dataIndex: 'name',
     },
     {
-      title: 'Note',
-      dataIndex: 'note',
-    },
-    {
-      title: 'Price',
+      title: 'Giá',
       dataIndex: 'price',
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
+      title: 'Mã dịch vụ',
+      dataIndex: 'code',
     },
     {
-      title: 'Actions',
+      title: '',
       dataIndex: 'actions',
       render: (_: any, record: any) => (
         <Space size='middle'>
           <Link to={`http://localhost:3000/admin/service/${record.id}`}>
-            <Button>Edit</Button>
+            <Button>Sửa</Button>
           </Link>
-          <Button onClick={() => handleRemove(record.id)}>Remove</Button>
+          <Button onClick={() => showDeleteConfirm(record.id)} danger>
+            Xóa
+          </Button>
         </Space>
       ),
     },
   ];
+  const onSubmit = (data: any) => {
+    const result = {
+      search: data.name,
+    };
+    if (result) {
+      const listService = async (result: any) => {
+        const { data } = await getListService(result);
+        setList(data.responses);
+      };
+      listService(result);
+    } else {
+      const getDeposit = async () => {
+        const { data } = await getListService({});
+        setList(data.responses);
+      };
+      getDeposit();
+    }
+  };
 
   return (
     <>
       <div className='header'>
         <div className='header-title'>
-          <h1>List Service</h1>
+          <h1>Dịch vụ</h1>
         </div>
         <div className='action'>
           <Link to={urlRouter.ADD_SERVICE}>
@@ -93,17 +120,20 @@ const Service = () => {
         <strong>Lưu ý:</strong>
         <p>
           Các dịch vụ phải được gán cho từng khách thuê phòng để khi tính tiền sẽ có tiền dịch vụ đó. Để cấu hình đơn
-          giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước; sau đó vào menu "Thiết lập" ={'>'}{' '}
-          Tab "Đơn giá điện nước bậc thang" để thiết lập đơn giá.
+          giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước
         </p>
       </div>
       <div className='render-input'>
-        <Input
-          // value={dataFilter[item.field]}
-          placeholder='Tên'
-          // onChange={e => handleUpdateField(e, item.field, item.type)}
-        />
-        <Button type='primary'>Tìm</Button>
+        <Form name='myForm' onFinish={onSubmit} style={{ display: 'flex' }}>
+          <Form.Item name='name' rules={[{ required: true, message: 'Vui lòng không được bỏ trống!' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Tìm kiếm
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
       <Table dataSource={list} columns={columns} rowKey='name' />
     </>
