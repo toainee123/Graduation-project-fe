@@ -1,0 +1,31 @@
+.ant-table-thead tr .ant-table-cell {
+  background-color: #3455eb !important;
+  color: #fff;
+}
+
+.ant-table-container {
+  border-top-left-radius: 15px !important ;
+  border-top: none !important;
+}
+.ant-table-thead tr .ant-table-cell:first-child {
+  border-radius: 15px 0px 0px 0px !important;
+}
+
+.ant-table-thead tr .ant-table-cell:nth-last-child(2) {
+  border-right: none !important;
+}
+
+.ant-table-thead tr .ant-table-cell:last-child {
+  border-radius: 0px 15px 0px 0px !important;
+  box-shadow: none !important;
+  border-left: none !important;
+}
+.ant-table-cell-scrollbar:not([rowspan]) {
+  border: none !important;
+  box-shadow: none !important;
+}
+.ant-table-pagination.ant-pagination {
+  padding: 16px 20px;
+  margin: 0 !important;
+  background-color: #fff;
+}

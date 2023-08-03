@@ -8,7 +8,7 @@ type data = {
 
 type transformData = {
     month: string,
-    totalRevenue: string
+    totalRevenue: number
 }
 
 type dataPie = {
@@ -23,7 +23,7 @@ type transFormDataPie = {
 
 export const TransFormToBarData = (data: data[]): transformData[] => data.map(item => ({
     month: moment(item.month).subtract(1, 'months').format('MM/YYYY'),
-    totalRevenue: item.totalRevenue
+    totalRevenue: +item.totalRevenue
 }))
 
 export const TransFormToPieChart = (data: dataPie): transFormDataPie[] => Object.entries(data).map(([roomStatus, count]) => ({ roomStatus, count }));

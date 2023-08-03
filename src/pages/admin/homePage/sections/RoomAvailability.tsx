@@ -2,6 +2,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
+import './table.scss';
 
 type dataList = {
   key: string;
@@ -14,11 +15,13 @@ const columns: ColumnsType<dataList> = [
     title: 'Nhà',
     dataIndex: 'namehouse',
     key: 'namehouse',
+    align: 'center',
   },
   {
     title: 'Phòng',
     dataIndex: 'nameroom',
     key: 'nameroom',
+    align: 'center',
   },
 ];
 
@@ -34,9 +37,8 @@ export const RoomAvailability = () => {
   }, []);
   return (
     <div className=' '>
-      <h1>Danh sách phòng trống</h1>
-      <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
+      <div className='bg-gray-100 mt-4'>
+        <Table dataSource={dataSource} columns={columns} scroll={{ y: 300 }} bordered />
       </div>
     </div>
   );
