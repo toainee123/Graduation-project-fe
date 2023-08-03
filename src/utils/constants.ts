@@ -1,7 +1,13 @@
 // path router
 export const urlRouter = {
-  // Landing
-  LANDING: '/',
+  // client
+  CLIENT_SERVICE: 'service',
+  CLIENT_CONTRACT: 'contract',
+  CLIENT_ARISE: 'arise',
+  CLIENT_ASSET: 'asset',
+  CLIENT_BILL: 'bill',
+  CLIENT_INFAORMATION: 'information',
+
 
   // Admin
   ADMIN: 'admin',
@@ -34,8 +40,8 @@ export const urlRouter = {
   CREATE_ASSETS: 'create-assets',
   UPDATE_SERVICE: 'add-service', //dịch vụ
   UPDATE_ARISE: 'update-arise', //dịch vụ
-
-
+  WATER: 'water', //
+  ELECTRICITY: 'electricity',
   PG: 'pg',
   LIST_PG: 'list',
   ASSETS: 'assets',
