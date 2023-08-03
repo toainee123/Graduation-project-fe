@@ -108,7 +108,10 @@ const TemplateEmail = () => {
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.emailto}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.title}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.content}</td>
+                      <td
+                        className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                      ></td>
                     </tr>
                   ))}
                 </tbody>
