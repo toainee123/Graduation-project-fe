@@ -31,7 +31,7 @@ export const urlRouter = {
   PAYMENT: 'Payment', // phiếu chi
   NOTIFICATION: 'notification', // thông báo
   REPORT: 'Report',
-  UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
+  UPDATE_DEPOSIT: 'update-deposit',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
