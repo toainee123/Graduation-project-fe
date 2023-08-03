@@ -24,3 +24,7 @@ export const getNotification = () => {
     const url = `dashboard/notification`
     return axiosClient.get(url)
 }
+export const updateNotification = ({ id, value }: any) => {
+    const url = `dashboard/notification/${id}`
+    return axiosClient.put(url, value)
+}

@@ -28,7 +28,7 @@ const HeaderComponent = (props: Props) => {
       setNotification(data)
     }
     getAllNotifi()
-  }, [])
+  }, [setNotification])
   const showDrawer = () => {
     setOpen(true);
   };
@@ -68,12 +68,12 @@ const HeaderComponent = (props: Props) => {
       content: item?.content
     }
   })
-
+  const filteredDataSource = data.filter((item) => item.status === false);
   return (
     <Header >
       <Space >
         <button onClick={showDrawer}>
-          <Badge count={5}>
+          <Badge count={filteredDataSource.length}>
             <i className="fa-solid fa-bell fa-xl mx-1"></i>
           </Badge>
         </button>
@@ -87,12 +87,10 @@ const HeaderComponent = (props: Props) => {
         <i className="fa-solid fa-bell fa-md mx-2"></i>Thông báo</span>} placement="right" onClose={onClose} open={open}>
         <List
           itemLayout="horizontal"
-          dataSource={data}
+          dataSource={filteredDataSource}
           renderItem={(item, index) => (
             <List.Item>
-              {item?.status ? (
-                <span className='text-center w-full'>Hiện chưa có thông báo nào. <Link onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>danh sách</Link></span>
-              ) : (
+              {item?.status === 0 ? ("ádsss") : (
                 <List.Item.Meta
                   className='px-3 hover:bg-gray-100 mb-1'
                   title={
