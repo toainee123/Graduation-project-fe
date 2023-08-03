@@ -1,7 +1,13 @@
 // path router
 export const urlRouter = {
-  // Landing
-  LANDING: '/',
+  // client
+  CLIENT_SERVICE: 'service',
+  CLIENT_CONTRACT: 'contract',
+  CLIENT_ARISE: 'arise',
+  CLIENT_ASSET: 'asset',
+  CLIENT_BILL: 'bill',
+  CLIENT_INFAORMATION: 'information',
+
 
   // Admin
   ADMIN: 'admin',
