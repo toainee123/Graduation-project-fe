@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Select, Button, Table, TableProps, Form } from 'antd';
+import { DatePicker, Select, Button, Table, TableProps, Form, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent, getListReportInvoiceDetail } from 'src/api/report';
 import { log } from 'console';
@@ -65,8 +65,8 @@ const columns: TableProps<REPORT_TYPE>['columns'] = [
   },
 ];
 type TSearchFormValues = {
-  houseid: string;
-  roomid: string;
+  houseId: string;
+  roomId: string;
 };
 
 const ReportInvoiceDetail = () => {
@@ -91,9 +91,13 @@ const ReportInvoiceDetail = () => {
     };
     getList();
   }, []);
-  const handleSubmitSearch = (values: TSearchFormValues) => {
-    setHouseid(values.houseid);
-    setRoomid(values.roomid);
+  const handleSubmitSearch = async (values: TSearchFormValues) => {
+    console.log(values);
+
+    if (values) {
+      const { data } = await getListReportInvoiceDetail(values);
+      setDataSource(data);
+    }
   };
   return (
     <div className='es-container'>
@@ -111,16 +115,16 @@ const ReportInvoiceDetail = () => {
         <Form form={form} onFinish={handleSubmitSearch}>
           <div className='flex w-full mt-5 items-center'>
             <div className='mr-2'>
-              <Form.Item name='roomid' label='Phòng'>
-                <DatePicker />
+              <Form.Item name='roomId' label='Phòng'>
+                <Input />
               </Form.Item>
             </div>
             <div className='mr-2'>
-              <Form.Item name='houseid' label='Nhà'>
+              <Form.Item name='houseId' label='Nhà'>
                 <Select
                   style={{ width: 200 }}
                   allowClear
-                  options={dataSource.map((item: any) => ({
+                  options={dataHouse.map((item: any) => ({
                     label: item.namehouse,
                     value: item.houseid,
                   }))}
