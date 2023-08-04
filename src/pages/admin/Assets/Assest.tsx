@@ -45,9 +45,7 @@ const Assets = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [messageApi] = message.useMessage();
-  const info = () => {
-    messageApi.success('Đã xác nhận thành công');
-  };
+  const [assets, setAsssets] = useState([]);
   const [house, setHouse] = useState([]);
   const [homeId, setHomeId] = useState([]);
   const [room, setRoom] = useState([]);
@@ -56,7 +54,7 @@ const Assets = () => {
   useEffect(() => {
     const listAssets = async () => {
       const { data } = await getListAssets({});
-      setData(data.responses);
+      setAsssets(data.responses);
     };
     listAssets();
     const getDeposit = async () => {
@@ -214,7 +212,7 @@ const Assets = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((item: any, index: any) => (
+                  {assets?.map((item: any, index: any) => (
                     <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
