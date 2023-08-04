@@ -2,6 +2,7 @@ import {
   BgColorsOutlined,
   BulbOutlined,
   CalculatorOutlined,
+  ExclamationCircleOutlined,
   FileOutlined,
   FileTextOutlined,
   FormOutlined,
@@ -84,8 +85,13 @@ const Sidebar = (props: Props) => {
       icon: <FormOutlined />,
     },
     {
-      label: <Link to={urlRouter.CLIENT_INFAORMATION}>Thông tin cá nhân</Link>,
+      label: <Link to={urlRouter.CLIENT_SENDNOTIFICATION}>Báo cáo </Link>,
       key: '7',
+      icon: <ExclamationCircleOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.CLIENT_INFAORMATION}>Thông tin cá nhân</Link>,
+      key: '8',
       icon: <FileTextOutlined />,
     },
   ];

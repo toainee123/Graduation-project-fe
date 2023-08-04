@@ -7,6 +7,7 @@ export const urlRouter = {
   CLIENT_ASSET: 'asset',
   CLIENT_BILL: 'bill',
   CLIENT_INFAORMATION: 'information',
+  CLIENT_SENDNOTIFICATION: 'send-notification',
 
 
   // Admin

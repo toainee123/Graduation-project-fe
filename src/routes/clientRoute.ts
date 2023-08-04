@@ -3,6 +3,7 @@ import ClientAsset from "src/pages/client/asset/ClientAsset";
 import ClientBill from "src/pages/client/bill/ClientBill";
 import ClientContract from "src/pages/client/contract/ClientContract";
 import ClientInfomation from "src/pages/client/information/ClientInfomation";
+import Notification from "src/pages/client/notification/notification";
 import ClientService from "src/pages/client/service/ClientService";
 import { urlRouter } from "src/utils/constants";
 
@@ -36,4 +37,8 @@ export const clientRoute = [
         path: urlRouter.CLIENT_INFAORMATION,
         component: ClientInfomation,
     },
+    {
+        path: urlRouter.CLIENT_SENDNOTIFICATION,
+        component: Notification,
+    }
 ]
