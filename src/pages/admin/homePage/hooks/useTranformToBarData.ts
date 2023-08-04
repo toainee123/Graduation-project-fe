@@ -3,7 +3,9 @@ import moment from "moment"
 
 type data = {
     month: Date,
-    totalRevenue: string
+    totalRevenue: string,
+    total: string
+    year: string
 }
 
 type transformData = {
@@ -21,9 +23,21 @@ type transFormDataPie = {
     count: number
 }
 
+
+
 export const TransFormToBarData = (data: data[]): transformData[] => data.map(item => ({
-    month: moment(item.month).subtract(1, 'months').format('MM/YYYY'),
-    totalRevenue: +item.totalRevenue
+    month: item.month + '/' + item.year,
+    totalRevenue: +item.total
+}))
+
+export const TransFormToElecData = (data: data[]): any => data.map(item => ({
+    month: item.month + '/' + item.year,
+    total: +item.total
+}))
+
+export const TransFormToWaterData = (data: data[]): any => data.map(item => ({
+    month: item.month + '/' + item.year,
+    total: +item.total
 }))
 
 export const TransFormToPieChart = (data: dataPie): transFormDataPie[] => Object.entries(data).map(([roomStatus, count]) => ({ roomStatus, count }));

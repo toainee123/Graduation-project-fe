@@ -11,6 +11,7 @@ const ColumnChart = ({ data, xField, yField }: any) => {
     data,
     xField,
     yField,
+    columnWidthRatio: 0.8,
     appendPadding: 20,
     label: {
       // 可手动配置 label 数据标签位置
@@ -22,6 +23,8 @@ const ColumnChart = ({ data, xField, yField }: any) => {
         opacity: 1,
       },
     },
+    minColumnWidth: 40,
+    maxColumnWidth: 60,
     xAxis: {
       label: {
         autoHide: true,
@@ -37,9 +40,11 @@ const ColumnChart = ({ data, xField, yField }: any) => {
           return a;
         },
       },
-      sales: {
-        alias: '销售额',
-      },
+      // month: {
+      //   formatter(value) {
+      //     console.log(value);
+      //   },
+      // },
     },
   };
   return <Column {...config} />;
