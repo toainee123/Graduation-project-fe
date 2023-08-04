@@ -85,24 +85,6 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.USER}>User</Link>,
-      key: '6',
-      icon: <UserOutlined />,
-      children: [
-        {
-          label: <Link to={`${urlRouter.USER}`}>Thông tin cá nhân</Link>,
-          key: '6.1',
-
-          icon: <UserOutlined />,
-        },
-        {
-          label: <Link to={`${urlRouter.USER}/${urlRouter.USERREPORTDETAIL}`}>Hóa đơn</Link>,
-          key: '6.2',
-          icon: <FileTextOutlined />,
-        },
-      ],
-    },
-    {
       label: (
         <Link className='label-router' to={urlRouter.ARISE}>
           Phát sinh

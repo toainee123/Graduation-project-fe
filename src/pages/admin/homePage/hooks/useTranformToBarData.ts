@@ -2,8 +2,9 @@ import { RootState } from './../../../../store/store';
 import moment from "moment"
 
 type data = {
-    month: Date,
-    totalRevenue: string
+    year: string,
+    month: string,
+    total: string,
 }
 
 type transformData = {
@@ -22,8 +23,8 @@ type transFormDataPie = {
 }
 
 export const TransFormToBarData = (data: data[]): transformData[] => data.map(item => ({
-    month: moment(item.month).subtract(1, 'months').format('MM/YYYY'),
-    totalRevenue: item.totalRevenue
+    month: `${item.month}/${item.year}`,
+    totalRevenue: item.total
 }))
 
 export const TransFormToPieChart = (data: dataPie): transFormDataPie[] => Object.entries(data).map(([roomStatus, count]) => ({ roomStatus, count }));
