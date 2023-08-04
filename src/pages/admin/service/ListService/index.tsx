@@ -102,7 +102,7 @@ const Service = () => {
   return (
     <>
       <div className='header'>
-        <div className='header-title'>
+        <div className='title_page'>
           <h1>Dịch vụ</h1>
         </div>
         <div className='action'>
@@ -115,7 +115,6 @@ const Service = () => {
           </Link>
         </div>
       </div>
-      <hr />
       <div className='description'>
         <strong>Lưu ý:</strong>
         <p>
