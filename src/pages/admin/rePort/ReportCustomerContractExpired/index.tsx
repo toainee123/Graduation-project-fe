@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Select, Button, Table } from 'antd';
+import { DatePicker, Select, Button, Table, Form, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerContractExpired } from 'src/api/report';
 import moment from 'moment';
@@ -56,16 +56,29 @@ const columns = [
   },
 ];
 
+type TSearchFormValues = {
+  houseid: string;
+  roomid: string;
+};
+
 const ReportCustomerContractExpired = () => {
   const [dataSource, setDataSource] = useState([]);
+  const [form] = Form.useForm<TSearchFormValues>();
+  const [roomid, setRoomid] = useState('');
+  const [houseid, setHouseid] = useState('');
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await getListReportCustomerContractExpired();
+      const { data } = await getListReportCustomerContractExpired({ roomId: roomid, houseId: houseid });
       setDataSource(data.responses);
     };
     getData();
-  }, []);
+  }, [roomid, houseid]);
+
+  const handleSubmitSearch = (values: TSearchFormValues) => {
+    setHouseid(values.houseid);
+    setRoomid(values.roomid);
+  };
   return (
     <div className='es-container'>
       <div className='title'>
@@ -79,39 +92,37 @@ const ReportCustomerContractExpired = () => {
       {/* filter */}
       <div className='filter'>
         {' '}
-        <div className='flex w-full mt-5 items-center'>
-          <div className='flex-item'>
-            <label className='text-base font-semibold mr-3 '>Nhà</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div>
-            <label className='text-base font-semibold mr-3 '>Phòng</label>
-            <Select
-              defaultValue='Phòng'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
-          </div>
-          <div className='ms-6'>
-            <div className='flex  w-full  items-center '>
-              <button className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4  rounded flex items-center justify-between'>
-                <SearchOutlined className='icon-btn' /> Xem
-              </button>
+        <Form form={form} onFinish={handleSubmitSearch}>
+          <div className='flex w-full mt-5 items-center'>
+            <div className='flex-item'>
+              <Form.Item name='houseid' label='Nhà'>
+                <Select
+                  style={{ width: 200 }}
+                  allowClear
+                  options={dataSource.map((item: any) => ({
+                    label: item.namehouse,
+                    value: item.houseid,
+                  }))}
+                />
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item name='roomid' label='Phòng'>
+                <Input />
+              </Form.Item>
+            </div>
+            <div className='ms-6'>
+              <div className='flex  w-full  items-center '>
+                <Button
+                  className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4  rounded flex items-center justify-between'
+                  htmlType='submit'
+                >
+                  <SearchOutlined className='icon-btn' /> Xem
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        </Form>
       </div>
       <div className='mt-5'>
         <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
