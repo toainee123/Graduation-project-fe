@@ -36,7 +36,6 @@ const Homepage = (props: Props) => {
   }, []);
   return (
     <div className=''>
-      <h2>HomePage</h2>
       <div className=' w-full grid grid-cols-2 gap-4 '>
         <div className=' '>
           <h1>Trạng thái phòng</h1>
@@ -45,17 +44,17 @@ const Homepage = (props: Props) => {
           </div>
         </div>
         <div className=' '>
-          <h1> doanh thu vn đồng</h1>
+          <h1> Doanh thu (VNĐ)</h1>
           <div className='bg-gray-100'>
             <LineChart data={dataChart} xField='month' yField='totalRevenue' />
           </div>
         </div>
       </div>
-      <div className=' w-full grid grid-cols-2 gap-4 '>
+      <div className=' w-full grid grid-cols-2 gap-4 mt-6'>
         <RoomAvailability />
         <OweRoomMoneyList />
       </div>
-      <div className=' w-full grid grid-cols-2 gap-4 '>
+      <div className=' w-full grid grid-cols-2 gap-4 mt-6 '>
         <ContractExpiration />
       </div>
     </div>

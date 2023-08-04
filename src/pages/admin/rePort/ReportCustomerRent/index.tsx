@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Select, Button, Table } from 'antd';
+import { DatePicker, Select, Button, Table, Form, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent } from 'src/api/report';
 import moment from 'moment';
@@ -52,16 +52,29 @@ const columns = [
   },
 ];
 
+type TSearchFormValues = {
+  houseid: string;
+  roomid: string;
+};
+
 const ReportCustomerRent = () => {
   const [dataSource, setDataSource] = useState<transFormData[]>([]);
+  const [form] = Form.useForm<TSearchFormValues>();
+  const [roomid, setRoomid] = useState('');
+  const [houseid, setHouseid] = useState('');
 
   useEffect(() => {
     const getList = async () => {
-      const { data } = await getListReportCustomerRent();
+      const { data } = await getListReportCustomerRent({ houseId: houseid, roomId: roomid });
       setDataSource(transFormDataReportCustomRent(data.responses));
     };
     getList();
-  }, []);
+  }, [houseid, roomid]);
+
+  const handleSubmitSearch = (values: TSearchFormValues) => {
+    setHouseid(values.houseid);
+    setRoomid(values.roomid);
+  };
   return (
     <div className='es-container'>
       <div className='title'>
@@ -75,32 +88,54 @@ const ReportCustomerRent = () => {
       {/* filter */}
       <div className='filter'>
         {' '}
-        <div className='flex w-full mt-5 items-center'>
-          <div className='mr-2'>
-            <label className='text-base font-semibold mr-4 '>Nhà</label>
-            <Select
-              defaultValue='Tất cả'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
+        <Form form={form} onFinish={handleSubmitSearch}>
+          <div className='flex w-full mt-5 items-center'>
+            <div className='mr-2'>
+              <Form.Item name='houseid' label='Nhà'>
+                <Select
+                  style={{ width: 200 }}
+                  allowClear
+                  options={dataSource.map((item) => ({
+                    label: item.namehouse,
+                    value: item.houseid,
+                  }))}
+                />
+              </Form.Item>
+            </div>
+            <div className='mr-2'>
+              <Form.Item name='roomid' label='Phòng'>
+                <Input />
+              </Form.Item>
+            </div>
+            <Button color='primary' htmlType='submit'>
+              Tìm
+            </Button>
           </div>
-          <div className='mr-2'>
-            <label className='text-base font-semibold mr-4 '>Phòng</label>
-            <Select
-              defaultValue='phòng'
-              style={{ width: 200 }}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'Tất cả', label: 'Tất cả' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-              ]}
-            />
+        </Form>
+        <Form form={form} onFinish={handleSubmitSearch}>
+          <div className='flex w-full mt-5 items-center'>
+            <div className='mr-2'>
+              <Form.Item name='houseid' label='Nhà'>
+                <Select
+                  style={{ width: 200 }}
+                  allowClear
+                  options={dataSource.map((item) => ({
+                    label: item.namehouse,
+                    value: item.houseid,
+                  }))}
+                />
+              </Form.Item>
+            </div>
+            <div className='mr-2'>
+              <Form.Item name='roomid' label='Phòng'>
+                <Input />
+              </Form.Item>
+            </div>
+            <Button color='primary' htmlType='submit'>
+              Tìm
+            </Button>
           </div>
-        </div>
+        </Form>
       </div>
       <div className='mt-5'>
         <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />;
