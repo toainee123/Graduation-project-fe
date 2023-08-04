@@ -57,7 +57,9 @@ const TemplateEmail = () => {
 
   return (
     <div>
-      <h1>Danh sách email</h1>
+      <div className='title_page'>
+        <h1>Danh sách email</h1>
+      </div>
       <div className='mb-5'>
         <div className='flex'>
           <Form onFinish={onSubmit}>

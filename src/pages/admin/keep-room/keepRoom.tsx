@@ -140,7 +140,9 @@ const KeepRoom = () => {
       <div className='room'>
         <div className='room_filter my-3'>
           <div className='row'>
-            <h1>Cọc giữ phòng</h1>
+            <div className='title_page'>
+              <h1>Cọc giữ phòng</h1>
+            </div>
             <div className='flex'>
               <div>
                 <form onSubmit={handleSubmit(Onsubmit)} style={{ marginTop: 30 }}>
