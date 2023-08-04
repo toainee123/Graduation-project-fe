@@ -7,6 +7,7 @@ export const urlRouter = {
   CLIENT_ASSET: 'asset',
   CLIENT_BILL: 'bill',
   CLIENT_INFAORMATION: 'information',
+  CLIENT_SENDNOTIFICATION: 'send-notification',
 
 
   // Admin
@@ -29,13 +30,18 @@ export const urlRouter = {
   ARISE: 'arise', //dịch vụ
   ADD_ARISE: 'add-arise', //dịch vụ
   PAYMENT: 'Payment', // phiếu chi
+  NOTIFICATION: 'notification', // thông báo
   REPORT: 'Report',
-  UPDATE_DEPOSIT: 'Cập nhật cọc phòng',
+  UPDATE_DEPOSIT: 'update-deposit',
   ReportCustomerRent: 'ReportCustomerRent',// list khachs thuê phòng
   ReportCustomerContractExpired: 'ReportCustomerContractExpired', //danh sachs khach sap het hop dong 
   ReportInvoiceDetail: 'ReportInvoiceDetail',
   LIST_EMAIL: 'listEmail',
   CREATE_EMAIL: 'create-email',
+  USER: 'user',
+  USERREPORTDETAIL: 'userReportDetail',
+
+
   CREATE_ASSETS: 'create-assets',
   UPDATE_SERVICE: 'add-service', //dịch vụ
   UPDATE_ARISE: 'update-arise', //dịch vụ

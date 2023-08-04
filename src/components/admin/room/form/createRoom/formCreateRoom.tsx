@@ -37,7 +37,14 @@ const FormCreateRoom = () => {
             const fetchRoomById = async () => {
                 const { data } = await getByIdRoom(roomId);
                 setDetailRoom(data);
-                form.setFieldsValue({ ...data, name: data?.nameroom, houseId: data?.houseId, maxCustomer: data?.maxcustomer });
+                form.setFieldsValue({
+                    ...data,
+                    name: data?.nameroom,
+                    houseId: data?.houseId,
+                    maxCustomer: data?.maxcustomer,
+                    indexElectricity: data?.indexelectricity,
+                    indexWater: data?.indexwater
+                });
                 console.log(data);
                 // Đợi có trả về image thì setFileList([image])
                 // {
@@ -123,7 +130,7 @@ const FormCreateRoom = () => {
                 console.log('linkImage', linkImage);
                 await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }))
                 message.success(`Cập nhât ${values.name} thành công`)
-                navigate(`/admin/${urlRouter.ROOM}`);
+                // navigate(`/admin/${urlRouter.ROOM}`);
             } catch (error) {
                 message.error(`Cập nhât ${values.name} thất bại`)
             }
@@ -160,9 +167,7 @@ const FormCreateRoom = () => {
                             )}
                         </Upload>
                     </Form.Item>
-                    {keyLocation === 'update' && <img src={fileListImage} alt="" style={{ width: '150px', height: '150px' }} />}
                 </div>
-
                 <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
                     <label htmlFor="" className='w-64 text-base font-semibold'>Phòng số</label>
                     <div className='w-full items-center'>

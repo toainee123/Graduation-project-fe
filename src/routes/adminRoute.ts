@@ -12,6 +12,7 @@ import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
+
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
 
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
@@ -32,6 +33,7 @@ import CreateTemplateEmail from 'src/pages/admin/sendEmail/create-email';
 import CreateAssets from 'src/pages/admin/Assets/createAssets/CreateAssets';
 import UpdateAssets from 'src/pages/admin/Assets/UpdateAssets/updateAssets';
 import UpdateService from 'src/pages/admin/service/UpdateService/updateService';
+import Notificatiton from 'src/pages/admin/notification/notificatiton';
 import Water from 'src/pages/admin/water/Water';
 import Electricity from 'src/pages/admin/electricity/Electricity';
 
@@ -103,6 +105,10 @@ export const adminRoutes = [
     component: Payment,
   },
   {
+    path: urlRouter.NOTIFICATION,
+    component: Notificatiton,
+  },
+  {
     path: urlRouter.REPORT,
     component: Report,
     children: [
@@ -140,7 +146,10 @@ export const adminRoutes = [
     path: urlRouter.CREATE_KEEP_ROOM,
     component: CreateKeepRoom,
   },
-
+  {
+    path: `${urlRouter.UPDATE_DEPOSIT}/:id`,
+    component: UpdateDeposit,
+  },
   {
     path: 'pg',
     component: Pg,
@@ -184,6 +193,7 @@ export const adminRoutes = [
     component: CreateTemplateEmail,
   },
   {
+
     path: urlRouter.CREATE_ASSETS,
     component: CreateAssets,
   },
