@@ -48,19 +48,6 @@ const NavRoom = () => {
     useEffect(() => {
         dispatch(getAllHouse())
     }, [])
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-
     const handleChangeProvinces = (e: any) => {
         console.log(`selected ${e}`);
         setCity(e)

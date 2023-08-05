@@ -66,13 +66,9 @@ const Water = (props: Props) => {
     dateFilter: moment(),
   };
   return (
-    <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Chỉ số nước</strong>
-          </h2>
-        </div>
+    <div >
+      <div className='title_page'>
+        <h1>chỉ số nước </h1>
       </div>
       <Space className='fillter mb-4'>
         <Form className='form-search' form={form} onFinish={onFinish} initialValues={initValueCacula}>

@@ -80,13 +80,9 @@ const ReportCustomerContractExpired = () => {
     setRoomid(values.roomid);
   };
   return (
-    <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Danh sách khách sắp hết hợp đồng (trong vòng 30 ngày)</strong>
-          </h2>
-        </div>
+    <div>
+      <div className='title_page'>
+        <h1>Danh sách khách sắp hết hợp đồng (trong vòng 30 ngày) </h1>
       </div>
 
       {/* filter */}

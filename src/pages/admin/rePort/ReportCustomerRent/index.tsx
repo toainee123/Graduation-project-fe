@@ -76,13 +76,9 @@ const ReportCustomerRent = () => {
     setRoomid(values.roomid);
   };
   return (
-    <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Danh sách khách Đang thuê phòng</strong>
-          </h2>
-        </div>
+    <div >
+      <div className='title_page'>
+        <h1>Danh sách khách Đang thuê phòng </h1>
       </div>
 
       {/* filter */}
