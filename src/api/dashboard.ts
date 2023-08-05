@@ -22,9 +22,11 @@ export const getHistoryEmail = (data: any) => {
     })
 }
 
-export const getNotification = () => {
+export const getNotification = (query: any) => {
     const url = `dashboard/notification`
-    return axiosClient.get(url)
+    return axiosClient.get(url, {
+        params: query
+    })
 }
 export const updateNotification = ({ id, value }: any) => {
     const url = `dashboard/notification/${id}`

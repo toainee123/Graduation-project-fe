@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Modal, Select, Switch, Table, Tag } from 'antd';
+import { Collapse, Form, Modal, Select, Table, Tag } from 'antd';
 import { getNotification, updateNotification } from 'src/api/dashboard';
 import moment from 'moment';
+
 const Notificatiton = () => {
     const [notification, setNotification] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +15,7 @@ const Notificatiton = () => {
     };
     useEffect(() => {
         const getAllNotifi = async () => {
-            const { data } = await getNotification()
+            const { data } = await getNotification({})
             setNotification(data)
         }
         getAllNotifi()
@@ -27,7 +28,7 @@ const Notificatiton = () => {
                 <Tag onClick={() => showModal(item?.id)} style={{ width: '100%', cursor: "pointer", textAlign: 'center' }} color="#f50">Chưa được xử lý</Tag>
             ),
             datenotification: moment(item?.datenotification).format("HH:MM | DD-MM-YYYY"),
-            content: item?.content
+            content: item?.content,
         }
     })
     const columns = [
@@ -61,17 +62,17 @@ const Notificatiton = () => {
             width: 300
         },
     ];
+
     const onFinish = async (value: any) => {
         const values = {
             value, id: getId
         }
         await updateNotification(values)
         const getAllNotifi = async () => {
-            const { data } = await getNotification()
+            const { data } = await getNotification({})
             setNotification(data)
         }
         getAllNotifi()
-
     }
     return (
         <div>
@@ -79,7 +80,6 @@ const Notificatiton = () => {
                 <h1>thông báo</h1>
             </div>
             <Modal
-                centered
                 title="Cập nhật trạng thái"
                 style={{ width: "100" }}
                 open={isModalOpen}
@@ -110,7 +110,7 @@ const Notificatiton = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Table dataSource={dataSource} columns={columns} />;
+            <Table dataSource={dataSource} columns={columns} />
         </div>
     )
 }
