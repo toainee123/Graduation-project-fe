@@ -66,13 +66,9 @@ const Electricity = (props: Props) => {
     dateFilter: moment(),
   };
   return (
-    <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Chỉ số điện</strong>
-          </h2>
-        </div>
+    <div>
+      <div className='title_page'>
+        <h1>chỉ số điện </h1>
       </div>
       <Space className='fillter mb-4'>
         <Form className='form-search' form={form} onFinish={onFinish} initialValues={initValueCacula}>

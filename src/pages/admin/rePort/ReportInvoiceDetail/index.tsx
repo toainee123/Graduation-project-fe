@@ -101,12 +101,8 @@ const ReportInvoiceDetail = () => {
   };
   return (
     <div className='es-container'>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Chi tiết hóa đơn theo tháng</strong>
-          </h2>
-        </div>
+      <div className='title_page'>
+        <h1>Chi tiết hóa đơn theo tháng</h1>
       </div>
 
       {/* filter */}
