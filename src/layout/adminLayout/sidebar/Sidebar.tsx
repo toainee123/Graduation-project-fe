@@ -58,6 +58,17 @@ const Sidebar = (props: Props) => {
       icon: <HomeOutlined />,
     },
     {
+      label: <Link to={urlRouter.WATER}>Chỉ số nước</Link>,
+      key: '14',
+      icon: <BgColorsOutlined />,
+    },
+
+    {
+      label: <Link to={urlRouter.ELECTRICITY}>Chỉ số điện</Link>,
+      key: '15',
+      icon: <BulbOutlined />,
+    },
+    {
       label: (
         <Link className='label-router' to={urlRouter.SERVICE}>
           Dịch vụ
@@ -162,18 +173,6 @@ const Sidebar = (props: Props) => {
       key: '14',
       icon: <MailOutlined />,
     },
-
-    {
-      label: <Link to={urlRouter.WATER}>Chỉ số nước</Link>,
-      key: '14',
-      icon: <BgColorsOutlined />,
-    },
-
-    {
-      label: <Link to={urlRouter.ELECTRICITY}>Chỉ số điện</Link>,
-      key: '15',
-      icon: <BulbOutlined />,
-    },
   ];
 
   const logout = () => {
@@ -202,7 +201,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
       </Sider>
 

@@ -3,6 +3,7 @@ import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
+import './tablehomepage.scss';
 
 type dataList = {
   address: string;
@@ -51,10 +52,15 @@ const ContractExpiration = () => {
   }, []);
   // console.log(dataSource);
   return (
-    <div className=' '>
-      <h1>Khách sắp hết hạn hợp đồng</h1>
+    <div className=' table_homepage'>
       <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          scroll={{ y: '300px' }}
+          pagination={{ pageSize: 50 }}
+          bordered
+        />
       </div>
     </div>
   );

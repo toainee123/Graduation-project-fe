@@ -10,7 +10,7 @@ const LineChart = ({ data, xField, yField }: Props) => {
   const config: LineConfig = {
     data,
     xField,
-    yField,
+    yField: yField,
     legend: false,
     label: {
       position: 'middle', // 'top', 'bottom', 'middle',
