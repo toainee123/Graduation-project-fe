@@ -58,7 +58,7 @@ const Service = () => {
     return {
       key: item.id,
       name: item.name,
-      price: item.price,
+      price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
     };
   });
 

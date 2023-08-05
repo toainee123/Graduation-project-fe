@@ -190,10 +190,10 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
   return (
     <Form initialValues={{ ...detailRoom, initialValues, getData }} form={form} onFinish={onFinish} size='large'>
       <div className='lg:flex justify-between items-center gap-6 py-3 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-36 text-base font-semibold'>
+        <label htmlFor='' className='w-40 text-base font-semibold'>
           Hình ảnh
         </label>
-        <div >
+        <div className='ml-1'>
           <Form.Item name='image' className='form-upload'>
             <Upload {...props} listType='picture-card' fileList={fileListImage}>
               {countImg.length >= 1 ? null : (

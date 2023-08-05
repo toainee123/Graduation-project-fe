@@ -90,31 +90,45 @@ const HeaderComponent = (props: Props) => {
       </Space>
       <Drawer size="default" title={<span>
         <i className="fa-solid fa-bell fa-md mx-2"></i>Thông báo</span>} placement="right" onClose={onClose} open={open}>
-        <List
-          itemLayout="horizontal"
-          dataSource={data}
-          renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                className='px-3 hover:bg-gray-100 mb-1'
-                title={
-                  <Link key={index} className='border-b-4 link-title' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
-                    <div className='flex justify-between'>
-                      <div>
-                        <div className='text-base'>
-                          {item?.nameroom}
+        {
+          notification.length > 0 ? (
+            <List
+              itemLayout="horizontal"
+              dataSource={data}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <List.Item.Meta
+                    className='px-3 hover:bg-gray-100 mb-1'
+                    title={
+                      <Link key={index} className='border-b-4 link-title' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
+                        <div className='flex justify-between'>
+                          <div>
+                            <div className='text-base'>
+                              {item?.nameroom}
+                            </div>
+                            <span className='text-xs text-gray-500'>{item?.datenotification}</span>
+                          </div>
+                          <span className='text-red-400'>Chưa xử lý</span>
                         </div>
-                        <span className='text-xs text-gray-500'>{item?.datenotification}</span>
-                      </div>
-                      <span className='text-red-400'>Chưa xử lý</span>
-                    </div>
-                  </Link>
-                }
-                description={<p>{item?.content}</p>}
-              />
-            </List.Item>
-          )}
-        />
+                      </Link>
+                    }
+                    description={
+                      <Link key={index} className='border-b-4 link-title' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
+                        <p>{item?.content}</p>
+                      </Link>
+                    }
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <div className='text-center'>
+              <Link className='' onClick={onClose} to={`/${urlRouter.ADMIN}/${urlRouter.NOTIFICATION}`}>
+                Danh sách thông báo
+              </Link>
+            </div>
+          )
+        }
       </Drawer>
     </Header>
   );
