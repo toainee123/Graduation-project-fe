@@ -12,6 +12,7 @@ import ListRooms from 'src/pages/admin/room/listRoom/listRoom';
 import Room from 'src/pages/admin/room/room/room';
 import Service from 'src/pages/admin/service/ListService';
 import AuthLayout from '../layout/authLayout/AuthLayout';
+
 // import Dashboard from '../pages/admin/dashboard/Dashboard';
 
 import ReportCustomerContractExpired from 'src/pages/admin/rePort/ReportCustomerContractExpired';
@@ -192,6 +193,7 @@ export const adminRoutes = [
     component: CreateTemplateEmail,
   },
   {
+
     path: urlRouter.CREATE_ASSETS,
     component: CreateAssets,
   },

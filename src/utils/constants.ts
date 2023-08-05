@@ -7,6 +7,7 @@ export const urlRouter = {
   CLIENT_ASSET: 'asset',
   CLIENT_BILL: 'bill',
   CLIENT_INFAORMATION: 'information',
+  CLIENT_SENDNOTIFICATION: 'send-notification',
 
 
   // Admin
@@ -37,6 +38,10 @@ export const urlRouter = {
   ReportInvoiceDetail: 'ReportInvoiceDetail',
   LIST_EMAIL: 'listEmail',
   CREATE_EMAIL: 'create-email',
+  USER: 'user',
+  USERREPORTDETAIL: 'userReportDetail',
+
+
   CREATE_ASSETS: 'create-assets',
   UPDATE_SERVICE: 'add-service', //dịch vụ
   UPDATE_ARISE: 'update-arise', //dịch vụ

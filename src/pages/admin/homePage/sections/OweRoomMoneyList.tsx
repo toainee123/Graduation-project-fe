@@ -3,6 +3,7 @@ import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
+import './tablehomepage.scss';
 
 type dataList = {
   key: string;
@@ -54,10 +55,9 @@ const OweRoomMoneyList = () => {
     getList();
   }, []);
   return (
-    <div className=' '>
-      <h1>Danh sách Khách nợ tiền phòng</h1>
-      <div className='bg-gray-100'>
-        <Table dataSource={dataSource} columns={columns} scroll={{ y: '300px' }} />
+    <div className=' table_homepage'>
+      <div className='bg-gray-100 mt-4'>
+        <Table dataSource={dataSource} columns={columns} scroll={{ y: 300 }} pagination={{ pageSize: 50 }} bordered />
       </div>
     </div>
   );
