@@ -42,7 +42,7 @@ const Sidebar = (props: Props) => {
     {
       label: (
         <Link className='label-router' to={urlRouter.HOMEPAGE}>
-          HomePage
+          Thống kê
         </Link>
       ),
       key: '1',
@@ -59,13 +59,13 @@ const Sidebar = (props: Props) => {
     },
     {
       label: <Link to={urlRouter.WATER}>Chỉ số nước</Link>,
-      key: '14',
+      key: '16',
       icon: <BgColorsOutlined />,
     },
 
     {
       label: <Link to={urlRouter.ELECTRICITY}>Chỉ số điện</Link>,
-      key: '15',
+      key: '17',
       icon: <BulbOutlined />,
     },
     {
@@ -77,38 +77,21 @@ const Sidebar = (props: Props) => {
       key: '3',
       icon: <ReconciliationOutlined />,
     },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.DATA_POWER}>
-          Tiền điện
-        </Link>
-      ),
-      key: '4',
-      icon: <ThunderboltOutlined />,
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.DATA_WATER}>
-          Tiền nước
-        </Link>
-      ),
-      key: '5',
-      icon: <MailOutlined />,
-    },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.ARISE}>
-          Phát sinh
-        </Link>
-      ),
-      key: '7',
-      icon: <FormOutlined />,
-    },
-    {
-      label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
-      key: '8',
-      icon: <FileTextOutlined />,
-    },
+
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.ARISE}>
+    //       Phát sinh
+    //     </Link>
+    //   ),
+    //   key: '7',
+    //   icon: <FormOutlined />,
+    // },
+    // {
+    //   label: <Link to={urlRouter.PAYMENT}>Phiếu chi</Link>,
+    //   key: '8',
+    //   icon: <FileTextOutlined />,
+    // },
     {
       label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
       key: '9',
