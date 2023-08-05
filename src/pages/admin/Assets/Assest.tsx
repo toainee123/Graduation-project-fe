@@ -113,7 +113,6 @@ const Assets = () => {
     setRoomId(value);
   };
   const Onsubmit = (data: any) => {
-    console.log('data', data);
     const result = {
       houseId: data.houseId,
       roomId: data.roomId,
@@ -122,13 +121,13 @@ const Assets = () => {
     if (result) {
       const listAssets = async (result: any) => {
         const { data } = await getListAssets(result);
-        setData(data.responses);
+        setAsssets(data.responses);
       };
       listAssets(result);
     } else {
       const getDeposit = async () => {
         const { data } = await getListAssets({});
-        setData(data.responses);
+        setAsssets(data.responses);
       };
       getDeposit();
     }

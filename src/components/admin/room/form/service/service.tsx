@@ -56,9 +56,9 @@ const Service = () => {
   ];
   const dataSource = list?.map((item: any, index) => {
     return {
-      key: item.id,
+      key: index,
       name: item.name,
-      price: item.price,
+      price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
     };
   });
 

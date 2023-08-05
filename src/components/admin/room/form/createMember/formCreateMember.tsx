@@ -190,10 +190,10 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
   return (
     <Form initialValues={{ ...detailRoom, initialValues, getData }} form={form} onFinish={onFinish} size='large'>
       <div className='lg:flex justify-between items-center gap-6 py-3 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-36 text-base font-semibold'>
+        <label htmlFor='' className='w-40 text-base font-semibold'>
           Hình ảnh
         </label>
-        <div >
+        <div className='ml-1'>
           <Form.Item name='image' className='form-upload'>
             <Upload {...props} listType='picture-card' fileList={fileListImage}>
               {countImg.length >= 1 ? null : (
@@ -223,7 +223,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           CMND/CCCD
         </label>
         <div className='lg:w-1/2 sm:w-full'>
-          <Form.Item name='cccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
+          <Form.Item name='cccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(0)+([0-9]{11})\b/), message: "Không đúng định dạng CCCD" }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input type='number' className='w-full' />}
           </Form.Item>
         </div>
@@ -254,7 +254,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           Điện thoại 1
         </label>
         <div className='lg:w-1/2 sm:w-full'>
-          <Form.Item name='phone' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
+          <Form.Item name='phone' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g), message: "Không đúng định dạng Số điện thoại" }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
@@ -270,12 +270,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       <div className='lg:flex gap-12 gap-8 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
         <div className='w-48 text-base font-medium text-slate-500'></div>
         <div className='lg:w-1/2 sm:w-full'></div>
-        {/* <label htmlFor="" className="w-48 text-base font-medium text-slate-500">Nơi sinh</label>
-                <div className='lg:w-1/2 sm:w-full'>
-                    <Form.Item name="" >
-                        <Input className='w-full' placeholder='Nơi sinh' />
-                    </Form.Item>
-                </div> */}
         <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
           Ngày sinh
         </label>

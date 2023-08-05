@@ -48,10 +48,20 @@ const Service = () => {
       },
     });
   };
+
+  const dataSource = list.map((item: any, index: number) => {
+    return {
+      key: index + 1,
+      name: item?.name,
+      price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
+      code: item?.code
+    }
+  })
+
   const columns = [
     {
       title: 'STT',
-      dataIndex: 'id',
+      dataIndex: 'key',
     },
     {
       title: 'Tên dịch vụ',
@@ -66,7 +76,7 @@ const Service = () => {
       dataIndex: 'code',
     },
     {
-      title: '',
+      title: 'Action',
       dataIndex: 'actions',
       render: (_: any, record: any) => (
         <Space size='middle'>
@@ -107,9 +117,8 @@ const Service = () => {
         </div>
         <div className='action'>
           <Link to={urlRouter.ADD_SERVICE}>
-            <Button type='primary'>
-              {''}
-              <PlusOutlined style={{ fontSize: 15 }} />
+            <Button type='primary' >
+              <i className="fa-sharp fa-solid fa-plus pr-2"></i>
               Thêm dịch vụ
             </Button>
           </Link>
@@ -134,7 +143,7 @@ const Service = () => {
           </Form.Item>
         </Form>
       </div>
-      <Table dataSource={list} columns={columns} rowKey='name' />
+      <Table dataSource={dataSource} columns={columns} rowKey='name' />
     </>
   );
 };

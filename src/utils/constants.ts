@@ -12,7 +12,7 @@ export const urlRouter = {
 
   // Admin
   ADMIN: 'admin',
-  HOMEPAGE: 'homepage',
+  HOMEPAGE: 'dashboard',
   DASHBOARD: 'dashboard',
   ROOM: 'room',
   LIST_MEMBER: 'listMember',

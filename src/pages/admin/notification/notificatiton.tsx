@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Collapse, Form, Modal, Select, Table, Tag } from 'antd';
 import { getNotification, updateNotification } from 'src/api/dashboard';
 import moment from 'moment';
+import { SearchOutlined } from '@ant-design/icons';
 
 const Notificatiton = () => {
     const [notification, setNotification] = useState([])
@@ -74,10 +75,60 @@ const Notificatiton = () => {
         }
         getAllNotifi()
     }
+    const onFilter = (data: any) => {
+        const result = {
+            status: data.status
+        }
+        if (result) {
+            const getAllNotifi = async () => {
+                const { data } = await getNotification(result)
+                setNotification(data)
+            }
+            getAllNotifi()
+        } else {
+            const getAllNotifi = async () => {
+                const { data } = await getNotification({})
+                setNotification(data)
+            }
+            getAllNotifi()
+        }
+        console.log("value select", result);
+    }
     return (
         <div>
             <div className='title_page'>
                 <h1>thông báo</h1>
+            </div>
+            <div className="my-2">
+                <Form onFinish={onFilter}>
+                    <div className='flex gap-2 justify-end'>
+                        <div className='w-18'>
+                            <Form.Item name='status'>
+                                <Select
+                                    placeholder="-Trạng thái thông báo -"
+                                    options={[
+                                        {
+                                            label: '-Trạng thái-',
+                                            options: [
+                                                { label: 'Tất cả trạng thái', value: '' },
+                                                { label: 'Chưa được xử lý', value: 'false' },
+                                                { label: 'Đã được xử lý', value: 'true' },
+                                            ],
+                                        },
+                                    ]}
+                                />
+                            </Form.Item>
+                        </div>
+                        <div>
+                            <Form.Item>
+                                <button className='btn_search'>
+                                    <i className="fa-solid fa-magnifying-glass px-1"></i>
+                                    Tìm kiếm
+                                </button>
+                            </Form.Item>
+                        </div>
+                    </div>
+                </Form>
             </div>
             <Modal
                 title="Cập nhật trạng thái"
@@ -111,7 +162,7 @@ const Notificatiton = () => {
                 </Form>
             </Modal>
             <Table dataSource={dataSource} columns={columns} />
-        </div>
+        </div >
     )
 }
 
