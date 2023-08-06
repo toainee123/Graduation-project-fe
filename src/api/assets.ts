@@ -26,3 +26,7 @@ export const deleteAsset = async (id: any) => {
     const url = `/asset/${id}`;
     return axiosClient.delete(url, id);
 };
+export const getAssetUser = async () => {
+    const url = `/asset/asset-user`;
+    return axiosClient.get(url);
+};

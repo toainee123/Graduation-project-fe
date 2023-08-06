@@ -1,91 +1,61 @@
-import { ExclamationCircleFilled, QuestionCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, message, Modal, Select, Input, Form } from 'antd';
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { deleteAsset, getListAssets } from 'src/api/assets';
-import { getRoom } from 'src/api/charge';
-import { getListDeposit } from 'src/api/deposit';
-import { getListHouse } from 'src/api/house';
-import { convertDate } from 'src/utils/helps';
+import { getAssetUser } from 'src/api/assets';
 
-const column = [
+type TAssetUser = {
+  id: number;
+  name: string;
+  amount: number;
+  price: string;
+};
+
+const column: ColumnsType<TAssetUser> = [
   {
-    title: 'Nhà',
-    dataIndex: 'houseId',
+    key: 'index',
+    title: 'STT',
+    render(_, __, index) {
+      return index + 1;
+    },
   },
   {
-    title: 'Phòng',
-    dataIndex: 'roomId',
-    key: 'roomId',
-  },
-  {
-    title: 'Tên tài sản',
+    key: 'name',
     dataIndex: 'name',
+    title: 'Tên tài sản',
   },
   {
-    title: 'Ngày sử dụng',
-    dataIndex: 'dateuse',
-  },
-  {
-    title: 'Số lượng',
+    key: 'amount',
     dataIndex: 'amount',
+    title: 'Số lượng',
   },
   {
-    title: 'Đơn giá',
+    key: 'price',
     dataIndex: 'price',
-  },
-  {
-    title: 'Trạng thái',
-    key: 'isliquidation',
+    title: 'Giá tiền',
+    render(value) {
+      return Number(value).toLocaleString('VND');
+    },
   },
 ];
 
 const ClientAsset = () => {
-  const { confirm } = Modal;
-  const navigate = useNavigate();
-  const [data, setData] = useState([]);
-  const [messageApi] = message.useMessage();
-  const [assets, setAsssets] = useState([]);
-  const [house, setHouse] = useState([]);
-  const [homeId, setHomeId] = useState([]);
-  const [room, setRoom] = useState([]);
-  const [roomId, setRoomId] = useState([]);
+  const [assets, setAsssets] = useState<TAssetUser[]>([]);
 
   useEffect(() => {
     const listAssets = async () => {
-      const { data } = await getListAssets({});
-      setAsssets(data.responses);
+      const { data } = await getAssetUser();
+      setAsssets(data);
     };
     listAssets();
-    const getDeposit = async () => {
-      const { data } = await getListDeposit({});
-      setData(data.responses);
-    };
-    const getHouse = async () => {
-      const { data } = await getListHouse();
-      setHouse(data.result);
-    };
-    getHouse();
-    getDeposit();
   }, []);
 
-  const handleChangeHomeId = async (value: any) => {
-    setHomeId(value);
-    const getRoomWithHomeId = await getRoom(value)
-      .then((res) => {
-        setRoom(res.data.result.responses);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
   return (
     <div className='room'>
       <div className='title_page'>
         <h1>Danh sách tài sản</h1>
       </div>
 
-      <div className='room_form' style={{ marginTop: 30 }}>
+      {/* <div className='room_form' style={{ marginTop: 30 }}>
         <Form action=''>
           <div className='flex'>
             <div>
@@ -98,53 +68,9 @@ const ClientAsset = () => {
             </button>
           </div>
         </Form>
-      </div>
+      </div> */}
       <br />
-      <div className='flex flex-col'>
-        <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
-          <div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
-            <div className='overflow-hidden'>
-              <table className='min-w-full'>
-                <thead className='bg-gray-200 border-b'>
-                  <tr>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      STT
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Tên tài sản
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Giá tiền
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Số lượng
-                    </th>
-                    <th scope='col' colSpan={2} className='text-sm font-medium text-gray-900 px-6 py-4 text-left'></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {assets?.map((item: any, index: any) => (
-                    <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                        {new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
-                        }).format(+item?.price)}
-                      </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.amount}</td>
-                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
-                        {convertDate(item?.dateuse)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Table columns={column} dataSource={assets} />
     </div>
   );
 };
