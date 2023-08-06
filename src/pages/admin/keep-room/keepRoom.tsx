@@ -10,6 +10,7 @@ import { fetchDeleteDeposit, fetchDeposit, selectSuccessDeposit } from 'src/feat
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { urlRouter } from 'src/utils/constants';
 import { convertDate, convertDateFilter } from 'src/utils/helps';
+import * as XLSX from 'xlsx-js-style';
 
 const KeepRoom = () => {
   const { register, handleSubmit } = useForm();
@@ -135,6 +136,64 @@ const KeepRoom = () => {
     }
   };
 
+  const handleExportExcel = async () => {
+    console.log(data);
+
+    const covertData = data?.map((item: any, index: number) => {
+      console.log(item.status);
+
+      let convertStatus;
+      if (item.status === true) {
+        convertStatus = 'Đã xác nhận';
+      } else if (item.status === false) {
+        convertStatus = 'Chưa xác nhận';
+      } else if (item.status === null) {
+        convertStatus = 'Chưa xác nhận gì cả';
+      }
+      return {
+        // key: index,
+        index: index + 1,
+        name: item.name,
+        phone: item.phone,
+        money: item.money,
+        bookingdate: convertDate(item.bookingdate),
+        checkindate: convertDate(item.checkindate),
+        house: item.nameHouse,
+        room: item.nameRoom,
+        status: convertStatus,
+      };
+    });
+    console.log(covertData);
+
+    let length = 0;
+
+    let Heading = [
+      ['STT', 'Họ tên', 'SĐT', 'Tiền cọc phòng', 'Ngày đặt', 'Ngày dự kiến đến', 'Nhà', 'Phòng', 'Trạng thái'],
+    ];
+
+    const wb = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    // title1
+    ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 8 } }];
+    ws['A1'] = { t: 's', v: 'Danh sách cọc giữ phòng ' };
+    ws['A1'].s = {
+      font: { sz: 20, bold: true },
+      alignment: { horizontal: 'center' },
+    };
+
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A2' });
+    var wscols = [{ wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 }];
+    ws['!cols'] = wscols;
+
+    ws['!rows'] = [{ hpt: 30 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }, { hpt: 20 }];
+
+    XLSX.utils.sheet_add_json(ws, covertData, { origin: 'A3', skipHeader: true });
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, 'danh-sach-coc-giu-phong/2023.xlsx');
+  };
+
   return (
     <div>
       <div className='room'>
@@ -184,7 +243,7 @@ const KeepRoom = () => {
                             type='submit'
                           >
                             {' '}
-                            <i className='fa-solid fa-users'></i>Tìm kiếm
+                            <i className='fa-dashed fa-users'></i>Tìm kiếm
                           </button>
                         </div>
                       </div>
@@ -235,18 +294,19 @@ const KeepRoom = () => {
                     style={{ marginRight: 15 }}
                   >
                     {' '}
-                    <i className='fa-solid fa-users'></i> Thêm
+                    <i className='fa-dashed fa-users'></i> Thêm
                   </button>
                 </Link>
-                <Link to='#'>
-                  <button
-                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                    style={{ marginRight: 15 }}
-                  >
-                    {' '}
-                    <i className='fa-solid fa-users'></i> Xuất file Excel
-                  </button>
-                </Link>
+
+                <button
+                  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
+                  style={{ marginRight: 15 }}
+                  onClick={() => {
+                    handleExportExcel();
+                  }}
+                >
+                  <i className='fa-dashed fa-users'></i> Xuất file Excel
+                </button>
               </div>
             </div>
           </div>
@@ -316,7 +376,7 @@ const KeepRoom = () => {
                               className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'
                               onClick={() => handleChangeStatus(item.id, true)}
                             >
-                              <i className='fa-solid fa-check'></i> Nhận phòng
+                              <i className='fa-dashed fa-check'></i> Nhận phòng
                             </button>
                             <button
                               onClick={() => handleChangeStatus(item.id, false)}
