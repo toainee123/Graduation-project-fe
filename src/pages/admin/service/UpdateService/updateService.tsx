@@ -35,6 +35,7 @@ const UpdateService = () => {
     await updateServices(Number(id), result)
       .then((res) => {
         message.success(`Sửa dịch vụ ${result.name} thành công`);
+        navigate(-1)
       })
       .catch((err) => {
         message.error(err.message);

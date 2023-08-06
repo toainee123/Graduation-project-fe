@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Select, Button, Table, TableProps, Form, Input } from 'antd';
+import { DatePicker, Select, Button, Table, TableProps, Form, Input, DatePickerProps } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent, getListReportInvoiceDetail } from 'src/api/report';
-import { log } from 'console';
 import { REPORT_TYPE } from 'src/types/report';
+import { convertDateFilter } from 'src/utils/helps';
+import moment from 'moment';
+
 
 const { RangePicker } = DatePicker;
 
@@ -27,39 +29,57 @@ const columns: TableProps<REPORT_TYPE>['columns'] = [
   },
   {
     title: 'Tiền phòng',
-    dataIndex: 'priceroom',
     key: 'priceroom',
+    render(_, record, _index) {
+      return (
+        Number(record.priceroom).toLocaleString('VND')
+      );
+    },
   },
   {
     title: 'Tiền điện',
-    dataIndex: 'priceelectricity',
     key: 'priceelectricity',
+    render(_, record, _index) {
+      return (
+        Number(record.priceelectricity).toLocaleString('VND')
+      );
+    },
   },
   {
     title: 'Tiền nước',
-    dataIndex: 'pricewater',
     key: 'pricewater',
+    render(_, record, _index) {
+      return (
+        Number(record.pricewater).toLocaleString('VND')
+      );
+    },
   },
   {
     title: 'Dịch vụ khác',
-    dataIndex: 'priceservice',
     key: 'priceservice',
+    render(_, record, _index) {
+      return (
+        Number(record.priceservice).toLocaleString('VND')
+      );
+    },
   },
   {
     title: 'Nợ tháng trước',
-    dataIndex: 'owedold',
     key: 'owedold',
+    render(_, record, _index) {
+      return (
+        Number(record.owedold).toLocaleString('VND')
+      );
+    },
   },
   {
     title: 'Tổng tiền(VNĐ)',
-    key: 'total',
+    key: 'totalbill',
+    // dataIndex: 'totalbill',
+
     render(_, record, _index) {
       return (
-        Number(record.priceroom) +
-        Number(record.priceelectricity) +
-        Number(record.priceservice) +
-        Number(record.pricewater) +
-        Number(record.owedold)
+        Number(record.totalbill).toLocaleString('VND')
       );
     },
   },
@@ -67,6 +87,7 @@ const columns: TableProps<REPORT_TYPE>['columns'] = [
 type TSearchFormValues = {
   houseId: string;
   roomId: string;
+  date: string;
 };
 
 const ReportInvoiceDetail = () => {
@@ -75,10 +96,12 @@ const ReportInvoiceDetail = () => {
   const [form] = Form.useForm<TSearchFormValues>();
   const [roomid, setRoomid] = useState('');
   const [houseid, setHouseid] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await getListReportInvoiceDetail();
+      const timeNow = moment().format('YYYY-MM')
+      const { data } = await getListReportInvoiceDetail({ date: timeNow });
       setDataSource(data);
     };
     getData();
@@ -91,13 +114,29 @@ const ReportInvoiceDetail = () => {
     };
     getList();
   }, []);
+  console.log("data", dataHouse);
+
+  const DateToOnChange: DatePickerProps['onChange'] = (date, dateString) => {
+    setDateTo(dateString);
+  };
+
   const handleSubmitSearch = async (values: TSearchFormValues) => {
     console.log(values);
-
-    if (values) {
-      const { data } = await getListReportInvoiceDetail(values);
+    const value = {
+      date: dateTo && convertDateFilter(dateTo),
+      houseId: values.houseId
+    }
+    if (value) {
+      const { data } = await getListReportInvoiceDetail(value);
+      setDataSource(data);
+    } else {
+      const { data } = await getListReportInvoiceDetail({});
       setDataSource(data);
     }
+  };
+
+  const initValueFormFilter = {
+    date: moment(),
   };
   return (
     <div className='es-container'>
@@ -108,11 +147,16 @@ const ReportInvoiceDetail = () => {
       {/* filter */}
       <div className='filter'>
         {' '}
-        <Form form={form} onFinish={handleSubmitSearch}>
+        <Form form={form} initialValues={initValueFormFilter} onFinish={handleSubmitSearch}>
           <div className='flex w-full mt-5 items-center'>
             <div className='mr-2'>
-              <Form.Item name='roomId' label='Phòng'>
-                <Input />
+              <Form.Item name='date' label='Chọn ngày tháng'>
+                <DatePicker
+                  picker="month"
+                  onChange={DateToOnChange}
+                  format='YYYY-MM-DD'
+                  placeholder='Chọn ngày từ...'
+                />
               </Form.Item>
             </div>
             <div className='mr-2'>
