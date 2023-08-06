@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DatePicker, Select, Button, Table, Form, Input } from 'antd';
+import { DatePicker, Select, Button, Table, Form, Input, TableProps } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent } from 'src/api/report';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import { transFormData, transFormDataReportCustomRent } from './hooks/transform'
 
 const { RangePicker } = DatePicker;
 
-const columns = [
+const columns: TableProps<any>['columns'] = [
   {
     title: 'Họ tên khách',
     dataIndex: 'name',
@@ -36,19 +36,31 @@ const columns = [
     render: (value: string) => moment(value).format('DD/MM/YYYY'),
   },
   {
-    title: 'Tiền Nhà(VNĐ)',
-    dataIndex: 'price',
+    title: 'Tiền Nhà',
     key: 'price',
+    render(_, record, _index) {
+      return (
+        Number(record.price).toLocaleString('VND')
+      );
+    },
   },
   {
-    title: 'Dịch Vụ(VNĐ)',
-    dataIndex: 'totalService',
+    title: 'Dịch Vụ',
     key: 'totalService',
+    render(_, record, _index) {
+      return (
+        Number(record.totalService).toLocaleString('VND')
+      );
+    },
   },
   {
-    title: 'Tổng tiền(VNĐ)',
-    dataIndex: 'total',
+    title: 'Tổng tiền',
     key: 'total',
+    render(_, record, _index) {
+      return (
+        Number(record.total).toLocaleString('VND')
+      );
+    },
   },
 ];
 
@@ -99,8 +111,8 @@ const ReportCustomerRent = () => {
               </Form.Item>
             </div>
             <div className='mr-2'>
-              <Form.Item name='roomid' label='Phòng'>
-                <Input />
+              <Form.Item name='roomid' label='Tìm kiếm'>
+                <Input placeholder='Tìm phòng...' />
               </Form.Item>
             </div>
             <Button color='primary' htmlType='submit'>

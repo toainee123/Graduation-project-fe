@@ -24,10 +24,7 @@ const ListMember = () => {
       key: i,
       roomNumber: item.nameroom,
       Area: item.namehouse,
-      price: new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-      }).format(item?.price),
+      price: Number(item.price).toLocaleString('VND')
     };
   });
 

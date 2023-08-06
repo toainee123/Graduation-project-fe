@@ -29,8 +29,8 @@ const ListMember = () => {
             Name: item.name,
             phoneNumber: item.phone,
             dayStart: moment(item.date).format('DD/MM/YYYY'),
-            roomFee: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
-            deposits: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.deposit),
+            roomFee: Number(item.price).toLocaleString('VND'),
+            deposits: Number(item.deposit).toLocaleString('VND'),
             role: <Tag color="green">Host</Tag>,
             action: <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.roomid}?key=view`} target='_blank'>
                 <EyeOutlined className="color-green action-table" />

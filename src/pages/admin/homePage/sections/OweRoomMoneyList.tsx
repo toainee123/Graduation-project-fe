@@ -40,7 +40,7 @@ const columns: ColumnsType<dataList> = [
     title: 'Số tiền (VNĐ)',
     dataIndex: 'owed',
     key: 'owed',
-    render: (value: number) => value.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }),
+    render: (value: number) => Number(value).toLocaleString('VND')
   },
 ];
 
