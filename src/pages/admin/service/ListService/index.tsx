@@ -20,6 +20,8 @@ const Service = () => {
   }, []);
 
   const showDeleteConfirm = (id: any) => {
+    console.log("id", id);
+
     confirm({
       title: 'Bạn có muốn xóa dịch vụ này không ?',
       icon: <ExclamationCircleFilled />,
@@ -54,7 +56,8 @@ const Service = () => {
       key: index + 1,
       name: item?.name,
       price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
-      code: item?.code
+      code: item?.code,
+      id: item?.id
     }
   })
 
