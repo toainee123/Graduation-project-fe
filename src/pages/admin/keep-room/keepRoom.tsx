@@ -296,10 +296,7 @@ const KeepRoom = () => {
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.phone}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                        {new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
-                        }).format(+item?.money)}
+                        {Number(item?.money).toLocaleString('VND')}
                       </td>
                       <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
                         {convertDate(item?.bookingdate)}

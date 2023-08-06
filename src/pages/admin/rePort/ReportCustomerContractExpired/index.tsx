@@ -103,8 +103,8 @@ const ReportCustomerContractExpired = () => {
               </Form.Item>
             </div>
             <div>
-              <Form.Item name='roomid' label='Phòng'>
-                <Input />
+              <Form.Item name='roomid' label='Tìm kiếm'>
+                <Input placeholder='Tìm phòng ...' />
               </Form.Item>
             </div>
             <div className='ms-6'>
