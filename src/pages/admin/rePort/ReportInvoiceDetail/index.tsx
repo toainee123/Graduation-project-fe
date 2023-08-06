@@ -91,6 +91,8 @@ const ReportInvoiceDetail = () => {
     };
     getList();
   }, []);
+  console.log("data", dataHouse);
+
   const handleSubmitSearch = async (values: TSearchFormValues) => {
     console.log(values);
 

@@ -22,9 +22,7 @@ const CreateSevice = () => {
     console.log('result', result);
     createService(result)
       .then((res) => {
-        setTimeout(() => {
-          navigate(-1);
-        }, 3000);
+        navigate(-1);
         message.success(`Thêm dịch vụ ${result.name} thành công`);
       })
       .catch((err) => {
