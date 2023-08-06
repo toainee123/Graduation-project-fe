@@ -1,7 +1,7 @@
 import axiosClient from "./axiosClient";
 type TgetListReportCustomerRentParams = {
     houseId: string;
-    roomId: string
+    roomId: string;
 }
 export const getListReportCustomerRent = async (param?: TgetListReportCustomerRentParams) => {
     const url = `http://localhost:5000/api/roomTenant/renting-room?${param?.houseId ? `houseId=${param?.houseId}` : ''}${param?.roomId ? `&roomId=${param?.roomId}` : ''}`;
