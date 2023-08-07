@@ -55,7 +55,7 @@ const Service = () => {
     return {
       key: index + 1,
       name: item?.name,
-      price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
+      price: Number(item?.price).toLocaleString('VND'),
       code: item?.code,
       id: item?.id
     }

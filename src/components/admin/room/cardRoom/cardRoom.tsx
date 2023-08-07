@@ -246,10 +246,7 @@ const CardRoom = ({ idHouse }: any) => {
                     <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
                     <br />
                     <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
-                    <span className='text-red-500 font-semibold'>{`${new Intl.NumberFormat('vi-VN', {
-                      style: 'currency',
-                      currency: 'VND',
-                    }).format(+item?.price)}`}</span>
+                    <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
                   </div>
 
                   <div className='action text-center'>
@@ -292,7 +289,7 @@ const CardRoom = ({ idHouse }: any) => {
                     <br />
                     <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
                     <span className='text-red-500 font-semibold'>
-                      {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price)}
+                      {Number(item?.price).toLocaleString('VND')}
                     </span>
                   </div>
                   <div className='action text-center'>

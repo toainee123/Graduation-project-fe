@@ -42,3 +42,4 @@ export const updateServices = async (id: any, service: any) => {
     const url = `/service/${id}`
     return axiosClient.put(url, service)
 }
+
