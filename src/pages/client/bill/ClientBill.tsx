@@ -111,27 +111,14 @@ export const ClientBill = () => {
         <Form form={form} onFinish={handleSubmitSearch}>
           <div className='flex w-full mt-5 items-center'>
             <div className='mr-2'>
-              <Form.Item name='roomid' label='Phòng'>
-                <Input />
+              <Form.Item name='dateFilter' rules={[{ required: true }]}>
+                <DatePicker picker='month' />
               </Form.Item>
             </div>
-            <div className='mr-2'>
-              <Form.Item name='houseid' label='Nhà'>
-                <Select
-                  style={{ width: 200 }}
-                  allowClear
-                  options={dataSource.map((item: any) => ({
-                    label: item.namehouse,
-                    value: item.houseid,
-                  }))}
-                />
-              </Form.Item>
-            </div>
-
-            <Button color='primary' htmlType='submit'>
-              Tìm
-            </Button>
-            <Button color='primary' htmlType='submit'>
+            <button className='btn_search ml-2'>
+              <SearchOutlined /> Tìm kiếm
+            </button>
+            <Button color='primary' htmlType='submit' className='ml-2'>
               Xem chi tiết
             </Button>
           </div>

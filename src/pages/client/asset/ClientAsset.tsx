@@ -1,58 +1,76 @@
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
-import { getListAssetsForUser } from 'src/api/assets';
+import { getAssetUser } from 'src/api/assets';
+
+type TAssetUser = {
+  id: number;
+  name: string;
+  amount: number;
+  price: string;
+};
+
+const column: ColumnsType<TAssetUser> = [
+  {
+    key: 'index',
+    title: 'STT',
+    render(_, __, index) {
+      return index + 1;
+    },
+  },
+  {
+    key: 'name',
+    dataIndex: 'name',
+    title: 'Tên tài sản',
+  },
+  {
+    key: 'amount',
+    dataIndex: 'amount',
+    title: 'Số lượng',
+  },
+  {
+    key: 'price',
+    dataIndex: 'price',
+    title: 'Giá tiền',
+    render(value) {
+      return Number(value).toLocaleString('VND');
+    },
+  },
+];
 
 const ClientAsset = () => {
-  const [assets, setAssets] = useState([]);
+  const [assets, setAsssets] = useState<TAssetUser[]>([]);
+
   useEffect(() => {
-    const getAssets = async () => {
-      const { data } = await getListAssetsForUser();
-      setAssets(data);
+    const listAssets = async () => {
+      const { data } = await getAssetUser();
+      setAsssets(data);
     };
-    getAssets();
+    listAssets();
   }, []);
+
   return (
-    <div>
-      <div className='title'>
-        <div className='title--name'>
-          <h2>
-            <strong>Danh sách dịch vụ </strong>
-          </h2>
-        </div>
+    <div className='room'>
+      <div className='title_page'>
+        <h1>Danh sách tài sản</h1>
       </div>
-      <div className='flex flex-col'>
-        <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
-          <div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
-            <div className='overflow-hidden'>
-              <table className='min-w-full'>
-                <thead className='bg-gray-200 border-b'>
-                  <tr>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      STT
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Tên dịch vụ
-                    </th>
-                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
-                      Số tiền
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {assets?.map((item: any, index: number) => (
-                    <tr key={index} className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                        {Number(item?.price).toLocaleString('VND')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
+      {/* <div className='room_form' style={{ marginTop: 30 }}>
+        <Form action=''>
+          <div className='flex'>
+            <div>
+              <Form.Item name='search'>
+                <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
+              </Form.Item>
             </div>
+            <button className='btn_search ml-3'>
+              <SearchOutlined /> Tìm kiếm
+            </button>
           </div>
-        </div>
-      </div>
+        </Form>
+      </div> */}
+      <br />
+      <Table columns={column} dataSource={assets} />
     </div>
   );
 };

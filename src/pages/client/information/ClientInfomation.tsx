@@ -1,72 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Select, DatePicker, Row, Col } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
-import { type } from 'os';
-type Props = {};
+import { useEffect, useState } from 'react';
+import { Form, Input, Row, Col } from 'antd';
+import { getUserInfomation } from 'src/api/infomation';
+import moment from 'moment';
 
-interface FieldData {
-  name: string | number | (string | number)[];
-  value?: any;
-  touched?: boolean;
-  validating?: boolean;
-  errors?: string[];
-}
-type CustomizedFormProps = {
-  onChange: (fields: FieldData[]) => void;
-  fields: FieldData[];
+type TRemoteUser = {
+  email: string;
+  name: string;
+  phone: string;
+  address: string;
+  bod: string;
+  cccd: string;
+  daterangecccd: string;
+  issuedcccdby: string;
 };
+
 export const ClientInfomation = () => {
-  const [form] = Form.useForm();
-  const formItemLayout = { labelCol: { span: 3 } };
+  const [form] = Form.useForm<TRemoteUser>();
 
-  const [provice, setProvice] = useState([]);
-  const [district, setDistrict] = useState([{ value: 'Tất cả', label: 'Tất cả' }]);
-  const [ward, setWard] = useState([{ value: 'Tất cả', label: 'Tất cả' }]);
+  const [user, setUser] = useState<TRemoteUser>();
+
   useEffect(() => {
-    const getProvices = async () => {
-      const { data } = await getProvinces();
-      const provices = data?.results.map((item: any) => {
-        return {
-          value: item.province_id,
-          label: item.province_name,
-        };
-      });
-
-      setProvice(provices);
+    const getUserInfor = async () => {
+      const { data } = await getUserInfomation();
+      setUser(data?.data);
     };
-    getProvices();
+    getUserInfor();
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (user) {
+      form.setFieldsValue({
+        ...user,
+        daterangecccd: moment(user.daterangecccd).format('DD/MM/YYYY'),
+        bod: moment(user.bod).format('DD/MM/YYYY') ?? '',
+      });
+    }
+  }, [user]);
 
-  const handleGetDistrict = async (idProvice: number) => {
-    const { data } = await getDistrict(idProvice);
+  console.log(moment(user?.daterangecccd).format('DD/MM/YYYY'));
 
-    const districts = data?.results.map((item: any) => {
-      return {
-        value: item.district_id,
-        label: item.district_name,
-      };
-    });
-
-    setDistrict(districts);
-  };
-
-  const handleGetWard = async (idDistrict: number) => {
-    const { data } = await getWards(idDistrict);
-
-    console.log(data);
-
-    const wards = data?.results.map((item: any) => {
-      return {
-        value: item.ward_id,
-        label: item.ward_name,
-      };
-    });
-
-    setWard(wards);
-  };
   return (
     <>
       <div className='title'>
@@ -79,115 +51,60 @@ export const ClientInfomation = () => {
       <Form
         form={form}
         layout='vertical'
-        {...formItemLayout}
-        // fields={props?.fields}
         onFieldsChange={(_, allFields: any) => {
           // props?.onChange(allFields);
         }}
       >
-        <Form.Item label='Họ và tên:' name='fullname'>
-          <Input />
-        </Form.Item>
-
-        <Form.Item label='Địa chỉ:' name='address'>
-          <Input />
-        </Form.Item>
-        <Form.Item label='Địa chỉ email:' name='email'>
-          <Input />
-        </Form.Item>
-
-        <div className='flex justify-between'>
-          <Form.Item
-            name='ci_number'
-            label='CMND/ CCCD số:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{ span: 7 }}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='ci_datecreate'
-            label='Ngày cấp:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{}}
-          >
-            <DatePicker style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item
-            name='ci_placecreate'
-            label='Nơi cấp:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-          >
-            <Input />
-          </Form.Item>
-        </div>
-
-        <div className='flex justify-between'>
-          <Form.Item
-            name='phone_number'
-            label='Điện thoại: '
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{ span: 7 }}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name='birthday'
-            label='Ngày sinh:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{}}
-          >
-            <DatePicker style={{ width: '100%' }} />
-          </Form.Item>
-          <div style={{ width: '30%', marginRight: '10px' }}></div>
-        </div>
-
-        <div className='flex justify-between'>
-          <Form.Item
-            name='provice'
-            label='Tỉnh/TP:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{ span: 7 }}
-          >
-            <Select
-              defaultValue='Tất cả'
-              options={provice}
-              onChange={(e: any) => {
-                handleGetDistrict(e);
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            name='district'
-            label='Quận/ huyện:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{}}
-          >
-            <Select
-              defaultValue='Tất cả'
-              options={district}
-              onChange={(e: any) => {
-                handleGetWard(e);
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            name='ward'
-            label='Phường/ xã:'
-            className='label-space'
-            style={{ width: '30%', marginRight: '10px' }}
-            labelCol={{}}
-          >
-            <Select defaultValue='Tất cả' options={ward} />
-          </Form.Item>
-        </div>
+        <Row>
+          <Col span={24}>
+            <Form.Item label='Họ và tên:' name='name'>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item label='Địa chỉ:' name='address'>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item label='Địa chỉ email:' name='email'>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col lg={8} span={24}>
+            <Form.Item name='cccd' label='CMND/ CCCD số:' className='label-space'>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col lg={8} span={24}>
+            <Form.Item name='daterangecccd' label='Ngày cấp:' className='label-space'>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col lg={8} span={24}>
+            <Form.Item name='issuedcccdby' label='Nơi cấp:' className='label-space'>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]}>
+          <Col lg={12} span={24}>
+            <Form.Item name='phone' label='Điện thoại: ' className='label-space'>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col lg={12} span={24}>
+            <Form.Item name='bod' label='Ngày sinh:' className='label-space'>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </>
   );
