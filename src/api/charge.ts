@@ -58,3 +58,14 @@ export const sendMailBill = async (data: any) => {
 };
 
 
+export const getAllRoomRented = async () => {
+    const url = `/room/getRoomRented`;
+    return axiosClient.get(url);
+}
+
+export const postAllBill = async (data: any) => {
+    const url = `/bill/many-bill`;
+    return axiosClient.post(url, data);
+}
+
+
