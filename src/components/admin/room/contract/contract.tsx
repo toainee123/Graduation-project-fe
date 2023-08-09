@@ -153,13 +153,15 @@ const Contract = ({ houseid }: any) => {
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
 
-    html2canvas(htmlInput).then((canvas) => {
+    html2canvas(htmlInput, { logging: true, useCORS: true }).then((canvas) => {
+      const imgWidth = 208;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      // const pdfWidth = pdf.internal.pageSize.getWidth();
+      // const pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 8, imgWidth, imgHeight);
       pdf.save('download.pdf');
     });
 
