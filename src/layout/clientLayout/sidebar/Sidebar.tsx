@@ -94,6 +94,11 @@ const Sidebar = (props: Props) => {
       key: '8',
       icon: <FileTextOutlined />,
     },
+    {
+      label: <Link to={urlRouter.CLIENT_CHANGEPASSWORD}>Đổi mật khẩu</Link>,
+      key: '9',
+      icon: <FileTextOutlined />,
+    },
   ];
 
   const logout = () => {
