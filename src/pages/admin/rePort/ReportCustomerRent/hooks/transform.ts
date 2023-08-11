@@ -44,7 +44,8 @@ const getAllTotalService = (record: Tservice[]) => {
     return total
 }
 
-export const transFormDataReportCustomRent = (data: data[]): transFormData[] => data.map(item => ({
+export const transFormDataReportCustomRent = (data: data[]): transFormData[] => data.map((item, i) => ({
+    key: i,
     code: item.code,
     date: item.date,
     houseid: item.houseid,
