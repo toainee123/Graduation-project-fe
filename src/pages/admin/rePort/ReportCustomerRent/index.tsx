@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DatePicker, Select, Button, Table, Form, Input, TableProps } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { getListReportCustomerRent } from 'src/api/report';
+import { getListReportCustomerRent, searchReportCustomer } from 'src/api/report';
 import moment from 'moment';
 import { transFormData, transFormDataReportCustomRent } from './hooks/transform';
 
@@ -83,9 +83,26 @@ const ReportCustomerRent = () => {
     getList();
   }, [houseid, roomid]);
 
-  const handleSubmitSearch = (values: TSearchFormValues) => {
+  const handleSubmitSearch = (values: any) => {
     setHouseid(values.houseid);
     setRoomid(values.roomid);
+
+    const result = {
+      search: values.search
+    }
+    if (result) {
+      const getList = async () => {
+        const { data } = await searchReportCustomer(result);
+        setDataSource(transFormDataReportCustomRent(data.responses));
+      };
+      getList();
+    } else {
+      const getList = async () => {
+        const { data } = await searchReportCustomer({});
+        setDataSource(transFormDataReportCustomRent(data.responses));
+      };
+      getList();
+    }
   };
   return (
     <div >
@@ -111,7 +128,7 @@ const ReportCustomerRent = () => {
               </Form.Item>
             </div>
             <div className='mr-2'>
-              <Form.Item name='roomid' label='Tìm kiếm'>
+              <Form.Item name='search' label='Tìm kiếm'>
                 <Input placeholder='Tìm phòng...' />
               </Form.Item>
             </div>
