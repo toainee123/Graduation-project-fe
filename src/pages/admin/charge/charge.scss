@@ -28,9 +28,9 @@
   margin-right: 4px;
 }
 
-.flex-item {
-  margin-right: 50px;
-}
+// .flex-item {
+//   margin-right: 50px;
+// }
 
 .btn-view {
   margin-left: 20px;
@@ -90,4 +90,12 @@
     /* this affects the margin in the printer settings */
     margin: 15mm 15mm 15mm 15mm;
   }
+}
+
+// .modale > .ant-modal-content {
+//   height: 100vh !important;
+// }
+
+.h-modal {
+  height: 80vh !important;
 }

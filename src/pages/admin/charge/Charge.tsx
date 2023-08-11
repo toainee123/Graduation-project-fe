@@ -26,7 +26,7 @@ import { useReactToPrint } from 'react-to-print';
 import * as XLSX from 'xlsx-js-style';
 import moment from 'moment';
 import axios from 'axios';
-import { addBill, getBillID, getHouses, getRoom, sendMailBill } from 'src/api/charge';
+import { addBill, getAllRoomRented, getBillID, getHouses, getRoom, postAllBill, sendMailBill } from 'src/api/charge';
 import { getHouseId } from 'src/api/house';
 import dayjs from 'dayjs';
 import { format } from 'path';
@@ -38,9 +38,14 @@ type Props = {};
 const Charge = () => {
   const { Text } = Typography;
   const [houses, setHouses] = useState([]);
+  const [roomRented, setRoomRented] = useState([]);
   const [valueFilter, setValueFilter] = useState<any>();
   const [billEmail, setBillEmail] = useState<any>('');
+  const [dataListRoomTrue, setDataListRoomTrue] = useState<any>();
   const [status, setStatus] = useState<any>(false);
+  const [selectedRow, setSelectedRow] = useState<any[]>([]);
+  const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
+  const [isModalOpenCalculatorAll, setIsModalOpenCalculatorAll] = useState(false);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -51,11 +56,19 @@ const Charge = () => {
     };
     getHouse();
   }, []);
-  const [selectedRow, setSelectedRow] = useState<any[]>([]);
 
   useEffect(() => {
     renderBillSendEmail();
   }, [selectedRow]);
+
+  useEffect(() => {
+    const getRoomRented = async () => {
+      const { data } = await getAllRoomRented();
+      form.setFieldsValue({ items: data });
+      setRoomRented(data);
+    };
+    getRoomRented();
+  }, [isModalOpenCalculatorAll]);
   const chargeData = useAppSelector((state: any) => state.charge.value);
 
   const dataSource = chargeData?.map((item: any, index: number) => {
@@ -614,9 +627,12 @@ const Charge = () => {
     dispatch(getChargeFilter(filter));
   };
 
-  const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
   const showModal = () => {
     setIsModalOpenCalculator(true);
+  };
+
+  const showModalAll = () => {
+    setIsModalOpenCalculatorAll(true);
   };
 
   const handleOk = () => {
@@ -626,6 +642,11 @@ const Charge = () => {
 
   const handleExit = () => {
     setIsModalOpenCalculator(false);
+  };
+
+  const handleExitAll = () => {
+    form.resetFields();
+    setIsModalOpenCalculatorAll(false);
   };
 
   const [form] = Form.useForm();
@@ -746,6 +767,143 @@ const Charge = () => {
                 </Form.Item>
               </Form>
             </Modal>
+
+            <button
+              className='btn-x  bg-teal-500 hover:bg-teal-500 text-white font-bold py-2  px-4 rounded'
+              onClick={showModalAll}
+            >
+              <MoneyCollectOutlined className='icon-btn' /> Tính toàn bộ phòng
+            </button>
+            <div className='modale'>
+              <Modal
+                className='ant-m'
+                title='Tính tiền'
+                open={isModalOpenCalculatorAll}
+                onOk={() => {
+                  form
+                    .validateFields()
+                    .then(async (values: any) => {
+                      const date = moment(values.date_allbill).format('YYYY-MM-DD');
+                      console.log(date);
+                      const data = values.items.map((item: any) => {
+                        return {
+                          houseId: item.houseid,
+                          roomId: item.roomid,
+                          indexElectricity: +item.elec,
+                          indexWater: +item.water,
+                        };
+                      });
+                      const response: any = await postAllBill({ date: date, payload: data });
+                      console.log(response);
+                      if (response?.status === 'success') {
+                        toast.success('Tính thành công');
+                        dispatch(getCharge());
+                        handleExitAll();
+                      }
+                    })
+                    .catch((info) => {
+                      toast.error(info.response.data.message);
+                      console.log('Validate Failed:', info);
+                    });
+                }}
+                onCancel={handleExitAll}
+                width={'100vw'}
+                style={{ top: 10, left: 0, right: 0, bottom: 0 }}
+              >
+                <Form form={form} className='h-modal' layout='vertical'>
+                  <div>
+                    <Form.Item name='date_allbill' label='Ngày tháng'>
+                      <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
+                    </Form.Item>
+                  </div>
+                  <table className='w-full text-sm text-center mt-4'>
+                    <thead className=' bg-gray-50 dark:bg-gray-700 '>
+                      <tr>
+                        <th>Nhà </th>
+                        <th>Phòng</th>
+                        <th>Chỉ số điện </th>
+                        <th>Chỉ số nước</th>
+                      </tr>
+                    </thead>
+                    <Form.List name='items'>
+                      {(fields, { add, remove }) => (
+                        <tbody>
+                          {fields.map((field, index) => (
+                            <tr key={index} className='p-2'>
+                              <td className='hidden'>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'houseid']}
+                                  rules={[{ required: true, message: 'Không để trống tên nhà' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+
+                              <td className='hidden'>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'roomid']}
+                                  rules={[{ required: true, message: 'Không để trống tên nhà' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+                              <td>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'namehouse']}
+                                  rules={[{ required: true, message: 'Không để trống tên nhà' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+
+                              <td>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'nameroom']}
+                                  rules={[{ required: true, message: 'Không để trống tên phòng' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+
+                              <td>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'elec']}
+                                  rules={[{ required: true, message: 'Không để trống chỉ số điện' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+
+                              <td>
+                                <Form.Item
+                                  required={true}
+                                  key={field.key}
+                                  name={[field.name, 'water']}
+                                  rules={[{ required: true, message: 'Không để trống chỉ số nước' }]}
+                                >
+                                  <Input />
+                                </Form.Item>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      )}
+                    </Form.List>
+                  </table>
+                </Form>
+              </Modal>
+            </div>
+
             <Tooltip title='Ấn 2 lần nút để in '>
               <button
                 className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'

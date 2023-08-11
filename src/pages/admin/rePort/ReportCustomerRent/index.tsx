@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { DatePicker, Select, Button, Table, Form, Input, TableProps } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { getListReportCustomerRent } from 'src/api/report';
+import { getListReportCustomerRent, searchReportCustomer } from 'src/api/report';
 import moment from 'moment';
 import { transFormData, transFormDataReportCustomRent } from './hooks/transform';
+import { get } from 'src/api/house';
 
 const { RangePicker } = DatePicker;
 
@@ -71,6 +72,7 @@ type TSearchFormValues = {
 
 const ReportCustomerRent = () => {
   const [dataSource, setDataSource] = useState<transFormData[]>([]);
+  const [dataRoom, setDataRoom] = useState([]);
   const [form] = Form.useForm<TSearchFormValues>();
   const [roomid, setRoomid] = useState('');
   const [houseid, setHouseid] = useState('');
@@ -82,10 +84,34 @@ const ReportCustomerRent = () => {
     };
     getList();
   }, [houseid, roomid]);
+  useEffect(() => {
+    const getDataRoom = async () => {
+      const { data } = await get()
+      setDataRoom(data.result)
+    }
+    getDataRoom()
+  }, [])
+  const handleSubmitSearch = (values: any) => {
+    // setRoomid(values.roomid);
+    // setHouseid(values.houseid);
 
-  const handleSubmitSearch = (values: TSearchFormValues) => {
-    setHouseid(values.houseid);
-    setRoomid(values.roomid);
+    const result = {
+      houseId: values.houseid,
+      search: values.search
+    }
+    if (result) {
+      const getList = async () => {
+        const { data } = await searchReportCustomer(result);
+        setDataSource(transFormDataReportCustomRent(data.responses));
+      };
+      getList();
+    } else {
+      const getList = async () => {
+        const { data } = await searchReportCustomer({});
+        setDataSource(transFormDataReportCustomRent(data.responses));
+      };
+      getList();
+    }
   };
   return (
     <div >
@@ -103,15 +129,16 @@ const ReportCustomerRent = () => {
                 <Select
                   style={{ width: 200 }}
                   allowClear
-                  options={dataSource.map((item) => ({
-                    label: item.namehouse,
-                    value: item.houseid,
+                  options={dataRoom.map((item: any, index: number) => ({
+                    key: index,
+                    label: item.name,
+                    value: item.id,
                   }))}
                 />
               </Form.Item>
             </div>
             <div className='mr-2'>
-              <Form.Item name='roomid' label='Tìm kiếm'>
+              <Form.Item name='search' label='Tìm kiếm'>
                 <Input placeholder='Tìm phòng...' />
               </Form.Item>
             </div>

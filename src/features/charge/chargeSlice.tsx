@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { addBill, deleteBill, getBillNoDate, getBills, getBillsHouse, updatePaid } from 'src/api/charge';
+import { addBill, deleteBill, getBillNoDate, getBills, getBillsHouse, postAllBill, updatePaid } from 'src/api/charge';
 
 interface chargeType {
   value: any;

@@ -8,7 +8,6 @@ export const get = async () => {
     const url = `/house`;
     return axiosClient.get(url);
 };
-
 export const getHouseId = async (id: any) => {
     const url = `/house/${id}`;
     return axiosClient.get(url);

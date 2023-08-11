@@ -57,15 +57,15 @@ const Sidebar = (props: Props) => {
       key: '3',
       icon: <ReconciliationOutlined />,
     },
-    {
-      label: (
-        <Link className='label-router' to={urlRouter.CLIENT_ARISE}>
-          Phát sinh
-        </Link>
-      ),
-      key: '4',
-      icon: <ThunderboltOutlined />,
-    },
+    // {
+    //   label: (
+    //     <Link className='label-router' to={urlRouter.CLIENT_ARISE}>
+    //       Phát sinh
+    //     </Link>
+    //   ),
+    //   key: '4',
+    //   icon: <ThunderboltOutlined />,
+    // },
     {
       label: (
         <Link className='label-router' to={urlRouter.CLIENT_ASSET}>
@@ -92,6 +92,11 @@ const Sidebar = (props: Props) => {
     {
       label: <Link to={urlRouter.CLIENT_INFAORMATION}>Thông tin cá nhân</Link>,
       key: '8',
+      icon: <FileTextOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.CLIENT_CHANGEPASSWORD}>Đổi mật khẩu</Link>,
+      key: '9',
       icon: <FileTextOutlined />,
     },
   ];
@@ -122,7 +127,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-          // selectedKeys={[current]}
+        // selectedKeys={[current]}
         />
         <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
