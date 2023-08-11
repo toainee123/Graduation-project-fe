@@ -58,50 +58,50 @@ export const ClientInfomation = () => {
         <Row>
           <Col span={24}>
             <Form.Item label='Họ và tên:' name='name'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
         </Row>
         <Row>
           <Col span={24}>
             <Form.Item label='Địa chỉ:' name='address'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
         </Row>
         <Row>
           <Col span={24}>
             <Form.Item label='Địa chỉ email:' name='email'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
           <Col lg={8} span={24}>
             <Form.Item name='cccd' label='CMND/ CCCD số:' className='label-space'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
           <Col lg={8} span={24}>
             <Form.Item name='daterangecccd' label='Ngày cấp:' className='label-space'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
           <Col lg={8} span={24}>
             <Form.Item name='issuedcccdby' label='Nơi cấp:' className='label-space'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
           <Col lg={12} span={24}>
             <Form.Item name='phone' label='Điện thoại: ' className='label-space'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
           <Col lg={12} span={24}>
             <Form.Item name='bod' label='Ngày sinh:' className='label-space'>
-              <Input />
+              <Input readOnly />
             </Form.Item>
           </Col>
         </Row>

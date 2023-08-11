@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { Form, Input, Modal, message } from 'antd';
+import { Form, Input, Modal, Tag, message } from 'antd';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { getAllNotification, sendNotification } from 'src/api/notification';
@@ -57,13 +57,13 @@ const Notification = () => {
               className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded '
               onClick={showModal}
             >
-              <ExclamationCircleOutlined className='icon-btn' /> Gửi báo cáo
+              <ExclamationCircleOutlined className='icon-btn' /> Gửi yêu cầu
             </button>
           </div>
         </div>
 
         <Modal
-          title='Thông báo'
+          title='Gửi yêu cầu'
           visible={isModalVisible}
           onOk={() => {
             form
@@ -90,22 +90,22 @@ const Notification = () => {
         </Modal>
         <div>
           <div className='flex flex-col'>
-            <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
-              <div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
+            <div className='overflow-x-auto '>
+              <div className='inline-block min-w-full '>
                 <div className='overflow-hidden'>
                   <table className='min-w-full'>
-                    <thead className='bg-gray-200 border-b'>
+                    <thead className='bg-gray-200 border-b text-center'>
                       <tr>
-                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
                           STT
                         </th>
-                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
                           Nội dung báo cáo
                         </th>
-                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
                           Trạng thái
                         </th>
-                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
                           Ngày gửi
                         </th>
                       </tr>
@@ -114,14 +114,16 @@ const Notification = () => {
                       {data?.map((item: any, index: number) => (
                         <tr
                           key={index}
-                          className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'
+                          className='text-center bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'
                         >
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
                             {item.content}
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                            {item.status === true ? 'Đã xử lý' : 'Chưa xử lý'}
+                            {item?.status ? (<Tag style={{ width: '100%', cursor: "pointer", textAlign: 'center' }} color="#87d068">Đã được xử lý</Tag>) : (
+                              <Tag style={{ width: '100%', cursor: "pointer", textAlign: 'center' }} color="#f50">Chưa được xử lý</Tag>
+                            )}
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
                             {convertDate(item?.datenotification)}
