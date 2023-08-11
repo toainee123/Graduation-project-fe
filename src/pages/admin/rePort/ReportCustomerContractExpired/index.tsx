@@ -3,6 +3,7 @@ import { DatePicker, Select, Button, Table, Form, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerContractExpired } from 'src/api/report';
 import moment from 'moment';
+import { get } from 'src/api/house';
 
 const { RangePicker } = DatePicker;
 
@@ -63,6 +64,7 @@ type TSearchFormValues = {
 
 const ReportCustomerContractExpired = () => {
   const [dataSource, setDataSource] = useState([]);
+  const [dataRoom, setDataRoom] = useState([]);
   const [form] = Form.useForm<TSearchFormValues>();
   const [roomid, setRoomid] = useState('');
   const [houseid, setHouseid] = useState('');
@@ -75,6 +77,14 @@ const ReportCustomerContractExpired = () => {
     getData();
   }, [roomid, houseid]);
 
+  useEffect(() => {
+    const getDataRoom = async () => {
+      const { data } = await get()
+      setDataRoom(data.result)
+    }
+    getDataRoom()
+  }, [])
+  console.log("dataRoom", dataRoom);
   const handleSubmitSearch = (values: TSearchFormValues) => {
     setHouseid(values.houseid);
     setRoomid(values.roomid);
@@ -95,18 +105,14 @@ const ReportCustomerContractExpired = () => {
                 <Select
                   style={{ width: 200 }}
                   allowClear
-                  options={dataSource.map((item: any) => ({
-                    label: item.namehouse,
-                    value: item.houseid,
+                  options={dataRoom.map((item: any) => ({
+                    label: item.name,
+                    value: item.id,
                   }))}
                 />
               </Form.Item>
             </div>
-            <div>
-              <Form.Item name='roomid' label='Tìm kiếm'>
-                <Input placeholder='Tìm phòng ...' />
-              </Form.Item>
-            </div>
+
             <div className='ms-6'>
               <div className='flex  w-full  items-center '>
                 <Button

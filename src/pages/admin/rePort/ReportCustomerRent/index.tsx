@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { getListReportCustomerRent, searchReportCustomer } from 'src/api/report';
 import moment from 'moment';
 import { transFormData, transFormDataReportCustomRent } from './hooks/transform';
+import { get } from 'src/api/house';
 
 const { RangePicker } = DatePicker;
 
@@ -71,6 +72,7 @@ type TSearchFormValues = {
 
 const ReportCustomerRent = () => {
   const [dataSource, setDataSource] = useState<transFormData[]>([]);
+  const [dataRoom, setDataRoom] = useState([]);
   const [form] = Form.useForm<TSearchFormValues>();
   const [roomid, setRoomid] = useState('');
   const [houseid, setHouseid] = useState('');
@@ -82,12 +84,19 @@ const ReportCustomerRent = () => {
     };
     getList();
   }, [houseid, roomid]);
-
+  useEffect(() => {
+    const getDataRoom = async () => {
+      const { data } = await get()
+      setDataRoom(data.result)
+    }
+    getDataRoom()
+  }, [])
   const handleSubmitSearch = (values: any) => {
-    setHouseid(values.houseid);
-    setRoomid(values.roomid);
+    // setRoomid(values.roomid);
+    // setHouseid(values.houseid);
 
     const result = {
+      houseId: values.houseid,
       search: values.search
     }
     if (result) {
@@ -120,9 +129,10 @@ const ReportCustomerRent = () => {
                 <Select
                   style={{ width: 200 }}
                   allowClear
-                  options={dataSource.map((item) => ({
-                    label: item.namehouse,
-                    value: item.houseid,
+                  options={dataRoom.map((item: any, index: number) => ({
+                    key: index,
+                    label: item.name,
+                    value: item.id,
                   }))}
                 />
               </Form.Item>
