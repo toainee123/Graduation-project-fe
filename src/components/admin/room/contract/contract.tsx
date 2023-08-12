@@ -145,15 +145,18 @@ const Contract = ({ houseid }: any) => {
 
     html2canvas(htmlInput, { logging: true, useCORS: true }).then(async (canvas) => {
       const imgWidth = 208;
-
       const imgData = canvas.toDataURL('image/png');
       const pdf: any = new jsPDF('p', 'mm', 'a4');
+      var myImage = new Image();
+      myImage.src = imgData;
+      myImage.onload = function () {
+        pdf.addImage(imgData, 'png', 0, 0, imgWidth, imgHeight);
+      };
       const imgHeight = pdf.internal.pageSize.getHeight();
       pdf.margin = {
         horiz: 15,
         vert: 20,
       };
-      await pdf.addImage(imgData, 'png', 0, 0, imgWidth, imgHeight);
       const blob = pdf.output('blob');
 
       const formData = new FormData();
