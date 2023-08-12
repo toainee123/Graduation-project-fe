@@ -89,7 +89,7 @@ const CreateAssets = () => {
         <div className='mt-8'>
           <Form size='large' onFinish={onFinish}>
             <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Nhà
               </label>
               <div className='w-full'>
@@ -103,7 +103,7 @@ const CreateAssets = () => {
                   </Select>
                 </Form.Item>
               </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Phòng số
               </label>
               <div className='w-full items-center'>
@@ -119,7 +119,7 @@ const CreateAssets = () => {
               </div>
             </div>
             <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Tên tài sản
               </label>
               <div className='w-full'>
@@ -132,14 +132,13 @@ const CreateAssets = () => {
                   />
                 </Form.Item>
               </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Số lượng
               </label>
               <div className='w-full'>
                 <Form.Item name='amount' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
                   <Input
                     type='number'
-                    style={{ borderRadius: 6, width: 100 }}
                     className='w-full outline-0 md: my-2'
                     placeholder='Số lượng'
                   />
@@ -147,7 +146,7 @@ const CreateAssets = () => {
               </div>
             </div>
             <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Giá
               </label>
               <div className='w-full'>
@@ -155,7 +154,7 @@ const CreateAssets = () => {
                   <Input className='w-full outline-0 items-center md: my-2' type='number' placeholder='Giá' />
                 </Form.Item>
               </div>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+              <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>
                 Ngày sử dụng
               </label>
               <div className='w-full'>

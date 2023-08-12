@@ -67,7 +67,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       setLinkImage(fakeData?.image);
     }
   }, [getData]);
-  console.log('data romm', getData);
 
   useEffect(() => {
     if (detailRoom) {
@@ -79,7 +78,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
     setLimitPrice(value);
   };
   const onFinish = async (values: any) => {
-    console.log(values);
 
     if (keyLocation === null) {
       const payload = {
@@ -98,13 +96,10 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       dispatch(createRoomTenant(payload))
         .unwrap()
         .then((resp) => {
-          console.log('resp', resp);
           message.success(`Thêm nhà ${values.name} thành công`);
           navigate(`/admin/${urlRouter.ROOM}`);
         })
         .catch((err) => {
-          console.log('err', err?.response);
-
           message.error(`${err?.response?.data?.message}`);
         });
     }
@@ -189,7 +184,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
   };
   return (
     <Form initialValues={{ ...detailRoom, initialValues, getData }} form={form} onFinish={onFinish} size='large'>
-      <div className='lg:flex justify-between items-center gap-6 py-3 md:justify-start gap-8 my-4'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-2'>
         <label htmlFor='' className='w-40 text-base font-semibold'>
           Hình ảnh
         </label>
@@ -206,33 +201,33 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
                 </div>
               )}
             </Upload>
-            {/* <Input placeholder='Link' className='w-full outline-0 md: my-2' /> */}
+            {/* <Input placeholder='Link' className='w-full outline-0' /> */}
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Họ và tên
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='name' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           CMND/CCCD
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='cccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(0)+([0-9]{11})\b/), message: "Không đúng định dạng CCCD" }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input type='number' className='w-full' />}
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 my-4 '>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Giới tính
         </label>
-        <div className='lg:w-1/2 sm:w-full '>
+        <div className='w-full '>
           <Form.Item name='gender' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             <Radio.Group>
               <Radio value={'Nam'}>Nam</Radio>
@@ -240,40 +235,40 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             </Radio.Group>
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Ngày cấp
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='dateRangeCccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             <DatePicker className='w-full' format='DD/MM/YYYY' />
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 my-4 '>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Điện thoại 1
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='phone' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g), message: "Không đúng định dạng Số điện thoại" }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Nơi cấp
         </label>
-        <div className='lg:w-1/2 sm:w-full '>
+        <div className='w-full '>
           <Form.Item name='issuedCccdBy' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 gap-8 justify-between items-center gap-8 md:justify-start gap-8 my-4'>
-        <div className='w-48 text-base font-medium text-slate-500'></div>
-        <div className='lg:w-1/2 sm:w-full'></div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <div className=' text-base font-medium text-slate-500'></div>
+        <div className='w-full'></div>
+        <label htmlFor='' className='text-base font-medium text-slate-500'>
           Ngày sinh
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='bod' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <DatePicker className='w-full' format='DD/MM/YYYY' disabled />
@@ -283,11 +278,11 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Địa chỉ thường chú
         </label>
-        <div className='lg:w-1/2 sm:w-full '>
+        <div className='w-full '>
           <Form.Item name='address' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <Input className='w-full' readOnly />
@@ -296,10 +291,10 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             )}
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Email
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='email' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <Input className='w-full' readOnly />
@@ -309,19 +304,19 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Số lượng người tối đa
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='maxcustomer'>
             <Input className='w-full' readOnly placeholder='Số lượng người tối đa' />
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Biển số xe
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='vehicleNumber' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <Input className='w-full' readOnly />
@@ -331,21 +326,21 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           </Form.Item>
         </div>
       </div>
-      <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
-        <label htmlFor='nameroom' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='nameroom' className=' text-base font-medium text-slate-500'>
           Thuê phòng số
         </label>
-        <div className='lg:w-1/2 sm:w-full '>
+        <div className='w-full '>
           <Form.Item name='nameroom'>
             <Select disabled className='w-full text-center'>
               <Option value='1'>1</Option>
             </Select>
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Tiền phòng
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='price' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             <InputNumber
               formatter={(value) =>
@@ -355,7 +350,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
               onChange={onChange}
               controls={false}
               readOnly
-              className='w-full outline-0 md: my-2'
+              className='w-full outline-0'
               placeholder='Đơn giá'
               addonAfter='VNĐ'
             />
@@ -363,11 +358,11 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         </div>
       </div>
 
-      <div className='lg:flex gap-12 justify-between items-center gap-12 md:justify-start gap-8 my-4'>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Ngày bắt đầu thuê phòng
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='date' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <DatePicker className='w-full' format='DD/MM/YYYY' disabled />
@@ -376,13 +371,13 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             )}
           </Form.Item>
         </div>
-        <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Đặt cọc
         </label>
-        <div className='lg:w-1/2 sm:w-full'>
+        <div className='w-full'>
           <Form.Item name='deposit' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
-              <InputNumber className='w-full outline-0 md: my-2' addonAfter='VNĐ' />
+              <InputNumber className='w-full outline-0' addonAfter='VNĐ' />
             ) : (
               <InputNumber
                 formatter={(value) =>
@@ -391,7 +386,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
                 parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                 onChange={onChange}
                 controls={false}
-                className='w-full outline-0 md: my-2'
+                className='w-full outline-0'
                 placeholder='Tiền cọc phòng'
                 addonAfter='VNĐ'
               />
@@ -400,7 +395,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         </div>
       </div>
 
-      <div className='lg:flex gap-6 justify-between items-center gap-2 md:justify-start gap-8 my-4'>
+      <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
         <label htmlFor='' className='w-44 text-base font-medium text-slate-500'>
           Ghi chú khác
         </label>
