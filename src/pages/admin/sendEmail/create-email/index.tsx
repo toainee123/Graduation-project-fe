@@ -65,14 +65,14 @@ const CreateTemplateEmail = () => {
   };
   return (
     <>
-      <div>
-        <h1>Tạo mới email</h1>
+      <div className='title_page'>
+        <h1>tạo email mới</h1>
       </div>
       <div>
         <Form onFinish={Onsubmit} action=''>
-          <div className='flex justify-between items-center gap-12 py-3'>
-            <label htmlFor='' className='w-64 text-base font-semibold'>
-              Email <b className='color-red'>*</b>
+          <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+            <label className='text-base text-slate-500 font-semibold'>
+              Email
             </label>
             <div className='w-full'>
               <Select
@@ -90,7 +90,7 @@ const CreateTemplateEmail = () => {
                 ))}
               </Select>
             </div>
-            <label htmlFor='' className='w-64 text-base font-semibold'>
+            <label htmlFor='' className='text-base text-slate-500 font-semibold'>
               Tiêu đề<b className='color-red'>*</b>
             </label>
             <div className='w-full'>
@@ -100,8 +100,8 @@ const CreateTemplateEmail = () => {
             </div>
           </div>
           <div>
-            <label htmlFor='' className='w-64 text-base font-semibold' style={{ marginBottom: 20 }}>
-              Nội dung <b className='color-red'>*</b>
+            <label className='text-base text-slate-500 font-semibold' style={{ marginBottom: 20 }}>
+              Nội dung
             </label>
             <Form.Item name='content' rules={[{ required: true, message: 'Nội dung không được bỏ trống!' }]}>
               <ReactQuill
@@ -109,7 +109,7 @@ const CreateTemplateEmail = () => {
                 onChange={handleChangeText}
                 modules={modules}
                 className='rich-text'
-                style={{ height: 200 }}
+                style={{ height: 400 }}
               />
             </Form.Item>
           </div>

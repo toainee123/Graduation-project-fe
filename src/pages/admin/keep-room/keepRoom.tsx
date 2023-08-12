@@ -209,7 +209,7 @@ const KeepRoom = () => {
                     <div>
                       <div style={{ display: 'flex', marginBottom: 20 }}>
                         <div style={{ marginRight: 195 }}>
-                          <label htmlFor='' style={{ marginRight: 15 }}>
+                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 15 }}>
                             Từ ngày
                           </label>
                           <br />
@@ -223,8 +223,8 @@ const KeepRoom = () => {
                           </Space>
                         </div>
                         <div>
-                          <label htmlFor='' style={{ marginRight: 70 }}>
-                            đến
+                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 70 }}>
+                            Đến
                           </label>
                           <br />
                           <Space direction='vertical'>
@@ -249,7 +249,7 @@ const KeepRoom = () => {
                       </div>
                       <div style={{ display: 'flex', marginBottom: 20 }}>
                         <div style={{ marginRight: 150 }}>
-                          <label htmlFor='' style={{ marginRight: 38 }}>
+                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 38 }}>
                             Nhà
                           </label>
                           <Select
@@ -266,7 +266,7 @@ const KeepRoom = () => {
                           </Select>
                         </div>
                         <div>
-                          <label htmlFor='' style={{ marginRight: 38 }}>
+                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 38 }}>
                             Phòng
                           </label>
                           <Select
@@ -314,7 +314,7 @@ const KeepRoom = () => {
       </div>
       <div className='flex flex-col'>
         <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
-          <div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
+          <div className='py-2 inline-block min-w-full '>
             <div className='overflow-hidden'>
               <table className='min-w-full'>
                 <thead className='bg-gray-200 border-b'>

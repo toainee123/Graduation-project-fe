@@ -93,7 +93,7 @@ const Sidebar = (props: Props) => {
     //   icon: <FileTextOutlined />,
     // },
     {
-      label: <Link to={urlRouter.REPORT}>Báo cáo</Link>,
+      label: <div>Báo cáo</div>,
       key: '9',
       icon: <FileTextOutlined />,
       children: [

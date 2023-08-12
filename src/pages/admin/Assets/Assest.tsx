@@ -186,7 +186,7 @@ const Assets = () => {
       <br />
       <div className='flex flex-col'>
         <div className='overflow-x-auto sm:mx-0.5 lg:mx-0.5'>
-          <div className='py-2 inline-block min-w-full sm:px-6 lg:px-8'>
+          <div className='py-2 inline-block min-w-full '>
             <div className='overflow-hidden'>
               <table className='min-w-full'>
                 <thead className='bg-gray-200 border-b'>
