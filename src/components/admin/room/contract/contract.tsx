@@ -15,6 +15,7 @@ import { getHouseId } from 'src/api/house';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { log } from '@antv/g2plot/lib/utils';
+import axios from 'axios';
 
 const Contract = ({ houseid }: any) => {
   const { roomId } = useParams();
@@ -30,6 +31,8 @@ const Contract = ({ houseid }: any) => {
     dispatch(getAstablishContract());
     const getRoomTenant = async () => {
       const { data } = await apiGetRoomTenantDetail(roomId);
+      console.log(data);
+
       setRoomTenant(data);
     };
 
@@ -123,6 +126,9 @@ const Contract = ({ houseid }: any) => {
     setPrintData(newContract);
   };
 
+  const CLOUDINARY_PRESET = 'gtn4lbpo';
+  const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/auto/upload';
+
   const onFinish = async (values: any) => {
     setFormValue(values);
     const dataPost = {
@@ -132,21 +138,51 @@ const Contract = ({ houseid }: any) => {
       contractExpir: moment(values.contractExpir).format('YYYY-MM-DD'),
       expiry: values.expiry,
     };
-    try {
-      const response = await addContract(dataPost);
-      if (response) {
-        toast.success('Thành công');
-      }
-    } catch (error: any) {
-      if (error?.response?.data?.message === 'Only Contract With Room') {
-        const id = contract?.id;
+    renderContract();
 
-        const response = await updateContract(dataPost, id);
+    const htmlInput: any = document.querySelector('.ql-editor');
+    htmlInput.removeAttribute('hidden');
+
+    html2canvas(htmlInput, { logging: true, useCORS: true }).then(async (canvas) => {
+      const imgWidth = 208;
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf: any = new jsPDF('p', 'mm', 'a4');
+      const imgHeight = pdf.internal.pageSize.getHeight();
+      pdf.margin = {
+        horiz: 15,
+        vert: 20,
+      };
+      await pdf.addImage(imgData, 'png', 0, 0, imgWidth, imgHeight);
+      const blob = pdf.output('blob');
+
+      const formData = new FormData();
+      formData.append('file', blob);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
+        headers: {
+          'Content-Type': 'application/form-data',
+        },
+      });
+      const imgUrl = data.url;
+      try {
+        const response = await addContract({ ...dataPost, link: imgUrl });
         if (response) {
-          toast.success('Câp nhật thành công');
+          toast.success('Thành công');
+        }
+      } catch (error: any) {
+        if (error?.response?.data?.message === 'Only Contract With Room') {
+          const id = contract?.id;
+
+          const response = await updateContract({ ...dataPost, link: imgUrl }, id);
+          if (response) {
+            toast.success('Câp nhật thành công');
+          }
         }
       }
-    }
+    });
+
+    htmlInput.setAttribute('hidden', 'true');
   };
 
   const handleExportPDF = () => {
@@ -158,28 +194,11 @@ const Contract = ({ houseid }: any) => {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
-      const imgProps = pdf.getImageProperties(imgData);
-      // const pdfWidth = pdf.internal.pageSize.getWidth();
-      // const pdfHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(imgData, 'PNG', 0, 8, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'png', 0, 8, imgWidth, imgHeight);
       pdf.save('download.pdf');
     });
 
     htmlInput.setAttribute('hidden', 'true');
-
-    // var header =
-    //   '<html>' +
-    //   '<head><meta charset="utf-8"><title>ahihi</title></meta><link rel="stylesheet" href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css"/></head>';
-    // var footer = '</body></html>';
-    // const bodyHtml: any = document.querySelector('.ql-editor');
-    // var sourceHTML: any = header + bodyHtml.innerHTML + footer;
-    // var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-    // var fileDownload = document.createElement('a');
-    // document.body.appendChild(fileDownload);
-    // fileDownload.href = source;
-    // fileDownload.download = 'document.doc';
-    // fileDownload.click();
-    // document.body.removeChild(fileDownload);
   };
   return (
     <div>
