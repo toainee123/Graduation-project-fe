@@ -146,7 +146,7 @@ const Service = () => {
           </Form.Item>
         </Form>
       </div>
-      <Table dataSource={dataSource} columns={columns} rowKey='name' />
+      <Table dataSource={dataSource} columns={columns} rowKey='name' scroll={{ x: 1200 }} />
     </>
   );
 };

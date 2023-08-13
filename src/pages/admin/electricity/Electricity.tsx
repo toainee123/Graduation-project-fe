@@ -80,7 +80,7 @@ const Electricity = (props: Props) => {
           </Button>
         </Form>
       </Space>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
     </div>
   );
 };
