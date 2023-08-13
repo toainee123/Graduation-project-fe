@@ -161,7 +161,7 @@ const Notificatiton = () => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
         </div >
     )
 }

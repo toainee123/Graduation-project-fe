@@ -4,14 +4,14 @@ import "./listMember.scss"
 import { Select, Space, Table, Tag } from 'antd';
 import * as XLSX from 'xlsx-js-style';
 import { CloseCircleFilled, EditFilled, EyeOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment'
 import { apiGetHostMember } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 
 const ListMember = () => {
     const [list, setList] = useState<any>([])
-
+    const navigate = useNavigate()
     useEffect(() => {
         const getHostMember = async () => {
             const { data } = await apiGetHostMember()
@@ -116,9 +116,12 @@ const ListMember = () => {
                         }))}
                     />
                     <button onClick={() => handleExportToExcel()} className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium text-sm px-3 py-1.5 ml-2 "><i className="fa-sharp fa-solid fa-file-excel"></i> Xuất file excel</button>
+                    <button onClick={() => navigate(-1)} className='focus:outline-none text-white bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'>
+                        <i className="fa-solid fa-angles-left"></i> Quay về
+                    </button>
                 </div>
             </div>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
         </div>
     )
 }
