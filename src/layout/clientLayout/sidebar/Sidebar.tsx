@@ -103,7 +103,7 @@ const Sidebar = (props: Props) => {
 
   const logout = () => {
     dispatch(AuthSliceAction.logout());
-    navigate(`/${urlRouter.AUTH}`);
+    navigate('/lading-page');
   };
 
   return (

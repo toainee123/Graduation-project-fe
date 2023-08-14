@@ -44,7 +44,7 @@ const HeaderComponent = (props: Props) => {
 
   const logout = () => {
     dispatch(AuthSliceAction.logout());
-    navigate(`/${urlRouter.AUTH}`);
+    navigate(`/lading-page`);
   };
   const items: MenuProps['items'] = [
     {
@@ -58,7 +58,7 @@ const HeaderComponent = (props: Props) => {
     {
       key: '3',
       label: (
-        <a target='_blank' onClick={logout}>
+        <a onClick={logout}>
           Đăng xuất
         </a>
       ),

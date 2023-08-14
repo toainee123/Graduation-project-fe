@@ -4,14 +4,9 @@ import hero from './logo/hero.png';
 import tab1 from './logo/tab1.png';
 import logo from './logo/logo bee.png'
 import { useEffect, useRef, useState } from 'react';
+import { urlRouter } from 'src/utils/constants';
 
 const Homepage = () => {
-  // const btn = document.querySelector("button.mobile-menu-button");
-  // const menu = document.querySelector(".mobile-menu");
-
-  // btn.addEventListener("click", () => {
-  //   menu.classList.toggle("hidden");
-  // });
   const [isNavExpanded, setIsNavExpanded] = useState(false)
   const ref = useRef<any>(null);
 
@@ -36,8 +31,8 @@ const Homepage = () => {
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-3 ">
-              <Link to="#" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
-              <Link to="#" className="py-2 signIn px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
+              <Link to={`/${urlRouter.AUTH}`} className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
+              <Link to={`/${urlRouter.AUTH}`} className="py-2 signIn px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
             </div>
             <div className="md:hidden flex items-center">
               <button onClick={() => setIsNavExpanded(!isNavExpanded)} className="outline-none mobile-menu-button">
@@ -56,7 +51,7 @@ const Homepage = () => {
               <li><Link to="#services" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Services</Link></li>
               <li><Link to="#about" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">About</Link></li>
               <li><Link to="#contact" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Contact Us</Link></li>
-              <li><Link to="#contact" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Đăng Nhập</Link></li>
+              <li><Link to={`/${urlRouter.AUTH}`} className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Đăng Nhập</Link></li>
             </ul>
           </div>
         )}
@@ -74,9 +69,9 @@ const Homepage = () => {
                 tiết kiệm thời gian ghi chép, thống kê.
               </p>
               <div className='flex justify-center flex-wrap gap-6'>
-                <button className='rounded-lg px-4 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-blue-100 duration-300'>
+                <Link to={`/${urlRouter.AUTH}`} className='rounded-lg px-4 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-blue-100 duration-300'>
                   Đăng kí ngay
-                </button>
+                </Link>
               </div>
             </div>
             <div className='flex justify-center flex-1 mb-10 md:mb-16 lg:mb-0 z-10'>
