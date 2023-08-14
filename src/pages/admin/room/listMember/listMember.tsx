@@ -116,7 +116,7 @@ const ListMember = () => {
                         }))}
                     />
                     <button onClick={() => handleExportToExcel()} className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium text-sm px-3 py-1.5 ml-2 "><i className="fa-sharp fa-solid fa-file-excel"></i> Xuất file excel</button>
-                    <button onClick={() => navigate(-1)} className='focus:outline-none text-white bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'>
+                    <button onClick={() => navigate(-1)} className='focus:outline-none  bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'>
                         <i className="fa-solid fa-angles-left"></i> Quay về
                     </button>
                 </div>
