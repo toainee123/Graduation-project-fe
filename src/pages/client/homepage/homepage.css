@@ -19,6 +19,7 @@
 .btn-white {
   background-color: #f7f7f7;
 }
+
 .link-underline {
   border-bottom-width: 0;
   background-image: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff);
@@ -36,9 +37,19 @@
   background-size: 100% 3px;
   background-position: 0 100%;
 }
+
 .bg-bookmark-white {
   background-color: #f7f7f7;
 }
+
 .bg-bookmark-blue {
   background-color: #242a45;
+}
+
+.signIn:hover {
+  color: white;
+}
+
+.showmenu {
+  display: block;
 }
