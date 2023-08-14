@@ -45,6 +45,5 @@ export const clientRoute = [
     {
         path: urlRouter.CLIENT_CHANGEPASSWORD,
         component: Clientchangepassword,
-    }
-
+    },
 ]
