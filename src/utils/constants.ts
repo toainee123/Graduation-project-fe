@@ -9,6 +9,7 @@ export const urlRouter = {
   CLIENT_INFAORMATION: 'information',
   CLIENT_SENDNOTIFICATION: 'send-notification',
   CLIENT_CHANGEPASSWORD: 'Clientchangepassword',
+  LAND_PAGE: 'lading-page',
 
 
   // Admin
