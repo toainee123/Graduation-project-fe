@@ -1,17 +1,45 @@
 #loginContainer {
+  // background: rgb(51, 210, 212);
+  background-image: url('./masteri-waterfront-background.jpg');
+  background-repeat: no-repeat;
   height: 100vh;
-  background: rgb(34, 193, 195);
-  background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(90, 45, 253, 1) 80%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .loginWrap {
   display: flex;
   justify-content: center;
+  margin-top: 3%;
+}
+.content {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  min-width: 500px;
+  height: 550px;
+}
+.content-left {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: #9bbff4;
+  text-align: center;
+}
+.content-left img {
+  height: 400px;
+  align-items: center;
+  width: -webkit-fill-available;
+  object-fit: contain;
 }
 .tabs {
-  border-radius: 8px;
+  padding-top: 6rem;
   background: #ffff;
-  margin-top: 10%;
-  min-width: 400px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  min-width: 500px;
+  height: 550px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.inputAuth {
+  font-size: 18px;
+  border-radius: 8px;
 }
