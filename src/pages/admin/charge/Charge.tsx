@@ -47,6 +47,7 @@ const Charge = () => {
   const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
   const [isModalOpenCalculatorAll, setIsModalOpenCalculatorAll] = useState(false);
   const [listDt, setListDt] = useState<any>();
+  const [record, setRecord] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -266,6 +267,8 @@ const Charge = () => {
   };
 
   const cpPrintBillRef = useRef<any>();
+  console.log(cpPrintBillRef.current);
+
   const handlePrintBill = useReactToPrint({
     content: () => cpPrintBillRef.current,
   });
@@ -340,8 +343,10 @@ const Charge = () => {
             <button
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
               onClick={async () => {
-                await handleClickView(record);
-                await handlePrintBill();
+                handleClickView(record);
+                setTimeout(() => {
+                  handlePrintBill();
+                }, 1000);
               }}
             >
               <PrinterOutlined />
@@ -908,17 +913,15 @@ const Charge = () => {
               </Modal>
             </div>
 
-            <Tooltip title='Ấn 2 lần nút để in '>
-              <button
-                className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-                onClick={async () => {
-                  // await handleListData();
-                  handlePrintListBill();
-                }}
-              >
-                <PrinterOutlined className='icon-btn' /> In
-              </button>
-            </Tooltip>
+            <button
+              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+              onClick={async () => {
+                // await handleListData();
+                handlePrintListBill();
+              }}
+            >
+              <PrinterOutlined className='icon-btn' /> In
+            </button>
 
             <button
               className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
