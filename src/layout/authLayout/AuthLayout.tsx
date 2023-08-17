@@ -45,11 +45,11 @@ const AuthLayout = (props: Props) => {
           <i className='fa-solid fa-angles-left'></i> Quay về
         </button>
       </div>
-      <div className='loginWrap'>
+      <div className='loginWrap w-full '>
         <div className='content grid lg:grid-cols-[1fr_1fr] md:grid-cols-[1fr]'>
-          <div className='w-full p-5 content-left'>
-            <h3 className='font-semibold text-[29px] pb-8 text-white'>Quản lý phòng trọ BeeHome</h3>
-            <img src={imageAuth} alt="" />
+          <div className='w-full p-5 content-left '>
+            <h3 className='font-semibold text-[29px] pb-8 md:pb-5 sm:pb-2 text-white'>Quản lý phòng trọ BeeHome</h3>
+            <img src={imageAuth} alt="" className='lg:block md:hidden sm:hidden' />
           </div>
           <div>
             <Tabs defaultActiveKey='1' items={items} centered={true} size='large' className='tabs' />

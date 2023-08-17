@@ -1,6 +1,6 @@
 #loginContainer {
   // background: rgb(51, 210, 212);
-  background-image: url('https://masteriwaterfrontoceanpark.com/wp-content/uploads/2020/10/masteri-waterfront-background.jpg');
+  background-image: url('./masteri-waterfront-background.jpg');
   background-repeat: no-repeat;
   height: 100vh;
   background-position: center;
@@ -38,4 +38,8 @@
   min-width: 500px;
   height: 550px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.inputAuth {
+  font-size: 18px;
+  border-radius: 8px;
 }
