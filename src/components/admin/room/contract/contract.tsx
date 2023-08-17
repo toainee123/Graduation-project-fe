@@ -128,6 +128,12 @@ const Contract = ({ houseid }: any) => {
 
   const CLOUDINARY_PRESET = 'gtn4lbpo';
   const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/auto/upload';
+  useEffect(() => {
+    const reRender = () => {
+      renderContract();
+    };
+    reRender();
+  }, [formValue]);
 
   const onFinish = async (values: any) => {
     setFormValue(values);
@@ -138,54 +144,51 @@ const Contract = ({ houseid }: any) => {
       contractExpir: moment(values.contractExpir).format('YYYY-MM-DD'),
       expiry: values.expiry,
     };
-    renderContract();
 
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
 
-    html2canvas(htmlInput, { logging: true, useCORS: true }).then(async (canvas) => {
-      const imgWidth = 208;
-      const imgData = canvas.toDataURL('image/png');
-      const pdf: any = new jsPDF('p', 'mm', 'a4');
-      var myImage = new Image();
-      myImage.src = imgData;
-      myImage.onload = function () {
-        pdf.addImage(imgData, 'png', 0, 0, imgWidth, imgHeight);
-      };
-      const imgHeight = pdf.internal.pageSize.getHeight();
-      pdf.margin = {
-        horiz: 15,
-        vert: 20,
-      };
-      const blob = pdf.output('blob');
+    const canvas = await html2canvas(htmlInput);
+    htmlInput.setAttribute('hidden', 'true');
+    const image = canvas.toDataURL('image/png', 1.0);
+    const pdf: any = new jsPDF('p', 'mm', 'a4');
+    const imgWidth = 208;
+    const imgHeight = pdf.internal.pageSize.getHeight();
+    pdf.margin = {
+      horiz: 15,
+      vert: 20,
+    };
+    pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight);
+    const blob = pdf.output('blob');
+    console.log(blob);
+    const formData = new FormData();
+    formData.append('file', blob);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
+      headers: {
+        'Content-Type': 'application/form-data',
+      },
+    });
+    const imgUrl = data.url;
+    try {
+      const response = await addContract({ ...dataPost, link: imgUrl });
+      if (response) {
+        toast.success('Thành công');
+      }
+    } catch (error: any) {
+      if (error?.response?.data?.message === 'Only Contract With Room') {
+        const id = contract?.id;
 
-      const formData = new FormData();
-      formData.append('file', blob);
-      formData.append('upload_preset', CLOUDINARY_PRESET);
-      const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
-        headers: {
-          'Content-Type': 'application/form-data',
-        },
-      });
-      const imgUrl = data.url;
-      try {
-        const response = await addContract({ ...dataPost, link: imgUrl });
+        const response = await updateContract({ ...dataPost, link: imgUrl }, id);
         if (response) {
-          toast.success('Thành công');
-        }
-      } catch (error: any) {
-        if (error?.response?.data?.message === 'Only Contract With Room') {
-          const id = contract?.id;
-
-          const response = await updateContract({ ...dataPost, link: imgUrl }, id);
-          if (response) {
-            toast.success('Câp nhật thành công');
-          }
+          toast.success('Câp nhật thành công');
         }
       }
-    });
+    }
 
-    htmlInput.setAttribute('hidden', 'true');
+    // html2canvas(htmlInput, { logging: true, useCORS: true }).then(async (canvas) => {
+    //   const imgData = canvas.toDataURL('image/png');
+    // });
   };
 
   const handleExportPDF = () => {

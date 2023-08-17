@@ -7,6 +7,8 @@ import { ClientInfomation } from "src/pages/client/information/ClientInfomation"
 import ClientService from "src/pages/client/service/ClientService";
 import { urlRouter } from "src/utils/constants";
 import { Clientchangepassword } from "src/pages/client/changePassword/ClientChangepassword"
+import Electricity from "src/pages/client/electricity/Electricity";
+import Water from "src/pages/client/water/Water";
 
 export const clientRoute = [
     {
@@ -45,6 +47,16 @@ export const clientRoute = [
     {
         path: urlRouter.CLIENT_CHANGEPASSWORD,
         component: Clientchangepassword,
+    }
+    ,
+    {
+        path: urlRouter.CLIENT_ELECTRICITY,
+        component: Electricity,
+    }
+    ,
+    {
+        path: urlRouter.CLIENT_WATER,
+        component: Water,
     }
 
 ]
