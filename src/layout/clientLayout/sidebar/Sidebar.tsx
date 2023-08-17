@@ -99,6 +99,17 @@ const Sidebar = (props: Props) => {
       key: '9',
       icon: <FileTextOutlined />,
     },
+    {
+      label: <Link to={urlRouter.CLIENT_ELECTRICITY}>Chỉ số điện</Link>,
+      key: '10',
+      icon: <BulbOutlined />,
+    },
+
+    {
+      label: <Link to={urlRouter.CLIENT_WATER}>Chỉ số n ước</Link>,
+      key: '11',
+      icon: <BgColorsOutlined />,
+    },
   ];
 
   const logout = () => {
@@ -127,7 +138,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-        // selectedKeys={[current]}
+          // selectedKeys={[current]}
         />
         <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
