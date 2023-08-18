@@ -41,7 +41,7 @@ const ClientRoom = () => {
                             <tr className='text-center text-md text-gray-600 font-semibold'>
                                 <td>{dataRoom?.name}</td>
                                 {/* <td>{Number(dataRoom.price).toLocaleString('VND')}</td> */}
-                                <td>lỗi giá tiền</td>
+                                <td>lỗi tiền</td>
                                 <td>{dataRoom?.area}m2</td>
                                 <td>{dataRoom?.maxcustomer}</td>
                                 <td>{dataRoom?.countCustomer}</td>
