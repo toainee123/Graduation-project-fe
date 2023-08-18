@@ -3,6 +3,7 @@ export const urlRouter = {
   // client
   CLIENT_SERVICE: 'service',
   CLIENT_CONTRACT: 'contract',
+  CLIENT_ROOM: 'room',
   CLIENT_ARISE: 'arise',
   CLIENT_ASSET: 'asset',
   CLIENT_BILL: 'bill',

@@ -41,7 +41,7 @@ const Sidebar = (props: Props) => {
   const menuListItem: MenuItem[] = [
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_SERVICE}>
+        <Link to={urlRouter.CLIENT_SERVICE}>
           Dịch vụ
         </Link>
       ),
@@ -50,7 +50,16 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_CONTRACT}>
+        <Link to={urlRouter.CLIENT_ROOM}>
+          Phòng
+        </Link>
+      ),
+      key: '2',
+      icon: < HomeOutlined />,
+    },
+    {
+      label: (
+        <Link to={urlRouter.CLIENT_CONTRACT}>
           Hợp đồng
         </Link>
       ),
@@ -59,7 +68,7 @@ const Sidebar = (props: Props) => {
     },
     // {
     //   label: (
-    //     <Link className='label-router' to={urlRouter.CLIENT_ARISE}>
+    //     <Link to={urlRouter.CLIENT_ARISE}>
     //       Phát sinh
     //     </Link>
     //   ),
@@ -68,7 +77,7 @@ const Sidebar = (props: Props) => {
     // },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_ASSET}>
+        <Link to={urlRouter.CLIENT_ASSET}>
           Tài sản
         </Link>
       ),
@@ -77,7 +86,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_BILL}>
+        <Link to={urlRouter.CLIENT_BILL}>
           Hóa đơn
         </Link>
       ),
