@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import { format } from 'path';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { getListIndexElec } from 'src/features/electricity/electricitySlice';
+import { getListIndexElec, getListIndexElecUser } from 'src/features/electricity/electricitySlice';
 type Props = {};
 
 const Electricity = (props: Props) => {
@@ -15,7 +15,7 @@ const Electricity = (props: Props) => {
   const dateJ = dayjs(date).format(' YYYY-MM');
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getListIndexElec(dateJ));
+    dispatch(getListIndexElecUser(dateJ));
   }, []);
 
   const dt = useAppSelector((state) => state.electricity.value);
@@ -59,7 +59,9 @@ const Electricity = (props: Props) => {
   ];
   const onFinish = (value: any) => {
     const dateFilter = moment(value.dateFilter).format(' YYYY-MM');
-    dispatch(getListIndexElec(dateFilter));
+    console.log(dateFilter);
+
+    dispatch(getListIndexElecUser(dateFilter));
   };
 
   const initValueCacula = {

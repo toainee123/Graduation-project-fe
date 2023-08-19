@@ -7,7 +7,7 @@ import moment from 'moment';
 import { format } from 'path';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getListIndexWater } from 'src/api/water';
-import { getListIndexWter } from 'src/features/water/waterSlice';
+import { getListIndexWter, getListIndexWterUser } from 'src/features/water/waterSlice';
 type Props = {};
 
 const Water = (props: Props) => {
@@ -16,7 +16,7 @@ const Water = (props: Props) => {
   const dateJ = dayjs(date).format(' YYYY-MM');
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getListIndexWter(dateJ));
+    dispatch(getListIndexWterUser(dateJ));
   }, []);
 
   const dt = useAppSelector((state) => state.water.value);
@@ -59,7 +59,7 @@ const Water = (props: Props) => {
   ];
   const onFinish = (value: any) => {
     const dateFilter = moment(value.dateFilter).format(' YYYY-MM');
-    dispatch(getListIndexWter(dateFilter));
+    dispatch(getListIndexWterUser(dateFilter));
   };
 
   const initValueCacula = {
