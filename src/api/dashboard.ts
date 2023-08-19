@@ -32,3 +32,8 @@ export const updateNotification = ({ id, value }: any) => {
     const url = `dashboard/notification/${id}`
     return axiosClient.put(url, value)
 }
+
+export const getInfoRoomUser = () => {
+    const url = `dashboard/user`
+    return axiosClient.get(url)
+}

@@ -95,17 +95,17 @@ const Notification = () => {
                 <div className='overflow-hidden'>
                   <table className='min-w-full'>
                     <thead className='bg-gray-200 border-b text-center'>
-                      <tr>
-                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
+                      <tr className='text-center'>
+                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                           STT
                         </th>
-                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                           Nội dung báo cáo
                         </th>
-                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                           Trạng thái
                         </th>
-                        <th scope='col' className='text-sm text-center font-medium text-gray-900 px-6 py-4 text-left'>
+                        <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                           Ngày gửi
                         </th>
                       </tr>

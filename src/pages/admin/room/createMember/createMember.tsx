@@ -27,7 +27,6 @@ const CreateMember = () => {
   };
   useEffect(() => {
     if (keyLocation === 'view' || keyLocation === 'update') {
-      console.log('Call api get roomTenant');
       const fetchDetailMember = async () => {
         const { data } = await apiGetRoomTenantDetail(roomId);
         setGetData(data);
@@ -40,14 +39,12 @@ const CreateMember = () => {
       fetchDetailMember();
     }
   }, [keyLocation]);
-  console.log('data', getData);
 
   useEffect(() => {
     // if (keyLocation === null) {
 
     const fetchRoom = async (roomId: any) => {
       const { data } = await getByIdRoom(roomId);
-      console.log('data');
       setDetailRoom(data);
     };
     fetchRoom(roomId);

@@ -70,7 +70,7 @@ const ClientAsset = () => {
         </Form>
       </div> */}
       <br />
-      <Table columns={column} dataSource={assets} />
+      <Table columns={column} dataSource={assets} scroll={{ x: 1200 }} />
     </div>
   );
 };

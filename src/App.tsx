@@ -18,6 +18,7 @@ import ClientLayout from './layout/clientLayout/layout/ClientLayout';
 import ClientService from './pages/client/service/ClientService';
 import { clientRoute } from './routes/clientRoute';
 import { useLayoutEffect } from 'react';
+import Homempage from './pages/client/homepage/homepage';
 
 const Wrapper = ({ children }: any) => {
   const location = useLocation();
@@ -65,7 +66,7 @@ function App() {
                 );
               })}
             </Route>
-
+            <Route path='/lading-page' element={<Homempage />}></Route>
             <Route path={urlRouter.AUTH} element={<AuthLayout />}>
               <Route index element={<Navigate to={urlRouter.AUTH} />} />
 

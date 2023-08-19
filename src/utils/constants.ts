@@ -3,6 +3,7 @@ export const urlRouter = {
   // client
   CLIENT_SERVICE: 'service',
   CLIENT_CONTRACT: 'contract',
+  CLIENT_ROOM: 'room',
   CLIENT_ARISE: 'arise',
   CLIENT_ASSET: 'asset',
   CLIENT_BILL: 'bill',
@@ -11,6 +12,7 @@ export const urlRouter = {
   CLIENT_INFAORMATION: 'information',
   CLIENT_SENDNOTIFICATION: 'send-notification',
   CLIENT_CHANGEPASSWORD: 'Clientchangepassword',
+  LAND_PAGE: 'lading-page',
 
 
   // Admin

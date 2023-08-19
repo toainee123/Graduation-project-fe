@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Space, Table } from 'antd';
 import * as XLSX from 'xlsx-js-style';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { getAllRoom } from 'src/api/room';
 
 const ListMember = () => {
   const [listRoom, setListRoom] = useState<any>([]);
   const [analyticRoom, setAnalyticRoom] = useState<any>();
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchRoom = async () => {
       const { data } = await getAllRoom();
@@ -132,9 +132,12 @@ const ListMember = () => {
           >
             <i className='fa-sharp fa-solid fa-file-excel'></i> Xuất file excel
           </button>
+          <button onClick={() => navigate(-1)} className='focus:outline-none text-white bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'>
+            <i className="fa-solid fa-angles-left"></i> Quay về
+          </button>
         </div>
       </div>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} scroll={{ x: 1200 }} />
     </div>
   );
 };

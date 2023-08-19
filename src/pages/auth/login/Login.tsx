@@ -39,7 +39,7 @@ const Login = (props: Props) => {
         <div className='flex flex-col gap-4 mb-4'>
 
           <Form.Item name='email' rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}>
-            <Input size='large' prefix={<MailOutlined />} placeholder='Email' />
+            <Input size='large' prefix={<MailOutlined />} placeholder='Email' className='inputAuth' />
           </Form.Item>
 
           <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
@@ -47,22 +47,23 @@ const Login = (props: Props) => {
               size='large'
               prefix={<LockOutlined className='site-form-item-icon' />}
               placeholder='Mật khẩu'
+              className='inputAuth'
             />
           </Form.Item>
 
           {messageFail && <span className='text-red-500'>Thông tin đăng nhập không chính xác!</span>}
         </div>
+        <div className="my-2">
+          <Form.Item>
+            <Form.Item name='remember' valuePropName='checked' noStyle>
+              <Checkbox>Nhớ mật khẩu</Checkbox>
+            </Form.Item>
 
-        <Form.Item>
-          <Form.Item name='remember' valuePropName='checked' noStyle>
-            <Checkbox>nhớ mật khẩu</Checkbox>
+            <Link to='/auth/forgot-password' className='float-right'>
+              Quên mật khẩu
+            </Link>
           </Form.Item>
-
-          <Link to='/auth/forgot-password' className='float-right'>
-            quên mật khẩu
-          </Link>
-        </Form.Item>
-
+        </div>
         <Form.Item>
           <Button type='primary' size='large' shape='round' htmlType='submit' className='w-full'>
             ĐĂNG NHẬP

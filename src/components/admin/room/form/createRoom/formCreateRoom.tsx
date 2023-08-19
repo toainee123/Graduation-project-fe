@@ -154,8 +154,8 @@ const FormCreateRoom = () => {
                 onFinish={onFinish}
                 initialValues={{ ...detailRoom }}
             >
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-                    <label htmlFor="" className='w-28 text-base font-semibold'>Hình ảnh</label>
+                <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+                    <label htmlFor="" className='w-28 text-base text-slate-500 font-semibold'>Hình ảnh</label>
                     <Form.Item name="image" className='form-upload'>
                         <Upload {...props} listType="picture-card" fileList={fileListImage} >
                             {countImg.length >= 1 ? null : (
@@ -168,15 +168,15 @@ const FormCreateRoom = () => {
                         </Upload>
                     </Form.Item>
                 </div>
-                <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
-                    <label htmlFor="" className='w-64 text-base font-semibold'>Phòng số</label>
-                    <div className='w-full items-center'>
+                <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+                    <label htmlFor="" className='text-base text-slate-500 font-semibold'>Phòng số</label>
+                    <div className='w-full items-center '>
                         <Form.Item name="name" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <Input className='w-full outline-0 md: my-2' type="text" placeholder='Phòng số' />
                         </Form.Item>
                     </div>
-                    <label htmlFor="" className="w-64 text-base font-semibold">Nhà</label>
-                    <div className='w-full'>
+                    <label htmlFor="" className=" text-base text-slate-500 font-semibold">Nhà</label>
+                    <div className='w-full '>
                         <Form.Item name="houseId" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <Select
                                 placeholder="Lựa chọn nhà"
@@ -189,28 +189,28 @@ const FormCreateRoom = () => {
                         </Form.Item>
                     </div>
                 </div>
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
-                    <label htmlFor="" className='w-64 text-base font-semibold'>Chỉ số điện</label>
+                <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-2' >
+                    <label htmlFor="" className='w-64 text-base text-slate-500 font-semibold'>Chỉ số điện</label>
                     <div className='w-full'>
                         <Form.Item name="indexElectricity" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số điện' />
                         </Form.Item>
                     </div>
-                    <label htmlFor="" className="w-64 text-base font-semibold">Chỉ số nước</label>
+                    <label htmlFor="" className="w-64 text-base text-slate-500 font-semibold">Chỉ số nước</label>
                     <div className='w-full'>
                         <Form.Item name="indexWater" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <Input type='number' className='w-full outline-0 md: my-2' placeholder='Chỉ số nước' />
                         </Form.Item>
                     </div>
                 </div>
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8' >
-                    <label htmlFor="" className='w-64 text-base font-semibold'>Số lượng người tối đa</label>
+                <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-2' >
+                    <label htmlFor="" className=' text-base text-slate-500 font-semibold'>Số lượng người tối đa</label>
                     <div className='w-full'>
                         <Form.Item name="maxCustomer" rules={[{ required: true, message: "Không được bỏ trống" }]}>
-                            <InputNumber type='number' style={{ borderRadius: 6 }} controls={false} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="Người" />
+                            <Input type='number' style={{ borderRadius: 6 }} min={1} max={6} className='w-full outline-0 md: my-2' placeholder='Số lượng người tối đa' addonAfter="Người" />
                         </Form.Item>
                     </div>
-                    <label htmlFor="" className="w-64 text-base font-semibold">Đơn giá</label>
+                    <label htmlFor="" className="w-64 text-base text-slate-500 font-semibold">Đơn giá</label>
                     <div className='w-full'>
                         <Form.Item name="price" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <InputNumber
@@ -223,16 +223,16 @@ const FormCreateRoom = () => {
                         </Form.Item>
                     </div>
                 </div>
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-                    <label htmlFor="" className='w-28 text-base font-semibold'>Diện tích phòng</label>
+                <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-2'>
+                    <label htmlFor="" className='w-28 text-base text-slate-500 font-semibold'>Diện tích phòng</label>
                     <div className='w-full'>
                         <Form.Item name="area" rules={[{ required: true, message: "Không được bỏ trống" }]}>
-                            <InputNumber className='w-full outline-0 items-center md: my-2' placeholder='Diện tích phòng (m2)' addonAfter="M2" />
+                            <Input type='number' className='w-full outline-0 items-center md: my-2' placeholder='Diện tích phòng (m2)' addonAfter="M2" />
                         </Form.Item>
                     </div>
                 </div>
-                <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-                    <label htmlFor="" className='w-28 text-base font-semibold'>Mô tả</label>
+                <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
+                    <label htmlFor="" className='w-28 text-base text-slate-500 font-semibold'>Mô tả</label>
                     <Form.Item name="description" rules={[{ required: true, message: "Không được bỏ trống" }]}
                     >
                         <Input.TextArea rows={10} cols={201} className='textArea' maxLength={650} showCount={true} placeholder='Aa' />

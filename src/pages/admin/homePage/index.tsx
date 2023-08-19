@@ -15,7 +15,7 @@ import {
 } from './hooks/useTranformToBarData';
 import ColumnChart from 'src/components/specific/chart/Column';
 
-interface Props {}
+interface Props { }
 
 const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -125,7 +125,7 @@ const Homepage = (props: Props) => {
           </h2>
         </div>
       </div>
-      <div className=' w-full grid grid-cols-2 gap-4 mt-6'>
+      <div className=' w-full grid lg:grid-cols-2 gap-4 mt-6 md:grid-cols-1'>
         <div className=' '>
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2'>
@@ -148,7 +148,7 @@ const Homepage = (props: Props) => {
         </div>
       </div>
 
-      <div className=' w-full grid grid-cols-2 gap-4 mt-6'>
+      <div className='w-full grid lg:grid-cols-2 gap-4 mt-6 md:grid-cols-1'>
         <div className=' '>
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2 '>
@@ -172,7 +172,7 @@ const Homepage = (props: Props) => {
         </div>
       </div>
 
-      <div className=' w-full grid grid-cols-2 gap-4 mt-6'>
+      <div className='w-full grid lg:grid-cols-2 gap-4 mt-6 md:grid-cols-1'>
         <div className=' '>
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2 '>
@@ -196,7 +196,7 @@ const Homepage = (props: Props) => {
         </div>
       </div>
 
-      <div className=' w-full grid grid-cols-2 gap-4 mt-4 '>
+      <div className='w-full grid lg:grid-cols-2 gap-4 mt-6 md:grid-cols-1'>
         <div className=' '>
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2 mb-4'>
