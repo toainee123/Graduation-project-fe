@@ -1,11 +1,15 @@
 import axiosClient from './axiosClient';
 
 export const addContract = async (value: any) => {
+  console.log(value);
+
   const url = `/contract`;
   return axiosClient.post(url, value);
 };
 
 export const updateContract = async (value: any, id: any) => {
+  console.log(value, id);
+
   const url = `/contract/${id}`;
   return axiosClient.put(url, value);
 };

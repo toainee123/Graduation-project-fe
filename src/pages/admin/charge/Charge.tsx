@@ -46,6 +46,8 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
   const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
   const [isModalOpenCalculatorAll, setIsModalOpenCalculatorAll] = useState(false);
+  const [listDt, setListDt] = useState<any>();
+  const [record, setRecord] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -59,6 +61,7 @@ const Charge = () => {
 
   useEffect(() => {
     renderBillSendEmail();
+    setListDt(selectedRow);
   }, [selectedRow]);
 
   useEffect(() => {
@@ -87,6 +90,14 @@ const Charge = () => {
     };
   });
 
+  useEffect(() => {
+    setListDt(dataSource);
+  }, [chargeData]);
+
+  useEffect(() => {
+    handleListData();
+  }, [listDt]);
+
   // modal
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,13 +120,7 @@ const Charge = () => {
 
   const handleListData = async () => {
     let stringList = '';
-    let arrData: any;
-    if (selectedRow.length !== 0) {
-      arrData = selectedRow;
-    } else {
-      arrData = dataSource;
-    }
-
+    let arrData = listDt;
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -262,6 +267,8 @@ const Charge = () => {
   };
 
   const cpPrintBillRef = useRef<any>();
+  console.log(cpPrintBillRef.current);
+
   const handlePrintBill = useReactToPrint({
     content: () => cpPrintBillRef.current,
   });
@@ -336,8 +343,10 @@ const Charge = () => {
             <button
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
               onClick={async () => {
-                await handleClickView(record);
-                await handlePrintBill();
+                handleClickView(record);
+                setTimeout(() => {
+                  handlePrintBill();
+                }, 1000);
               }}
             >
               <PrinterOutlined />
@@ -496,20 +505,20 @@ const Charge = () => {
         content: `${imgLink}`,
       };
       arrBill.push(response);
-      if (response?.status === 'success') {
-        toast.success('Gửi email thành công');
-      } else {
-        toast.success('Gửi email không thành công');
-      }
-    }
-    try {
-      // const response: any = sendMailBill({ data: arrBill });
       // if (response?.status === 'success') {
-      //   toast.success('thành công');
+      //   toast.success('Gửi email thành công');
+      // } else {
+      //   toast.error('Gửi email không thành công');
       // }
-    } catch (error) {
-      console.log(error);
     }
+    const response: any = await sendMailBill({ data: arrBill });
+
+    if (response?.status === 'success') {
+      toast.success('thành công');
+    } else {
+      toast.error('không thành công');
+    }
+
     setBillEmail('');
   };
 
@@ -904,17 +913,15 @@ const Charge = () => {
               </Modal>
             </div>
 
-            <Tooltip title='Ấn 2 lần nút để in '>
-              <button
-                className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-                onClick={async () => {
-                  await handleListData();
-                  await handlePrintListBill();
-                }}
-              >
-                <PrinterOutlined className='icon-btn' /> In
-              </button>
-            </Tooltip>
+            <button
+              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+              onClick={async () => {
+                // await handleListData();
+                handlePrintListBill();
+              }}
+            >
+              <PrinterOutlined className='icon-btn' /> In
+            </button>
 
             <button
               className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'

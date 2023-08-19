@@ -1,6 +1,7 @@
 import { Button, Table, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { deleteService, getListService, getServicee, updateService } from 'src/api/service';
 
 const Service = () => {
@@ -12,16 +13,25 @@ const Service = () => {
 
   useEffect(() => {
     const ListService = async () => {
-      const { data } = await getListService({});
+      const { data }: any = await getListService({});
       setList(data.responses);
 
       const response = await getServicee(roomId);
       const arrKey = response?.data?.map((item: any) => {
         return item.serviceid;
       });
+      const arrSelectRow: any = data.responses?.filter((element: any) =>
+        arrKey.find((item: any) => element.id === item)
+      );
 
-      console.log(arrKey);
-
+      const arrSelectRowRend = arrSelectRow?.map((item: any) => {
+        return {
+          key: item.id,
+          name: item.name,
+          price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
+        };
+      });
+      setSelectedRow(arrSelectRowRend);
       setSelectedRowKeys(arrKey);
     };
     ListService();
@@ -56,7 +66,7 @@ const Service = () => {
   ];
   const dataSource = list?.map((item: any, index) => {
     return {
-      key: index,
+      key: item.id,
       name: item.name,
       price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
     };
@@ -96,16 +106,24 @@ const Service = () => {
               });
 
               // Thiếu id của room_service và api cập nhật
-              const response = await updateService(roomId, {
-                serviceId: arrSv,
-              });
-              console.log(response);
+
+              try {
+                const response: any = await updateService(roomId, {
+                  serviceId: arrSv,
+                });
+                if (response?.status === 'success') {
+                  toast.success('Cập nhập thành công');
+                }
+              } catch (error) {
+                toast.error('Cập nhậpkhông thành công');
+              }
             }}
           >
             Lưu
           </Button>
         )}
       />
+      <ToastContainer />
     </>
   );
 };
