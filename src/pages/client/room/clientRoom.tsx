@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import './clientRoom.css'
+import './clienRoom.css'
 import { getInfoRoomUser } from 'src/api/dashboard';
 
 const ClientRoom = () => {
@@ -40,8 +40,7 @@ const ClientRoom = () => {
                         <tbody>
                             <tr className='text-center text-md text-gray-600 font-semibold'>
                                 <td>{dataRoom?.name}</td>
-                                {/* <td>{Number(dataRoom.price).toLocaleString('VND')}</td> */}
-                                <td>lỗi tiền</td>
+                                <td>{Number(dataRoom?.price).toLocaleString('VND')}</td>
                                 <td>{dataRoom?.area}m2</td>
                                 <td>{dataRoom?.maxcustomer}</td>
                                 <td>{dataRoom?.countCustomer}</td>
