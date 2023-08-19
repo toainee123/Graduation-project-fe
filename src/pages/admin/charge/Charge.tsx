@@ -86,6 +86,7 @@ const Charge = () => {
       user: item.namecustomer,
       tien: item.totalbill,
       tiendatra: item.paid,
+      owedold: item.owedold,
       tienconlai: item.totalbill - item.paid,
     };
   });
@@ -93,6 +94,12 @@ const Charge = () => {
   useEffect(() => {
     setListDt(dataSource);
   }, [chargeData]);
+
+  useEffect(() => {
+    if (selectedRow.length === 0) {
+      setListDt(dataSource);
+    }
+  }, [selectedRow]);
 
   useEffect(() => {
     handleListData();
@@ -124,16 +131,13 @@ const Charge = () => {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    arrData.map(async (item: any) => {
-      console.log(item);
-
+    arrData?.map(async (item: any) => {
       const resHouse = await getHouseId(item.houseid);
       const resRoom = await getRoom(item.houseid);
       const arrRoomHouse = await resRoom?.data?.result?.responses;
       const room = await arrRoomHouse.find((itemroom: any) => itemroom.id === item.roomid);
-      console.log(item.roomid);
       const resBill = await getBillID(item.id);
-      console.log(resBill.data?.bill?.pricewater);
+      console.log(resBill);
 
       const listSvBill = resBill?.data?.service.map((item: any) => {
         return `  <tr>
@@ -152,7 +156,7 @@ const Charge = () => {
         '@FromDate': '18/4/2023',
         '@ToDate': '18/5/2023',
         '@CustomerName': item.user,
-        '@RoomName': item.room,
+        '@RoomName': item?.room,
         '@BeginRent': '18/4/2023',
 
         '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
@@ -164,8 +168,11 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.priceelectricity
       ).toLocaleString('VND')}</td></tr>
-      ${listSvBill}</tbody>`,
-        '@SumAmount': item.tien,
+      ${listSvBill}
+      <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.owedold
+      ).toLocaleString('VND')}</td></tr></tbody>`,
+        '@SumAmount': Number(item.tien).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(
@@ -181,7 +188,10 @@ const Charge = () => {
       setPrintListBillData(stringList);
     });
   };
+
   const handleClickView = async (record: any) => {
+    console.log(record);
+
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -210,7 +220,7 @@ const Charge = () => {
       '@InvoiceDate': '22/05/2023',
       '@MonthYear': `${valueFilter ? valueFilter.month : month}/${valueFilter ? valueFilter.year : year}`,
       '@CustomerName': record.user,
-      '@RoomName': record.room,
+      '@RoomName': record?.room,
       '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
         room?.price
       ).toLocaleString('VND')}</td></tr>
@@ -220,8 +230,11 @@ const Charge = () => {
         <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
           resBill.data?.bill?.priceelectricity
         ).toLocaleString('VND')}</td></tr>
-        ${listSvBill}</tbody>`,
-      '@SumAmount': record.tien,
+        ${listSvBill}
+        <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.owedold
+        ).toLocaleString('VND')}</td></tr></tbody>`,
+      '@SumAmount': Number(record.tien).toLocaleString('VND'),
     };
 
     const exampleData80mm = printForm?.replaceAll(
@@ -451,8 +464,11 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.priceelectricity
       ).toLocaleString('VND')}</td></tr>
-      ${listSvBill}</tbody>`,
-        '@SumAmount': item.tien,
+      ${listSvBill}
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.owedold
+      ).toLocaleString('VND')}</td></tr></tbody>`,
+        '@SumAmount': Number(resBill.data?.bill?.owedold).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(
@@ -704,8 +720,8 @@ const Charge = () => {
         houseId: values.house,
         roomId: values.room,
         date: moment(values.date).format('YYYY-MM-DD'),
-        indexElectricity: values.elec,
-        indexWater: values.water,
+        indexElectricity: +values.elec,
+        indexWater: +values.water,
       };
 
       // const data = await addBill(dataInput);
@@ -1115,7 +1131,7 @@ const Charge = () => {
             >
               Tải file PDF
             </Button>,
-            <Button key='3' type='primary' danger onClick={handleCancel}>
+            <Button key='3' type='primary' onClick={handleCancel} danger>
               Đóng
             </Button>,
           ]}
