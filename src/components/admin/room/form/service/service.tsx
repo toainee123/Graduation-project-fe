@@ -56,7 +56,7 @@ const Service = () => {
   ];
   const dataSource = list?.map((item: any, index) => {
     return {
-      key: index,
+      key: item.id,
       name: item.name,
       price: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(+item?.price),
     };
@@ -96,6 +96,7 @@ const Service = () => {
               });
 
               // Thiếu id của room_service và api cập nhật
+
               const response = await updateService(roomId, {
                 serviceId: arrSv,
               });
