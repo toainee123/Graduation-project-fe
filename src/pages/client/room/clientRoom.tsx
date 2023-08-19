@@ -5,8 +5,6 @@ import { getInfoRoomUser } from 'src/api/dashboard';
 
 const ClientRoom = () => {
     const [dataRoom, setDataRoom] = useState<any>()
-    const [idxWater, setidxWater] = useState<any>([])
-    const [idxElectric, setIdxElectric] = useState([])
     const [infoCustomer, setInfoCustomer] = useState([])
     // const [dataRoom, setDataRoom] = useState()
     useEffect(() => {
@@ -14,8 +12,6 @@ const ClientRoom = () => {
             const { data } = await getInfoRoomUser()
             setDataRoom(data.infoRoom)
             setInfoCustomer(data.infoCustomer)
-            setidxWater(data.indexWater)
-            setIdxElectric(data.indexElectric)
         }
         getDataRoom()
     }, [])
@@ -48,15 +44,7 @@ const ClientRoom = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className='mt-8'>
-                    <div className='box-content-titlte mb-2'>
-                        <h2>Số lượng điện, nước đã sử dụng ({idxElectric.map((item: any) => (`Tháng ${item.month}/${item.year}`))})</h2>
-                    </div>
-                    <div className='grid lg:grid-cols-4 lg:gap-8 md:grid-cols-2 sm:grid-cols-1 sm:gap-4 '>
-                        <div className='text-center box-content-service text-[28px] font-semibold'><i className=" text-blue-400 fa-solid fa-bolt pr-2"></i>{idxElectric.map((item: any) => (item.total))} kWh</div>
-                        <div className='text-center box-content-service text-[28px] font-semibold'><i className="text-green-400 fa-solid fa-hand-holding-droplet pr-2"></i>{idxWater.map((item: any) => (item.total))} m3</div>
-                    </div>
-                </div>
+
                 <div className='mt-8'>
                     <div className='box-content-titlte mb-2'>
                         <h2>Các thành viên trong phòng</h2>
@@ -74,10 +62,10 @@ const ClientRoom = () => {
                             {infoCustomer.map((item: any, i: number) => (
 
                                 <tr key={i} className='text-center text-md text-gray-600 font-semibold'>
-                                    <td className='font-bold'>{item.name}</td>
-                                    <td>{item.cccd}</td>
-                                    <td>{item.phone}</td>
-                                    <td>{item.host ? "Chủ phòng" : "thành viên"}</td>
+                                    <td className='font-bold'>{item?.name}</td>
+                                    <td>{item?.cccd}</td>
+                                    <td>{item?.phone}</td>
+                                    <td>{item?.host ? "Chủ phòng" : "thành viên"}</td>
                                 </tr>
                             ))}
                         </tbody>
