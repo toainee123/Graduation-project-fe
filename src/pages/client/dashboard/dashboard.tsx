@@ -16,6 +16,7 @@ const DashboardUser = () => {
   useEffect(() => {
     const getAll = async () => {
       const { data } = await getListUserDashboard();
+      console.log(data);
       setData(data);
       const dataBar = TransFormToBarData(data);
       const date = new Date();
@@ -23,31 +24,22 @@ const DashboardUser = () => {
       const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
       const monthofyear = months.map((item) => item + '/' + year1);
 
-      const ar = monthofyear.map((item) => {
-        for (let i = 0; i < dataBar.length; i++) {
-          if (dataBar[i].month == item) {
-            return { month: dataBar[i].month, totalRevenue: dataBar[i].totalRevenue };
-          }
-        }
-        return { month: item };
-      });
-      setDataChart(ar);
-
-      const dataWaterChart = TransFormToWaterData(data.indexWater);
-      const dataElecChart = TransFormToElecData(data.indexElectric);
+      const dataWaterChart = TransFormToWaterData(data);
+      const dataElecChart = TransFormToElecData(data);
       const elecAr = monthofyear.map((item) => {
         for (let i = 0; i < dataElecChart.length; i++) {
-          if (dataBar[i].month == item) {
+          if (dataElecChart[i].month == item) {
             return { month: dataElecChart[i].month, total: dataElecChart[i].total };
           }
         }
         return { month: item };
       });
       setElecDataChart(elecAr);
+      console.log(elecAr);
 
       const waterAr = monthofyear.map((item) => {
         for (let i = 0; i < dataWaterChart.length; i++) {
-          if (dataBar[i].month == item) {
+          if (dataWaterChart[i].month == item) {
             return { month: dataWaterChart[i].month, total: dataWaterChart[i].total };
           }
         }
@@ -57,7 +49,6 @@ const DashboardUser = () => {
     };
     getAll();
   }, []);
-  console.log('data', data);
   return (
     <div className='es-container'>
       <div className='title mb-4'>
@@ -75,7 +66,7 @@ const DashboardUser = () => {
                 <strong>Chỉ số lượng điện tiêu thụ hàng tháng</strong>
               </h3>
             </div>
-            <ColumnChart data={data} xField='month' yField='total' />
+            <ColumnChart data={elecDataChart} xField='month' yField='total' />
           </div>
         </div>
 
