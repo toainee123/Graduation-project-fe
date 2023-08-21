@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { fetchDataChart, selectDashboardLoading } from '../../../features/dashboard/DashboardSlice';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import LineChart from 'src/components/specific/chart/Bar';
-import PieChart from 'src/components/specific/chart/Pie';
-import { RoomAvailability } from './sections/RoomAvailability';
-import OweRoomMoneyList from './sections/OweRoomMoneyList';
-import ContractExpiration from './sections/ContractExpirationTable';
+import { useEffect, useState } from 'react';
 import { getDashboard } from 'src/api/dashboard';
+import ColumnChart from 'src/components/specific/chart/Column';
+import PieChart from 'src/components/specific/chart/Pie';
+import { useAppDispatch } from '../../../store/hooks';
 import {
   TransFormToBarData,
   TransFormToElecData,
   TransFormToPieChart,
   TransFormToWaterData,
 } from './hooks/useTranformToBarData';
-import ColumnChart from 'src/components/specific/chart/Column';
+import ContractExpiration from './sections/ContractExpirationTable';
+import OweRoomMoneyList from './sections/OweRoomMoneyList';
+import { RoomAvailability } from './sections/RoomAvailability';
 
-interface Props { }
+interface Props {}
 
 const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -82,41 +80,7 @@ const Homepage = (props: Props) => {
 
   console.log(dataPie);
 
-  // useEffect(() => {
-  //   dispatch(fetchDataChart())
-  //     .unwrap()
-  //     .then((resp) => {
-  //       setData(resp);
-  //     })
-  //     .catch();
-  // }, []);
-
   return (
-    // <div className=''>
-    //   <h2>HomePage</h2>
-    //   <div className=' w-full grid grid-cols-2 gap-4 '>
-    //     <div className=' '>
-    //       <h1>Trạng thái phòng</h1>
-    //       <div className='bg-gray-100'>
-    //         <PieChart data={dataPie} angleField='count' colorField='roomStatus' />
-    //       </div>
-    //     </div>
-    //     <div className=' '>
-    //       <h1> doanh thu vn đồng</h1>
-    //       <div className='bg-gray-100'>
-    //         <LineChart data={dataChart} xField='month' yField='totalRevenue' />
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className=' w-full grid grid-cols-2 gap-4 '>
-    //     <RoomAvailability />
-    //     <OweRoomMoneyList />
-    //   </div>
-    //   <div className=' w-full grid grid-cols-2 gap-4 '>
-    //     <ContractExpiration />
-    //   </div>
-    // </div>
-
     <div className='es-container'>
       <div className='title mb-4'>
         <div className='title--name'>
@@ -159,7 +123,6 @@ const Homepage = (props: Props) => {
             <ColumnChart data={elecDataChart} xField='month' yField='total' />
           </div>
         </div>
-
         <div className=' '>
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2'>

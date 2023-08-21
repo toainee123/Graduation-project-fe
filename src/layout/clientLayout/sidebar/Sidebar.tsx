@@ -41,6 +41,15 @@ const Sidebar = (props: Props) => {
   const menuListItem: MenuItem[] = [
     {
       label: (
+        <Link className='label-router' to={urlRouter.CLIENT_DASHBOARD}>
+          Thống kê
+        </Link>
+      ),
+      key: '0',
+      icon: <LineChartOutlined />,
+    },
+    {
+      label: (
         <Link className='label-router' to={urlRouter.CLIENT_SERVICE}>
           Dịch vụ
         </Link>
@@ -127,7 +136,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-        // selectedKeys={[current]}
+          // selectedKeys={[current]}
         />
         <div className='userLogin '>
           <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />

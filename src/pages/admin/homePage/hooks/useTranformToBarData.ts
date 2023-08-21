@@ -1,13 +1,9 @@
-import { RootState } from './../../../../store/store';
-import moment from "moment"
 
 type data = {
-
     month: Date,
     totalRevenue: string,
     total: string
     year: string
-
 }
 
 type transformData = {
@@ -24,8 +20,6 @@ type transFormDataPie = {
     roomStatus: string,
     count: number
 }
-
-
 
 export const TransFormToBarData = (data: data[]): transformData[] => data.map(item => ({
     month: item.month + '/' + item.year,
