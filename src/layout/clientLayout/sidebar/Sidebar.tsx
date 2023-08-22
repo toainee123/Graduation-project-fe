@@ -59,7 +59,16 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_CONTRACT}>
+        <Link to={urlRouter.CLIENT_ROOM}>
+          Phòng
+        </Link>
+      ),
+      key: '2',
+      icon: < HomeOutlined />,
+    },
+    {
+      label: (
+        <Link to={urlRouter.CLIENT_CONTRACT}>
           Hợp đồng
         </Link>
       ),
@@ -68,7 +77,7 @@ const Sidebar = (props: Props) => {
     },
     // {
     //   label: (
-    //     <Link className='label-router' to={urlRouter.CLIENT_ARISE}>
+    //     <Link to={urlRouter.CLIENT_ARISE}>
     //       Phát sinh
     //     </Link>
     //   ),
@@ -77,7 +86,7 @@ const Sidebar = (props: Props) => {
     // },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_ASSET}>
+        <Link to={urlRouter.CLIENT_ASSET}>
           Tài sản
         </Link>
       ),
@@ -86,7 +95,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.CLIENT_BILL}>
+        <Link to={urlRouter.CLIENT_BILL}>
           Hóa đơn
         </Link>
       ),
@@ -107,6 +116,17 @@ const Sidebar = (props: Props) => {
       label: <Link to={urlRouter.CLIENT_CHANGEPASSWORD}>Đổi mật khẩu</Link>,
       key: '9',
       icon: <FileTextOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.CLIENT_ELECTRICITY}>Chỉ số điện</Link>,
+      key: '10',
+      icon: <BulbOutlined />,
+    },
+
+    {
+      label: <Link to={urlRouter.CLIENT_WATER}>Chỉ số n ước</Link>,
+      key: '11',
+      icon: <BgColorsOutlined />,
     },
   ];
 

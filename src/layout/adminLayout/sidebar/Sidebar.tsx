@@ -41,7 +41,7 @@ const Sidebar = (props: Props) => {
   const menuListItem: MenuItem[] = [
     {
       label: (
-        <Link className='label-router' to={urlRouter.HOMEPAGE}>
+        <Link to={urlRouter.HOMEPAGE}>
           Thống kê
         </Link>
       ),
@@ -50,7 +50,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.ROOM}>
+        <Link to={urlRouter.ROOM}>
           Phòng
         </Link>
       ),
@@ -70,7 +70,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.SERVICE}>
+        <Link to={urlRouter.SERVICE}>
           Dịch vụ
         </Link>
       ),
@@ -119,7 +119,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.ASSETS}>
+        <Link to={urlRouter.ASSETS}>
           Tài sản
         </Link>
       ),
@@ -129,7 +129,7 @@ const Sidebar = (props: Props) => {
 
     {
       label: (
-        <Link className='label-router' to={urlRouter.CHARGE}>
+        <Link to={urlRouter.CHARGE}>
           Tính tiền
         </Link>
       ),
@@ -138,7 +138,7 @@ const Sidebar = (props: Props) => {
     },
     {
       label: (
-        <Link className='label-router' to={urlRouter.ESTABLISH}>
+        <Link to={urlRouter.ESTABLISH}>
           Thiết lập
         </Link>
       ),

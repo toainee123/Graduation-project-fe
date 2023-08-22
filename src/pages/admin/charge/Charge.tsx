@@ -46,6 +46,8 @@ const Charge = () => {
   const [selectedRow, setSelectedRow] = useState<any[]>([]);
   const [isModalOpenCalculator, setIsModalOpenCalculator] = useState(false);
   const [isModalOpenCalculatorAll, setIsModalOpenCalculatorAll] = useState(false);
+  const [listDt, setListDt] = useState<any>();
+  const [record, setRecord] = useState<any>();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCharge());
@@ -59,6 +61,7 @@ const Charge = () => {
 
   useEffect(() => {
     renderBillSendEmail();
+    setListDt(selectedRow);
   }, [selectedRow]);
 
   useEffect(() => {
@@ -83,9 +86,24 @@ const Charge = () => {
       user: item.namecustomer,
       tien: item.totalbill,
       tiendatra: item.paid,
+      owedold: item.owedold,
       tienconlai: item.totalbill - item.paid,
     };
   });
+
+  useEffect(() => {
+    setListDt(dataSource);
+  }, [chargeData]);
+
+  useEffect(() => {
+    if (selectedRow.length === 0) {
+      setListDt(dataSource);
+    }
+  }, [selectedRow]);
+
+  useEffect(() => {
+    handleListData();
+  }, [listDt]);
 
   // modal
 
@@ -109,26 +127,17 @@ const Charge = () => {
 
   const handleListData = async () => {
     let stringList = '';
-    let arrData: any;
-    if (selectedRow.length !== 0) {
-      arrData = selectedRow;
-    } else {
-      arrData = dataSource;
-    }
-
+    let arrData = listDt;
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
-    arrData.map(async (item: any) => {
-      console.log(item);
-
+    arrData?.map(async (item: any) => {
       const resHouse = await getHouseId(item.houseid);
       const resRoom = await getRoom(item.houseid);
       const arrRoomHouse = await resRoom?.data?.result?.responses;
       const room = await arrRoomHouse.find((itemroom: any) => itemroom.id === item.roomid);
-      console.log(item.roomid);
       const resBill = await getBillID(item.id);
-      console.log(resBill.data?.bill?.pricewater);
+      console.log(resBill);
 
       const listSvBill = resBill?.data?.service.map((item: any) => {
         return `  <tr>
@@ -147,7 +156,7 @@ const Charge = () => {
         '@FromDate': '18/4/2023',
         '@ToDate': '18/5/2023',
         '@CustomerName': item.user,
-        '@RoomName': item.room,
+        '@RoomName': item?.room,
         '@BeginRent': '18/4/2023',
 
         '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
@@ -159,8 +168,11 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.priceelectricity
       ).toLocaleString('VND')}</td></tr>
-      ${listSvBill}</tbody>`,
-        '@SumAmount': item.tien,
+      ${listSvBill}
+      <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.owedold
+      ).toLocaleString('VND')}</td></tr></tbody>`,
+        '@SumAmount': Number(item.tien).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(
@@ -176,7 +188,10 @@ const Charge = () => {
       setPrintListBillData(stringList);
     });
   };
+
   const handleClickView = async (record: any) => {
+    console.log(record);
+
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -205,7 +220,7 @@ const Charge = () => {
       '@InvoiceDate': '22/05/2023',
       '@MonthYear': `${valueFilter ? valueFilter.month : month}/${valueFilter ? valueFilter.year : year}`,
       '@CustomerName': record.user,
-      '@RoomName': record.room,
+      '@RoomName': record?.room,
       '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
         room?.price
       ).toLocaleString('VND')}</td></tr>
@@ -215,8 +230,11 @@ const Charge = () => {
         <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
           resBill.data?.bill?.priceelectricity
         ).toLocaleString('VND')}</td></tr>
-        ${listSvBill}</tbody>`,
-      '@SumAmount': record.tien,
+        ${listSvBill}
+        <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
+          resBill.data?.bill?.owedold
+        ).toLocaleString('VND')}</td></tr></tbody>`,
+      '@SumAmount': Number(record.tien).toLocaleString('VND'),
     };
 
     const exampleData80mm = printForm?.replaceAll(
@@ -262,6 +280,8 @@ const Charge = () => {
   };
 
   const cpPrintBillRef = useRef<any>();
+  console.log(cpPrintBillRef.current);
+
   const handlePrintBill = useReactToPrint({
     content: () => cpPrintBillRef.current,
   });
@@ -336,8 +356,10 @@ const Charge = () => {
             <button
               className=' flex justify-center items-center bg-cyan-500 text-white p-1 rounded mx-1'
               onClick={async () => {
-                await handleClickView(record);
-                await handlePrintBill();
+                handleClickView(record);
+                setTimeout(() => {
+                  handlePrintBill();
+                }, 1000);
               }}
             >
               <PrinterOutlined />
@@ -442,8 +464,11 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.priceelectricity
       ).toLocaleString('VND')}</td></tr>
-      ${listSvBill}</tbody>`,
-        '@SumAmount': item.tien,
+      ${listSvBill}
+      <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
+        resBill.data?.bill?.owedold
+      ).toLocaleString('VND')}</td></tr></tbody>`,
+        '@SumAmount': Number(resBill.data?.bill?.owedold).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(
@@ -496,20 +521,20 @@ const Charge = () => {
         content: `${imgLink}`,
       };
       arrBill.push(response);
-      if (response?.status === 'success') {
-        toast.success('Gửi email thành công');
-      } else {
-        toast.success('Gửi email không thành công');
-      }
-    }
-    try {
-      // const response: any = sendMailBill({ data: arrBill });
       // if (response?.status === 'success') {
-      //   toast.success('thành công');
+      //   toast.success('Gửi email thành công');
+      // } else {
+      //   toast.error('Gửi email không thành công');
       // }
-    } catch (error) {
-      console.log(error);
     }
+    const response: any = await sendMailBill({ data: arrBill });
+
+    if (response?.status === 'success') {
+      toast.success('thành công');
+    } else {
+      toast.error('không thành công');
+    }
+
     setBillEmail('');
   };
 
@@ -695,8 +720,8 @@ const Charge = () => {
         houseId: values.house,
         roomId: values.room,
         date: moment(values.date).format('YYYY-MM-DD'),
-        indexElectricity: values.elec,
-        indexWater: values.water,
+        indexElectricity: +values.elec,
+        indexWater: +values.water,
       };
 
       // const data = await addBill(dataInput);
@@ -904,17 +929,15 @@ const Charge = () => {
               </Modal>
             </div>
 
-            <Tooltip title='Ấn 2 lần nút để in '>
-              <button
-                className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
-                onClick={async () => {
-                  await handleListData();
-                  await handlePrintListBill();
-                }}
-              >
-                <PrinterOutlined className='icon-btn' /> In
-              </button>
-            </Tooltip>
+            <button
+              className='btn-x bg-cyan-500 hover:bg-cyan-500 text-white font-bold py-2  px-4 rounded'
+              onClick={async () => {
+                // await handleListData();
+                handlePrintListBill();
+              }}
+            >
+              <PrinterOutlined className='icon-btn' /> In
+            </button>
 
             <button
               className='btn-x bg-blue-600 hover:bg-blue-700 text-white font-bold py-2  px-4 rounded'
@@ -1108,7 +1131,7 @@ const Charge = () => {
             >
               Tải file PDF
             </Button>,
-            <Button key='3' type='primary' danger onClick={handleCancel}>
+            <Button key='3' type='primary' onClick={handleCancel} danger>
               Đóng
             </Button>,
           ]}
