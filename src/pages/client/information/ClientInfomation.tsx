@@ -44,7 +44,7 @@ export const ClientInfomation = () => {
       <div className='title'>
         <div className='title--name'>
           <h2>
-            <strong>Thông Tin User</strong>
+            <strong>Thông Tin Cá Nhân</strong>
           </h2>
         </div>
       </div>

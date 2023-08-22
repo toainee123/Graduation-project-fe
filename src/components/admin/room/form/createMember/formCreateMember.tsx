@@ -54,7 +54,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
       //     status: 'done',
       //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       //   }, ==> image mẫu
-      if (keyLocation === "update" || keyLocation === "view") {
+      if (keyLocation === 'update' || keyLocation === 'view') {
         setFileList([
           {
             uid: '-1',
@@ -78,7 +78,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
     setLimitPrice(value);
   };
   const onFinish = async (values: any) => {
-
     if (keyLocation === null) {
       const payload = {
         ...values,
@@ -218,8 +217,18 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           CMND/CCCD
         </label>
         <div className='w-full'>
-          <Form.Item name='cccd' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(0)+([0-9]{11})\b/), message: "Không đúng định dạng CCCD" }]}>
-            {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input type='number' className='w-full' />}
+          <Form.Item
+            name='cccd'
+            rules={[
+              { required: true, message: 'Không được bỏ trống trường này' },
+              { pattern: new RegExp(/(0)+([0-9]{11})\b/), message: 'Không đúng định dạng CCCD' },
+            ]}
+          >
+            {keyLocation === 'view' ? (
+              <Input className='w-full' readOnly />
+            ) : (
+              <Input type='number' className='w-full' />
+            )}
           </Form.Item>
         </div>
       </div>
@@ -249,7 +258,13 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           Điện thoại 1
         </label>
         <div className='w-full'>
-          <Form.Item name='phone' rules={[{ required: true, message: 'Không được bỏ trống trường này' }, { pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g), message: "Không đúng định dạng Số điện thoại" }]}>
+          <Form.Item
+            name='phone'
+            rules={[
+              { required: true, message: 'Không được bỏ trống trường này' },
+              { pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g), message: 'Không đúng định dạng Số điện thoại' },
+            ]}
+          >
             {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
@@ -439,7 +454,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
           </Form.Item>
         )}
       </div>
-    </Form >
+    </Form>
   );
 };
 

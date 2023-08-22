@@ -49,6 +49,22 @@ const Sidebar = (props: Props) => {
       icon: <LineChartOutlined />,
     },
     {
+      label: <Link to={urlRouter.CLIENT_ROOM}>Phòng</Link>,
+      key: '2',
+      icon: <HomeOutlined />,
+    },
+    {
+      label: <Link to={urlRouter.CLIENT_ELECTRICITY}>Chỉ số điện</Link>,
+      key: '10',
+      icon: <BulbOutlined />,
+    },
+
+    {
+      label: <Link to={urlRouter.CLIENT_WATER}>Chỉ số nước</Link>,
+      key: '11',
+      icon: <BgColorsOutlined />,
+    },
+    {
       label: (
         <Link className='label-router' to={urlRouter.CLIENT_SERVICE}>
           Dịch vụ
@@ -58,20 +74,7 @@ const Sidebar = (props: Props) => {
       icon: <LineChartOutlined />,
     },
     {
-      label: (
-        <Link to={urlRouter.CLIENT_ROOM}>
-          Phòng
-        </Link>
-      ),
-      key: '2',
-      icon: < HomeOutlined />,
-    },
-    {
-      label: (
-        <Link to={urlRouter.CLIENT_CONTRACT}>
-          Hợp đồng
-        </Link>
-      ),
+      label: <Link to={urlRouter.CLIENT_CONTRACT}>Hợp đồng</Link>,
       key: '3',
       icon: <ReconciliationOutlined />,
     },
@@ -85,20 +88,12 @@ const Sidebar = (props: Props) => {
     //   icon: <ThunderboltOutlined />,
     // },
     {
-      label: (
-        <Link to={urlRouter.CLIENT_ASSET}>
-          Tài sản
-        </Link>
-      ),
+      label: <Link to={urlRouter.CLIENT_ASSET}>Tài sản</Link>,
       key: '5',
       icon: <MailOutlined />,
     },
     {
-      label: (
-        <Link to={urlRouter.CLIENT_BILL}>
-          Hóa đơn
-        </Link>
-      ),
+      label: <Link to={urlRouter.CLIENT_BILL}>Hóa đơn</Link>,
       key: '6',
       icon: <FormOutlined />,
     },
@@ -116,17 +111,6 @@ const Sidebar = (props: Props) => {
       label: <Link to={urlRouter.CLIENT_CHANGEPASSWORD}>Đổi mật khẩu</Link>,
       key: '9',
       icon: <FileTextOutlined />,
-    },
-    {
-      label: <Link to={urlRouter.CLIENT_ELECTRICITY}>Chỉ số điện</Link>,
-      key: '10',
-      icon: <BulbOutlined />,
-    },
-
-    {
-      label: <Link to={urlRouter.CLIENT_WATER}>Chỉ số n ước</Link>,
-      key: '11',
-      icon: <BgColorsOutlined />,
     },
   ];
 

@@ -20,7 +20,6 @@ const CardRoom = ({ idHouse }: any) => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(selectFilterHouse);
 
-
   useEffect(() => {
     const fetchRoom = async () => {
       const { data } = await getRoom(idHouse);
@@ -39,13 +38,13 @@ const CardRoom = ({ idHouse }: any) => {
       };
       fetchRoom();
     }
-  }, [filter])
+  }, [filter]);
 
   useEffect(() => {
     if (idHouse) {
-      dispatch(HouseSliceAction.funcAddIdHouse(idHouse))
+      dispatch(HouseSliceAction.funcAddIdHouse(idHouse));
     }
-  }, [idHouse])
+  }, [idHouse]);
 
   const onFinish = async (value: any) => {
     await dispatch(editHouse({ idHouse, value }))
@@ -119,7 +118,7 @@ const CardRoom = ({ idHouse }: any) => {
   };
   const showConfirmDeleteRoom = (roomId: any) => {
     confirm({
-      title: 'Xác nhận khách trả phòng',
+      title: 'Xác nhận xóa phòng',
       icon: <ExclamationCircleFilled />,
       // content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa về mặc định !',
       okText: 'Đồng ý',
@@ -129,7 +128,7 @@ const CardRoom = ({ idHouse }: any) => {
         dispatch(deleteRoom(roomId))
           .unwrap()
           .then((resp) => {
-            message.success('Trả phòng thành công');
+            message.success('Xóa phòng thành công');
             const fetchRoom = async () => {
               const { data } = await getRoom(idHouse);
               setListRoom(data.result?.responses);
@@ -138,7 +137,7 @@ const CardRoom = ({ idHouse }: any) => {
             fetchRoom();
           })
           .catch((err) => {
-            message.error('Trả phòng không thành công');
+            message.error('Xóa phòng không thành công');
           });
       },
       onCancel() {
@@ -221,8 +220,11 @@ const CardRoom = ({ idHouse }: any) => {
 
                   <div className='action text-center'>
                     <Tooltip title='Trả phòng'>
-                      <button onClick={() => showConfirmGetOutRoom(item.id)} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
-                        <i className="fa-solid fa-rotate-left"></i>
+                      <button
+                        onClick={() => showConfirmGetOutRoom(item.id)}
+                        className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'
+                      >
+                        <i className='fa-solid fa-rotate-left'></i>
                       </button>
                     </Tooltip>
                     <Tooltip title='Xem phòng'>
@@ -239,7 +241,6 @@ const CardRoom = ({ idHouse }: any) => {
                         </button>
                       </Link>
                     </Tooltip>
-
                   </div>
                   <div>
                     <i className='fa-solid fa-user text-gray-500'></i>{' '}
@@ -258,7 +259,8 @@ const CardRoom = ({ idHouse }: any) => {
                     </Link>
                     <button
                       className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      onClick={() => showConfirmDeleteRoom(item?.id)}>
+                      onClick={() => showConfirmDeleteRoom(item?.id)}
+                    >
                       <i className='fa-solid fa-trash'></i> Xóa
                     </button>
                   </div>
@@ -288,9 +290,7 @@ const CardRoom = ({ idHouse }: any) => {
                     <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
                     <br />
                     <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
-                    <span className='text-red-500 font-semibold'>
-                      {Number(item?.price).toLocaleString('VND')}
-                    </span>
+                    <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
                   </div>
                   <div className='action text-center'>
                     <Link
@@ -301,7 +301,8 @@ const CardRoom = ({ idHouse }: any) => {
                     </Link>
                     <button
                       className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      onClick={() => showConfirmDeleteRoom(item?.id)}>
+                      onClick={() => showConfirmDeleteRoom(item?.id)}
+                    >
                       <i className='fa-solid fa-trash'></i> Xóa
                     </button>
                   </div>
@@ -310,7 +311,7 @@ const CardRoom = ({ idHouse }: any) => {
             )}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
