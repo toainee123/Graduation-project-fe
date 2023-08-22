@@ -24,13 +24,6 @@ export const Clientchangepassword = () => {
             <strong>Đổi mật khẩu</strong>
           </h2>
         </div>
-        <Row>
-          <Col span={8}>
-            <Button type='primary' htmlType='submit' className='bg-primary'>
-              Lưu
-            </Button>
-          </Col>
-        </Row>
       </div>
       <Form form={form} layout='vertical' onFinish={handleChangePassword}>
         <Row className='mb-3'>
@@ -66,6 +59,13 @@ export const Clientchangepassword = () => {
             >
               <Input.Password />
             </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <Button type='primary' htmlType='submit' className='bg-primary'>
+              Lưu
+            </Button>
           </Col>
         </Row>
       </Form>
