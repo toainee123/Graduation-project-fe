@@ -1,6 +1,7 @@
 // path router
 export const urlRouter = {
   // client
+  CLIENT_DASHBOARD: 'dashboard-user',
   CLIENT_SERVICE: 'service',
   CLIENT_CONTRACT: 'contract',
   CLIENT_ROOM: 'room',
