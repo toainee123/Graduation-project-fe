@@ -234,7 +234,7 @@ const Relative = () => {
                                     {" "}
                                     <Form.Item>
                                         <Button type="dashed" onClick={() => add()} block>
-                                            Add item
+                                            Thêm thành viên
                                         </Button>
                                     </Form.Item>
                                 </td>
@@ -243,7 +243,7 @@ const Relative = () => {
                                     {" "}
                                     <Form.Item>
                                         <Button type="primary" htmlType="submit">
-                                            Submit
+                                            Lưu
                                         </Button>
                                     </Form.Item>
                                 </td>

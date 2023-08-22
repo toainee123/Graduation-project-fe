@@ -20,7 +20,7 @@ const Login = (props: Props) => {
   const onFinish = (values: any) => {
     dispatch(fetchLogin(values))
       .unwrap()
-      .then((resp) => { })
+      .then((resp) => {})
       .catch((error) => {
         console.log(error);
         setMessageFail(true);
@@ -34,15 +34,13 @@ const Login = (props: Props) => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         // onFinishFailed={onFinishFailed}
-        autoComplete='off'
       >
         <div className='flex flex-col gap-4 mb-4'>
-
-          <Form.Item name='email' rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}>
+          <Form.Item name='email' rules={[{ required: true, type: 'email', message: 'Vui lòng nhập đúng Email' }]}>
             <Input size='large' prefix={<MailOutlined />} placeholder='Email' className='inputAuth' />
           </Form.Item>
 
-          <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Form.Item name='password' rules={[{ required: true, message: 'Vui lòng nhập mật khẩu' }]}>
             <Input.Password
               size='large'
               prefix={<LockOutlined className='site-form-item-icon' />}
@@ -53,7 +51,7 @@ const Login = (props: Props) => {
 
           {messageFail && <span className='text-red-500'>Thông tin đăng nhập không chính xác!</span>}
         </div>
-        <div className="my-2">
+        <div className='my-2'>
           <Form.Item>
             <Form.Item name='remember' valuePropName='checked' noStyle>
               <Checkbox>Nhớ mật khẩu</Checkbox>

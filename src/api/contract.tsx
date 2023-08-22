@@ -22,3 +22,8 @@ export const getContractByIdRoom = async (id: any) => {
 
   return axiosClient.get(url);
 };
+
+export const getImgContract = async () => {
+  const url = `/contract/link-contract`;
+  return axiosClient.get(url);
+};
