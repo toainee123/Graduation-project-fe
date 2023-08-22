@@ -15,7 +15,7 @@ import {
 } from './hooks/useTranformToBarData';
 import ColumnChart from 'src/components/specific/chart/Column';
 
-interface Props { }
+interface Props {}
 
 const Homepage = (props: Props) => {
   const dispatch = useAppDispatch();
@@ -27,7 +27,9 @@ const Homepage = (props: Props) => {
   useEffect(() => {
     const getList = async () => {
       const { data } = await getDashboard();
-      const dataBar = TransFormToBarData(data.revenue);
+      const dataBar = TransFormToBarData(data);
+      console.log(data);
+
       const date = new Date();
       const year1 = date.getFullYear();
       const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
@@ -41,13 +43,14 @@ const Homepage = (props: Props) => {
         }
         return { month: item };
       });
+
       setDataChart(ar);
 
-      const dataWaterChart = TransFormToWaterData(data.indexWater);
-      const dataElecChart = TransFormToElecData(data.indexElectric);
+      const dataWaterChart = TransFormToWaterData(data);
+      const dataElecChart = TransFormToElecData(data);
       const elecAr = monthofyear.map((item) => {
         for (let i = 0; i < dataElecChart.length; i++) {
-          if (dataBar[i].month == item) {
+          if (dataElecChart[i].month == item) {
             return { month: dataElecChart[i].month, total: dataElecChart[i].total };
           }
         }
@@ -57,13 +60,14 @@ const Homepage = (props: Props) => {
 
       const waterAr = monthofyear.map((item) => {
         for (let i = 0; i < dataWaterChart.length; i++) {
-          if (dataBar[i].month == item) {
+          if (dataWaterChart[i].month == item) {
             return { month: dataWaterChart[i].month, total: dataWaterChart[i].total };
           }
         }
         return { month: item };
       });
       setWaterDataChart(waterAr);
+
       const dt = TransFormToPieChart(data.staticRoom);
 
       const dtPie = dt?.map((item: any) => {

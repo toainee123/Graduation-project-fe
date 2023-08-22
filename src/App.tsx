@@ -45,7 +45,6 @@ function App() {
               <Route index element={<Navigate to={urlRouter.CLIENT_SERVICE} />} />
               {clientRoute?.map((route: any, index) => {
                 const Page = route.component;
-
                 return (
                   <>
                     <Route key={index} path={route.path} element={<Page />} />

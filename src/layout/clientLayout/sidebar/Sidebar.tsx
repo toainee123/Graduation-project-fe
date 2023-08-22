@@ -41,7 +41,16 @@ const Sidebar = (props: Props) => {
   const menuListItem: MenuItem[] = [
     {
       label: (
-        <Link to={urlRouter.CLIENT_SERVICE}>
+        <Link className='label-router' to={urlRouter.CLIENT_DASHBOARD}>
+          Thống kê
+        </Link>
+      ),
+      key: '0',
+      icon: <LineChartOutlined />,
+    },
+    {
+      label: (
+        <Link className='label-router' to={urlRouter.CLIENT_SERVICE}>
           Dịch vụ
         </Link>
       ),

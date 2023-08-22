@@ -7,6 +7,7 @@ import { ClientInfomation } from "src/pages/client/information/ClientInfomation"
 import ClientService from "src/pages/client/service/ClientService";
 import { urlRouter } from "src/utils/constants";
 import { Clientchangepassword } from "src/pages/client/changePassword/ClientChangepassword"
+import DashboardUser from "src/pages/client/dashboard/dashboard";
 import Electricity from "src/pages/client/electricity/Electricity";
 import Water from "src/pages/client/water/Water";
 import ClientRoom from "src/pages/client/room/clientRoom";
@@ -51,16 +52,17 @@ export const clientRoute = [
     {
         path: urlRouter.CLIENT_CHANGEPASSWORD,
         component: Clientchangepassword,
-    }
-    ,
+    },
+    {
+        path: urlRouter.CLIENT_DASHBOARD,
+        component: DashboardUser,
+    },
     {
         path: urlRouter.CLIENT_ELECTRICITY,
         component: Electricity,
-    }
-    ,
+    },
     {
         path: urlRouter.CLIENT_WATER,
         component: Water,
     }
-
 ]
