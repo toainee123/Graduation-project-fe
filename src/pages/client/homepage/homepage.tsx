@@ -2,56 +2,104 @@ import { Link } from 'react-router-dom';
 import './homepage.css';
 import hero from './logo/hero.png';
 import tab1 from './logo/tab1.png';
-import logo from './logo/logo bee.png'
+import logo from './logo/logo bee.png';
 import { useEffect, useRef, useState } from 'react';
 import { urlRouter } from 'src/utils/constants';
 
 const Homepage = () => {
-  const [isNavExpanded, setIsNavExpanded] = useState(false)
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
   const ref = useRef<any>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (ref.current && !ref.current.contains(event.target)) {
-        setIsNavExpanded(false)
+        setIsNavExpanded(false);
       }
-    }
-    document.addEventListener("click", handleClickOutside, false);
-  }, [ref])
+    };
+    document.addEventListener('click', handleClickOutside, false);
+  }, [ref]);
   return (
     <>
-      <nav ref={ref} className="bg-white shadow-lg">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between">
-            <div className="flex space-x-7">
+      <nav ref={ref} className='bg-white shadow-lg'>
+        <div className='max-w-6xl mx-auto px-4'>
+          <div className='flex justify-between'>
+            <div className='flex space-x-7'>
               <div>
-                <Link to="/lading-page" className="flex items-center py-4 px-2">
-                  <img src={logo} alt="Logo" className="h-12 w-16 " />
+                <Link to='/lading-page' className='flex items-center py-4 px-2'>
+                  <img src={logo} alt='Logo' className='h-12 w-16 ' />
                 </Link>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-3 ">
-              <Link to={`/${urlRouter.AUTH}`} className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
-              <Link to={`/${urlRouter.AUTH}`} className="py-2 signIn px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
+            <div className='hidden md:flex items-center space-x-3 '>
+              <Link
+                to={`/${urlRouter.AUTH}`}
+                className='py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300'
+              >
+                Đăng Nhập
+              </Link>
+              <Link
+                to={`/${urlRouter.AUTH}`}
+                className='py-2 signIn px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300'
+              >
+                Đăng Ký
+              </Link>
             </div>
-            <div className="md:hidden flex items-center">
-              <button onClick={() => setIsNavExpanded(!isNavExpanded)} className="outline-none mobile-menu-button">
-                <svg className=" w-6 h-6 text-gray-500 hover:text-green-500 " x-show="!showMenu" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" stroke="currentColor">
-                  <path d="M4 6h16M4 12h16M4 18h16" />
+            <div className='md:hidden flex items-center'>
+              <button onClick={() => setIsNavExpanded(!isNavExpanded)} className='outline-none mobile-menu-button'>
+                <svg
+                  className=' w-6 h-6 text-gray-500 hover:text-green-500 '
+                  x-show='!showMenu'
+                  fill='none'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path d='M4 6h16M4 12h16M4 18h16' />
                 </svg>
-              </button >
+              </button>
             </div>
           </div>
         </div>
         {isNavExpanded && (
-          <div className={isNavExpanded ? "showmenu" : "hidden"}>
-            <ul >
+          <div className={isNavExpanded ? 'showmenu' : 'hidden'}>
+            <ul>
               {/* "hidden mobile-menu" */}
-              <li><Link to="index.html" className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold">Home</Link></li>
-              <li><Link to="#services" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Services</Link></li>
-              <li><Link to="#about" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">About</Link></li>
-              <li><Link to="#contact" className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Contact Us</Link></li>
-              <li><Link to={`/${urlRouter.AUTH}`} className="block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300">Đăng Nhập</Link></li>
+              <li>
+                <Link to='index.html' className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='#services'
+                  className='block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300'
+                >
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link to='#about' className='block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300'>
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='#contact'
+                  className='block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300'
+                >
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to={`/${urlRouter.AUTH}`}
+                  className='block text-sm signIn px-2 py-4 hover:bg-green-500 transition duration-300'
+                >
+                  Đăng Nhập
+                </Link>
+              </li>
             </ul>
           </div>
         )}
@@ -69,7 +117,10 @@ const Homepage = () => {
                 tiết kiệm thời gian ghi chép, thống kê.
               </p>
               <div className='flex justify-center flex-wrap gap-6'>
-                <Link to={`/${urlRouter.AUTH}`} className='rounded-lg px-4 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-blue-100 duration-300'>
+                <Link
+                  to={`/${urlRouter.AUTH}`}
+                  className='rounded-lg px-4 py-2 border-2 border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-blue-100 duration-300'
+                >
                   Đăng kí ngay
                 </Link>
               </div>
@@ -88,27 +139,55 @@ const Homepage = () => {
             </div>
             <div className='relative mt-10 lg:mt-20'>
               <div className='container mx-auto flex flex-col lg:flex-row justify-center gap-x-24'>
-                <div className='flex flex-1 justify-center z-10 mb-10 lg:mb-0' data-aos="fade-right">
+                <div className='flex flex-1 justify-center z-10 mb-10 lg:mb-0' data-aos='fade-right'>
                   <img className='w-5/6 h-5/6 sm:w-3/4 sm:h-3/4 md:w-full md:h-full' src={tab1} alt='' />
                 </div>
                 <div className='flex flex-1 flex-col items-center lg:items-start'>
-                  <h1 className='text-3xl text-bookmark-blue' data-aos="fade-left" data-aos-offset="200"
-                    data-aos-easing="ease-in-sine">Tính năng cơ bản</h1>
-                  <ul className='list-disc ml-8' data-aos="fade-left" data-aos-offset="200"
-                    data-aos-easing="ease-in-sine">
-                    <li className='py-3 text-xl' data-aos="fade-left" data-aos-offset="200"
-                      data-aos-easing="ease-in-sine">Nhập chỉ số điện, nước, dịch vụ, tính tiền phòng</li>
-                    <li className='py-3 text-xl' data-aos="fade-left" data-aos-offset="200"
-                      data-aos-easing="ease-in-sine">
+                  <h1
+                    className='text-3xl text-bookmark-blue'
+                    data-aos='fade-left'
+                    data-aos-offset='200'
+                    data-aos-easing='ease-in-sine'
+                  >
+                    Tính năng cơ bản
+                  </h1>
+                  <ul
+                    className='list-disc ml-8'
+                    data-aos='fade-left'
+                    data-aos-offset='200'
+                    data-aos-easing='ease-in-sine'
+                  >
+                    <li
+                      className='py-3 text-xl'
+                      data-aos='fade-left'
+                      data-aos-offset='200'
+                      data-aos-easing='ease-in-sine'
+                    >
+                      Nhập chỉ số điện, nước, dịch vụ, tính tiền phòng
+                    </li>
+                    <li
+                      className='py-3 text-xl'
+                      data-aos='fade-left'
+                      data-aos-offset='200'
+                      data-aos-easing='ease-in-sine'
+                    >
                       Sử dụng được trên tất cả các thiết bị khác nhau như laptop, PC, tablet, mobile
                     </li>
-                    <li className='py-3 text-xl' data-aos="fade-left" data-aos-offset="200"
-                      data-aos-easing="ease-in-sine">
+                    <li
+                      className='py-3 text-xl'
+                      data-aos='fade-left'
+                      data-aos-offset='200'
+                      data-aos-easing='ease-in-sine'
+                    >
                       Sử dụng được trên các hệ điều hành khác nhau như Window, linux, iOS, Android
                     </li>
                   </ul>
-                  <button data-aos="fade-left" data-aos-offset="200"
-                    data-aos-easing="ease-in-sine" className='rounded-lg px-4 py-2 border-2 border-purple-500 text-blue-500 hover:bg-purple-500 hover:text-white duration-300'>
+                  <button
+                    data-aos='fade-left'
+                    data-aos-offset='200'
+                    data-aos-easing='ease-in-sine'
+                    className='rounded-lg px-4 py-2 border-2 border-purple-500 text-blue-500 hover:bg-purple-500 hover:text-white duration-300'
+                  >
                     Xem thêm
                   </button>
                 </div>
@@ -145,14 +224,20 @@ const Homepage = () => {
               aria-label='group of cards'
               className='focus:outline-none mt-20 flex flex-wrap justify-center gap-10 px-4'
             >
-              <div tabIndex={0} data-aos="fade-right" data-aos-offset="200" aria-label='card 1' className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'>
+              <div
+                tabIndex={0}
+                data-aos='fade-right'
+                data-aos-offset='200'
+                aria-label='card 1'
+                className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'
+              >
                 <div className='w-20 h-20 relative mr-5'>
                   <div className='absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1' />
                   <div className='absolute text-white bottom-0 left-0 bg-indigo-700 rounded w-16 h-16 flex items-center justify-center mt-2 mr-3'>
                     <img src='https://tuk-cdn.s3.amazonaws.com/can-uploader/icon_and_text-SVG1.svg' alt='drawer' />
                   </div>
                 </div>
-                <div className='w-10/12' >
+                <div className='w-10/12'>
                   <h2 tabIndex={0} className='focus:outline-none text-lg font-bold leading-tight text-gray-800'>
                     Tiết kiệm thời gian và tăng hiệu suất làm việc
                   </h2>
@@ -162,14 +247,20 @@ const Homepage = () => {
                   </p>
                 </div>
               </div>
-              <div tabIndex={0} data-aos="fade-left" data-aos-offset="200" aria-label='card 2' className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'>
+              <div
+                tabIndex={0}
+                data-aos='fade-left'
+                data-aos-offset='200'
+                aria-label='card 2'
+                className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'
+              >
                 <div className='w-20 h-20 relative mr-5'>
                   <div className='absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1' />
                   <div className='absolute text-white bottom-0 left-0 bg-indigo-700 rounded w-16 h-16 flex items-center justify-center mt-2 mr-3'>
                     <img src='https://tuk-cdn.s3.amazonaws.com/can-uploader/icon_and_text-SVG2.svg' alt='check' />
                   </div>
                 </div>
-                <div className='w-10/12' >
+                <div className='w-10/12'>
                   <h2 tabIndex={0} className='focus:outline-none text-lg font-semibold leading-tight text-gray-800'>
                     Quản lý tài nguyên hiệu quả
                   </h2>
@@ -179,14 +270,20 @@ const Homepage = () => {
                   </p>
                 </div>
               </div>
-              <div tabIndex={0} data-aos="fade-right" data-aos-easing="ease-in-sine" aria-label='card 3' className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'>
+              <div
+                tabIndex={0}
+                data-aos='fade-right'
+                data-aos-easing='ease-in-sine'
+                aria-label='card 3'
+                className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'
+              >
                 <div className='w-20 h-20 relative mr-5'>
                   <div className='absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1' />
                   <div className='absolute text-white bottom-0 left-0 bg-indigo-700 rounded w-16 h-16 flex items-center justify-center mt-2 mr-3'>
                     <img src='https://tuk-cdn.s3.amazonaws.com/can-uploader/icon_and_text-SVG3.svg' alt='html tag' />
                   </div>
                 </div>
-                <div className='w-10/12' >
+                <div className='w-10/12'>
                   <h2 tabIndex={0} className='focus:outline-none text-lg font-semibold leading-tight text-gray-800'>
                     Dễ dàng mở rộng và tích hợp
                   </h2>
@@ -196,20 +293,26 @@ const Homepage = () => {
                   </p>
                 </div>
               </div>
-              <div tabIndex={0} data-aos="fade-left" data-aos-easing="ease-in-sine" aria-label='card 4' className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'>
+              <div
+                tabIndex={0}
+                data-aos='fade-left'
+                data-aos-easing='ease-in-sine'
+                aria-label='card 4'
+                className='focus:outline-none flex sm:w-full md:w-5/12 pb-20'
+              >
                 <div className='w-20 h-20 relative mr-5'>
                   <div className='absolute top-0 right-0 bg-indigo-100 rounded w-16 h-16 mt-2 mr-1' />
                   <div className='absolute text-white bottom-0 left-0 bg-indigo-700 rounded w-16 h-16 flex items-center justify-center mt-2 mr-3'>
                     <img src='https://tuk-cdn.s3.amazonaws.com/can-uploader/icon_and_text-SVG4.svg' alt='monitor' />
                   </div>
                 </div>
-                <div className='w-10/12' >
+                <div className='w-10/12'>
                   <h2 tabIndex={0} className='focus:outline-none text-lg font-semibold leading-tight text-gray-800'>
                     Tổ chức và quản lý thông tin
                   </h2>
                   <p tabIndex={0} className='focus:outline-none text-base text-gray-600 leading-normal pt-2'>
-                    Các công cụ quản lý thường có tính năng lưu trữ và tổ chức thông tin một cách cấu trúc. Điều này giúp
-                    tránh mất thông tin quan trọng và tạo điều kiện để dễ dàng tìm kiếm lại khi cần.
+                    Các công cụ quản lý thường có tính năng lưu trữ và tổ chức thông tin một cách cấu trúc. Điều này
+                    giúp tránh mất thông tin quan trọng và tạo điều kiện để dễ dàng tìm kiếm lại khi cần.
                   </p>
                 </div>
               </div>
