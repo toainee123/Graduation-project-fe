@@ -21,6 +21,9 @@ const Notification = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const Onsubmit = async (value: any) => {
     console.log('value', value.content);
@@ -64,7 +67,8 @@ const Notification = () => {
 
         <Modal
           title='Gửi yêu cầu'
-          visible={isModalVisible}
+          open={isModalVisible}
+          onCancel={handleCancel}
           onOk={() => {
             form
               .validateFields()
@@ -121,8 +125,14 @@ const Notification = () => {
                             {item.content}
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
-                            {item?.status ? (<Tag style={{ width: '100%', cursor: "pointer", textAlign: 'center' }} color="#87d068">Đã được xử lý</Tag>) : (
-                              <Tag style={{ width: '100%', cursor: "pointer", textAlign: 'center' }} color="#f50">Chưa được xử lý</Tag>
+                            {item?.status ? (
+                              <Tag style={{ width: '100%', cursor: 'pointer', textAlign: 'center' }} color='#87d068'>
+                                Đã được xử lý
+                              </Tag>
+                            ) : (
+                              <Tag style={{ width: '100%', cursor: 'pointer', textAlign: 'center' }} color='#f50'>
+                                Chưa được xử lý
+                              </Tag>
                             )}
                           </td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
