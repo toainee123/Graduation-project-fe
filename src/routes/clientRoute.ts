@@ -11,6 +11,7 @@ import DashboardUser from "src/pages/client/dashboard/dashboard";
 import Electricity from "src/pages/client/electricity/Electricity";
 import Water from "src/pages/client/water/Water";
 import ClientRoom from "src/pages/client/room/clientRoom";
+import Receipt from "src/pages/client/receipt/Receipt";
 
 export const clientRoute = [
     {
@@ -64,5 +65,10 @@ export const clientRoute = [
     {
         path: urlRouter.CLIENT_WATER,
         component: Water,
+    }
+    ,
+    {
+        path: urlRouter.CLIENT_RECEIPT,
+        component: Receipt,
     }
 ]

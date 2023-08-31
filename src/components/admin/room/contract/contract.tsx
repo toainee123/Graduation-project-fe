@@ -147,7 +147,6 @@ const Contract = ({ houseid }: any) => {
 
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
-
     const canvas = await html2canvas(htmlInput);
     htmlInput.setAttribute('hidden', 'true');
     const image = canvas.toDataURL('image/png', 1.0);
@@ -170,6 +169,8 @@ const Contract = ({ houseid }: any) => {
       },
     });
     const imgUrl = data.url;
+    console.log(data.url);
+
     try {
       const response = await addContract({ ...dataPost, link: imgUrl });
       if (response) {
