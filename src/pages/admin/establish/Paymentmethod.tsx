@@ -33,12 +33,22 @@ const Paymentmethod: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
         }}
       >
         <div className='mt-4'>
+          <Form.Item
+            label='email'
+            name='email'
+            rules={[{ required: true, message: 'Không được để trống' }]}
+            style={{ display: 'none' }}
+          >
+            <Input style={{ padding: '15px' }} />
+          </Form.Item>
+        </div>
+        <div className='mt-4'>
           <Form.Item label='TMN Code' name='tmncode' rules={[{ required: true, message: 'Không được để trống' }]}>
             <Input style={{ padding: '15px' }} />
           </Form.Item>
         </div>
         <div className='mt-4'>
-          <Form.Item label='Hash Secret' name='hashsecret' rules={[{ required: true, message: 'Không được để trống' }]}>
+          <Form.Item label='Hash Secret' name='serectkey' rules={[{ required: true, message: 'Không được để trống' }]}>
             <Input style={{ padding: '15px' }} />
           </Form.Item>
         </div>

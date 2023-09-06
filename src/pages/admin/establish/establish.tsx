@@ -5,13 +5,12 @@ import { Tabs, Form } from 'antd';
 import '../../../../node_modules/antd/dist/antd.css';
 import Inforuser from './Inforuser';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-
 import { ToastContainer, toast } from 'react-toastify';
 import ChangePassword from './ChangePassword';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
 import axios from 'axios';
 import moment from 'moment';
-import { getInfoCustomer, updateInfoCustomer } from 'src/api/establish';
+import { getInfoCustomer, getKeyPayment, postKeyPayment, updateInfoCustomer } from 'src/api/establish';
 import authApi from 'src/api/auth';
 import Paymentmethod from './Paymentmethod';
 type Props = {};
@@ -23,9 +22,29 @@ const Establish = (props: Props) => {
   useEffect(() => {
     const getUserInfor = async () => {
       const response = await getInfoCustomer();
-
-      console.log(response.data.result);
+      const res = await getKeyPayment();
+      console.log(res);
       const data = response.data.result;
+
+      const valueMethod = res.data.data;
+      console.log(valueMethod);
+
+      setFieldsMethod([
+        {
+          name: ['tmncode'],
+          value: valueMethod.tmncode,
+        },
+
+        {
+          name: ['serectkey'],
+          value: valueMethod.serectkey,
+        },
+
+        {
+          name: ['email'],
+          value: valueMethod.email,
+        },
+      ]);
       setFields([
         {
           name: ['fullname'],
@@ -82,7 +101,6 @@ const Establish = (props: Props) => {
   const saveContract = () => {
     dispatch(updateAstablishContract(sample_contract));
   };
-
   const handleSave = () => {
     switch (tab) {
       case '1':
@@ -91,7 +109,9 @@ const Establish = (props: Props) => {
       case '2':
         handleChangePassword();
         break;
-
+      case '3':
+        handleSavePaymentMethod();
+        break;
       default:
         break;
     }
@@ -137,6 +157,21 @@ const Establish = (props: Props) => {
       toast.success('Đổi mật khẩu không thành công! ');
     }
   };
+
+  const handleSavePaymentMethod = async () => {
+    const value = {
+      tmnCode: fieldsPayment[1].value,
+      serectKey: fieldsPayment[2].value,
+    };
+    try {
+      const response = await postKeyPayment(value);
+      console.log(response);
+      toast.success('Thành công ');
+    } catch (error) {
+      console.log(error);
+      toast.error('Không thành công');
+    }
+  };
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
@@ -158,7 +193,6 @@ const Establish = (props: Props) => {
         <ChangePassword
           fields={fieldsPassword}
           onChange={(newFieldsPayment: any) => {
-            console.log(newFieldsPayment);
             setFieldsPassword(newFieldsPayment);
           }}
         />
@@ -173,13 +207,12 @@ const Establish = (props: Props) => {
 
     {
       label: 'Cài đặt thanh toán',
-      key: '4',
+      key: '3',
       children: (
         <Paymentmethod
           fields={fieldsPayment}
           onChange={(newFieldsPayment: any) => {
-            console.log(newFieldsPayment);
-            setFieldsPassword(newFieldsPayment);
+            setFieldsMethod(newFieldsPayment);
           }}
         />
       ),
