@@ -143,10 +143,13 @@ const Receipt = (props: Props) => {
                     <strong>Số phòng/số nhà:</strong> {dataBill?.bill.roomhouse + '/' + dataBill?.bill.namehouse}
                   </li>
                 </ul>
-
-                <button className='bg-green-500 px-2 py-1 text-white rounded-md ccao' onClick={handleClick}>
-                  Thanh toán ngay
-                </button>
+                {+dataBill?.bill.totalbill === +dataBill?.bill.paid ? (
+                  <button className='bg-green-500 px-2 py-1 text-white rounded-md ccao'>Đã thanh toán đầy đủ !!</button>
+                ) : (
+                  <button className='bg-blue-500 px-2 py-1 text-white rounded-md ccao' onClick={handleClick}>
+                    Thanh toán ngay
+                  </button>
+                )}
               </div>
               <div className='body-bill mt-6'>
                 <div className='flex justify-center text-2xl my-2 bg-slate-200 p-2 '>
@@ -187,6 +190,20 @@ const Receipt = (props: Props) => {
                           <strong>Tổng tiền</strong>
                         </td>
                         <td>{Number(dataBill?.bill.totalbill).toLocaleString('VND')}</td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <strong>Đã trả</strong>
+                        </td>
+                        <td>{Number(dataBill?.bill.paid).toLocaleString('VND')}</td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <strong>Số tiền cần thanh toán</strong>
+                        </td>
+                        <td>{Number(+dataBill?.bill.totalbill - +dataBill?.bill.paid).toLocaleString('VND')}</td>
                       </tr>
                     </tbody>
                   </table>
