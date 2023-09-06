@@ -13,11 +13,13 @@ import axios from 'axios';
 import moment from 'moment';
 import { getInfoCustomer, updateInfoCustomer } from 'src/api/establish';
 import authApi from 'src/api/auth';
+import Paymentmethod from './Paymentmethod';
 type Props = {};
 
 const Establish = (props: Props) => {
   const [fields, setFields] = useState<any>([]);
   const [fieldsPassword, setFieldsPassword] = useState<any>([]);
+  const [fieldsPayment, setFieldsMethod] = useState<any>([]);
   useEffect(() => {
     const getUserInfor = async () => {
       const response = await getInfoCustomer();
@@ -155,9 +157,9 @@ const Establish = (props: Props) => {
       children: (
         <ChangePassword
           fields={fieldsPassword}
-          onChange={(newFieldsPassword: any) => {
-            console.log(newFieldsPassword);
-            setFieldsPassword(newFieldsPassword);
+          onChange={(newFieldsPayment: any) => {
+            console.log(newFieldsPayment);
+            setFieldsPassword(newFieldsPayment);
           }}
         />
       ),
@@ -169,11 +171,19 @@ const Establish = (props: Props) => {
     //   children: <Printform getSelectOption={handleGetSelect} />,
     // },
 
-    // {
-    //   label: 'Hợp đồng mẫu',
-    //   key: '4',
-    //   children: <Samplecontract />,
-    // },
+    {
+      label: 'Cài đặt thanh toán',
+      key: '4',
+      children: (
+        <Paymentmethod
+          fields={fieldsPayment}
+          onChange={(newFieldsPayment: any) => {
+            console.log(newFieldsPayment);
+            setFieldsPassword(newFieldsPayment);
+          }}
+        />
+      ),
+    },
   ];
   return (
     <div className='es-container'>

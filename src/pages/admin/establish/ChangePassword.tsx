@@ -33,14 +33,23 @@ const ChangePassword: React.FC<CustomizedFormProps> = ({ fields, onChange }) => 
         }}
       >
         <div className='mt-4'>
-          <Form.Item label='Mật khẩu cũ' name='passwordold'>
-            <Input />
+          <Form.Item
+            label='Mật khẩu cũ'
+            name='passwordold'
+            rules={[{ required: true, message: 'Không được để trống' }]}
+          >
+            <Input style={{ padding: '15px' }} type='password' />
           </Form.Item>
         </div>
 
         <div className='mt-4'>
-          <Form.Item label='Mật khẩu mới' name='passwordnew' className='mt-4'>
-            <Input />
+          <Form.Item
+            label='Mật khẩu mới'
+            name='passwordnew'
+            className='mt-4'
+            rules={[{ required: true, message: 'Không được để trống' }]}
+          >
+            <Input style={{ padding: '15px' }} type='password' />
           </Form.Item>
         </div>
         <div className='mt-4'>
@@ -57,9 +66,10 @@ const ChangePassword: React.FC<CustomizedFormProps> = ({ fields, onChange }) => 
                   return Promise.reject(new Error('Không khớp'));
                 },
               }),
+              { required: true, message: 'Không được để trống' },
             ]}
           >
-            <Input />
+            <Input style={{ padding: '15px' }} type='password' />
           </Form.Item>
         </div>
       </Form>
