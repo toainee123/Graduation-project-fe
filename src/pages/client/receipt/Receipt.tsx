@@ -6,6 +6,8 @@ import './receipt.scss';
 import parse from 'html-react-parser';
 import axios from 'axios';
 import { getBillUser } from 'src/api/charge';
+import { createUrlPayment } from 'src/api/payment';
+import { getInfoRoomUser } from 'src/api/dashboard';
 type Props = {};
 
 const Receipt = (props: Props) => {
@@ -65,12 +67,18 @@ const Receipt = (props: Props) => {
 
   const datee: any = moment(dataBill?.bill.date).format('DD/MM/YYYY');
   const handleClick = async () => {
-    const dataInput = {
+    const dataInput: any = {
       amount: dataBill?.bill.totalbill,
+      orderDescription: `Thanh toán hóa đơn ${moment(dataBill?.bill.date).format('MM/YYYY')}`,
+      orderType: 'other',
+      language: 'vn',
     };
-    const { data } = await axios.post('http://localhost:8000/api/create_payment_url', dataInput);
 
-    window.open(data.redirect);
+    const res = await getInfoRoomUser();
+    const idroom = res?.data?.infoRoom?.id;
+    const response: any = await createUrlPayment(idroom, dataInput);
+
+    window.open(response?.redirect);
   };
   return (
     <>
