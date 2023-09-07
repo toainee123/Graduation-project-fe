@@ -53,6 +53,16 @@ const Paymentmethod: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
           </Form.Item>
         </div>
       </Form>
+      <div className='mt-4'>
+        <strong>Note*: </strong>Nếu bạn chưa có tmncode và hash secret, vui lòng
+        <a
+          href='https://sandbox.vnpayment.vn/devreg'
+          className='font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1'
+        >
+          ấn vào đây
+        </a>
+        để đăng kí
+      </div>
     </>
   );
 };
