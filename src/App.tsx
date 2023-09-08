@@ -42,7 +42,7 @@ function App() {
                 </ProtectedAuth>
               }
             >
-              <Route index element={<Navigate to={urlRouter.CLIENT_SERVICE} />} />
+              <Route index element={<Navigate to={urlRouter.CLIENT_DASHBOARD} />} />
               {clientRoute?.map((route: any, index) => {
                 const Page = route.component;
                 return (

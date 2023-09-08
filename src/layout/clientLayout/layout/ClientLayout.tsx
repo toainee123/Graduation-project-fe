@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
 
 import './ClientLayout.scss';
+import HeaderComponent from '../header/Header';
 
 type Props = {};
 
@@ -17,6 +18,7 @@ const ClientLayout = (props: Props) => {
         <Layout>
           <Content>
             <div className='layout-admin '>
+              <HeaderComponent />
               <div className='outlet shadow-md'>
                 <Outlet />
               </div>

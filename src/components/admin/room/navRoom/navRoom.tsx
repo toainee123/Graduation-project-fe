@@ -20,7 +20,7 @@ const NavRoom = () => {
   const [wardStore, setWardStore] = useState();
   const [form] = Form.useForm();
 
-  const house = useAppSelector((state) => state.house.value);
+  const house = useAppSelector((state: any) => state.house.value);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
