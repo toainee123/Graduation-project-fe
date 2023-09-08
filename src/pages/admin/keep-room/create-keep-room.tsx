@@ -79,7 +79,7 @@ const CreateKeepRoom = () => {
       <div className='mt-8' style={{ marginTop: 100 }}>
         <div className='mt-8'>
           <Form size='large' onFinish={onFinish}>
-            <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
+            <div className='grid lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 mt-4'>
               <label htmlFor='' className='w-64 text-base font-semibold'>
                 Nhà <b className='color-red'>*</b>
               </label>
@@ -109,7 +109,7 @@ const CreateKeepRoom = () => {
                 </Form.Item>
               </div>
             </div>
-            <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+            <div className='grid lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 mt-4'>
               <label htmlFor='' className='w-64 text-base font-semibold'>
                 Tên người đặt cọc <b className='color-red'>*</b>
               </label>
@@ -128,16 +128,11 @@ const CreateKeepRoom = () => {
               </label>
               <div className='w-full'>
                 <Form.Item name='phoneNumber' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-                  <Input
-                    type='number'
-                    style={{ borderRadius: 6, width: 100 }}
-                    className='w-full outline-0 md: my-2'
-                    placeholder='Số điện thoại'
-                  />
+                  <Input type='number' className='w-full outline-0 md: my-2' placeholder='Số điện thoại' />
                 </Form.Item>
               </div>
             </div>
-            <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+            <div className='grid lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 mt-4'>
               <label htmlFor='' className='w-64 text-base font-semibold'>
                 Giá <b className='color-red'>*</b>
               </label>
@@ -155,8 +150,8 @@ const CreateKeepRoom = () => {
                 </Form.Item>
               </div>
             </div>
-            <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
-              <label htmlFor='' className='w-64 text-base font-semibold'>
+            <div className='grid lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 mt-4'>
+              <label htmlFor='' className=' text-base font-semibold'>
                 Ngày dự kiến nhận phòng <b className='color-red'>*</b>
               </label>
               <div className='w-full'>

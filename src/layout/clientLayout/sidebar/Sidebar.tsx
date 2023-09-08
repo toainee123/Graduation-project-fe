@@ -148,12 +148,6 @@ const Sidebar = (props: Props) => {
           items={menuListItem}
           // selectedKeys={[current]}
         />
-        <div className='userLogin '>
-          <Avatar size={32} style={{ margin: 'auto' }} icon={<UserOutlined />} />
-          <span className='userTitle' style={{ cursor: 'pointer' }} onClick={logout}>
-            Đăng xuất
-          </span>
-        </div>
       </Sider>
 
       {/* {showMenu && <Sider collapsed={collapsedSide} className='first-child-sider'>

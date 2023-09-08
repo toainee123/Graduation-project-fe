@@ -202,110 +202,86 @@ const KeepRoom = () => {
             <div className='title_page'>
               <h1>Cọc giữ phòng</h1>
             </div>
-            <div className='flex'>
+            <div className='flex justify-between items-end'>
               <div>
-                <form onSubmit={handleSubmit(Onsubmit)} style={{ marginTop: 30 }}>
-                  <div className='flex'>
+                <form onSubmit={handleSubmit(Onsubmit)}>
+                  <div className='grid lg:grid-cols-[160px_160px_160px_160px_160px] lg:gap-3 md:grid-cols-3 md:gap-3 sm:grid-cols-1 sm:gap-3'>
                     <div>
-                      <div style={{ display: 'flex', marginBottom: 20 }}>
-                        <div style={{ marginRight: 195 }}>
-                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 15 }}>
-                            Từ ngày
-                          </label>
-                          <br />
-                          <Space direction='vertical'>
-                            <DatePicker
-                              onChange={DateToOnChange}
-                              size='large'
-                              format='YYYY-MM-DD'
-                              placeholder='Chọn ngày từ...'
-                            />
-                          </Space>
-                        </div>
-                        <div>
-                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 70 }}>
-                            Đến
-                          </label>
-                          <br />
-                          <Space direction='vertical'>
-                            <DatePicker
-                              onChange={DateFromChange}
-                              size='large'
-                              format='YYYY-MM-DD'
-                              placeholder='Chọn ngày từ...'
-                            />
-                          </Space>
-                        </div>
-                        <div style={{ marginLeft: 100, marginTop: 20 }}>
-                          <button
-                            className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                            style={{ marginRight: 15 }}
-                            type='submit'
-                          >
-                            {' '}
-                            <i className='fa-dashed fa-users'></i>Tìm kiếm
-                          </button>
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', marginBottom: 20 }}>
-                        <div style={{ marginRight: 150 }}>
-                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 38 }}>
-                            Nhà
-                          </label>
-                          <Select
-                            defaultValue='Danh sách nhà'
-                            size='large'
-                            className='w-full'
-                            onChange={handleChangeHomeId}
-                          >
-                            {house.map((item: any) => (
-                              <Select.Option key={item.id} value={item.id}>
-                                {item.name}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                        <div>
-                          <label className='text-base text-slate-500 font-semibold' style={{ marginRight: 38 }}>
-                            Phòng
-                          </label>
-                          <Select
-                            defaultValue='Danh sách nhà'
-                            size='large'
-                            className='w-full'
-                            onChange={handleChangeRoomId}
-                          >
-                            {room.map((item: any) => (
-                              <Select.Option key={item.id} value={item.id}>
-                                {item.name}
-                              </Select.Option>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
+                      <label className='text-base text-slate-500 font-semibold'>Từ ngày</label>
+                      <br />
+                      <DatePicker
+                        onChange={DateToOnChange}
+                        size='large'
+                        className='w-full'
+                        format='YYYY-MM-DD'
+                        placeholder='Chọn ngày từ...'
+                      />
+                    </div>
+                    <div>
+                      <label className='text-base text-slate-500 font-semibold'>Đến</label>
+                      <br />
+                      <DatePicker
+                        className='w-full'
+                        onChange={DateFromChange}
+                        size='large'
+                        format='YYYY-MM-DD'
+                        placeholder='Chọn ngày từ...'
+                      />
+                    </div>
+                    <div>
+                      <label className='text-base text-slate-500 font-semibold'>Nhà</label>
+                      <Select
+                        defaultValue='Danh sách nhà'
+                        size='large'
+                        className='w-full'
+                        onChange={handleChangeHomeId}
+                      >
+                        {house.map((item: any) => (
+                          <Select.Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                    <div>
+                      <label className='text-base text-slate-500 font-semibold'>Phòng</label>
+                      <Select
+                        defaultValue='Danh sách nhà'
+                        size='large'
+                        className='w-full'
+                        onChange={handleChangeRoomId}
+                      >
+                        {room.map((item: any) => (
+                          <Select.Option key={item.id} value={item.id}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                    <div>
+                      <br className='lg:block md:block sm:hidden' />
+                      <button className=' text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 sm:w-full '>
+                        <i className='fa-solid fa-magnifying-glass px-1'></i>
+                        Tìm kiếm
+                      </button>
                     </div>
                   </div>
                 </form>
               </div>
-              <div style={{ marginTop: 50 }}>
+              <div>
                 <Link to='http://localhost:3000/admin/create-keep-room'>
-                  <button
-                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                    style={{ marginRight: 15 }}
-                  >
-                    {' '}
-                    <i className='fa-dashed fa-users'></i> Thêm
+                  <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
+                    <i className='fa-solid fa-plus'></i> Thêm
                   </button>
                 </Link>
 
                 <button
-                  className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-                  style={{ marginRight: 15 }}
+                  className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2'
                   onClick={() => {
                     handleExportExcel();
                   }}
                 >
-                  <i className='fa-dashed fa-users'></i> Xuất file Excel
+                  <i className='fa-regular fa-file-excel'></i> Xuất file Excel
                 </button>
               </div>
             </div>
