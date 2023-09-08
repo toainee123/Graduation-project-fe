@@ -97,6 +97,12 @@ const Sidebar = (props: Props) => {
       key: '6',
       icon: <FormOutlined />,
     },
+
+    {
+      label: <Link to={urlRouter.CLIENT_RECEIPT}>Thanh toan Hóa đơn</Link>,
+      key: '15',
+      icon: <FormOutlined />,
+    },
     {
       label: <Link to={urlRouter.CLIENT_SENDNOTIFICATION}>Báo cáo </Link>,
       key: '7',

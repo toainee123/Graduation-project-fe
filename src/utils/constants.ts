@@ -13,6 +13,8 @@ export const urlRouter = {
   CLIENT_INFAORMATION: 'information',
   CLIENT_SENDNOTIFICATION: 'send-notification',
   CLIENT_CHANGEPASSWORD: 'Clientchangepassword',
+  CLIENT_RECEIPT: 'Receipt',
+  CLIENT_PAYMENTRETURN: 'payment-return',
   LAND_PAGE: 'lading-page',
 
 

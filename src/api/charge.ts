@@ -68,4 +68,8 @@ export const postAllBill = async (data: any) => {
     return axiosClient.post(url, data);
 }
 
+export const getBillUser = async (date: any) => {
+    const url = `/bill/bill-user?date=${date}`;
+    return axiosClient.get(url);
+}
 

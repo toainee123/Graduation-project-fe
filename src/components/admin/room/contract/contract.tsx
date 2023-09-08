@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
 import '../contract/contract.scss';
-import { Form, Input, Button, DatePicker, message } from 'antd';
+import { Form, Input, Button, DatePicker, message, Spin } from 'antd';
 import { useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
@@ -25,6 +25,7 @@ const Contract = ({ houseid }: any) => {
   const [formValue, setFormValue] = useState<any>();
   const [contract, setContract] = useState<any>();
   const [printData, setPrintData] = useState('');
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -137,6 +138,7 @@ const Contract = ({ houseid }: any) => {
 
   const onFinish = async (values: any) => {
     setFormValue(values);
+
     const dataPost = {
       customerId: roomTenant?.customerid,
       roomId: roomId ? +roomId : '',
@@ -147,8 +149,8 @@ const Contract = ({ houseid }: any) => {
 
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
-
     const canvas = await html2canvas(htmlInput);
+    setLoading(true);
     htmlInput.setAttribute('hidden', 'true');
     const image = canvas.toDataURL('image/png', 1.0);
     const pdf: any = new jsPDF('p', 'mm', 'a4');
@@ -170,9 +172,11 @@ const Contract = ({ houseid }: any) => {
       },
     });
     const imgUrl = data.url;
+
     try {
       const response = await addContract({ ...dataPost, link: imgUrl });
       if (response) {
+        setLoading(false);
         toast.success('Thành công');
       }
     } catch (error: any) {
@@ -181,6 +185,7 @@ const Contract = ({ houseid }: any) => {
 
         const response = await updateContract({ ...dataPost, link: imgUrl }, id);
         if (response) {
+          setLoading(false);
           toast.success('Câp nhật thành công');
         }
       }
@@ -207,73 +212,75 @@ const Contract = ({ houseid }: any) => {
     htmlInput.setAttribute('hidden', 'true');
   };
   return (
-    <div>
-      <span className='font-medium text-slate-500 py-2'>
-        Các thông tin nhập ở đây sẽ được sử dụng cho việc xuất/ in hợp đồng thuê phòng.
-      </span>
-      <div className='ml-3 mr-3'>
-        <Form action='' form={form} onFinish={onFinish}>
-          <div className='lg:flex  justify-start items-center  md:justify-start  my-4'>
-            <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
-              Thời gian hợp đồng
-            </label>
-            <Form.Item
-              className='lg:w-full sm:w-full'
-              name='expiry'
-              rules={[{ required: true, message: 'Không để trống thời gian hợp đồng' }]}
-            >
-              <Input />
-            </Form.Item>
-          </div>
-          <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 mb-4'>
-            <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
-              Ngày hợp đồng
-            </label>
-            <Form.Item
-              className='lg:w-1/2 sm:w-full'
-              name='contractDate'
-              rules={[{ required: true, message: 'Không để trống ngày hợp đồng' }]}
-            >
-              <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
-            <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
-              Ngày kết thúc HĐ
-            </label>
+    <Spin spinning={loading}>
+      <div>
+        <span className='font-medium text-slate-500 py-2'>
+          Các thông tin nhập ở đây sẽ được sử dụng cho việc xuất/ in hợp đồng thuê phòng.
+        </span>
+        <div className='ml-3 mr-3'>
+          <Form action='' form={form} onFinish={onFinish}>
+            <div className='lg:flex  justify-start items-center  md:justify-start  my-4'>
+              <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+                Thời gian hợp đồng
+              </label>
+              <Form.Item
+                className='lg:w-full sm:w-full'
+                name='expiry'
+                rules={[{ required: true, message: 'Không để trống thời gian hợp đồng' }]}
+              >
+                <Input />
+              </Form.Item>
+            </div>
+            <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 mb-4'>
+              <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+                Ngày hợp đồng
+              </label>
+              <Form.Item
+                className='lg:w-1/2 sm:w-full'
+                name='contractDate'
+                rules={[{ required: true, message: 'Không để trống ngày hợp đồng' }]}
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+              <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
+                Ngày kết thúc HĐ
+              </label>
 
-            <Form.Item
-              className='lg:w-1/2 sm:w-full'
-              rules={[{ required: true, message: 'Không để trống ngày kết thúc hợp đồng' }]}
-              name='contractExpir'
-            >
-              <DatePicker style={{ width: '100%' }} />
+              <Form.Item
+                className='lg:w-1/2 sm:w-full'
+                rules={[{ required: true, message: 'Không để trống ngày kết thúc hợp đồng' }]}
+                name='contractExpir'
+              >
+                <DatePicker style={{ width: '100%' }} />
+              </Form.Item>
+            </div>
+            <Form.Item>
+              <Button htmlType='submit' style={{ width: '100%' }} type='primary'>
+                Lưu
+              </Button>
             </Form.Item>
-          </div>
-          <Form.Item>
-            <Button htmlType='submit' style={{ width: '100%' }} type='primary'>
-              Lưu
-            </Button>
-          </Form.Item>
 
-          <Form.Item>
-            <Button
-              className='mt-4'
-              style={{ width: '100%' }}
-              onClick={async () => {
-                await renderContract();
-                await handleExportPDF();
-              }}
-            >
-              Xuất file PDF
-            </Button>
-          </Form.Item>
-        </Form>
+            <Form.Item>
+              <Button
+                className='mt-4'
+                style={{ width: '100%' }}
+                onClick={async () => {
+                  await renderContract();
+                  await handleExportPDF();
+                }}
+              >
+                Xuất file PDF
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+
+        <div className='ql-editor ' hidden>
+          {parse(printData ? printData : '')}
+        </div>
+        <ToastContainer />
       </div>
-
-      <div className='ql-editor ' hidden>
-        {parse(printData ? printData : '')}
-      </div>
-      <ToastContainer />
-    </div>
+    </Spin>
   );
 };
 

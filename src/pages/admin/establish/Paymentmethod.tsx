@@ -15,7 +15,7 @@ interface CustomizedFormProps {
   onChange: (fields: FieldData[]) => void;
   fields: FieldData[];
 }
-const ChangePassword: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
+const Paymentmethod: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
   const [form] = Form.useForm();
   const formItemLayout = { labelCol: { span: 5 } };
 
@@ -34,47 +34,37 @@ const ChangePassword: React.FC<CustomizedFormProps> = ({ fields, onChange }) => 
       >
         <div className='mt-4'>
           <Form.Item
-            label='Mật khẩu cũ'
-            name='passwordold'
+            label='email'
+            name='email'
             rules={[{ required: true, message: 'Không được để trống' }]}
+            style={{ display: 'none' }}
           >
-            <Input style={{ padding: '15px' }} type='password' />
-          </Form.Item>
-        </div>
-
-        <div className='mt-4'>
-          <Form.Item
-            label='Mật khẩu mới'
-            name='passwordnew'
-            className='mt-4'
-            rules={[{ required: true, message: 'Không được để trống' }]}
-          >
-            <Input style={{ padding: '15px' }} type='password' />
+            <Input style={{ padding: '15px' }} />
           </Form.Item>
         </div>
         <div className='mt-4'>
-          <Form.Item
-            label='Nhập lại mật khẩu mới'
-            name='passwordnew_confirm'
-            className='mt-4'
-            rules={[
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('passwordnew') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('Không khớp'));
-                },
-              }),
-              { required: true, message: 'Không được để trống' },
-            ]}
-          >
-            <Input style={{ padding: '15px' }} type='password' />
+          <Form.Item label='TMN Code' name='tmncode' rules={[{ required: true, message: 'Không được để trống' }]}>
+            <Input style={{ padding: '15px' }} />
+          </Form.Item>
+        </div>
+        <div className='mt-4'>
+          <Form.Item label='Hash Secret' name='serectkey' rules={[{ required: true, message: 'Không được để trống' }]}>
+            <Input style={{ padding: '15px' }} />
           </Form.Item>
         </div>
       </Form>
+      <div className='mt-4'>
+        <strong>Note*: </strong>Nếu bạn chưa có tmncode và hash secret, vui lòng
+        <a
+          href='https://sandbox.vnpayment.vn/devreg'
+          className='font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1'
+        >
+          ấn vào đây
+        </a>
+        để đăng kí
+      </div>
     </>
   );
 };
 
-export default ChangePassword;
+export default Paymentmethod;
