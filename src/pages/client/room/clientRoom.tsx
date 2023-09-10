@@ -70,11 +70,6 @@ const ClientRoom = () => {
             </tbody>
           </table>
         </div>
-        <div className='mt-8'>
-          <div className='box-content-titlte mb-5'>
-            <h2>lịch sử thanh toán</h2>
-          </div>
-        </div>
       </div>
     </div>
   );

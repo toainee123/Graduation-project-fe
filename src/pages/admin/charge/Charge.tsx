@@ -837,7 +837,11 @@ const Charge = () => {
               >
                 <Form form={form} className='h-modal' layout='vertical'>
                   <div>
-                    <Form.Item name='date_allbill' label='Ngày tháng'>
+                    <Form.Item
+                      name='date_allbill'
+                      label='Ngày tháng'
+                      rules={[{ required: true, message: 'Không để ngày tháng tính tiền!' }]}
+                    >
                       <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
                     </Form.Item>
                   </div>
