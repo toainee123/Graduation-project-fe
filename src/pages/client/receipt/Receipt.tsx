@@ -112,8 +112,6 @@ const Receipt = (props: Props) => {
               <div className='header_bill flex justify-between '>
                 <div>
                   <h2 className='text-xl'>
-                    Mã hóa đơn:{' '}
-                    <strong>{dataBill?.bill.id.toString() + dataBill?.bill.roomid.toString() + '1002'}</strong>
                     <h4>
                       Ngày tạo:<strong> {datee.toLocaleString()}</strong>
                     </h4>
