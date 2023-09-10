@@ -137,51 +137,51 @@ const Assets = () => {
       <div className='title_page'>
         <h1>Danh sách tài sản</h1>
       </div>
-      <div className='flex justify-end items-center mt-4'>
+      <div className='flex lg:justify-between lg:flex-row lg:items-end sm:flex-col-reverse'>
+        <div className='room_form' style={{ marginTop: 30 }}>
+          <Form action='' onFinish={Onsubmit}>
+            <div className='grid lg:grid-cols-4 gap-2 md:grid-cols-1 sm:grid-cols-1'>
+              <div>
+                <Form.Item name='houseId'>
+                  <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
+                    {house.map((item: any, i: any) => (
+                      <Select.Option key={i} value={item.id}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+              <div>
+                <Form.Item name='roomId'>
+                  <Select defaultValue='Danh sách phòng' onChange={handleChangeRoomId}>
+                    {room.map((item: any, i: any) => (
+                      <Select.Option key={i} value={item.id}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+              <div>
+                <Form.Item name='search'>
+                  <Input placeholder='Tìm tài sản...' />
+                </Form.Item>
+              </div>
+              <button className='btn_search'>
+                <i className='fa-solid fa-magnifying-glass px-1'></i>
+                Tìm kiếm
+              </button>
+            </div>
+          </Form>
+        </div>
         <div className=''>
           <Link to='/admin/create-assets'>
-            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
+            <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'>
               <i className='fa-solid fa-users'></i> Thêm mới tài sản
             </button>
           </Link>
         </div>
-      </div>
-      <div className='room_form' style={{ marginTop: 30 }}>
-        <Form action='' onFinish={Onsubmit}>
-          <div className='flex'>
-            <div style={{ marginRight: 20 }}>
-              <Form.Item name='houseId'>
-                <Select defaultValue='Danh sách nhà' onChange={handleChangeHomeId}>
-                  {house.map((item: any, i: any) => (
-                    <Select.Option key={i} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </div>
-            <div style={{ marginRight: 20 }}>
-              <Form.Item name='roomId'>
-                <Select defaultValue='Danh sách phòng' onChange={handleChangeRoomId}>
-                  {room.map((item: any, i: any) => (
-                    <Select.Option key={i} value={item.id}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </div>
-            <div>
-              <Form.Item name='search'>
-                <Input style={{ width: 200 }} placeholder='Tìm tài sản...' />
-              </Form.Item>
-            </div>
-            <button className='btn_search ml-3'>
-              <i className='fa-solid fa-magnifying-glass px-1'></i>
-              Tìm kiếm
-            </button>
-          </div>
-        </Form>
       </div>
       <br />
       <div className='flex flex-col'>
