@@ -202,7 +202,7 @@ const KeepRoom = () => {
             <div className='title_page'>
               <h1>Cọc giữ phòng</h1>
             </div>
-            <div className='flex justify-between items-end'>
+            <div className='flex lg:justify-between lg:flex-row lg:items-end sm:flex-col-reverse'>
               <div>
                 <form onSubmit={handleSubmit(Onsubmit)}>
                   <div className='grid lg:grid-cols-[160px_160px_160px_160px_160px] lg:gap-3 md:grid-cols-3 md:gap-3 sm:grid-cols-1 sm:gap-3'>

@@ -20,7 +20,7 @@ const Service = () => {
   }, []);
 
   const showDeleteConfirm = (id: any) => {
-    console.log("id", id);
+    console.log('id', id);
 
     confirm({
       title: 'Bạn có muốn xóa dịch vụ này không ?',
@@ -57,9 +57,9 @@ const Service = () => {
       name: item?.name,
       price: Number(item?.price).toLocaleString('VND'),
       code: item?.code,
-      id: item?.id
-    }
-  })
+      id: item?.id,
+    };
+  });
 
   const columns = [
     {
@@ -118,33 +118,35 @@ const Service = () => {
         <div className='title_page'>
           <h1>Dịch vụ</h1>
         </div>
-        <div className='action'>
-          <Link to={urlRouter.ADD_SERVICE}>
-            <Button type='primary' >
-              <i className="fa-sharp fa-solid fa-plus pr-2"></i>
-              Thêm dịch vụ
-            </Button>
-          </Link>
+        <div className='flex justify-between'>
+          <div className='render-input'>
+            <Form name='myForm' onFinish={onSubmit} style={{ display: 'flex' }}>
+              <Form.Item name='name' rules={[{ required: true, message: 'Vui lòng không được bỏ trống!' }]}>
+                <Input />
+              </Form.Item>
+              <Form.Item>
+                <Button type='primary' htmlType='submit'>
+                  Tìm kiếm
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+          <div className='action'>
+            <Link to={urlRouter.ADD_SERVICE}>
+              <Button type='primary'>
+                <i className='fa-sharp fa-solid fa-plus pr-2'></i>
+                Thêm dịch vụ
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
-      <div className='description'>
-        <strong>Lưu ý:</strong>
-        <p>
-          Các dịch vụ phải được gán cho từng khách thuê phòng để khi tính tiền sẽ có tiền dịch vụ đó. Để cấu hình đơn
-          giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước
-        </p>
-      </div>
-      <div className='render-input'>
-        <Form name='myForm' onFinish={onSubmit} style={{ display: 'flex' }}>
-          <Form.Item name='name' rules={[{ required: true, message: 'Vui lòng không được bỏ trống!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item>
-            <Button type='primary' htmlType='submit'>
-              Tìm kiếm
-            </Button>
-          </Form.Item>
-        </Form>
+        <div className='description'>
+          <strong>Lưu ý:</strong>
+          <p>
+            Các dịch vụ phải được gán cho từng khách thuê phòng để khi tính tiền sẽ có tiền dịch vụ đó. Để cấu hình đơn
+            giá điện nước tính theo bậc thang bạn vẫn phải tạo 2 dịch vụ là điện, nước
+          </p>
+        </div>
       </div>
       <Table dataSource={dataSource} columns={columns} rowKey='name' scroll={{ x: 1200 }} />
     </>

@@ -221,14 +221,10 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
             name='cccd'
             rules={[
               { required: true, message: 'Không được bỏ trống trường này' },
-              { pattern: new RegExp(/(0)+([0-9]{11})\b/), message: 'Không đúng định dạng CCCD' },
+              { pattern: new RegExp(/[0-9]{12}\b/), message: 'Không đúng định dạng CCCD' },
             ]}
           >
-            {keyLocation === 'view' ? (
-              <Input className='w-full' readOnly />
-            ) : (
-              <Input type='number' className='w-full' />
-            )}
+            {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
           </Form.Item>
         </div>
       </div>
