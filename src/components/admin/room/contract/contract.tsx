@@ -116,8 +116,6 @@ const Contract = ({ houseid }: any) => {
     };
 
     console.log(dataContract);
-
-    // moment(roomTenant?.daterangecccd).format('DD/MM/YYYY')
     const newContract = rvSampleContract?.replaceAll(
       /@ContrasctDate|@ContractDateDay|@ContractDateMonth|@ContractDateYear|@AddressCustomer|@FullNameCustomer|@BirthdayCustomerConfig|@AddressHost|@ContractNo|@TelephoneCustomer|@CustomerNameRoomRent|@BirthdayRoomRent|@IDCARDNORoomRent|@DateIssueRoomRent|@PlaceIssueRoomRent|@AddressRoomRentasdasd|@TelephoneRoomRent|@RoomName|@AdressArea|@ContractMonths|@BeginRent|@RoomAmount|@PayType|@DepositAmount|@ProvinceName|@FULLNAMECUSTOMERNAME /gi,
       (matched: any) => {
@@ -133,7 +131,28 @@ const Contract = ({ houseid }: any) => {
     const reRender = () => {
       renderContract();
     };
+
+    const getRoomTenant = async () => {
+      const { data } = await apiGetRoomTenantDetail(roomId);
+      console.log(data);
+
+      setRoomTenant(data);
+    };
+
+    const getHost = async () => {
+      const { data } = await getInfoCustomer();
+      setHost(data);
+    };
+
+    const getHouse = async () => {
+      const { data } = await getHouseId(houseid);
+
+      setHouse(data);
+    };
     reRender();
+    getHost();
+    getHouse();
+    getRoomTenant();
   }, [formValue]);
 
   const onFinish = async (values: any) => {
@@ -149,18 +168,19 @@ const Contract = ({ houseid }: any) => {
 
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
+    const divHeight = htmlInput.clientHeight;
+    const divWidth = htmlInput.clientWidth;
+    console.log(divHeight, divWidth);
+    const ratio = divHeight / divWidth;
     const canvas = await html2canvas(htmlInput);
     setLoading(true);
     htmlInput.setAttribute('hidden', 'true');
     const image = canvas.toDataURL('image/png', 1.0);
-    const pdf: any = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 208;
-    const imgHeight = pdf.internal.pageSize.getHeight();
-    pdf.margin = {
-      horiz: 15,
-      vert: 20,
-    };
-    pdf.addImage(image, 'PNG', 0, 0, imgWidth, imgHeight);
+    const pdf: any = new jsPDF('l', 'mm', 'a3');
+    const width = pdf.internal.pageSize.getWidth();
+    let height = pdf.internal.pageSize.getHeight();
+    height = ratio * width;
+    pdf.addImage(image, 'PNG', 0, 8, width, height);
     const blob = pdf.output('blob');
     console.log(blob);
     const formData = new FormData();
@@ -172,6 +192,7 @@ const Contract = ({ houseid }: any) => {
       },
     });
     const imgUrl = data.url;
+    console.log(imgUrl);
 
     try {
       const response = await addContract({ ...dataPost, link: imgUrl });
@@ -199,13 +220,20 @@ const Contract = ({ houseid }: any) => {
   const handleExportPDF = () => {
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
+    const divHeight = htmlInput.clientHeight;
+    const divWidth = htmlInput.clientWidth;
+    console.log(divHeight, divWidth);
 
-    html2canvas(htmlInput, { logging: true, useCORS: true }).then((canvas) => {
-      const imgWidth = 208;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const ratio = divHeight / divWidth;
+    html2canvas(htmlInput, { scale: 1 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(imgData, 'png', 0, 8, imgWidth, imgHeight);
+      const pdf = new jsPDF('l', 'mm', 'a3');
+
+      const width = pdf.internal.pageSize.getWidth();
+      let height = pdf.internal.pageSize.getHeight();
+      height = ratio * width;
+
+      pdf.addImage(imgData, 'png', 0, 8, width, height);
       pdf.save('download.pdf');
     });
 
