@@ -18,7 +18,7 @@ const Forgotpassword = (props: Props) => {
       }
     } catch (error: any) {
       console.log(error.message);
-      toast.success('Không thành công!!');
+      toast.error('Không thành công!!');
     }
   };
   return (
