@@ -11,7 +11,7 @@ import moment from 'moment';
 import { limitCountUpload, urlRouter } from 'src/utils/constants';
 import { PlusOutlined } from '@ant-design/icons';
 
-const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) => {
+const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiveTab }: any) => {
   const [limitprice, setLimitPrice] = useState(Number);
   const navigate = useNavigate();
   const [countImg, setCountImg] = useState([]);
@@ -96,7 +96,8 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
         .unwrap()
         .then((resp) => {
           message.success(`Thêm nhà ${values.name} thành công`);
-          navigate(`/admin/${urlRouter.ROOM}`);
+          setActiveTab('2');
+          // navigate(`/admin/${urlRouter.ROOM}`);
         })
         .catch((err) => {
           message.error(`${err?.response?.data?.message}`);
@@ -261,7 +262,11 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId }: any) =
               { pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/g), message: 'Không đúng định dạng Số điện thoại' },
             ]}
           >
-            {keyLocation === 'view' ? <Input className='w-full' readOnly /> : <Input className='w-full' />}
+            {keyLocation === 'view' ? (
+              <Input className='w-full' readOnly />
+            ) : (
+              <Input type='number' className='w-full' />
+            )}
           </Form.Item>
         </div>
         <label htmlFor='' className=' text-base font-medium text-slate-500'>

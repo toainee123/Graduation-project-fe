@@ -27,12 +27,16 @@ const ClientContract = () => {
         <div className='text-base font-semibold text-slate-500'>
           Ngày kết thúc hợp đồng: {moment(getImg?.contractexpir).format('DD/MM/YYYY')}
         </div>
+        <Link className='text-blue-500 font-base' target='_blank' to={getImg?.link}>
+          Xem chi tiết hợp đồng
+        </Link>
       </div>
-      <iframe
+      <embed src={`${getImg?.link}#toolbar=0`} width='100%' height='700'></embed>
+      {/* <iframe
         src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${getImg?.link}#toolbar=0&scrollbar=0`}
         height='700'
         width='100%'
-      />
+      /> */}
     </div>
   );
 };

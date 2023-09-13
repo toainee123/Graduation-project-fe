@@ -6,7 +6,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { addRoomMember, deleteMember, getRoom, getRoomMember } from 'src/api/room';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
-const Relative = () => {
+const Relative = ({ setActiveTab }) => {
     const [form] = Form.useForm();
     const [data, setData] = useState([]);
     const { roomId } = useParams();
@@ -14,9 +14,7 @@ const Relative = () => {
     console.log(roomId);
     // const myParam = useLocation().search;
     // const idH = new URLSearchParams(myParam).get('idHouse');
-    const [listRoom, setListRoom] = useState();
     const [status, setStatus] = useState(false);
-    const [roomTenant, setRoomTenant] = useState();
     useEffect(() => {
         const getData = async () => {
             // const respon = await getRoom(idH)
@@ -90,8 +88,7 @@ const Relative = () => {
         } catch (error) {
             console.log(error);
         }
-
-
+        setActiveTab('4')
     }
 
     const handleRemoveItem = (index) => {
