@@ -16,6 +16,7 @@ const CreateMember = () => {
   const [detailRoom, setDetailRoom] = useState<any>();
   const [getData, setGetData] = useState<any>([]);
   const [houseId, setHouseId] = useState<any>([]);
+  const [activeTab, setActiveTab] = useState<any>('1');
   const { roomId } = useParams();
   const search = useLocation().search;
   const keyLocation = new URLSearchParams(search).get('key');
@@ -56,23 +57,29 @@ const CreateMember = () => {
       label: 'Thông tin khách thuê',
       key: '1',
       children: (
-        <FormCreateMember detailRoom={detailRoom} roomId={roomId} initialValues={initialValues} getData={getData} />
+        <FormCreateMember
+          detailRoom={detailRoom}
+          setActiveTab={setActiveTab}
+          roomId={roomId}
+          initialValues={initialValues}
+          getData={getData}
+        />
       ),
     },
     {
       label: 'Dịch vụ',
-      key: '4',
-      children: <Service />,
+      key: '2',
+      children: <Service setActiveTab={setActiveTab} />,
     },
     {
       label: 'Thành viên',
-      key: '2',
-      children: <Relative />,
+      key: '3',
+      children: <Relative setActiveTab={setActiveTab} />,
     },
     {
       label: 'Hợp đồng',
-      key: '3',
-      children: <Contract houseid={houseId} />,
+      key: '4',
+      children: <Contract houseid={houseId} setActiveTab={setActiveTab} />,
     },
   ];
   return (
@@ -82,7 +89,13 @@ const CreateMember = () => {
         {keyLocation === 'update' && <h1>Cập nhật thông tin phòng</h1>}
         {keyLocation === 'view' && <h1>xem thông tin phòng</h1>}
       </div>
-      <Tabs defaultActiveKey='1' tabBarGutter={10} type='card' items={items} />
+      <Tabs
+        {...(keyLocation === null ? { activeKey: activeTab } : { defaultActiveKey: { activeTab } })}
+        defaultActiveKey=''
+        tabBarGutter={10}
+        type='card'
+        items={items}
+      />
     </div>
   );
 };

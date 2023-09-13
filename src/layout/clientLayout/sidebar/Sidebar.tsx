@@ -93,12 +93,6 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.CLIENT_BILL}>Hóa đơn</Link>,
-      key: '6',
-      icon: <FormOutlined />,
-    },
-
-    {
       label: <Link to={urlRouter.CLIENT_RECEIPT}>Thanh toan Hóa đơn</Link>,
       key: '15',
       icon: <FormOutlined />,
@@ -141,8 +135,8 @@ const Sidebar = (props: Props) => {
           // style={{ width: 70 }}
           // style={{ minHeight: '100vh' }}
           // onClick={handleOpenMenu}
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['8']}
+          defaultSelectedKeys={['0']}
+          defaultOpenKeys={['0']}
           mode={mode}
           theme={theme}
           items={menuListItem}

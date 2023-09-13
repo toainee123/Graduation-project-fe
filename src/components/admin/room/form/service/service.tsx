@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { deleteService, getListService, getServicee, updateService } from 'src/api/service';
 
-const Service = () => {
+const Service = ({ setActiveTab }: any) => {
   const [selectedRow, setSelectedRow] = useState<any>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>();
   const [list, setList] = useState([]);
@@ -113,6 +113,7 @@ const Service = () => {
                 });
                 if (response?.status === 'success') {
                   toast.success('Cập nhập thành công');
+                  setActiveTab('3');
                 }
               } catch (error) {
                 toast.error('Cập nhậpkhông thành công');

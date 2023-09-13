@@ -1,6 +1,5 @@
 import ClientArise from "src/pages/client/arise/ClientArise";
 import ClientAsset from "src/pages/client/asset/ClientAsset";
-import { ClientBill } from "src/pages/client/bill/ClientBill";
 import ClientContract from "src/pages/client/contract/ClientContract";
 import Notification from "src/pages/client/notification/Notification/notification";
 import { ClientInfomation } from "src/pages/client/information/ClientInfomation";
@@ -37,12 +36,6 @@ export const clientRoute = [
         path: urlRouter.CLIENT_ASSET,
         component: ClientAsset,
     },
-
-    {
-        path: urlRouter.CLIENT_BILL,
-        component: ClientBill,
-    },
-
     {
         path: urlRouter.CLIENT_INFAORMATION,
         component: ClientInfomation,
