@@ -199,7 +199,7 @@ const CardRoom = ({ idHouse }: any) => {
           <Link to='#'>
             <button
               onClick={() => showDeleteConfirm(idHouse)}
-              className='focus:outline-none text-white bg-red-700 hover:bg-red-800 text-white font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'
+              className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'
             >
               <i className='fa-solid fa-trash'></i> Xóa
             </button>
@@ -207,7 +207,7 @@ const CardRoom = ({ idHouse }: any) => {
         </div>
       </div>
       <div className=' px-4 sm:py-2 sm:px-1 lg:max-w-full lg:px-2'>
-        <div className='grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-8'>
+        <div className='grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8'>
           {listRoom.length > 0 &&
             listRoom?.map((item: any, i: number) =>
               item.status ? (
