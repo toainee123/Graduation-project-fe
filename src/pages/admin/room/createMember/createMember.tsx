@@ -90,7 +90,7 @@ const CreateMember = () => {
         {keyLocation === 'view' && <h1>xem thông tin phòng</h1>}
       </div>
       <Tabs
-        {...(keyLocation === null ? { activeKey: activeTab } : { defaultActiveKey: { activeTab } })}
+        {...(keyLocation === null ? { activeKey: activeTab } : { defaultActiveKey: activeTab })}
         defaultActiveKey=''
         tabBarGutter={10}
         type='card'

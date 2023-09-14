@@ -3,12 +3,13 @@ import { Alert, Modal, Tooltip, Form, message } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-import { getRoom } from 'src/api/room';
+import { getDistrict, getRoom, getWards } from 'src/api/room';
 import { urlRouter } from 'src/utils/constants';
 import EditHouse from '../editHouse/editHouse';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { HouseSliceAction, deleteHouse, editHouse, getAllHouse, selectFilterHouse } from 'src/features/room/houseSlice';
 import { GetOutRoomTenant, deleteRoom } from 'src/features/room/roomSlice';
+import { getProvinces } from 'src/api/provinces/provinces';
 
 const { confirm } = Modal;
 
@@ -19,7 +20,6 @@ const CardRoom = ({ idHouse }: any) => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const filter = useAppSelector(selectFilterHouse);
-
   useEffect(() => {
     const fetchRoom = async () => {
       const { data } = await getRoom(idHouse);
