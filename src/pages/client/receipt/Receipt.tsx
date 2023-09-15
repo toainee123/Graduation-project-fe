@@ -68,7 +68,10 @@ const Receipt = (props: Props) => {
   const datee: any = moment(dataBill?.bill.date).format('DD/MM/YYYY');
   const handleClick = async () => {
     const dataInput: any = {
-      amount: dataBill?.bill.totalbill,
+      amount:
+        +dataBill?.bill.totalbill - +dataBill?.bill.paid > 0
+          ? +dataBill?.bill.totalbill - +dataBill?.bill.paid
+          : +dataBill?.bill.totalbill,
       orderDescription: `Thanh toán hóa đơn ${moment(dataBill?.bill.date).format('MM/YYYY')}`,
       orderType: 'other',
       language: 'vn',
