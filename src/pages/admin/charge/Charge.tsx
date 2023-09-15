@@ -866,7 +866,7 @@ const Charge = () => {
                                   name={[field.name, 'houseid']}
                                   rules={[{ required: true, message: 'Không để trống tên nhà' }]}
                                 >
-                                  <Input />
+                                  <Input disabled={true} />
                                 </Form.Item>
                               </td>
 
@@ -875,9 +875,9 @@ const Charge = () => {
                                   required={true}
                                   key={field.key}
                                   name={[field.name, 'roomid']}
-                                  rules={[{ required: true, message: 'Không để trống tên nhà' }]}
+                                  rules={[{ required: true, message: 'Không để trống tên phongf' }]}
                                 >
-                                  <Input />
+                                  <Input disabled={true} />
                                 </Form.Item>
                               </td>
                               <td>
@@ -887,7 +887,7 @@ const Charge = () => {
                                   name={[field.name, 'namehouse']}
                                   rules={[{ required: true, message: 'Không để trống tên nhà' }]}
                                 >
-                                  <Input />
+                                  <Input disabled={true} />
                                 </Form.Item>
                               </td>
 
@@ -898,7 +898,7 @@ const Charge = () => {
                                   name={[field.name, 'nameroom']}
                                   rules={[{ required: true, message: 'Không để trống tên phòng' }]}
                                 >
-                                  <Input />
+                                  <Input disabled={true} />
                                 </Form.Item>
                               </td>
 
