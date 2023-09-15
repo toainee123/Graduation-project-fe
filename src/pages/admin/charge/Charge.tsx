@@ -527,11 +527,19 @@ const Charge = () => {
       //   toast.error('Gửi email không thành công');
       // }
     }
-    const response: any = await sendMailBill({ data: arrBill });
 
-    if (response?.status === 'success') {
-      toast.success('thành công');
-    } else {
+    console.log(arrBill);
+
+    if (arrBill.length > 0) {
+      const response: any = await sendMailBill({ data: arrBill });
+
+      if (response?.status === 'success') {
+        toast.success('thành công');
+      } else {
+        toast.error('không thành công');
+      }
+    }
+    {
       toast.error('không thành công');
     }
 
