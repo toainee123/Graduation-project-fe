@@ -538,8 +538,7 @@ const Charge = () => {
       } else {
         toast.error('không thành công');
       }
-    }
-    {
+    } else {
       toast.error('không thành công');
     }
 
