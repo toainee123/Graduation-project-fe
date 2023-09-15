@@ -527,10 +527,17 @@ const Charge = () => {
       //   toast.error('Gửi email không thành công');
       // }
     }
-    const response: any = await sendMailBill({ data: arrBill });
 
-    if (response?.status === 'success') {
-      toast.success('thành công');
+    console.log(arrBill);
+
+    if (arrBill.length > 0) {
+      const response: any = await sendMailBill({ data: arrBill });
+
+      if (response?.status === 'success') {
+        toast.success('thành công');
+      } else {
+        toast.error('không thành công');
+      }
     } else {
       toast.error('không thành công');
     }
@@ -827,7 +834,9 @@ const Charge = () => {
                       }
                     })
                     .catch((info) => {
-                      toast.error(info.response.data.message);
+                      toast.error(
+                        'Không thành công, vui lòng kiểm tra và nhập chỉ số điện nước lớn hơn tháng trước hoặc đăng kí dịch vụ cho phòng'
+                      );
                       console.log('Validate Failed:', info);
                     });
                 }}
