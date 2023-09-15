@@ -761,7 +761,7 @@ const Charge = () => {
                 initialValues={initValueCacula}
               >
                 <Form.Item name='date' label='Ngày tháng'>
-                  <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
+                  <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                 </Form.Item>
                 <Form.Item name='house' label='Nhà'>
                   <Select
@@ -844,7 +844,7 @@ const Charge = () => {
                       label='Ngày tháng'
                       rules={[{ required: true, message: 'Không để ngày tháng tính tiền!' }]}
                     >
-                      <DatePicker style={{ width: '100%' }} disabledDate={disabledDate} />
+                      <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                     </Form.Item>
                   </div>
                   <table className='w-full text-sm text-center mt-4'>
@@ -1000,7 +1000,7 @@ const Charge = () => {
             <div className='flex  w-9/12 mt-5 items-center'>
               <div className='flex-item'>
                 <Form.Item label='Tháng/năm' name='dateTime'>
-                  <DatePicker />
+                  <DatePicker picker='month' />
                 </Form.Item>
               </div>
 
