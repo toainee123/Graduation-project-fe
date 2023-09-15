@@ -5,7 +5,7 @@ import parse from 'html-react-parser';
 import 'react-quill/dist/quill.snow.css';
 import '../contract/contract.scss';
 import { Form, Input, Button, DatePicker, message, Spin } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
@@ -27,6 +27,7 @@ const Contract = ({ houseid }: any) => {
   const [printData, setPrintData] = useState('');
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAstablishContract());
@@ -194,12 +195,12 @@ const Contract = ({ houseid }: any) => {
     });
     const imgUrl = data.url;
     console.log(imgUrl);
-
     try {
       const response = await addContract({ ...dataPost, link: imgUrl });
       if (response) {
         setLoading(false);
         toast.success('Thành công');
+        navigate(-1);
       }
     } catch (error: any) {
       if (error?.response?.data?.message === 'Only Contract With Room') {
@@ -209,6 +210,7 @@ const Contract = ({ houseid }: any) => {
         if (response) {
           setLoading(false);
           toast.success('Câp nhật thành công');
+          navigate(-1);
         }
       }
     }

@@ -6,7 +6,6 @@ import { REPORT_TYPE } from 'src/types/report';
 import { convertDateFilter } from 'src/utils/helps';
 import moment from 'moment';
 
-
 const { RangePicker } = DatePicker;
 
 const dataSource = [] as any;
@@ -31,45 +30,35 @@ const columns: TableProps<REPORT_TYPE>['columns'] = [
     title: 'Tiền phòng',
     key: 'priceroom',
     render(_, record, _index) {
-      return (
-        Number(record.priceroom).toLocaleString('VND')
-      );
+      return Number(record.priceroom).toLocaleString('VND');
     },
   },
   {
     title: 'Tiền điện',
     key: 'priceelectricity',
     render(_, record, _index) {
-      return (
-        Number(record.priceelectricity).toLocaleString('VND')
-      );
+      return Number(record.priceelectricity).toLocaleString('VND');
     },
   },
   {
     title: 'Tiền nước',
     key: 'pricewater',
     render(_, record, _index) {
-      return (
-        Number(record.pricewater).toLocaleString('VND')
-      );
+      return Number(record.pricewater).toLocaleString('VND');
     },
   },
   {
     title: 'Dịch vụ khác',
     key: 'priceservice',
     render(_, record, _index) {
-      return (
-        Number(record.priceservice).toLocaleString('VND')
-      );
+      return Number(record.priceservice).toLocaleString('VND');
     },
   },
   {
     title: 'Nợ tháng trước',
     key: 'owedold',
     render(_, record, _index) {
-      return (
-        Number(record.owedold).toLocaleString('VND')
-      );
+      return Number(record.owedold).toLocaleString('VND');
     },
   },
   {
@@ -78,9 +67,7 @@ const columns: TableProps<REPORT_TYPE>['columns'] = [
     // dataIndex: 'totalbill',
 
     render(_, record, _index) {
-      return (
-        Number(record.totalbill).toLocaleString('VND')
-      );
+      return Number(record.totalbill).toLocaleString('VND');
     },
   },
 ];
@@ -100,7 +87,7 @@ const ReportInvoiceDetail = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const timeNow = moment().format('YYYY-MM')
+      const timeNow = moment().format('YYYY-MM');
       const { data } = await getListReportInvoiceDetail({ date: timeNow });
       setDataSource(data);
     };
@@ -114,7 +101,7 @@ const ReportInvoiceDetail = () => {
     };
     getList();
   }, []);
-  console.log("data", dataHouse);
+  console.log('data', dataHouse);
 
   const DateToOnChange: DatePickerProps['onChange'] = (date, dateString) => {
     setDateTo(dateString);
@@ -124,8 +111,8 @@ const ReportInvoiceDetail = () => {
     console.log(values);
     const value = {
       date: dateTo && convertDateFilter(dateTo),
-      houseId: values.houseId
-    }
+      houseId: values.houseId,
+    };
     if (value) {
       const { data } = await getListReportInvoiceDetail(value);
       setDataSource(data);
@@ -152,9 +139,9 @@ const ReportInvoiceDetail = () => {
             <div className='mr-2'>
               <Form.Item name='date' label='Chọn ngày tháng'>
                 <DatePicker
-                  picker="month"
+                  picker='month'
                   onChange={DateToOnChange}
-                  format='YYYY-MM-DD'
+                  // format='YYYY-MM-DD'
                   placeholder='Chọn ngày từ...'
                 />
               </Form.Item>

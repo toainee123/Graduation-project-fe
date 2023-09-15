@@ -93,6 +93,7 @@ const Receipt = (props: Props) => {
 
         <div className='filter mb-2'>
           <DatePicker
+            picker='month'
             style={{ width: '30%' }}
             onChange={handleChangeFilter}
             defaultValue={moment(date, 'YYYY-MM-DD')}
