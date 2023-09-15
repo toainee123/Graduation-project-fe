@@ -154,7 +154,7 @@ const Establish = (props: Props) => {
     if (response?.message == 'success') {
       toast.success('Đổi mật khẩu thành công! ');
     } else {
-      toast.success('Đổi mật khẩu không thành công! ');
+      toast.error('Đổi mật khẩu không thành công! ');
     }
   };
 
