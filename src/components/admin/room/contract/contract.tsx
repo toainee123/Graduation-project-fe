@@ -84,6 +84,7 @@ const Contract = ({ houseid }: any) => {
     const upperCaseFULLNAMECUSTOMER = host?.result?.name.toUpperCase();
     const upperCaseCUSTOMERNAMEROOMRENT = roomTenant?.name.toUpperCase();
     console.log(host?.result?.address);
+    console.log(roomTenant);
 
     const dataContract: any = {
       '@ContrasctDate': moment(formValue?.contractDate).format('DD/MM/YYYY'),
@@ -97,7 +98,7 @@ const Contract = ({ houseid }: any) => {
       '@AddressHost': host?.result?.address,
       '@TelephoneCustomer': host?.result?.phone,
       '@CustomerNameRoomRent': roomTenant?.name,
-      '@BirthdayRoomRent': moment(host?.bod).format('DD/MM/YYYY'),
+      '@BirthdayRoomRent': moment(roomTenant?.bod).format('DD/MM/YYYY'),
       '@IDCARDNORoomRent': roomTenant?.cccd,
       '@DateIssueRoomRent': moment(roomTenant?.daterangecccd).format('DD/MM/YYYY'),
       '@PlaceIssueRoomRent': roomTenant?.issuedcccdby,
