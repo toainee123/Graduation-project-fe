@@ -827,7 +827,9 @@ const Charge = () => {
                       }
                     })
                     .catch((info) => {
-                      toast.error(info.response.data.message);
+                      toast.error(
+                        'Không thành công, vui lòng kiểm tra và nhập chỉ số điện nước lớn hơn tháng trước hoặc đăng kí dịch vụ cho phòng'
+                      );
                       console.log('Validate Failed:', info);
                     });
                 }}
