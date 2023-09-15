@@ -33,18 +33,28 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
         }}
       >
         <div className='mt-4'>
-          <Form.Item label='Họ và tên:' name='fullname'>
+          <Form.Item label='Họ và tên:' name='fullname' rules={[{ required: true, message: 'Không được để trống' }]}>
             <Input />
           </Form.Item>
         </div>
 
         <div className='mt-4'>
-          <Form.Item label='Địa chỉ:' name='address' className='mt-4'>
+          <Form.Item
+            label='Địa chỉ:'
+            name='address'
+            className='mt-4'
+            rules={[{ required: true, message: 'Không được để trống' }]}
+          >
             <Input />
           </Form.Item>
         </div>
         <div className='mt-4'>
-          <Form.Item label='Địa chỉ email:' name='email' className='mt-4'>
+          <Form.Item
+            label='Địa chỉ email:'
+            name='email'
+            className='mt-4'
+            rules={[{ required: true, message: 'Không được để trống' }]}
+          >
             <Input />
           </Form.Item>
         </div>
@@ -58,6 +68,7 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
             className='label-space'
             style={{ width: '70%', marginRight: '10px' }}
             labelCol={{ span: 6 }}
+            rules={[{ required: true, message: 'Không được để trống' }]}
           >
             <Input />
           </Form.Item>
@@ -67,6 +78,7 @@ const Inforuser: React.FC<CustomizedFormProps> = ({ fields, onChange }) => {
             className='label-space'
             style={{ width: '70%', marginLeft: '10px' }}
             labelCol={{ span: 5 }}
+            rules={[{ required: true, message: 'Không được để trống' }]}
           >
             <DatePicker style={{ width: '100%' }} />
           </Form.Item>
