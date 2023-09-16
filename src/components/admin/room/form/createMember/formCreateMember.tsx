@@ -279,8 +279,19 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
         </div>
       </div>
       <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
-        <div className=' text-base font-medium text-slate-500'></div>
-        <div className='w-full'></div>
+        {/* <div className=' text-base font-medium text-slate-500'></div> */}
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
+          Địa chỉ thường chú
+        </label>
+        <div className='w-full '>
+          <Form.Item name='address' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
+            {keyLocation === 'view' ? (
+              <Input className='w-full' readOnly />
+            ) : (
+              <Input className='w-full' placeholder='Địa chỉ thường chú' />
+            )}
+          </Form.Item>
+        </div>
         <label htmlFor='' className='text-base font-medium text-slate-500'>
           Ngày sinh
         </label>
@@ -296,18 +307,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
       </div>
       <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
         <label htmlFor='' className=' text-base font-medium text-slate-500'>
-          Địa chỉ thường chú
-        </label>
-        <div className='w-full '>
-          <Form.Item name='address' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
-            {keyLocation === 'view' ? (
-              <Input className='w-full' readOnly />
-            ) : (
-              <Input className='w-full' placeholder='Địa chỉ thường chú' />
-            )}
-          </Form.Item>
-        </div>
-        <label htmlFor='' className=' text-base font-medium text-slate-500'>
           Email
         </label>
         <div className='w-full'>
@@ -316,6 +315,18 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
               <Input className='w-full' readOnly />
             ) : (
               <Input className='w-full' placeholder='Email' />
+            )}
+          </Form.Item>
+        </div>
+        <label htmlFor='' className=' text-base font-medium text-slate-500'>
+          Số lượng xe
+        </label>
+        <div className='w-full'>
+          <Form.Item name='amountVehicle'>
+            {keyLocation === 'view' ? (
+              <Input className='w-full' readOnly />
+            ) : (
+              <Input type='number' className='w-full' placeholder='Số lượng xe' />
             )}
           </Form.Item>
         </div>
@@ -333,7 +344,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
           Biển số xe
         </label>
         <div className='w-full'>
-          <Form.Item name='vehicleNumber' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
+          <Form.Item name='vehicleNumber'>
             {keyLocation === 'view' ? (
               <Input className='w-full' readOnly />
             ) : (
@@ -450,7 +461,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
         {keyLocation === 'update' && (
           <Form.Item>
             <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-14 py-2.5 mr-2  '>
-              <i className='fa-solid fa-check'></i> Cap nhat
+              <i className='fa-solid fa-check'></i> Cập nhật
             </button>
           </Form.Item>
         )}
