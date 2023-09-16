@@ -96,7 +96,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
         .unwrap()
         .then((resp) => {
           message.success(`Thêm nhà ${values.name} thành công`);
-          setActiveTab('3');
+          setActiveTab('2');
           // navigate(`/admin/${urlRouter.ROOM}`);
         })
         .catch((err) => {

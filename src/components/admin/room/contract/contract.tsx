@@ -200,7 +200,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       if (response) {
         setLoading(false);
         toast.success('Thành công');
-        setActiveTab('2');
+        setActiveTab('3');
       }
     } catch (error: any) {
       if (error?.response?.data?.message === 'Only Contract With Room') {

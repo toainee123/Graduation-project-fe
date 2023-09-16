@@ -54,13 +54,8 @@ const CreateMember = () => {
 
   const items: TabsProps['items'] = [
     {
-      label: 'Hợp đồng',
-      key: '1',
-      children: <Contract houseid={houseId} setActiveTab={setActiveTab} />,
-    },
-    {
       label: 'Thông tin khách thuê',
-      key: '2',
+      key: '1',
       children: (
         <FormCreateMember
           detailRoom={detailRoom}
@@ -70,6 +65,11 @@ const CreateMember = () => {
           getData={getData}
         />
       ),
+    },
+    {
+      label: 'Hợp đồng',
+      key: '2',
+      children: <Contract houseid={houseId} setActiveTab={setActiveTab} />,
     },
     {
       label: 'Dịch vụ',
