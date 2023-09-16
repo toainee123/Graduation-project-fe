@@ -468,7 +468,7 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.owedold
       ).toLocaleString('VND')}</td></tr></tbody>`,
-        '@SumAmount': Number(resBill.data?.bill?.owedold).toLocaleString('VND'),
+        '@SumAmount': Number(resBill.data?.bill?.totalbill).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(

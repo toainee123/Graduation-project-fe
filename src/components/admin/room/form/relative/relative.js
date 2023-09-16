@@ -3,7 +3,7 @@ import { Form, Button, Table, Input, DatePicker, Radio, Space, Popconfirm } from
 import { PlusOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import '../relative/relative.scss'
 import { useLocation, useParams } from 'react-router-dom';
-import { addRoomMember, deleteMember, getRoom, getRoomMember } from 'src/api/room';
+import { addRoomMember, apiGetRoomTenantDetail, deleteMember, getRoom, getRoomMember } from 'src/api/room';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 const Relative = ({ setActiveTab }) => {
@@ -11,6 +11,8 @@ const Relative = ({ setActiveTab }) => {
     const [data, setData] = useState([]);
     const { roomId } = useParams();
     const [items, setItems] = useState([]);
+    const [maxCustomer, setMaxCustomer] = useState();
+    const [statusAdd, setStatusAdd] = useState(true);
     console.log(roomId);
     // const myParam = useLocation().search;
     // const idH = new URLSearchParams(myParam).get('idHouse');
@@ -19,6 +21,11 @@ const Relative = ({ setActiveTab }) => {
         const getData = async () => {
             // const respon = await getRoom(idH)
             // setListRoom(respon.data.result.responses)
+
+            const responseMaxCustomer = await apiGetRoomTenantDetail(roomId);
+
+            setMaxCustomer(responseMaxCustomer?.data?.maxcustomer)
+
 
             const response = await getRoomMember(roomId);
             const { data } = response;
@@ -42,13 +49,13 @@ const Relative = ({ setActiveTab }) => {
                 { items: newArrr }
             )
         }
+
         getData();
     }, [status])
 
 
 
     const onFinish = async (values) => {
-
 
         const dataMember = data ? data : [];
         console.log(dataMember);
@@ -114,7 +121,24 @@ const Relative = ({ setActiveTab }) => {
                         <th>Action</th>
                     </tr>
                 </thead>
-                <Form.List name="items" >
+                <Form.List name="items" rules={[
+                    {
+                        validator: async (_, items) => {
+                            console.log(items.length);
+                            if (items.length >= maxCustomer - 1) {
+                                setStatusAdd(false)
+                            }
+
+                            if (items.length === 0) {
+                                setStatusAdd(true)
+                            }
+
+                            if (items.length > 0 && items.length < maxCustomer - 1) {
+                                setStatusAdd(true)
+                            }
+                        },
+                    },
+                ]}>
                     {(fields, { add, remove }) => (
                         <tbody>
                             {fields.map((field, index) => (
@@ -230,7 +254,16 @@ const Relative = ({ setActiveTab }) => {
                                 <td>
                                     {" "}
                                     <Form.Item>
-                                        <Button type="dashed" onClick={() => add()} block>
+                                        <Button type="dashed" onClick={() => {
+                                            console.log(statusAdd);
+                                            if (statusAdd) {
+                                                add();
+                                            } else {
+                                                toast.error('Số thành viên đã tối đa, không thể thêm đc nữa!')
+                                            }
+
+
+                                        }} block >
                                             Thêm thành viên
                                         </Button>
                                     </Form.Item>
