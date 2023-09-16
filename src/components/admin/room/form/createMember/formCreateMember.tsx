@@ -96,7 +96,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
         .unwrap()
         .then((resp) => {
           message.success(`Thêm nhà ${values.name} thành công`);
-          setActiveTab('2');
+          setActiveTab('3');
           // navigate(`/admin/${urlRouter.ROOM}`);
         })
         .catch((err) => {
@@ -186,7 +186,7 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
     <Form initialValues={{ ...detailRoom, initialValues, getData }} form={form} onFinish={onFinish} size='large'>
       <div className='grid items-center lg:grid-cols-[100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-2'>
         <label htmlFor='' className='w-40 text-base font-semibold'>
-          Hình ảnh
+          Hình ảnh CCCD
         </label>
         <div className='ml-1'>
           <Form.Item name='image' className='form-upload'>

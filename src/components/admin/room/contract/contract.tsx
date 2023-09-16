@@ -17,7 +17,7 @@ import jsPDF from 'jspdf';
 import { log } from '@antv/g2plot/lib/utils';
 import axios from 'axios';
 
-const Contract = ({ houseid }: any) => {
+const Contract = ({ houseid, setActiveTab }: any) => {
   const { roomId } = useParams();
   const [roomTenant, setRoomTenant] = useState<any>();
   const [host, setHost] = useState<any>();
@@ -200,7 +200,7 @@ const Contract = ({ houseid }: any) => {
       if (response) {
         setLoading(false);
         toast.success('Thành công');
-        navigate(-1);
+        setActiveTab('2');
       }
     } catch (error: any) {
       if (error?.response?.data?.message === 'Only Contract With Room') {
@@ -210,7 +210,6 @@ const Contract = ({ houseid }: any) => {
         if (response) {
           setLoading(false);
           toast.success('Câp nhật thành công');
-          navigate(-1);
         }
       }
     }
@@ -250,7 +249,7 @@ const Contract = ({ houseid }: any) => {
         </span>
         <div className='ml-3 mr-3'>
           <Form action='' form={form} onFinish={onFinish}>
-            <div className='lg:flex  justify-start items-center  md:justify-start  my-4'>
+            <div className='grid lg:my-4 lg:grid-cols-[150px_1fr] sm:grid-cols-1 sm:gap-y-3'>
               <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
                 Thời gian hợp đồng
               </label>
@@ -262,12 +261,12 @@ const Contract = ({ houseid }: any) => {
                 <Input />
               </Form.Item>
             </div>
-            <div className='lg:flex gap-12 justify-between items-center gap-8 md:justify-start gap-8 mb-4'>
+            <div className='grid lg:my-4 lg:grid-cols-[120px_1fr_150px_1fr] lg:gap-8 sm:grid-cols-1 sm:gap-y-3'>
               <label htmlFor='' className='w-48 text-base font-medium text-slate-500'>
                 Ngày hợp đồng
               </label>
               <Form.Item
-                className='lg:w-1/2 sm:w-full'
+                className='w-full'
                 name='contractDate'
                 rules={[{ required: true, message: 'Không để trống ngày hợp đồng' }]}
               >
@@ -278,7 +277,7 @@ const Contract = ({ houseid }: any) => {
               </label>
 
               <Form.Item
-                className='lg:w-1/2 sm:w-full'
+                className='w-full'
                 rules={[{ required: true, message: 'Không để trống ngày kết thúc hợp đồng' }]}
                 name='contractExpir'
               >

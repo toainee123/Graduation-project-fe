@@ -9,8 +9,7 @@ import EditHouse from '../editHouse/editHouse';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { HouseSliceAction, deleteHouse, editHouse, getAllHouse, selectFilterHouse } from 'src/features/room/houseSlice';
 import { GetOutRoomTenant, deleteRoom } from 'src/features/room/roomSlice';
-import { getProvinces } from 'src/api/provinces/provinces';
-
+import thumNail from './logo bee.png';
 const { confirm } = Modal;
 
 const CardRoom = ({ idHouse }: any) => {
@@ -62,31 +61,31 @@ const CardRoom = ({ idHouse }: any) => {
       });
   };
 
-  const showDeleteConfirm = (idHouse: any) => {
-    confirm({
-      title: 'Bạn có chắc muốn xóa không',
-      icon: <ExclamationCircleFilled />,
-      content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa',
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Cancel',
-      onOk() {
-        // remove(idHouse);
-        // setListRoom(listRoom.filter((item: any) => item.id !== idHouse))
-        dispatch(deleteHouse(idHouse))
-          .unwrap()
-          .then((resp) => {
-            message.success('xóa nhà thành công');
-          })
-          .catch((err) => {
-            message.error('xóa nhà không thành công');
-          });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  };
+  // const showDeleteConfirm = (idHouse: any) => {
+  //   confirm({
+  //     title: 'Bạn có chắc muốn xóa không',
+  //     icon: <ExclamationCircleFilled />,
+  //     content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa',
+  //     okText: 'Đồng ý',
+  //     okType: 'danger',
+  //     cancelText: 'Cancel',
+  //     onOk() {
+  //       // remove(idHouse);
+  //       // setListRoom(listRoom.filter((item: any) => item.id !== idHouse))
+  //       dispatch(deleteHouse(idHouse))
+  //         .unwrap()
+  //         .then((resp) => {
+  //           message.success('xóa nhà thành công');
+  //         })
+  //         .catch((err) => {
+  //           message.error('xóa nhà không thành công');
+  //         });
+  //     },
+  //     onCancel() {
+  //       console.log('Cancel');
+  //     },
+  //   });
+  // };
   const showConfirmGetOutRoom = (roomId: any) => {
     confirm({
       title: 'Xác nhận khách trả phòng',
@@ -116,35 +115,35 @@ const CardRoom = ({ idHouse }: any) => {
       },
     });
   };
-  const showConfirmDeleteRoom = (roomId: any) => {
-    confirm({
-      title: 'Xác nhận xóa phòng',
-      icon: <ExclamationCircleFilled />,
-      // content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa về mặc định !',
-      okText: 'Đồng ý',
-      okType: 'danger',
-      cancelText: 'Thoát',
-      onOk() {
-        dispatch(deleteRoom(roomId))
-          .unwrap()
-          .then((resp) => {
-            message.success('Xóa phòng thành công');
-            const fetchRoom = async () => {
-              const { data } = await getRoom(idHouse);
-              setListRoom(data.result?.responses);
-              setAnalyticRoom(data.room);
-            };
-            fetchRoom();
-          })
-          .catch((err) => {
-            message.error('Xóa phòng không thành công');
-          });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  };
+  // const showConfirmDeleteRoom = (roomId: any) => {
+  //   confirm({
+  //     title: 'Xác nhận xóa phòng',
+  //     icon: <ExclamationCircleFilled />,
+  //     // content: 'Lưu ý: Toàn bộ dữ liệu trong phòng và khách thuê sẽ bị xóa về mặc định !',
+  //     okText: 'Đồng ý',
+  //     okType: 'danger',
+  //     cancelText: 'Thoát',
+  //     onOk() {
+  //       dispatch(deleteRoom(roomId))
+  //         .unwrap()
+  //         .then((resp) => {
+  //           message.success('Xóa phòng thành công');
+  //           const fetchRoom = async () => {
+  //             const { data } = await getRoom(idHouse);
+  //             setListRoom(data.result?.responses);
+  //             setAnalyticRoom(data.room);
+  //           };
+  //           fetchRoom();
+  //         })
+  //         .catch((err) => {
+  //           message.error('Xóa phòng không thành công');
+  //         });
+  //     },
+  //     onCancel() {
+  //       console.log('Cancel');
+  //     },
+  //   });
+  // };
   return (
     <div>
       <div className='xl:flex justify-between items-center mb-5'>
@@ -196,14 +195,14 @@ const CardRoom = ({ idHouse }: any) => {
           >
             {open && <EditHouse form={form} idHouse={idHouse} />}
           </Modal>
-          <Link to='#'>
+          {/* <Link to='#'>
             <button
               onClick={() => showDeleteConfirm(idHouse)}
               className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2'
             >
               <i className='fa-solid fa-trash'></i> Xóa
             </button>
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div className=' px-4 sm:py-2 sm:px-1 lg:max-w-full lg:px-2'>
@@ -211,100 +210,97 @@ const CardRoom = ({ idHouse }: any) => {
           {listRoom.length > 0 &&
             listRoom?.map((item: any, i: number) =>
               item.status ? (
-                <div className='m-w-72 h-52 rounded-lg bg-blue-300 p-4 flex flex-col justify-between' key={i}>
-                  <div className='number_house'>
-                    <p className='text-base text-gray-500'>
-                      <i className='fa-solid fa-house'></i> <span>{item?.name}</span>
-                    </p>
+                <div className='max-w-sm shadow-xl rounded-lg bg-blue-300 flex flex-col' key={i}>
+                  <div className=''>
+                    <img
+                      src={item?.image}
+                      alt=''
+                      className='bg-slate-500 rounded-t-lg duration-300 ease-in-out hover:opacity-50'
+                    />
                   </div>
-
-                  <div className='action text-center'>
-                    <Tooltip title='Trả phòng'>
-                      <button
-                        onClick={() => showConfirmGetOutRoom(item.id)}
-                        className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'
+                  <div className='p-4 h-3/5 grid grid-cols-1 gap-y-1'>
+                    <div className='number_house'>
+                      <p className='text-base text-gray-500'>
+                        <i className='fa-solid fa-house'></i> <span>{item?.name}</span>
+                      </p>
+                    </div>
+                    <div className='text-center'>
+                      <Tooltip title='Trả phòng'>
+                        <button
+                          onClick={() => showConfirmGetOutRoom(item.id)}
+                          className='focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'
+                        >
+                          <i className='fa-solid fa-rotate-left'></i>
+                        </button>
+                      </Tooltip>
+                      <Tooltip title='Xem phòng'>
+                        <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.id}?key=view`}>
+                          <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                            <i className='fa-solid fa-eye'></i>
+                          </button>
+                        </Link>
+                      </Tooltip>
+                      <Tooltip title='Chỉnh sửa phòng'>
+                        <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.UPDATE_MEMBER_IN_ROOM}/${item.id}?key=update`}>
+                          <button className=' focus:outline-none text-white bg-yellow-600 hover:bg-yellow-700 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
+                            <i className='fa-solid fa-gear'></i>
+                          </button>
+                        </Link>
+                      </Tooltip>
+                    </div>
+                    <div>
+                      <i className='fa-solid fa-user text-gray-500'></i>{' '}
+                      <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
+                      <br />
+                      <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
+                      <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
+                    </div>
+                    <div>
+                      <Link
+                        to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
+                        className='block text-blue-700 border border-blue-700 hover:text-white hover:bg-blue-800 hover:duration-300 focus:ring-4  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center mr-2 '
                       >
-                        <i className='fa-solid fa-rotate-left'></i>
-                      </button>
-                    </Tooltip>
-                    <Tooltip title='Xem phòng'>
-                      <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.id}?key=view`}>
-                        <button className='focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
-                          <i className='fa-solid fa-eye'></i>
-                        </button>
+                        <i className='fa-solid fa-gear'></i> Chỉnh sửa phòng
                       </Link>
-                    </Tooltip>
-                    <Tooltip title='Chỉnh sửa phòng'>
-                      <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.UPDATE_MEMBER_IN_ROOM}/${item.id}?key=update`}>
-                        <button className='focus:outline-none text-white bg-yellow-600 hover:bg-yellow-700 font-medium rounded-lg text-sm px-2 py-1 mx-1'>
-                          <i className='fa-solid fa-gear'></i>
-                        </button>
-                      </Link>
-                    </Tooltip>
-                  </div>
-                  <div>
-                    <i className='fa-solid fa-user text-gray-500'></i>{' '}
-                    <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
-                    <br />
-                    <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
-                    <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
-                  </div>
-
-                  <div className='action text-center'>
-                    <Link
-                      to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
-                      className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                    >
-                      <i className='fa-solid fa-gear'></i> Chỉnh sửa
-                    </Link>
-                    <button
-                      className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      onClick={() => showConfirmDeleteRoom(item?.id)}
-                    >
-                      <i className='fa-solid fa-trash'></i> Xóa
-                    </button>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div
-                  className='m-w-72 h-52 rounded-lg bg-gray-200 hover:bg-gray-200 p-4 flex flex-col justify-between'
-                  key={i}
-                >
-                  <div className='number_house'>
-                    <p className='text-base text-gray-500'>
-                      <i className='fa-solid fa-house'></i> <span>{item?.name}</span>
-                    </p>
+                <div className='m-w-72 rounded-lg bg-gray-200 hover:bg-gray-200 shadow-sm flex flex-col' key={i}>
+                  <div className='overflow-hidden relative cursor-pointer'>
+                    <img src={thumNail} alt='' className='rounded-t-lg duration-300 ease-in-out hover:opacity-50' />
                   </div>
-                  <div className='action text-center'>
-                    <button>
+                  <div className='p-4 h-3/5 grid grid-cols-1 gap-y-2'>
+                    <div className='number_house'>
+                      <p className='text-base text-gray-500'>
+                        <i className='fa-solid fa-house'></i> <span>{item?.name}</span>
+                      </p>
+                    </div>
+                    <div className=' text-center'>
+                      <button>
+                        <Link
+                          to={`${urlRouter.CREATE_MEMBER}/${item.id}`}
+                          className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 font-medium rounded-lg text-sm p-2 text-center mr-2 '
+                        >
+                          Thêm khách
+                        </Link>
+                      </button>
+                    </div>
+                    <div>
+                      <i className='fa-solid fa-user text-gray-500'></i>{' '}
+                      <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
+                      <br />
+                      <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
+                      <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
+                    </div>
+                    <div className=''>
                       <Link
-                        to={`${urlRouter.CREATE_MEMBER}/${item.id}`}
-                        className='text-green-700 hover:text-white border border-green-700 hover:bg-green-800 font-medium rounded-lg text-sm p-2 text-center mr-2 '
+                        to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
+                        className='block text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-2 text-center mr-2 '
                       >
-                        Thêm khách
+                        <i className='fa-solid fa-gear'></i> Chỉnh sửa phòng
                       </Link>
-                    </button>
-                  </div>
-                  <div>
-                    <i className='fa-solid fa-user text-gray-500'></i>{' '}
-                    <span className='text-green-600 font-bold'>{item?.maxCustomer}</span>
-                    <br />
-                    <i className='fa-solid fa-money-bill text-gray-500'></i>{' '}
-                    <span className='text-red-500 font-semibold'>{Number(item?.price).toLocaleString('VND')}</span>
-                  </div>
-                  <div className='action text-center'>
-                    <Link
-                      to={`/admin/${urlRouter.ROOM}/${urlRouter.EDIT_ROOM}/${item.id}?key=update`}
-                      className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                    >
-                      <i className='fa-solid fa-gear'></i> Chỉnh sửa
-                    </Link>
-                    <button
-                      className='text-red-500 hover:text-white border border-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-2 py-1 text-center mr-2 '
-                      onClick={() => showConfirmDeleteRoom(item?.id)}
-                    >
-                      <i className='fa-solid fa-trash'></i> Xóa
-                    </button>
+                    </div>
                   </div>
                 </div>
               )

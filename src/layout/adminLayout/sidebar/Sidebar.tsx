@@ -10,6 +10,7 @@ import {
   // DashboardOutlined,
   MailOutlined,
   ReconciliationOutlined,
+  SettingOutlined,
   ThunderboltOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -40,20 +41,12 @@ const Sidebar = (props: Props) => {
   const resultEmail = getEmailLocalStorage?.substring(1, getEmailLocalStorage.length - 11);
   const menuListItem: MenuItem[] = [
     {
-      label: (
-        <Link to={urlRouter.HOMEPAGE}>
-          Thống kê
-        </Link>
-      ),
+      label: <Link to={urlRouter.HOMEPAGE}>Thống kê</Link>,
       key: '1',
       icon: <LineChartOutlined />,
     },
     {
-      label: (
-        <Link to={urlRouter.ROOM}>
-          Phòng
-        </Link>
-      ),
+      label: <Link to={urlRouter.ROOM}>Phòng</Link>,
       key: '2',
       icon: <HomeOutlined />,
     },
@@ -69,11 +62,7 @@ const Sidebar = (props: Props) => {
       icon: <BulbOutlined />,
     },
     {
-      label: (
-        <Link to={urlRouter.SERVICE}>
-          Dịch vụ
-        </Link>
-      ),
+      label: <Link to={urlRouter.SERVICE}>Dịch vụ</Link>,
       key: '3',
       icon: <ReconciliationOutlined />,
     },
@@ -118,33 +107,21 @@ const Sidebar = (props: Props) => {
       ],
     },
     {
-      label: (
-        <Link to={urlRouter.ASSETS}>
-          Tài sản
-        </Link>
-      ),
+      label: <Link to={urlRouter.ASSETS}>Tài sản</Link>,
       key: '10',
       icon: <FileTextOutlined />,
     },
 
     {
-      label: (
-        <Link to={urlRouter.CHARGE}>
-          Tính tiền
-        </Link>
-      ),
+      label: <Link to={urlRouter.CHARGE}>Tính tiền</Link>,
       key: '11',
       icon: <CalculatorOutlined />,
     },
     {
-      label: (
-        <Link to={urlRouter.ESTABLISH}>
-          Thiết lập
-        </Link>
-      ),
+      label: <Link to={urlRouter.ESTABLISH}>Thiết lập</Link>,
       key: '12',
 
-      icon: <FileOutlined />,
+      icon: <SettingOutlined />,
     },
     {
       label: <Link to={urlRouter.KEEP_ROOM}>Cọc phòng</Link>,
@@ -184,7 +161,7 @@ const Sidebar = (props: Props) => {
           mode={mode}
           theme={theme}
           items={menuListItem}
-        // selectedKeys={[current]}
+          // selectedKeys={[current]}
         />
       </Sider>
 

@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerProps, Form, Input, Select, message } from 'antd';
+import { DatePicker, DatePickerProps, Form, Input, InputNumber, Select, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getListHouse } from 'src/api/house';
@@ -13,6 +13,7 @@ const CreateKeepRoom = () => {
   const [roomId, setRoomId] = useState([]);
   const [room, setRoom] = useState([]);
   const [house, setHouse] = useState([]);
+  const [limitprice, setLimitPrice] = useState(Number);
 
   useEffect(() => {
     const getHouse = async () => {
@@ -62,6 +63,9 @@ const CreateKeepRoom = () => {
       .catch((err) => {
         message.error(err.message);
       });
+  };
+  const onChange = (value: any) => {
+    setLimitPrice(value);
   };
   return (
     <div>
@@ -138,7 +142,17 @@ const CreateKeepRoom = () => {
               </label>
               <div className='w-full'>
                 <Form.Item name='moneyOrder' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-                  <Input className='w-full outline-0 items-center md: my-2' type='number' placeholder='Giá' />
+                  <InputNumber
+                    formatter={(value) =>
+                      value.replace(/\B(?=(\d{3})+(?!\d))/g, ',').replace(/(?: \b|-)([1-9]{1, 2}[0]?|1000)\b/g)
+                    }
+                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                    onChange={onChange}
+                    controls={false}
+                    className='w-full outline-0'
+                    placeholder='Giá cọc'
+                    addonAfter='VNĐ'
+                  />
                 </Form.Item>
               </div>
               <label htmlFor='' className='w-64 text-base font-semibold'>

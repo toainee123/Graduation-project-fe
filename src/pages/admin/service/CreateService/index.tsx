@@ -1,4 +1,4 @@
-import { Form, Input, Select, message } from 'antd';
+import { Form, Input, InputNumber, Select, message } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createService } from 'src/api/service';
@@ -8,6 +8,7 @@ const CreateSevice = () => {
   const navigate = useNavigate();
   const { Option } = Select;
   const [changeCode, setChangeCode] = useState('');
+  const [limitprice, setLimitPrice] = useState(Number);
   const handleChange = (value: any) => {
     console.log('Selected value:', value);
     setChangeCode(value);
@@ -29,6 +30,9 @@ const CreateSevice = () => {
         message.error(err.message);
       });
   };
+  const onChange = (value: any) => {
+    setLimitPrice(value);
+  };
   return (
     <>
       <div className='title_page'>
@@ -37,7 +41,7 @@ const CreateSevice = () => {
       <div className='float-right'></div>
       <div className=''>
         <Form size='large' onFinish={Onsubmit}>
-          <div className='lg:flex justify-between py-2 items-center gap-8 md:justify-start gap-8'>
+          <div className='grid grid-cols-[100px_1fr_100px_1fr] gap-8'>
             <label htmlFor='' className='w-64 text-base font-semibold'>
               Tên dịch vụ <b style={{ color: 'red' }}>*</b>
             </label>
@@ -59,17 +63,22 @@ const CreateSevice = () => {
               </Form.Item>
             </div>
           </div>
-          <div className='lg:flex justify-between py-2 items-center gap-12 md:justify-start gap-8'>
+          <div className='w-full grid grid-cols-[130px_1fr_160px_1fr] mt-2'>
             <label htmlFor='' className=' text-base font-semibold' style={{ marginRight: 73 }}>
               Giá <b style={{ color: 'red' }}>*</b>
             </label>
-            <div className='' style={{ marginRight: 100 }}>
+            <div className=' w-full'>
               <Form.Item name='price' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-                <Input
-                  type='number'
-                  style={{ borderRadius: 6, marginRight: 200 }}
-                  className='w-full outline-0 md: my-2'
-                  placeholder='Giá của tài san'
+                <InputNumber
+                  formatter={(value) =>
+                    value.replace(/\B(?=(\d{3})+(?!\d))/g, ',').replace(/(?: \b|-)([1-9]{1, 2}[0]?|1000)\b/g)
+                  }
+                  parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                  onChange={onChange}
+                  controls={false}
+                  className='w-full outline-0'
+                  placeholder='Đơn giá tài sản'
+                  addonAfter='VNĐ'
                 />
               </Form.Item>
             </div>

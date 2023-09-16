@@ -113,7 +113,7 @@ const Service = ({ setActiveTab }: any) => {
                 });
                 if (response?.status === 'success') {
                   toast.success('Cập nhập thành công');
-                  setActiveTab('3');
+                  setActiveTab('4');
                 }
               } catch (error) {
                 toast.error('Cập nhậpkhông thành công');

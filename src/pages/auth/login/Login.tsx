@@ -53,10 +53,6 @@ const Login = (props: Props) => {
         </div>
         <div className='my-2'>
           <Form.Item>
-            <Form.Item name='remember' valuePropName='checked' noStyle>
-              <Checkbox>Nhớ mật khẩu</Checkbox>
-            </Form.Item>
-
             <Link to='/auth/forgot-password' className='float-right'>
               Quên mật khẩu
             </Link>

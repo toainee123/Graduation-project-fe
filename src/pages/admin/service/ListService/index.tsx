@@ -75,10 +75,6 @@ const Service = () => {
       dataIndex: 'price',
     },
     {
-      title: 'Mã dịch vụ',
-      dataIndex: 'code',
-    },
-    {
       title: 'Action',
       dataIndex: 'actions',
       render: (_: any, record: any) => (

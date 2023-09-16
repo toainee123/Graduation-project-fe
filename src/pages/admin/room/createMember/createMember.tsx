@@ -54,8 +54,13 @@ const CreateMember = () => {
 
   const items: TabsProps['items'] = [
     {
-      label: 'Thông tin khách thuê',
+      label: 'Hợp đồng',
       key: '1',
+      children: <Contract houseid={houseId} setActiveTab={setActiveTab} />,
+    },
+    {
+      label: 'Thông tin khách thuê',
+      key: '2',
       children: (
         <FormCreateMember
           detailRoom={detailRoom}
@@ -68,18 +73,13 @@ const CreateMember = () => {
     },
     {
       label: 'Dịch vụ',
-      key: '2',
+      key: '3',
       children: <Service setActiveTab={setActiveTab} />,
     },
     {
       label: 'Thành viên',
-      key: '3',
-      children: <Relative setActiveTab={setActiveTab} />,
-    },
-    {
-      label: 'Hợp đồng',
       key: '4',
-      children: <Contract houseid={houseId} setActiveTab={setActiveTab} />,
+      children: <Relative />,
     },
   ];
   return (

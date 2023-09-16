@@ -17,6 +17,8 @@ const CreateAssets = () => {
   const [dateLiquidation, setDateLiquidation] = useState('');
   const [status, setStatus] = useState(Boolean);
   const [show, setShow] = useState(true);
+  const [limitprice, setLimitPrice] = useState(Number);
+
   const navigate = useNavigate();
   useEffect(() => {
     const getDeposit = async () => {
@@ -70,6 +72,9 @@ const CreateAssets = () => {
       .catch((err) => {
         message.error(err.message);
       });
+  };
+  const onChange = (value: any) => {
+    setLimitPrice(value);
   };
   return (
     <>
@@ -137,11 +142,7 @@ const CreateAssets = () => {
               </label>
               <div className='w-full'>
                 <Form.Item name='amount' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-                  <Input
-                    type='number'
-                    className='w-full outline-0 md: my-2'
-                    placeholder='Số lượng'
-                  />
+                  <Input type='number' className='w-full outline-0 md: my-2' placeholder='Số lượng' />
                 </Form.Item>
               </div>
             </div>
@@ -151,7 +152,17 @@ const CreateAssets = () => {
               </label>
               <div className='w-full'>
                 <Form.Item name='price' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-                  <Input className='w-full outline-0 items-center md: my-2' type='number' placeholder='Giá' />
+                  <InputNumber
+                    formatter={(value) =>
+                      value.replace(/\B(?=(\d{3})+(?!\d))/g, ',').replace(/(?: \b|-)([1-9]{1, 2}[0]?|1000)\b/g)
+                    }
+                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                    onChange={onChange}
+                    controls={false}
+                    className='w-full outline-0'
+                    placeholder='Đơn giá tài sản'
+                    addonAfter='VNĐ'
+                  />
                 </Form.Item>
               </div>
               <label htmlFor='' className='w-64 text-base text-slate-500 font-semibold'>

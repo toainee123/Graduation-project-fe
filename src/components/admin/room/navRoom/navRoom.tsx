@@ -165,7 +165,7 @@ const NavRoom = () => {
               <div>
                 <div className='text-base mb-2'>Tên nhà</div>
                 <Form.Item name='name' rules={[{ required: true, message: 'Tên nhà không được bỏ trống' }]}>
-                  <Input placeholder='tên nhà' />
+                  <Input placeholder='Tên nhà' />
                 </Form.Item>
               </div>
 
@@ -226,8 +226,8 @@ const NavRoom = () => {
                 </div>
               </div>
               <div className='mb-2'>
-                <div className='text-base mb-2'>Địa chỉ</div>
-                <Form.Item name='address' rules={[{ required: true, message: 'Địa chỉ không được bỏ trống' }]}>
+                <div className='text-base mb-2'>Số nhà</div>
+                <Form.Item name='address' rules={[{ required: true, message: 'Số nhà không được bỏ trống' }]}>
                   <Input
                     type='text'
                     className='w-full py-1 pl-2 border'

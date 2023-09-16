@@ -322,7 +322,7 @@ const Charge = () => {
       key: 'Action',
       render: (record) => {
         return (
-          <div className='flex flex justify-center items-center'>
+          <div className='flex justify-center items-center'>
             <button
               className=' flex justify-center items-center bg-blue-500 text-white p-1 rounded mx-1'
               onClick={() => {
@@ -369,17 +369,17 @@ const Charge = () => {
       },
     },
     {
-      title: 'House',
+      title: 'Nhà',
       key: 'House',
       dataIndex: 'house',
     },
     {
-      key: 'House',
-      title: 'Room',
+      title: 'Phòng',
+      key: 'room',
       dataIndex: 'room',
     },
     {
-      title: 'User',
+      title: 'Khách thuê',
       key: 'User',
       dataIndex: 'user',
     },
@@ -884,7 +884,7 @@ const Charge = () => {
                                   required={true}
                                   key={field.key}
                                   name={[field.name, 'roomid']}
-                                  rules={[{ required: true, message: 'Không để trống tên phongf' }]}
+                                  rules={[{ required: true, message: 'Không để trống tên phòng' }]}
                                 >
                                   <Input disabled={true} />
                                 </Form.Item>
@@ -978,17 +978,15 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
-            <Tooltip title='Ấn 2 lần nút để gửi email'>
-              <button
-                className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
-                onClick={() => {
-                  // await renderBillSendEmail();
-                  handleSendEmail();
-                }}
-              >
-                <MailOutlined className='icon-btn' /> Email
-              </button>
-            </Tooltip>
+            <button
+              className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                // await renderBillSendEmail();
+                handleSendEmail();
+              }}
+            >
+              <MailOutlined className='icon-btn' /> Email
+            </button>
 
             {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
@@ -1004,21 +1002,16 @@ const Charge = () => {
         {/* filter */}
         <div className='filter'>
           <Form layout='horizontal' initialValues={initValueFormFilter} onFinish={onFinishFter} name='formFilter'>
-            <div className='flex  w-9/12 mt-5 items-center'>
-              <div className='flex-item'>
-                <Form.Item label='Tháng/năm' name='dateTime'>
-                  <DatePicker picker='month' />
-                </Form.Item>
-              </div>
-
-              <div className='flex-item'>
-                <Form.Item label='Nhà' name='house'>
-                  <Select style={{ width: 200 }} options={optionFilterHouse} />
-                </Form.Item>
-              </div>
+            <div className='grid grid-cols-[200px_200px_200px] gap-3 w-9/12 mt-5 items-center'>
+              <Form.Item label='Tháng/năm' name='dateTime'>
+                <DatePicker picker='month' />
+              </Form.Item>
+              <Form.Item label='Nhà' name='house'>
+                <Select options={optionFilterHouse} />
+              </Form.Item>
               <Form.Item>
                 <Button type='primary' htmlType='submit'>
-                  Filter
+                  Tìm kiếm
                 </Button>
               </Form.Item>
             </div>
@@ -1036,7 +1029,7 @@ const Charge = () => {
         </div>
         <div ref={componentPrintRef} className='hide table-export'>
           <div className='header-print'>
-            <h1 className='uppercase text-center text-bold '>Danh sách tiền phòngs</h1>
+            <h1 className='uppercase text-center text-bold '>Danh sách tiền phòng</h1>
           </div>
           <Table
             columns={columns}
@@ -1061,7 +1054,7 @@ const Charge = () => {
               return (
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0} colSpan={3} className='text-right'>
-                    Total
+                    Tổng
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
                   <Table.Summary.Cell index={1}>
@@ -1101,7 +1094,7 @@ const Charge = () => {
             return (
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0} colSpan={3}>
-                  Total
+                  Tổng tiền
                 </Table.Summary.Cell>
                 <Table.Summary.Cell index={4} colSpan={2}></Table.Summary.Cell>
                 <Table.Summary.Cell index={1}>

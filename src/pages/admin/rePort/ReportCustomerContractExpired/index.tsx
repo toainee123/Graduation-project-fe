@@ -79,12 +79,12 @@ const ReportCustomerContractExpired = () => {
 
   useEffect(() => {
     const getDataRoom = async () => {
-      const { data } = await get()
-      setDataRoom(data.result)
-    }
-    getDataRoom()
-  }, [])
-  console.log("dataRoom", dataRoom);
+      const { data } = await get();
+      setDataRoom(data.result);
+    };
+    getDataRoom();
+  }, []);
+  console.log('dataRoom', dataRoom);
   const handleSubmitSearch = (values: TSearchFormValues) => {
     setHouseid(values.houseid);
     setRoomid(values.roomid);
@@ -113,13 +113,13 @@ const ReportCustomerContractExpired = () => {
               </Form.Item>
             </div>
 
-            <div className='ms-6'>
+            <div className='ms-4'>
               <div className='flex  w-full  items-center '>
                 <Button
                   className='title-button-retype bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5  px-4  rounded flex items-center justify-between'
                   htmlType='submit'
                 >
-                  <SearchOutlined className='icon-btn' /> Xem
+                  Tìm
                 </Button>
               </div>
             </div>
