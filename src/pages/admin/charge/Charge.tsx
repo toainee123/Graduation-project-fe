@@ -742,8 +742,9 @@ const Charge = () => {
       // const data = await addBill(dataInput);
       dispatch(addCharge({ input: dataInput, filter: valueFilter }));
       form.resetFields();
+      toast.success('Thanh toán thành công!');
     } catch (error) {
-      console.log(error);
+      toast.error('Thanh toán không thành công!');
     }
   };
 
