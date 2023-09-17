@@ -14,5 +14,11 @@ export const TransFormToWaterData = (data: any): any => data?.indexWater?.map((i
     total: +item.total
 }))
 
+export const TransFormToTotalBillData = (data: any): any => data?.totalBill?.map((item: any) => ({
+    month: item.month + '/' + item.year,
+    total: +item.total
+}))
+
+
 
 

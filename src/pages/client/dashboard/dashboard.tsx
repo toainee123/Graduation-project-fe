@@ -6,12 +6,14 @@ import {
   TransFormToElecData,
   TransFormToWaterData,
 } from 'src/pages/admin/homePage/hooks/useTranformToBarData';
+import { TransFormToTotalBillData } from './hook/TransFormData';
 
 const DashboardUser = () => {
   const [elecDataChart, setElecDataChart] = useState<Array<object>>([]);
   const [data, setData] = useState<Array<object>>([]);
   const [dataChart, setDataChart] = useState<Array<object>>([]);
   const [waterDataChart, setWaterDataChart] = useState<Array<object>>([]);
+  const [totalBillChart, setTotalBillChart] = useState<Array<object>>([]);
 
   useEffect(() => {
     const getAll = async () => {
@@ -26,6 +28,7 @@ const DashboardUser = () => {
 
       const dataWaterChart = TransFormToWaterData(data);
       const dataElecChart = TransFormToElecData(data);
+      const dataTotalBillChart = TransFormToTotalBillData(data);
       const elecAr = monthofyear.map((item) => {
         for (let i = 0; i < dataElecChart.length; i++) {
           if (dataElecChart[i].month == item) {
@@ -35,7 +38,6 @@ const DashboardUser = () => {
         return { month: item };
       });
       setElecDataChart(elecAr);
-      console.log(elecAr);
 
       const waterAr = monthofyear.map((item) => {
         for (let i = 0; i < dataWaterChart.length; i++) {
@@ -46,6 +48,17 @@ const DashboardUser = () => {
         return { month: item };
       });
       setWaterDataChart(waterAr);
+
+      const totalBillAr = monthofyear.map((item) => {
+        for (let i = 0; i < dataTotalBillChart.length; i++) {
+          if (dataTotalBillChart[i].month == item) {
+            return { month: dataTotalBillChart[i].month, total: dataTotalBillChart[i].total };
+          }
+        }
+        return { month: item };
+      });
+
+      setTotalBillChart(totalBillAr);
     };
     getAll();
   }, []);
@@ -78,6 +91,19 @@ const DashboardUser = () => {
               </h3>
             </div>
             <ColumnChart data={waterDataChart} xField='month' yField='total' />
+          </div>
+        </div>
+      </div>
+
+      <div className='w-full grid lg:grid-cols-2 gap-4 mt-6 md:grid-cols-1'>
+        <div className=' '>
+          <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
+            <div className='titlee py-2 border-b-2 '>
+              <h3 className='uppercase'>
+                <strong>Hóa đơn các tháng</strong>
+              </h3>
+            </div>
+            <ColumnChart data={totalBillChart} xField='month' yField='total' />
           </div>
         </div>
       </div>

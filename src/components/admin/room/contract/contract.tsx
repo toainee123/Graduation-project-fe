@@ -236,9 +236,11 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       height = ratio * width;
 
       pdf.addImage(imgData, 'png', 0, 8, width, height);
-      pdf.save('download.pdf');
+      const blob = pdf.output('blob');
+      console.log(blob);
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
     });
-
     htmlInput.setAttribute('hidden', 'true');
   };
   return (
@@ -299,7 +301,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
                   await handleExportPDF();
                 }}
               >
-                Xuất file PDF
+                Xem trước file pdf
               </Button>
             </Form.Item>
           </Form>
