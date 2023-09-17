@@ -6,7 +6,7 @@ import './receipt.scss';
 import parse from 'html-react-parser';
 import axios from 'axios';
 import { getBillUser, getQrcodeUser } from 'src/api/charge';
-import { createUrlPayment } from 'src/api/payment';
+import { createUrlPayment, getQrcodeImg } from 'src/api/payment';
 import { getInfoRoomUser } from 'src/api/dashboard';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { getListIndexElecUser } from 'src/features/electricity/electricitySlice';
@@ -30,39 +30,19 @@ const Receipt = (props: Props) => {
     };
     getBill();
   }, [dateFilter]);
+
+  useEffect(() => {
+    const getQrimg = async () => {
+      const { data } = await getQrcodeImg();
+      setQrCode(data?.qrCode?.qrcode);
+    };
+    getQrimg();
+  }, [dateFilter]);
   const handleChangeFilter = (date: any) => {
     const formatDate = moment(date).format('YYYY-MM-DD');
     setDateFilter(formatDate);
   };
 
-  // const dataBill?.bill: any = {
-  //   id: 49,
-  //   totalbill: '2180000',
-  //   pricewater: '30000',
-  //   priceelectricity: '50000',
-  //   owedold: '1050000',
-  //   date: '2023-08-18T17:00:00.000Z',
-  //   namehouse: 'nha 3',
-  //   roomid: 13,
-  //   roomhouse: 'p1',
-  //   priceroom: '1000000',
-  //   namecustomer: 'Nguyen Van A',
-  //   address: 'Hnoi',
-  //   phone: '0399710843',
-  //   email: 'thai.hoang13834@gmail.com',
-  // };
-
-  // const service = [
-  //   {
-  //     nameservice: 'Rác',
-  //     priceservice: '50000',
-  //   },
-
-  //   {
-  //     nameservice: 'Máy giặt',
-  //     priceservice: '150000',
-  //   },
-  // ];
   const elec = useAppSelector((state) => state.electricity.value);
   const elecObj = elec[0];
   const consumptionElecIndex = elecObj?.index - elecObj?.indexOld;
@@ -121,15 +101,24 @@ const Receipt = (props: Props) => {
 
         {dataBill ? (
           <div>
-            <Alert
-              className='note bordered '
-              message='Vui lòng thanh toán trong vòng 7 ngày tính từ thời gian nhận được hóa đơn.
-          Mọi thắc mắc xin gửi phản hồi về cho website để được xử lý.'
-              type='info'
-            />
-
             <div className='p-3 shadow-[0px_0px_3px_rgba(3,102,214,0.3)] mt-4'>
               <div className='header_bill flex justify-between '>
+                <div className='qrCode flex align-items'>
+                  <img src={qrCode} alt='' width={300} />
+                  <div className='w-400 mx-3  text-xl'>
+                    <p>
+                      {' '}
+                      <strong>Lưu ý* :</strong> Quý khách có thể chuyển khoản cho chủ trọ qua QRCode này, và sau đó đợi
+                      chủ trọ xác nhận!!
+                    </p>
+                    <br />
+                    <p>
+                      <strong>Chuyển tiền qua QRCODE vui lòng nhập nội dung chuyển tiền theo mẫu sau :</strong>
+                      <br />
+                      <p className='text-red-500 text-2xl'>Họ và tên - Số phòng/Tên nhà - Đóng tiền phòng tháng ... </p>
+                    </p>
+                  </div>
+                </div>
                 <div>
                   <h2 className='text-2xl '>
                     <strong>BeeHome.com</strong>
@@ -166,7 +155,7 @@ const Receipt = (props: Props) => {
                   <button className='bg-green-500 px-2 py-1 text-white rounded-md ccao'>Đã thanh toán đầy đủ !!</button>
                 ) : (
                   <button className='bg-blue-500 px-2 py-1 text-white rounded-md ccao' onClick={handleClick}>
-                    Thanh toán ngay
+                    Thanh toán với VNPay
                   </button>
                 )}
               </div>

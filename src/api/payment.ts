@@ -7,7 +7,11 @@ export const createUrlPayment = (idroom: any, value: any) => {
 
 export const paymentReturn = (idroom: any, idBill: any, value: any) => {
     const url = `/bill/vnpay_return?id=${idroom}&idBill=${idBill}`;
-
     return axiosClient.post(url, value);
+};
+
+export const getQrcodeImg = () => {
+    const url = `/dashboard/user`;
+    return axiosClient.get(url);
 };
 

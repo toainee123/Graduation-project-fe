@@ -3,6 +3,7 @@ import { Form, Input, Button, Select, DatePicker, Row, Col, Upload, Typography, 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { getDistrict, getProvinces, getWards } from 'src/api/provinces/provinces';
 import { RcFile } from 'antd/lib/upload';
+import { getInfoCustomer } from 'src/api/establish';
 type Props = {};
 
 interface FieldData {
@@ -24,9 +25,24 @@ const Qrcode: React.FC<CustomizedFormProps> = ({ onChange }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
+  const [fileListt, setFileListt] = useState<any>([]);
+  useEffect(() => {
+    const getImageQrcode = async () => {
+      const { data } = await getInfoCustomer();
+      setFileListt([
+        {
+          uid: '-1',
+          name: 'image.png',
+          status: 'done',
+          url: data?.result?.avatar,
+        },
+      ]);
+    };
 
-  useEffect(() => {}, []);
+    getImageQrcode();
+  }, []);
   const handleChange: any = ({ fileList }: any) => {
+    setFileListt(fileList);
     onChange(fileList);
     setCountImg(fileList.length);
   };
@@ -61,6 +77,7 @@ const Qrcode: React.FC<CustomizedFormProps> = ({ onChange }) => {
           return false;
         }}
         onPreview={handlePreview}
+        fileList={fileListt}
         multiple={false}
         maxCount={1}
       >
