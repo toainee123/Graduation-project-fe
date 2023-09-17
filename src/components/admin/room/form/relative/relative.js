@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button, Table, Input, DatePicker, Radio, Space, Popconfirm } from 'antd';
 import { PlusOutlined, MinusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import '../relative/relative.scss'
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { addRoomMember, deleteMember, getRoom, getRoomMember } from 'src/api/room';
-import { useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { addRoomMember, apiGetRoomTenantDetail, deleteMember, getRoom, getRoomMember } from 'src/api/room';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
