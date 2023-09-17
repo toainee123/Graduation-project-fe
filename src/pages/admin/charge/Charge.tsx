@@ -673,7 +673,7 @@ const Charge = () => {
 
   const handleOk = () => {
     form.submit();
-    setIsModalOpenCalculator(false);
+    // setIsModalOpenCalculator(false);
   };
 
   const handleExit = () => {
@@ -771,10 +771,10 @@ const Charge = () => {
                 onFinish={handleSubmituserform}
                 initialValues={initValueCacula}
               >
-                <Form.Item name='date' label='Ngày tháng'>
+                <Form.Item name='date' label='Ngày tháng' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                 </Form.Item>
-                <Form.Item name='house' label='Nhà'>
+                <Form.Item name='house' label='Nhà' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <Select
                     style={{ width: '100%' }}
                     options={houses?.map((item: any, index: number) => {
@@ -784,7 +784,7 @@ const Charge = () => {
                     onChange={handleSelectHouse}
                   />
                 </Form.Item>
-                <Form.Item name='room' label='Phòng'>
+                <Form.Item name='room' label='Phòng' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <Select
                     style={{ width: '100%' }}
                     options={room?.map((item: any, index: number) => {
@@ -794,11 +794,19 @@ const Charge = () => {
                   />
                 </Form.Item>
 
-                <Form.Item name='elec' label='Chỉ số điện'>
+                <Form.Item
+                  name='elec'
+                  label='Chỉ số điện'
+                  rules={[{ required: true, message: 'Không được để trống!' }]}
+                >
                   <Input />
                 </Form.Item>
 
-                <Form.Item name='water' label='Chỉ số nước'>
+                <Form.Item
+                  name='water'
+                  label='Chỉ số nước'
+                  rules={[{ required: true, message: 'Không được để trống!' }]}
+                >
                   <Input />
                 </Form.Item>
               </Form>
@@ -853,7 +861,7 @@ const Charge = () => {
                     <Form.Item
                       name='date_allbill'
                       label='Ngày tháng'
-                      rules={[{ required: true, message: 'Không để ngày tháng tính tiền!' }]}
+                      rules={[{ required: true, message: 'Không để trống ngày tháng tính tiền!' }]}
                     >
                       <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                     </Form.Item>
@@ -982,17 +990,16 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
-            <Tooltip title='Ấn 2 lần nút để gửi email'>
-              <button
-                className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
-                onClick={() => {
-                  // await renderBillSendEmail();
-                  handleSendEmail();
-                }}
-              >
-                <MailOutlined className='icon-btn' /> Email
-              </button>
-            </Tooltip>
+
+            <button
+              className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
+              onClick={() => {
+                // await renderBillSendEmail();
+                handleSendEmail();
+              }}
+            >
+              <MailOutlined className='icon-btn' /> Email
+            </button>
 
             {/* <button
               className='btn-x bg-red-800 hover:bg-red-800 text-white font-bold py-2  px-4 rounded'
