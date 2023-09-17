@@ -177,7 +177,7 @@ const FormCreateRoom = () => {
                     </div>
                     <label htmlFor="" className=" text-base text-slate-500 font-semibold">Nhà</label>
                     <div className='w-full '>
-                        <Form.Item name="houseId" rules={[{ required: true, message: "Không được bỏ trống" }]}>
+                        <Form.Item name="idhouse" rules={[{ required: true, message: "Không được bỏ trống" }]}>
                             <Select
                                 placeholder="Lựa chọn nhà"
                                 allowClear
