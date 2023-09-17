@@ -18,3 +18,8 @@ export const postKeyPayment = async (value: any) => {
     const url = `/customer`;
     return axiosClient.post(url, value);
 };
+
+export const uploadQrcode = async (file: any) => {
+    const url = `/dashboard/upload-file`;
+    return axiosClient.post(url, file);
+};

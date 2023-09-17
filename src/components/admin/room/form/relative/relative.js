@@ -259,7 +259,7 @@ const Relative = ({ setActiveTab }) => {
                                             if (statusAdd) {
                                                 add();
                                             } else {
-                                                toast.error('Số thành viên đã tối đa, không thể thêm đc nữa!')
+                                                toast.error('Số thành viên đã tối đa, không thể thêm được nữa!')
                                             }
 
 

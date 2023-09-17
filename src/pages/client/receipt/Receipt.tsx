@@ -5,19 +5,28 @@ import React, { useEffect, useState } from 'react';
 import './receipt.scss';
 import parse from 'html-react-parser';
 import axios from 'axios';
-import { getBillUser } from 'src/api/charge';
+import { getBillUser, getQrcodeUser } from 'src/api/charge';
 import { createUrlPayment } from 'src/api/payment';
 import { getInfoRoomUser } from 'src/api/dashboard';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { getListIndexElecUser } from 'src/features/electricity/electricitySlice';
+import { getListIndexWterUser } from 'src/features/water/waterSlice';
 type Props = {};
 
 const Receipt = (props: Props) => {
   const date = new Date();
   const [dateFilter, setDateFilter] = useState(moment(date).format('YYYY-MM-DD'));
+  const [qrCode, setQrCode] = useState<any>();
+
   const [dataBill, setDataBill] = useState<any>();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     const getBill = async () => {
       const { data } = await getBillUser(dateFilter);
       setDataBill(data);
+      dispatch(getListIndexWterUser(dateFilter));
+      dispatch(getListIndexElecUser(dateFilter));
     };
     getBill();
   }, [dateFilter]);
@@ -54,6 +63,13 @@ const Receipt = (props: Props) => {
   //     priceservice: '150000',
   //   },
   // ];
+  const elec = useAppSelector((state) => state.electricity.value);
+  const elecObj = elec[0];
+  const consumptionElecIndex = elecObj?.index - elecObj?.indexOld;
+
+  const water = useAppSelector((state) => state.water.value);
+  const waterObj = water[0];
+  const consumptionWaterIndex = waterObj?.index - waterObj?.indexOld;
 
   let stringSv = '';
   const serviceString = dataBill?.service?.map((item: any) => {
@@ -65,7 +81,7 @@ const Receipt = (props: Props) => {
     return 0;
   });
 
-  const datee: any = moment(dataBill?.bill.date).format('DD/MM/YYYY');
+  const datee: any = moment(dataBill?.bill.date).format('MM/YYYY');
   const handleClick = async () => {
     const dataInput: any = {
       amount:
@@ -115,13 +131,6 @@ const Receipt = (props: Props) => {
             <div className='p-3 shadow-[0px_0px_3px_rgba(3,102,214,0.3)] mt-4'>
               <div className='header_bill flex justify-between '>
                 <div>
-                  <h2 className='text-xl'>
-                    <h4>
-                      Ngày tạo:<strong> {datee.toLocaleString()}</strong>
-                    </h4>
-                  </h2>
-                </div>
-                <div>
                   <h2 className='text-2xl '>
                     <strong>BeeHome.com</strong>
                   </h2>
@@ -164,7 +173,7 @@ const Receipt = (props: Props) => {
               <div className='body-bill mt-6'>
                 <div className='flex justify-center text-2xl my-2 bg-slate-200 p-2 '>
                   <p className='text-black'>
-                    <strong>Nội dung thanh toán</strong>
+                    <strong>Nội dung thanh toán tháng {datee.toLocaleString()}</strong>
                   </p>
                 </div>
                 <div className=''>
@@ -181,11 +190,12 @@ const Receipt = (props: Props) => {
                         <td>{Number(dataBill?.bill.priceroom).toLocaleString('VND')}</td>
                       </tr>
                       <tr>
-                        <td>Tiền nước</td>
+                        <td>Tiền nước {`(Tiền nước = ${consumptionWaterIndex}(Chỉ số nước tiêu thụ) * Giá nước)`}</td>
+
                         <td>{Number(dataBill?.bill.pricewater).toLocaleString('VND')}</td>
                       </tr>
                       <tr>
-                        <td>Tiền điện</td>
+                        <td>Tiền điện {`(Tiền điện = ${consumptionElecIndex}(Chỉ số điện tiêu thụ) * Giá điện)`}</td>
                         <td>{Number(dataBill?.bill.priceelectricity).toLocaleString('VND')}</td>
                       </tr>
 

@@ -644,6 +644,10 @@ const Charge = () => {
     date: moment(),
   };
 
+  const initValueCaculaAll = {
+    date_allbill: moment(),
+  };
+
   const onFinishFter = async (values: any) => {
     const year = moment(values.dateTime).year();
     const month = moment(values.dateTime).month() + 1;
@@ -844,7 +848,7 @@ const Charge = () => {
                 width={'100vw'}
                 style={{ top: 10, left: 0, right: 0, bottom: 0 }}
               >
-                <Form form={form} className='h-modal' layout='vertical'>
+                <Form form={form} className='h-modal' layout='vertical' initialValues={initValueCaculaAll}>
                   <div>
                     <Form.Item
                       name='date_allbill'
