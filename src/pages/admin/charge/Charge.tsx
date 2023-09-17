@@ -224,12 +224,16 @@ const Charge = () => {
       '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
         room?.price
       ).toLocaleString('VND')}</td></tr>
-        <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
-          resBill.data?.bill?.pricewater
-        ).toLocaleString('VND')}</td></tr>
-        <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
-          resBill.data?.bill?.priceelectricity
-        ).toLocaleString('VND')}</td></tr>
+        <tr><td style="width:70%">Tiền nước (Chỉ số tiêu thụ: ${
+          resBill.data?.indexWater
+        })</td><td style="width:30%;text-align:right">${Number(resBill.data?.bill?.pricewater).toLocaleString(
+        'VND'
+      )}</td></tr>
+        <tr><td style="width:70%">Tiền điện (Chỉ số tiêu thụ: ${
+          resBill.data?.indexElectricity
+        })</td><td style="width:30%;text-align:right">${Number(resBill.data?.bill?.priceelectricity).toLocaleString(
+        'VND'
+      )}</td></tr>
         ${listSvBill}
         <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
           resBill.data?.bill?.owedold
@@ -673,7 +677,7 @@ const Charge = () => {
 
   const handleOk = () => {
     form.submit();
-    // setIsModalOpenCalculator(false);
+    setIsModalOpenCalculator(false);
   };
 
   const handleExit = () => {
