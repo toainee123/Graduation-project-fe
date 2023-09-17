@@ -73,3 +73,8 @@ export const getBillUser = async (date: any) => {
     return axiosClient.get(url);
 }
 
+export const getQrcodeUser = async () => {
+    const url = `/establish/info-customer`;
+    return axiosClient.get(url);
+}
+

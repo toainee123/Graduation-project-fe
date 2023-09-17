@@ -224,12 +224,16 @@ const Charge = () => {
       '@ContentHtmlInvoiceService': `<tbody><tr><td style="width:70%">Tiền nhà</td><td style="width:30%;text-align:right">${Number(
         room?.price
       ).toLocaleString('VND')}</td></tr>
-        <tr><td style="width:70%">Tiền nước</td><td style="width:30%;text-align:right">${Number(
-          resBill.data?.bill?.pricewater
-        ).toLocaleString('VND')}</td></tr>
-        <tr><td style="width:70%">Tiền điện</td><td style="width:30%;text-align:right">${Number(
-          resBill.data?.bill?.priceelectricity
-        ).toLocaleString('VND')}</td></tr>
+        <tr><td style="width:70%">Tiền nước (Chỉ số tiêu thụ: ${
+          resBill.data?.indexWater
+        })</td><td style="width:30%;text-align:right">${Number(resBill.data?.bill?.pricewater).toLocaleString(
+        'VND'
+      )}</td></tr>
+        <tr><td style="width:70%">Tiền điện (Chỉ số tiêu thụ: ${
+          resBill.data?.indexElectricity
+        })</td><td style="width:30%;text-align:right">${Number(resBill.data?.bill?.priceelectricity).toLocaleString(
+        'VND'
+      )}</td></tr>
         ${listSvBill}
         <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
           resBill.data?.bill?.owedold
@@ -468,7 +472,7 @@ const Charge = () => {
       <tr><td style="width:70%">Tiền nợ tháng trước</td><td style="width:30%;text-align:right">${Number(
         resBill.data?.bill?.owedold
       ).toLocaleString('VND')}</td></tr></tbody>`,
-        '@SumAmount': Number(resBill.data?.bill?.owedold).toLocaleString('VND'),
+        '@SumAmount': Number(resBill.data?.bill?.totalbill).toLocaleString('VND'),
       };
 
       const dataaddDom = printForm?.replaceAll(
@@ -644,6 +648,10 @@ const Charge = () => {
     date: moment(),
   };
 
+  const initValueCaculaAll = {
+    date_allbill: moment(),
+  };
+
   const onFinishFter = async (values: any) => {
     const year = moment(values.dateTime).year();
     const month = moment(values.dateTime).month() + 1;
@@ -734,8 +742,9 @@ const Charge = () => {
       // const data = await addBill(dataInput);
       dispatch(addCharge({ input: dataInput, filter: valueFilter }));
       form.resetFields();
+      toast.success('Thanh toán thành công!');
     } catch (error) {
-      console.log(error);
+      toast.error('Thanh toán không thành công!');
     }
   };
 
@@ -767,10 +776,10 @@ const Charge = () => {
                 onFinish={handleSubmituserform}
                 initialValues={initValueCacula}
               >
-                <Form.Item name='date' label='Ngày tháng'>
+                <Form.Item name='date' label='Ngày tháng' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                 </Form.Item>
-                <Form.Item name='house' label='Nhà'>
+                <Form.Item name='house' label='Nhà' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <Select
                     style={{ width: '100%' }}
                     options={houses?.map((item: any, index: number) => {
@@ -780,7 +789,7 @@ const Charge = () => {
                     onChange={handleSelectHouse}
                   />
                 </Form.Item>
-                <Form.Item name='room' label='Phòng'>
+                <Form.Item name='room' label='Phòng' rules={[{ required: true, message: 'Không được để trống!' }]}>
                   <Select
                     style={{ width: '100%' }}
                     options={room?.map((item: any, index: number) => {
@@ -790,11 +799,19 @@ const Charge = () => {
                   />
                 </Form.Item>
 
-                <Form.Item name='elec' label='Chỉ số điện'>
+                <Form.Item
+                  name='elec'
+                  label='Chỉ số điện'
+                  rules={[{ required: true, message: 'Không được để trống!' }]}
+                >
                   <Input />
                 </Form.Item>
 
-                <Form.Item name='water' label='Chỉ số nước'>
+                <Form.Item
+                  name='water'
+                  label='Chỉ số nước'
+                  rules={[{ required: true, message: 'Không được để trống!' }]}
+                >
                   <Input />
                 </Form.Item>
               </Form>
@@ -844,12 +861,12 @@ const Charge = () => {
                 width={'100vw'}
                 style={{ top: 10, left: 0, right: 0, bottom: 0 }}
               >
-                <Form form={form} className='h-modal' layout='vertical'>
+                <Form form={form} className='h-modal' layout='vertical' initialValues={initValueCaculaAll}>
                   <div>
                     <Form.Item
                       name='date_allbill'
                       label='Ngày tháng'
-                      rules={[{ required: true, message: 'Không để ngày tháng tính tiền!' }]}
+                      rules={[{ required: true, message: 'Không để trống ngày tháng tính tiền!' }]}
                     >
                       <DatePicker style={{ width: '100%' }} picker='month' disabledDate={disabledDate} />
                     </Form.Item>
@@ -978,6 +995,7 @@ const Charge = () => {
             >
               <MoneyCollectOutlined className='icon-btn' /> Thu tiền
             </button>
+
             <button
               className='btn-x bg-teal-500 hover:bg-teal-500  text-white font-bold py-2  px-4 rounded'
               onClick={() => {

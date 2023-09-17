@@ -10,14 +10,17 @@ import ChangePassword from './ChangePassword';
 import { updateAstablishContract } from 'src/features/establish/establishSlice';
 import axios from 'axios';
 import moment from 'moment';
-import { getInfoCustomer, getKeyPayment, postKeyPayment, updateInfoCustomer } from 'src/api/establish';
+import { getInfoCustomer, getKeyPayment, postKeyPayment, updateInfoCustomer, uploadQrcode } from 'src/api/establish';
 import authApi from 'src/api/auth';
 import Paymentmethod from './Paymentmethod';
+import Qrcode from './Qrcode';
 type Props = {};
 
 const Establish = (props: Props) => {
   const [fields, setFields] = useState<any>([]);
   const [fieldsPassword, setFieldsPassword] = useState<any>([]);
+  const [fileQrImg, setFileQrImg] = useState<any>();
+  const [status, setStatus] = useState<any>(false);
   const [fieldsPayment, setFieldsMethod] = useState<any>([]);
   useEffect(() => {
     const getUserInfor = async () => {
@@ -112,6 +115,9 @@ const Establish = (props: Props) => {
       case '3':
         handleSavePaymentMethod();
         break;
+      case '4':
+        handleQrcode();
+        break;
       default:
         break;
     }
@@ -172,6 +178,22 @@ const Establish = (props: Props) => {
       toast.error('Không thành công');
     }
   };
+
+  const handleQrcode = async () => {
+    const ig = fileQrImg[0];
+    let formData = new FormData();
+    formData.append('file', ig.originFileObj);
+    const { data } = await uploadQrcode(formData);
+
+    try {
+      const response: any = await updateInfoCustomer({ avatar: data?.link });
+      if (response?.status == 'success') {
+        toast.success('Lưu QRCODE thành công!!');
+      }
+    } catch (error) {
+      toast.error('Lưu QRCODE không thành công!!');
+    }
+  };
   const listItem = [
     {
       label: 'Thông tin chủ trọ',
@@ -199,12 +221,6 @@ const Establish = (props: Props) => {
       ),
     },
 
-    // {
-    //   label: 'Mẫu in',
-    //   key: '3',
-    //   children: <Printform getSelectOption={handleGetSelect} />,
-    // },
-
     {
       label: 'Cài đặt thanh toán',
       key: '3',
@@ -213,6 +229,18 @@ const Establish = (props: Props) => {
           fields={fieldsPayment}
           onChange={(newFieldsPayment: any) => {
             setFieldsMethod(newFieldsPayment);
+          }}
+        />
+      ),
+    },
+
+    {
+      label: 'Mã QRCODE thanh toán',
+      key: '4',
+      children: (
+        <Qrcode
+          onChange={(newFile: any) => {
+            setFileQrImg(newFile);
           }}
         />
       ),
