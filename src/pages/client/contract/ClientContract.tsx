@@ -1,3 +1,4 @@
+import { Button, Result } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,8 @@ const ClientContract = () => {
     };
     getImgCt();
   }, []);
+  console.log('lnik', getImg?.link);
+
   return (
     <div>
       <div className='title_page'>
@@ -31,7 +34,18 @@ const ClientContract = () => {
           Xem chi tiết hợp đồng
         </Link>
       </div>
-      <embed src={`${getImg?.link}#toolbar=0`} width='100%' height='700'></embed>
+      {getImg?.link ? (
+        <img src={getImg?.link} width='100%' height='700' />
+      ) : (
+        <Result
+          title='Chưa có hợp đồng nào được tạo ra'
+          extra={
+            <Button type='primary' key='console'>
+              <Link to={'/'}>Quay về</Link>
+            </Button>
+          }
+        />
+      )}
       {/* <iframe
         src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${getImg?.link}#toolbar=0&scrollbar=0`}
         height='700'

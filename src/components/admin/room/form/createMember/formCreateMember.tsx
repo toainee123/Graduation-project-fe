@@ -281,14 +281,14 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
       <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
         {/* <div className=' text-base font-medium text-slate-500'></div> */}
         <label htmlFor='' className=' text-base font-medium text-slate-500'>
-          Địa chỉ thường chú
+          Quê quán
         </label>
         <div className='w-full '>
           <Form.Item name='address' rules={[{ required: true, message: 'Không được bỏ trống trường này' }]}>
             {keyLocation === 'view' ? (
               <Input className='w-full' readOnly />
             ) : (
-              <Input className='w-full' placeholder='Địa chỉ thường chú' />
+              <Input className='w-full' placeholder='Quê quán' />
             )}
           </Form.Item>
         </div>

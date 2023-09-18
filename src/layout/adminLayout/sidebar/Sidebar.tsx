@@ -129,7 +129,7 @@ const Sidebar = (props: Props) => {
       icon: <FileOutlined />,
     },
     {
-      label: <Link to={urlRouter.LIST_EMAIL}>Gửi email/ Lịch sử gửi mail</Link>,
+      label: <Link to={urlRouter.LIST_EMAIL}>Gửi email</Link>,
       key: '14',
       icon: <MailOutlined />,
     },
