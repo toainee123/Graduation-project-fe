@@ -93,10 +93,13 @@ const Relative = () => {
             }
             toast.success('Thành công!!!')
             setStatus(!status);
+            setTimeout(() => {
+                navigate(-1);
+            }, 800);
         } catch (error) {
             console.log(error);
         }
-        navigate(-1)
+
     }
 
     const handleRemoveItem = (index) => {
