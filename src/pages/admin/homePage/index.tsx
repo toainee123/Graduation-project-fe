@@ -181,7 +181,7 @@ const Homepage = (props: Props) => {
           <div className='bg-white-100 rounded-lg p-6 shadow-[0px_0px_3px_rgba(3,102,214,0.3)]'>
             <div className='titlee py-2 border-b-2 '>
               <h3 className='uppercase'>
-                <strong>Doanh sách phòng trống</strong>
+                <strong>Danh sách phòng trống</strong>
               </h3>
             </div>
             <RoomAvailability />

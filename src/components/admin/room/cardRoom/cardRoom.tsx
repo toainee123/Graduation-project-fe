@@ -215,7 +215,7 @@ const CardRoom = ({ idHouse }: any) => {
                     <img
                       src={item?.image}
                       alt=''
-                      className='bg-slate-500 cursor-pointer rounded-t-lg duration-300 ease-in-out hover:opacity-50'
+                      className=' h-52 w-full bg-slate-500 cursor-pointer rounded-t-lg duration-300 ease-in-out hover:opacity-50'
                     />
                   </div>
                   <div className='p-4 h-3/5 grid grid-cols-1 gap-y-1'>
@@ -268,7 +268,11 @@ const CardRoom = ({ idHouse }: any) => {
               ) : (
                 <div className='m-w-72 rounded-lg bg-gray-200 hover:bg-gray-200 shadow-sm flex flex-col' key={i}>
                   <div className='overflow-hidden relative cursor-pointer h-60'>
-                    <img src={item?.image} alt='' className='rounded-t-lg duration-300 ease-in-out hover:opacity-50' />
+                    <img
+                      src={item?.image}
+                      alt=''
+                      className='h-52 w-full rounded-t-lg duration-300 ease-in-out hover:opacity-50'
+                    />
                   </div>
                   <div className='p-4 h-3/5 grid grid-cols-1 gap-y-2'>
                     <div className='number_house'>

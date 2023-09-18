@@ -1165,7 +1165,7 @@ const Charge = () => {
         </Modal>
 
         <Modal
-          title='Basic Modal'
+          title='Thu tiền'
           open={isModalOpen1}
           onOk={() => {
             form

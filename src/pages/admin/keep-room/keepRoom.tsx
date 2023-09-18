@@ -328,21 +328,23 @@ const KeepRoom = () => {
                 <tbody>
                   {data?.map((item: any, index: number) => (
                     <tr key={index} className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.id}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>0{item.phone}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
                         {Number(item?.money).toLocaleString('VND')}
                       </td>
-                      <td className='text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>
+                      <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         {convertDate(item?.bookingdate)}
                       </td>
-                      <td className='text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>
+                      <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         {convertDate(item.checkindate)}
                       </td>
-                      <td className='text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>{item.nameHouse}</td>
-                      <td className='text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>{item.nameRoom}</td>
-                      {/* <td className='text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>
+                      <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
+                        {item.nameHouse}
+                      </td>
+                      <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>{item.nameRoom}</td>
+                      {/* <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         {item.status === null ? (
                           <div>
                             <button
@@ -364,7 +366,7 @@ const KeepRoom = () => {
                           <div className='text-red-500'>Đã hủy</div>
                         )}
                       </td> */}
-                      <td className='flex text-sm text-gray-900 font-base px-6 py-4 whitespace-nowrap'>
+                      <td className='flex text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         {/* <div>
                           <Button onClick={() => showDeleteConfirm(item.id)} danger>
                             Xóa

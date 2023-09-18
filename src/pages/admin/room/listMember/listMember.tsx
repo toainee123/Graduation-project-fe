@@ -31,7 +31,6 @@ const ListMember = () => {
       dayStart: moment(item.date).format('DD/MM/YYYY'),
       roomFee: Number(item.price).toLocaleString('VND'),
       deposits: Number(item.deposit).toLocaleString('VND'),
-      role: <Tag color='green'>Host</Tag>,
       action: (
         <Link to={`/admin/${urlRouter.ROOM}/${urlRouter.VIEW_MEMBER_IN_ROOM}/${item.roomid}?key=view`} target='_blank'>
           <EyeOutlined className='color-green action-table' />
@@ -54,11 +53,6 @@ const ListMember = () => {
       title: <div>Họ tên</div>,
       dataIndex: 'Name',
       key: 'Name',
-    },
-    {
-      title: <div>Vai trò</div>,
-      dataIndex: 'role',
-      key: 'role',
     },
     {
       title: <div>Số điện thoại</div>,

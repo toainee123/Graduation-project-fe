@@ -1,4 +1,5 @@
 import {
+  BellOutlined,
   BgColorsOutlined,
   BulbOutlined,
   CalculatorOutlined,
@@ -93,14 +94,14 @@ const Sidebar = (props: Props) => {
       icon: <MailOutlined />,
     },
     {
-      label: <Link to={urlRouter.CLIENT_RECEIPT}>Thanh toan Hóa đơn</Link>,
+      label: <Link to={urlRouter.CLIENT_RECEIPT}>Thanh toán Hóa đơn</Link>,
       key: '15',
       icon: <FormOutlined />,
     },
     {
-      label: <Link to={urlRouter.CLIENT_SENDNOTIFICATION}>Báo cáo </Link>,
+      label: <Link to={urlRouter.CLIENT_SENDNOTIFICATION}>Gửi yêu cầu</Link>,
       key: '7',
-      icon: <ExclamationCircleOutlined />,
+      icon: <BellOutlined />,
     },
     {
       label: <Link to={urlRouter.CLIENT_INFAORMATION}>Thông tin cá nhân</Link>,

@@ -7,6 +7,8 @@ type Props = {
   colorField: string;
 };
 const ColumnChart = ({ data, xField, yField }: any) => {
+  console.log('data chart', data);
+
   const config: ColumnConfig = {
     data,
     xField,
@@ -34,6 +36,13 @@ const ColumnChart = ({ data, xField, yField }: any) => {
     yAxis: {},
     meta: {
       totalRevenue: {
+        alias: 'Doanh thu tháng ',
+        formatter(value, index) {
+          const a = Number(value).toLocaleString('VND');
+          return a;
+        },
+      },
+      total: {
         alias: 'Doanh thu tháng ',
         formatter(value, index) {
           const a = Number(value).toLocaleString('VND');
