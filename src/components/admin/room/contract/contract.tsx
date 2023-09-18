@@ -177,10 +177,10 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     setLoading(true);
     htmlInput.setAttribute('hidden', 'true');
     const image: any = canvas.toDataURL('image/png', 1.0);
-    const file = new File([image], 'image_thai.png', { type: 'image/png' });
 
+    const file = new File([image], 'image_thai.png', { type: 'image/png' });
+    console.log(file);
     // const response = await uploadImageContract(file);
-    // console.log(response);
 
     const CLOUDINARY_PRESET = 'gtn4lbpo';
     const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
