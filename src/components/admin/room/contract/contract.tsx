@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { apiGetRoomTenantDetail } from 'src/api/room';
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
-import { addContract, getContractByIdRoom, updateContract } from 'src/api/contract';
+import { addContract, getContractByIdRoom, updateContract, uploadImageContract } from 'src/api/contract';
 import { getInfoCustomer } from 'src/api/establish';
 import { getHouseId } from 'src/api/house';
 import html2canvas from 'html2canvas';
@@ -136,7 +136,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
 
     const getRoomTenant = async () => {
       const { data } = await apiGetRoomTenantDetail(roomId);
-      console.log(data);
 
       setRoomTenant(data);
     };
@@ -177,26 +176,26 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     const canvas = await html2canvas(htmlInput);
     setLoading(true);
     htmlInput.setAttribute('hidden', 'true');
-    const image = canvas.toDataURL('image/png', 1.0);
-    const pdf: any = new jsPDF('l', 'mm', 'a3');
-    const width = pdf.internal.pageSize.getWidth();
-    let height = pdf.internal.pageSize.getHeight();
-    height = ratio * width;
-    pdf.addImage(image, 'PNG', 0, 8, width, height);
-    const blob = pdf.output('blob');
-    console.log(blob);
+    const image: any = canvas.toDataURL('image/png', 1.0);
+    const file = new File([image], 'image_thai.png', { type: 'image/png' });
+
+    // const response = await uploadImageContract(file);
+    // console.log(response);
+
+    const CLOUDINARY_PRESET = 'gtn4lbpo';
+    const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
+
     const formData = new FormData();
-    formData.append('file', blob);
+    formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_PRESET);
     const { data } = await axios.post(CLOUDINARY_API_URL, formData, {
       headers: {
         'Content-Type': 'application/form-data',
       },
     });
-    const imgUrl = data.url;
-    console.log(imgUrl);
+    const imgLink = data.url;
     try {
-      const response = await addContract({ ...dataPost, link: imgUrl });
+      const response = await addContract({ ...dataPost, link: imgLink });
       if (response) {
         setLoading(false);
         toast.success('Thành công');
@@ -206,7 +205,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       if (error?.response?.data?.message === 'Only Contract With Room') {
         const id = contract?.id;
 
-        const response = await updateContract({ ...dataPost, link: imgUrl }, id);
+        const response = await updateContract({ ...dataPost, link: imgLink }, id);
         if (response) {
           setLoading(false);
           toast.success('Câp nhật thành công');
