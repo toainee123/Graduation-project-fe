@@ -211,7 +211,7 @@ const CardRoom = ({ idHouse }: any) => {
             listRoom?.map((item: any, i: number) =>
               item.status ? (
                 <div className='max-w-sm shadow-xl rounded-lg bg-blue-300 flex flex-col' key={i}>
-                  <div className=''>
+                  <div className='h-60'>
                     <img
                       src={item?.image}
                       alt=''
@@ -267,8 +267,8 @@ const CardRoom = ({ idHouse }: any) => {
                 </div>
               ) : (
                 <div className='m-w-72 rounded-lg bg-gray-200 hover:bg-gray-200 shadow-sm flex flex-col' key={i}>
-                  <div className='overflow-hidden relative cursor-pointer'>
-                    <img src={thumNail} alt='' className='rounded-t-lg duration-300 ease-in-out hover:opacity-50' />
+                  <div className='overflow-hidden relative cursor-pointer h-60'>
+                    <img src={item?.image} alt='' className='rounded-t-lg duration-300 ease-in-out hover:opacity-50' />
                   </div>
                   <div className='p-4 h-3/5 grid grid-cols-1 gap-y-2'>
                     <div className='number_house'>

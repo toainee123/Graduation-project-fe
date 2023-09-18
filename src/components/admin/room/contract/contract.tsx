@@ -301,7 +301,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
                   await handleExportPDF();
                 }}
               >
-                Xem trước file pdf
+                Xem trước hợp đồng
               </Button>
             </Form.Item>
           </Form>
