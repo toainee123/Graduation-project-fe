@@ -27,3 +27,8 @@ export const getImgContract = async () => {
   const url = `/contract/link-contract`;
   return axiosClient.get(url);
 };
+
+export const uploadImageContract = async (file: any) => {
+  const url = `/dashboard/upload-file`;
+  return axiosClient.post(url, file);
+};

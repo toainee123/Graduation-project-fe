@@ -181,6 +181,8 @@ const Establish = (props: Props) => {
 
   const handleQrcode = async () => {
     const ig = fileQrImg[0];
+    console.log(ig.originFileObj);
+
     let formData = new FormData();
     formData.append('file', ig.originFileObj);
     const { data } = await uploadQrcode(formData);
