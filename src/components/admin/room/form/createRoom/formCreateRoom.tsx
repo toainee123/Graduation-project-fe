@@ -40,7 +40,7 @@ const FormCreateRoom = () => {
         form.setFieldsValue({
           ...data,
           name: data?.nameroom,
-          houseId: data?.houseId,
+          houseId: data?.idhouse,
           maxCustomer: data?.maxcustomer,
           indexElectricity: data?.indexelectricity,
           indexWater: data?.indexwater,
@@ -127,9 +127,9 @@ const FormCreateRoom = () => {
     if (keyLocation === 'update') {
       try {
         console.log('linkImage', linkImage);
-        await dispatch(editRoom({ payload: { ...values, image: linkImage }, roomId }));
+        await dispatch(editRoom({ payload: { ...values, image: linkImage, houseId: detailRoom?.idhouse }, roomId }));
         message.success(`Cập nhât ${values.name} thành công`);
-        // navigate(`/admin/${urlRouter.ROOM}`);
+        navigate(-1);
       } catch (error) {
         message.error(`Cập nhât ${values.name} thất bại`);
       }
@@ -178,7 +178,7 @@ const FormCreateRoom = () => {
           </label>
           <div className='w-full '>
             <Form.Item name='houseId' rules={[{ required: true, message: 'Không được bỏ trống' }]}>
-              <Select placeholder='Lựa chọn nhà' allowClear>
+              <Select placeholder='Lựa chọn nhà' allowClear disabled={keyLocation === 'update'}>
                 {house?.result?.map((item: any, i: any) => (
                   <Option key={i} value={item.id}>
                     {item.name}

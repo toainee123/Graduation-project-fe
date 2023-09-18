@@ -318,18 +318,6 @@ const FormCreateMember = ({ detailRoom, initialValues, getData, roomId, setActiv
             )}
           </Form.Item>
         </div>
-        <label htmlFor='' className=' text-base font-medium text-slate-500'>
-          Số lượng xe
-        </label>
-        <div className='w-full'>
-          <Form.Item name='amountVehicle'>
-            {keyLocation === 'view' ? (
-              <Input className='w-full' readOnly />
-            ) : (
-              <Input type='number' className='w-full' placeholder='Số lượng xe' />
-            )}
-          </Form.Item>
-        </div>
       </div>
       <div className='grid items-center lg:grid-cols-[100px_1fr_100px_1fr] lg:gap-8 md:grid-cols-1 gap-2 my-5'>
         <label htmlFor='' className=' text-base font-medium text-slate-500'>
