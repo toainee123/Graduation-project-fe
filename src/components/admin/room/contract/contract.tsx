@@ -51,8 +51,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
 
     const getContract = async () => {
       const { data } = await getContractByIdRoom(roomId);
-      console.log(roomId);
-
       form.setFieldsValue({
         expiry: data?.expiry,
         contractDate: moment(data?.contractdate),
@@ -78,6 +76,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     getHouse();
     getRoomTenant();
   }, []);
+
   const establishData = useAppSelector((state: any) => state.establish.value);
   const renderContract = () => {
     const sampleContract = establishData?.result?.samplecontract;
@@ -116,8 +115,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       '@FULLNAMECUSTOMER': upperCaseFULLNAMECUSTOMER,
       '@CUSTOMERNAMEROOMRENT': upperCaseCUSTOMERNAMEROOMRENT,
     };
-
-    console.log(dataContract);
     const newContract = rvSampleContract?.replaceAll(
       /@ContrasctDate|@ContractDateDay|@ContractDateMonth|@ContractDateYear|@AddressCustomer|@FullNameCustomer|@BirthdayCustomerConfig|@AddressHost|@ContractNo|@TelephoneCustomer|@CustomerNameRoomRent|@BirthdayRoomRent|@IDCARDNORoomRent|@DateIssueRoomRent|@PlaceIssueRoomRent|@AddressRoomRentasdasd|@TelephoneRoomRent|@RoomName|@AdressArea|@ContractMonths|@BeginRent|@RoomAmount|@PayType|@DepositAmount|@ProvinceName|@FULLNAMECUSTOMERNAME /gi,
       (matched: any) => {
@@ -129,36 +126,37 @@ const Contract = ({ houseid, setActiveTab }: any) => {
 
   const CLOUDINARY_PRESET = 'gtn4lbpo';
   const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/auto/upload';
-  useEffect(() => {
-    const reRender = () => {
-      renderContract();
-    };
+  // useEffect(() => {
+  //   const reRender = () => {
+  //     renderContract();
+  //   };
 
-    const getRoomTenant = async () => {
-      const { data } = await apiGetRoomTenantDetail(roomId);
+  //   const getRoomTenant = async () => {
+  //     const { data } = await apiGetRoomTenantDetail(roomId);
 
-      setRoomTenant(data);
-    };
+  //     setRoomTenant(data);
+  //   };
 
-    const getHost = async () => {
-      const { data } = await getInfoCustomer();
-      setHost(data);
-    };
+  //   const getHost = async () => {
+  //     const { data } = await getInfoCustomer();
+  //     setHost(data);
+  //   };
 
-    const getHouse = async () => {
-      const { data } = await getHouseId(houseid);
+  //   const getHouse = async () => {
+  //     const { data } = await getHouseId(houseid);
 
-      setHouse(data);
-    };
-    reRender();
-    getHost();
-    getHouse();
-    getRoomTenant();
-  }, [formValue]);
+  //     setHouse(data);
+  //   };
+  //   reRender();
+  //   getHost();
+  //   getHouse();
+  //   getRoomTenant();
+  // }, [formValue]);
 
   const onFinish = async (values: any) => {
     setFormValue(values);
 
+    await renderContract();
     const dataPost = {
       customerId: roomTenant?.customerid,
       roomId: roomId ? +roomId : '',
@@ -169,18 +167,12 @@ const Contract = ({ houseid, setActiveTab }: any) => {
 
     const htmlInput: any = document.querySelector('.ql-editor');
     htmlInput.removeAttribute('hidden');
-    const divHeight = htmlInput.clientHeight;
-    const divWidth = htmlInput.clientWidth;
-    console.log(divHeight, divWidth);
-    const ratio = divHeight / divWidth;
     const canvas = await html2canvas(htmlInput);
     setLoading(true);
     htmlInput.setAttribute('hidden', 'true');
     const image: any = canvas.toDataURL('image/png', 1.0);
 
     const file = new File([image], 'image_thai.png', { type: 'image/png' });
-    console.log(file);
-    // const response = await uploadImageContract(file);
 
     const CLOUDINARY_PRESET = 'gtn4lbpo';
     const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/image/upload';
@@ -212,10 +204,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
         }
       }
     }
-
-    // html2canvas(htmlInput, { logging: true, useCORS: true }).then(async (canvas) => {
-    //   const imgData = canvas.toDataURL('image/png');
-    // });
   };
 
   const handleExportPDF = () => {
