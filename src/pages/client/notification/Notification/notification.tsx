@@ -118,7 +118,7 @@ const Notification = () => {
                       {data?.map((item: any, index: number) => (
                         <tr
                           key={index}
-                          className='text-center bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'
+                          className=' bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'
                         >
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
                           <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>

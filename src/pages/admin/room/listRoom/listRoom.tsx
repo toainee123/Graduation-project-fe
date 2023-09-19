@@ -9,7 +9,7 @@ import { getAllRoom } from 'src/api/room';
 const ListMember = () => {
   const [listRoom, setListRoom] = useState<any>([]);
   const [analyticRoom, setAnalyticRoom] = useState<any>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchRoom = async () => {
       const { data } = await getAllRoom();
@@ -24,7 +24,7 @@ const ListMember = () => {
       key: i,
       roomNumber: item.nameroom,
       Area: item.namehouse,
-      price: Number(item.price).toLocaleString('VND')
+      price: Number(item.price).toLocaleString('VND'),
     };
   });
 
@@ -53,7 +53,7 @@ const ListMember = () => {
       filterSearch: true,
     },
     {
-      title: <div>Đơn giả</div>,
+      title: <div>Đơn giá</div>,
       dataIndex: 'price',
       key: 'price',
       sorter: (a: any, b: any) => {
@@ -66,21 +66,6 @@ const ListMember = () => {
       title: <div>Ghi chú</div>,
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: 100,
-      render: () => (
-        <Space size='middle'>
-          <button>
-            <EditFilled className='color-green action-table' />
-          </button>
-          <Link to={'#'}>
-            <CloseCircleFilled className='color-red action-table' />
-          </Link>
-        </Space>
-      ),
     },
   ];
   const handleExportToExcel = () => {
@@ -132,8 +117,11 @@ const ListMember = () => {
           >
             <i className='fa-sharp fa-solid fa-file-excel'></i> Xuất file excel
           </button>
-          <button onClick={() => navigate(-1)} className='focus:outline-none text-white bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'>
-            <i className="fa-solid fa-angles-left"></i> Quay về
+          <button
+            onClick={() => navigate(-1)}
+            className='focus:outline-none  bg-gray-100 text-black hover:bg-gray-200 font-medium text-sm px-3 py-1.5 ml-2'
+          >
+            <i className='fa-solid fa-angles-left'></i> Quay về
           </button>
         </div>
       </div>

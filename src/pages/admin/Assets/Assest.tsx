@@ -204,6 +204,12 @@ const Assets = () => {
                       Số lượng
                     </th>
                     <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Nhà
+                    </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
+                      Phòng
+                    </th>
+                    <th scope='col' className='text-sm font-medium text-gray-900 px-6 py-4 text-left'>
                       Ngày bắt đầu sử dụng
                     </th>
 
@@ -214,24 +220,30 @@ const Assets = () => {
                   {assets?.map((item: any, index: any) => (
                     <tr className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100'>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{index + 1}</td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.name}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item?.name}</td>
                       <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
                         {Number(item?.price).toLocaleString('VND')}
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item.amount}</td>
-                      <td className='text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>{item?.amount}</td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                        {item?.nameHouse}
+                      </td>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900'>
+                        {item?.nameRoom}
+                      </td>
+                      <td className='text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         {convertDate(item?.dateuse)}
                       </td>
 
-                      <td className='flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap'>
+                      <td className='flex text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap'>
                         <div>
-                          <Button onClick={() => showDeleteConfirm(item.id)} danger>
+                          <Button onClick={() => showDeleteConfirm(item?.id)} danger>
                             Xóa
                           </Button>
                         </div>
                         <div className='ml-2'>
                           <Link to={`/admin/assets/${item.id}`}>
-                            <Button name={item.id}>Sửa</Button>
+                            <Button name={item?.id}>Sửa</Button>
                           </Link>
                         </div>
                       </td>

@@ -54,6 +54,7 @@ export const addCharge = createAsyncThunk('charge/addCharge', async (values: any
     } else if (values.filter === undefined) {
       console.log('ahihaa');
       const { data }: any = await getBills(stringDate);
+      toast.success('Tính tiền thành công!');
       return data.result;
     }
   } catch (error) {

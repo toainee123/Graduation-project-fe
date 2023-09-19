@@ -34,9 +34,9 @@ const columns = [
     key: 'nameroom',
   },
   {
-    title: 'Số HĐ',
-    dataIndex: 'expirationdate',
-    key: 'expirationdate',
+    title: 'Số tháng HĐ',
+    dataIndex: 'expiry',
+    key: 'expiry',
   },
   {
     title: 'Ngày kí',
@@ -52,8 +52,8 @@ const columns = [
   },
   {
     title: 'Số ngày còn lại',
-    dataIndex: 'expiry',
-    key: 'expiry',
+    dataIndex: 'expirationdate',
+    key: 'expirationdate',
   },
 ];
 

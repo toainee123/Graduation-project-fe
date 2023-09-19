@@ -100,7 +100,7 @@ const Sidebar = (props: Props) => {
           icon: <FileTextOutlined />,
         },
         {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Danh sách hóa đơn</Link>,
           key: '9.3',
           icon: <FileTextOutlined />,
         },
@@ -129,7 +129,7 @@ const Sidebar = (props: Props) => {
       icon: <FileOutlined />,
     },
     {
-      label: <Link to={urlRouter.LIST_EMAIL}>Gửi email/ Lịch sử gửi mail</Link>,
+      label: <Link to={urlRouter.LIST_EMAIL}>Gửi email</Link>,
       key: '14',
       icon: <MailOutlined />,
     },

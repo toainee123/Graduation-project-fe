@@ -75,8 +75,8 @@ const Service = () => {
       dataIndex: 'price',
     },
     {
-      title: 'Action',
-      dataIndex: 'actions',
+      title: '',
+      dataIndex: '',
       render: (_: any, record: any) => (
         <Space size='middle'>
           <Link to={`http://localhost:3000/admin/service/${record.id}`}>
