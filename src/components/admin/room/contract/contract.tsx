@@ -34,7 +34,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     const getRoomTenant = async () => {
       const { data } = await apiGetRoomTenantDetail(roomId);
       console.log(data);
-
       setRoomTenant(data);
     };
 
@@ -66,12 +65,12 @@ const Contract = ({ houseid, setActiveTab }: any) => {
         contractExpir: moment(data?.contractexpir),
       });
 
-      setFormValue({
-        id: data.id,
-        expiry: data?.expiry,
-        contractDate: moment(data?.contractdate),
-        contractExpir: moment(data?.contractexpir),
-      });
+      // setFormValue({
+      //   id: data.id,
+      //   expiry: data?.expiry,
+      //   contractDate: moment(data?.contractdate),
+      //   contractExpir: moment(data?.contractexpir),
+      // });
     };
     getContract();
     getHost();
@@ -79,7 +78,7 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     getRoomTenant();
   }, []);
   const establishData = useAppSelector((state: any) => state.establish.value);
-  const renderContract = () => {
+  const renderContract = (obj: any) => {
     const sampleContract = establishData?.result?.samplecontract;
     const rvSampleContract = sampleContract?.replaceAll(/\\"/g, '"');
     const upperCaseFULLNAMECUSTOMER = host?.result?.name.toUpperCase();
@@ -88,11 +87,11 @@ const Contract = ({ houseid, setActiveTab }: any) => {
     console.log(roomTenant);
 
     const dataContract: any = {
-      '@ContrasctDate': moment(formValue?.contractDate).format('DD/MM/YYYY'),
-      '@ContractDateDay': moment(formValue?.contractDate).format('DD'),
+      '@ContrasctDate': moment(obj?.contractDate).format('DD/MM/YYYY'),
+      '@ContractDateDay': moment(obj?.contractDate).format('DD'),
       '@ContractNo': '',
-      '@ContractDateMonth': moment(formValue?.contractDate).format('MM'),
-      '@ContractDateYear': moment(formValue?.contractDate).format('YYYY'),
+      '@ContractDateMonth': moment(obj?.contractDate).format('MM'),
+      '@ContractDateYear': moment(obj?.contractDate).format('YYYY'),
       '@AddressCustomer': house?.result?.address,
       '@FullNameCustomer': host?.result?.name,
       '@BirthdayCustomerConfig': moment(host?.result?.bod).format('DD/MM/YYYY'),
@@ -107,8 +106,8 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       '@TelephoneRoomRent': roomTenant?.phone,
       '@RoomName': roomTenant?.nameroom,
       '@AdressArea': house?.result?.address,
-      '@ContractMonths': formValue?.expiry,
-      '@BeginRent': moment(formValue?.contractDate).format('DD/MM/YYYY'),
+      '@ContractMonths': obj?.expiry,
+      '@BeginRent': moment(obj?.contractDate).format('DD/MM/YYYY'),
       '@RoomAmount': Number(roomTenant?.price).toLocaleString('VND'),
       '@PayType': '',
       '@DepositAmount': Number(roomTenant?.deposit).toLocaleString('VND'),
@@ -117,9 +116,6 @@ const Contract = ({ houseid, setActiveTab }: any) => {
       '@CUSTOMERNAMEROOMRENT': upperCaseCUSTOMERNAMEROOMRENT,
     };
 
-    console.log(dataContract);
-
-    console.log(dataContract);
     const newContract = rvSampleContract?.replaceAll(
       /@ContrasctDate|@ContractDateDay|@ContractDateMonth|@ContractDateYear|@AddressCustomer|@FullNameCustomer|@BirthdayCustomerConfig|@AddressHost|@ContractNo|@TelephoneCustomer|@CustomerNameRoomRent|@BirthdayRoomRent|@IDCARDNORoomRent|@DateIssueRoomRent|@PlaceIssueRoomRent|@AddressRoomRentasdasd|@TelephoneRoomRent|@RoomName|@AdressArea|@ContractMonths|@BeginRent|@RoomAmount|@PayType|@DepositAmount|@ProvinceName|@FULLNAMECUSTOMERNAME /gi,
       (matched: any) => {
@@ -131,36 +127,35 @@ const Contract = ({ houseid, setActiveTab }: any) => {
 
   const CLOUDINARY_PRESET = 'gtn4lbpo';
   const CLOUDINARY_API_URL = 'https://api.cloudinary.com/v1_1/cokukongu/auto/upload';
-  useEffect(() => {
-    const reRender = () => {
-      renderContract();
-    };
+  // useEffect(() => {
+  //   const reRender = () => {
+  //     renderContract();
+  //   };
 
-    const getRoomTenant = async () => {
-      const { data } = await apiGetRoomTenantDetail(roomId);
+  //   const getRoomTenant = async () => {
+  //     const { data } = await apiGetRoomTenantDetail(roomId);
 
-      setRoomTenant(data);
-    };
+  //     setRoomTenant(data);
+  //   };
 
-    const getHost = async () => {
-      const { data } = await getInfoCustomer();
-      setHost(data);
-    };
+  //   const getHost = async () => {
+  //     const { data } = await getInfoCustomer();
+  //     setHost(data);
+  //   };
 
-    const getHouse = async () => {
-      const { data } = await getHouseId(houseid);
+  //   const getHouse = async () => {
+  //     const { data } = await getHouseId(houseid);
 
-      setHouse(data);
-    };
-    reRender();
-    getHost();
-    getHouse();
-    getRoomTenant();
-  }, [formValue]);
+  //     setHouse(data);
+  //   };
+  //   reRender();
+  //   getHost();
+  //   getHouse();
+  //   getRoomTenant();
+  // }, [formValue]);
 
   const onFinish = async (values: any) => {
-    setFormValue(values);
-
+    await renderContract(values);
     const dataPost = {
       customerId: roomTenant?.customerid,
       roomId: roomId ? +roomId : '',
@@ -298,7 +293,8 @@ const Contract = ({ houseid, setActiveTab }: any) => {
                 className='mt-4'
                 style={{ width: '100%' }}
                 onClick={async () => {
-                  await renderContract();
+                  const a = form.getFieldsValue();
+                  await renderContract(a);
                   await handleExportPDF();
                 }}
               >
