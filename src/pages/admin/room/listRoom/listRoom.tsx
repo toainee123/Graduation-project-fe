@@ -53,7 +53,7 @@ const ListMember = () => {
       filterSearch: true,
     },
     {
-      title: <div>Đơn giả</div>,
+      title: <div>Đơn giá</div>,
       dataIndex: 'price',
       key: 'price',
       sorter: (a: any, b: any) => {

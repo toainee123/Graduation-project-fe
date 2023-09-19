@@ -46,14 +46,14 @@ const HeaderComponent = (props: Props) => {
     navigate(`/lading-page`);
   };
   const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <a target='_blank' href=''>
-          Thông tin tài khoản
-        </a>
-      ),
-    },
+    // {
+    //   key: '1',
+    //   label: (
+    //     <a target='_blank' href=''>
+    //       Thông tin tài khoản
+    //     </a>
+    //   ),
+    // },
     {
       key: '3',
       label: <a onClick={logout}>Đăng xuất</a>,
