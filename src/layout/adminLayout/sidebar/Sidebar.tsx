@@ -100,7 +100,7 @@ const Sidebar = (props: Props) => {
           icon: <FileTextOutlined />,
         },
         {
-          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Chi tiết hóa đơn</Link>,
+          label: <Link to={`${urlRouter.REPORT}/${urlRouter.ReportInvoiceDetail}`}>Danh sách hóa đơn</Link>,
           key: '9.3',
           icon: <FileTextOutlined />,
         },
