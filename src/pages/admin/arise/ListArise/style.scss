@@ -1,0 +1,43 @@
+.render-input {
+  min-height: 50px;
+  // float: left;
+}
+.render-input {
+  float: left;
+  width: 100%;
+}
+.render-input .filter {
+  float: left;
+  width: 23%;
+}
+.filter-title {
+  margin-right: 50px;
+}
+.action-filter {
+  float: right;
+}
+.header {
+  min-width: 100%;
+  min-height: 60px;
+}
+.header-title {
+  float: left;
+}
+// .action {
+//   float: right;
+// }
+.filter-li {
+  margin-right: 10px;
+}
+.description {
+  margin-top: 15px;
+}
+.color-red {
+  color: red !important;
+}
+.color-green {
+  color: green !important;
+}
+.action-table {
+  font-size: 20px;
+}

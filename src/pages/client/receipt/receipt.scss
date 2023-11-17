@@ -1,0 +1,26 @@
+.table-fixed {
+  width: 100% !important;
+  margin-top: 30px;
+}
+thead tr {
+  height: 40px;
+
+  color: black !important;
+}
+
+.thead tr th:first-child {
+  border-radius: 0;
+}
+.thead tr th:last-child {
+  border-radius: 0;
+}
+thead tr th {
+  border-radius: 0 0 0 0;
+  text-align: left;
+  padding-left: 10px;
+  background-color: #e2e8f0;
+}
+
+.ccao {
+  height: 40px !important;
+}

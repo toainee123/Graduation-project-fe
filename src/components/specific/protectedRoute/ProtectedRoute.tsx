@@ -1,25 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { selectUserRole, selectUserToken } from '../../../features/auth/authSlice';
 import { useAppSelector } from '../../../store/hooks';
 import { localStorageConstants } from '../../../utils/constants';
+import { Modal } from 'antd';
+import { type } from 'os';
 
 type Props = {
-  Component: any
-  roles: any
-  to: string
-}
-
-const ProtectedRoute = (props: Partial<Props>) => {
-  
+  children: React.ReactNode;
+};
+const ProtectedRoute = ({ children }: Props) => {
   const roleStore = useAppSelector(selectUserRole);
-  // const localParse : any = localStorage.getItem(localStorageConstants.USER)
-  // const roleStore = JSON.parse(localParse);
-  
-  const { Component } = props
-  const {roles} = props
+  console.log(roleStore);
 
-  return roleStore === roles ? <Component /> : <Navigate to={'/auth'} />
-}
+  const userData: any = JSON.parse(localStorage.getItem('user') as string);
+  if (userData?.role !== 'ADMIN') {
+    return <Navigate to='/auth' />;
+  } else if (userData?.role === 'USER') {
+    return <Navigate to='/' />;
+  }
+  return <>{children}</>;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

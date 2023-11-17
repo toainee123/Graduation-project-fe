@@ -10,6 +10,7 @@ export const getProvinces = async () => {
 };
 
 export const getDistrict = async (provincesId: any) => {
+  console.log('provincesId', provincesId);
   const url = `/province/district/${provincesId}`;
   return apiProvinces.get(url);
 };

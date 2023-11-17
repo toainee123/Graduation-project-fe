@@ -1,11 +1,10 @@
 import { Layout } from 'antd';
-import React from 'react';
 import { Outlet } from 'react-router-dom';
-import FooterComponent from '../footer/Footer';
-import HeaderComponent from '../header/Header';
+
 import Sidebar from '../sidebar/Sidebar';
 
 import "./AdminLayout.scss"
+import HeaderComponent from '../header/Header';
 
 type Props = {};
 
@@ -17,19 +16,16 @@ const AdminLayout = (props: Props) => {
       <Layout >
         <Sidebar />
         <Layout>
-
-          <HeaderComponent />
-
           <Content>
-            <div className='layout-admin'>
-              <div className="outlet">
+            <div className='layout-admin '>
+              <HeaderComponent />
+
+              <div className="outlet shadow-md">
                 <Outlet />
               </div>
             </div>
           </Content>
-
-          <FooterComponent />
-
+          {/* <FooterComponent /> */}
         </Layout>
       </Layout>
     </div >

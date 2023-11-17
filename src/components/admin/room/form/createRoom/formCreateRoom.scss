@@ -1,0 +1,26 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.textArea {
+  width: 100% !important;
+}
+.form-upload .ant-upload-list {
+  display: flex !important;
+  flex-wrap: wrap;
+}
+.ant-upload-list-picture-card-container {
+  width: 128px !important;
+  border-radius: 6px !important;
+}
+.ant-upload {
+  width: 8rem !important;
+  height: 8rem !important;
+  border-radius: 6px !important;
+}
+.ant-upload-list-item {
+  width: 8rem !important;
+  height: 8rem !important;
+  margin-right: 4rem !important;
+}

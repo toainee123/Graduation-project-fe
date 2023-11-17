@@ -1,18 +1,23 @@
-import React from 'react'
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { selectUserRole } from '../../../features/auth/authSlice';
 import { useAppSelector } from '../../../store/hooks';
 
 type Props = {
-    Component: any
-}
+  children: React.ReactNode;
+};
 
-const ProtectedAuth = (props: Props) => {
+const ProtectedAuth = ({ children }: Props) => {
+  const roleStore = useAppSelector(selectUserRole);
+  console.log(roleStore);
 
-    const roleStore = useAppSelector(selectUserRole);
-    const { Component } = props
+  const userData: any = JSON.parse(localStorage.getItem('user') as string);
+  if (userData === undefined || userData === null) {
+    return <Navigate to={'/lading-page'} />;
+  } else if (userData?.role !== 'ADMIN' && userData?.role === 'USER') {
+    return <>{children}</>;
+  }
+  return <Navigate to={'/admin'} />;
+};
 
-  return roleStore === 'ADMIN' ? <Navigate to={'/admin'} /> : <Component />
-}
-
-export default ProtectedAuth
+export default ProtectedAuth;
